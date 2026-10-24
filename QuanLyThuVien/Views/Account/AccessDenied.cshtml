@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Không có quyền";
+}
+
+<div class="container text-center mt-5">
+    <h2 class="text-danger">Truy cập bị từ chối!</h2>
+
+    <p>
+        Tài khoản của bạn không có quyền
+        sử dụng chức năng này.
+    </p>
+
+    <a asp-controller="Home"
+       asp-action="Index"
+       class="btn btn-primary">
+        Quay về trang chủ
+    </a>
+</div>

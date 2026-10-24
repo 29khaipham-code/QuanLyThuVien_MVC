@@ -1,0 +1,78 @@
+﻿@model QuanLyThuVien.ViewModels.DangNhapViewModel
+
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">
+                        HỆ THỐNG QUẢN LÝ THƯ VIỆN
+                    </h4>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <h5 class="text-center mb-4">Đăng nhập</h5>
+
+                    <form asp-controller="Account"
+                          asp-action="Login"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="TenDangNhap"
+                                   class="form-label"></label>
+
+                            <input asp-for="TenDangNhap"
+                                   class="form-control"
+                                   placeholder="Tên đăng nhập" />
+
+                            <span asp-validation-for="TenDangNhap"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MatKhau"
+                                   class="form-label"></label>
+
+                            <input asp-for="MatKhau"
+                                   class="form-control"
+                                   placeholder="Mật khẩu" />
+
+                            <span asp-validation-for="MatKhau"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input asp-for="GhiNho"
+                                   class="form-check-input" />
+
+                            <label asp-for="GhiNho"
+                                   class="form-check-label"></label>
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+                            Đăng nhập
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
