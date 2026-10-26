@@ -104,7 +104,11 @@ app.UseAuthorization();
 
 // 9. Cấu hình tài nguyên tĩnh
 app.MapStaticAssets();
-
+//9.5
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
+);
 // 10. Cấu hình đường dẫn Controller và Action
 app.MapControllerRoute(
     name: "default",

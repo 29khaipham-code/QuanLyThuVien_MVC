@@ -1,0 +1,184 @@
+﻿
+@{
+    string pageTitle = ViewData["Title"]?.ToString()
+        ?? "Quản trị thư viện";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@pageTitle - Quản lý thư viện</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/admin.css"
+          asp-append-version="true" />
+</head>
+<body>
+    <div class="admin-wrapper">
+
+        <!-- MENU BÊN TRÁI -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">📚</div>
+                <h5>QUẢN LÝ THƯ VIỆN</h5>
+                <small>Hệ thống quản trị</small>
+            </div>
+
+            <nav class="sidebar-menu">
+
+                <div class="menu-heading">TỔNG QUAN</div>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Index">
+                    🏠 Trang tổng quan
+                </a>
+
+                <div class="menu-heading">QUẢN LÝ HỆ THỐNG</div>
+
+                <a asp-area="Admin"
+                   asp-controller="TaiKhoan"
+                   asp-action="Index">
+                    👥 Quản lý tài khoản
+                </a>
+
+                <div class="menu-heading">DANH MỤC</div>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Module"
+                   asp-route-id="TheLoai">
+                    📁 Thể loại
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Module"
+                   asp-route-id="TacGia">
+                    ✍️ Tác giả
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Module"
+                   asp-route-id="NhaXuatBan">
+                    🏢 Nhà xuất bản
+                </a>
+
+                <div class="menu-heading">QUẢN LÝ THƯ VIỆN</div>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Module"
+                   asp-route-id="Sach">
+                    📚 Quản lý sách
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Module"
+                   asp-route-id="BanSaoSach">
+                    📦 Bản sao sách
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Module"
+                   asp-route-id="DocGia">
+                    🪪 Độc giả
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Module"
+                   asp-route-id="MuonTra">
+                    🔄 Mượn / Trả sách
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Module"
+                   asp-route-id="DatTruoc">
+                    📌 Đặt trước sách
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Module"
+                   asp-route-id="Phat">
+                    💰 Tiền phạt
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Module"
+                   asp-route-id="SachDienTu">
+                    💻 Sách điện tử
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Module"
+                   asp-route-id="ThongKe">
+                    📊 Thống kê
+                </a>
+            </nav>
+        </aside>
+
+        <!-- NỘI DUNG BÊN PHẢI -->
+        <div class="admin-main">
+
+            <header class="admin-header">
+                <div>
+                    <button type="button"
+                            class="btn btn-light d-lg-none"
+                            id="toggleSidebar">
+                        ☰
+                    </button>
+
+                    <strong>@pageTitle</strong>
+                </div>
+
+                <div class="admin-user">
+                    <span>👤 @User.Identity?.Name</span>
+
+                    <a asp-area=""
+                       asp-controller="Home"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary btn-sm">
+                        Trang chủ
+                    </a>
+                </div>
+            </header>
+
+            <main class="admin-content">
+                @RenderBody()
+            </main>
+
+            <footer class="admin-footer">
+                © 2026 - Hệ thống Quản lý thư viện
+            </footer>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    <script>
+        document.getElementById("toggleSidebar")
+            ?.addEventListener("click", function () {
+                document.querySelector(".admin-sidebar")
+                    ?.classList.toggle("show");
+            });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

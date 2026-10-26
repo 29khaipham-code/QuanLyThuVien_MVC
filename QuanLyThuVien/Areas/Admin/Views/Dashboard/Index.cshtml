@@ -1,0 +1,126 @@
+﻿
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Trang tổng quan";
+}
+
+<h3 class="mb-2">Xin chào, @User.Identity?.Name!</h3>
+
+<p class="text-muted mb-4">
+    Chào mừng đến với hệ thống quản lý thư viện.
+</p>
+
+<div class="row g-3">
+
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <h6>Tổng đầu sách</h6>
+            <p class="text-muted small mb-0">
+                Chưa kết nối thống kê
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <h6>Tổng độc giả</h6>
+            <p class="text-muted small mb-0">
+                Chưa kết nối thống kê
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon">🔄</div>
+            <h6>Sách đang mượn</h6>
+            <p class="text-muted small mb-0">
+                Chưa kết nối thống kê
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon">⚠️</div>
+            <h6>Mượn quá hạn</h6>
+            <p class="text-muted small mb-0">
+                Chưa kết nối thống kê
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<div class="content-card mt-4">
+    <h5>Chức năng quản trị</h5>
+    <p class="text-muted">
+        Chọn một chức năng để bắt đầu quản lý.
+    </p>
+
+    <div class="row g-3">
+
+        <div class="col-md-4">
+            <a class="quick-link"
+               asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Module"
+               asp-route-id="TaiKhoan">
+                👥 Quản lý tài khoản
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a class="quick-link"
+               asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Module"
+               asp-route-id="Sach">
+                📚 Quản lý sách
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a class="quick-link"
+               asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Module"
+               asp-route-id="DocGia">
+                🪪 Quản lý độc giả
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a class="quick-link"
+               asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Module"
+               asp-route-id="MuonTra">
+                🔄 Mượn / Trả
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a class="quick-link"
+               asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Module"
+               asp-route-id="SachDienTu">
+                💻 Sách điện tử
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a class="quick-link"
+               asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Module"
+               asp-route-id="ThongKe">
+                📊 Thống kê
+            </a>
+        </div>
+
+    </div>
+</div>

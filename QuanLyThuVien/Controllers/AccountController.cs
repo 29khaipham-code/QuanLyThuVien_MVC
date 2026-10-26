@@ -30,8 +30,14 @@ namespace QuanLyThuVien.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-            if (User.Identity?.IsAuthenticated == true)
-                return RedirectToAction("Index", "Home");
+            if (User.IsInRole("QuanTri"))
+            {
+                return RedirectToAction(
+                    "Index",
+                    "Dashboard",
+                    new { area = "Admin" }
+                );
+            }
 
             return View(new DangNhapViewModel());
         }
@@ -96,6 +102,14 @@ namespace QuanLyThuVien.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 principal,
                 authProperties);
+            if (tk.VaiTro != null && tk.VaiTro.TenVaiTro == "QuanTri")
+            {
+                return RedirectToAction(
+                    "Index",
+                    "Dashboard",
+                    new { area = "Admin" }
+                );
+            }
 
             return RedirectToAction("Index", "Home");
         }

@@ -1,0 +1,140 @@
+﻿
+@model IEnumerable<QuanLyThuVien.ViewModels.TaiKhoan.TaiKhoanListItem>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý tài khoản";
+}
+
+<div class="content-card">
+
+    <div class="d-flex justify-content-between
+                align-items-center mb-4 flex-wrap gap-2">
+
+        <div>
+            <h4 class="mb-1">Quản lý tài khoản</h4>
+            <p class="text-muted mb-0">
+                Danh sách tài khoản trong hệ thống
+            </p>
+        </div>
+
+        <button class="btn btn-primary" disabled
+                title="Sẽ triển khai chức năng thêm tài khoản">
+            + Thêm tài khoản
+        </button>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <form method="get"
+          asp-area="Admin"
+          asp-controller="TaiKhoan"
+          asp-action="Index"
+          class="row g-2 mb-4">
+
+        <div class="col-md-8">
+            <input type="text"
+                   name="keyword"
+                   value="@ViewBag.Keyword"
+                   class="form-control"
+                   placeholder="Tên đăng nhập, họ tên, email..." />
+        </div>
+
+        <div class="col-md-4">
+            <button type="submit"
+                    class="btn btn-primary">
+                Tìm kiếm
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-outline-secondary">
+                Làm mới
+            </a>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover
+                      align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Vai trò</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.TenDangNhap</td>
+                        <td>@item.HoTen</td>
+                        <td>@item.Email</td>
+                        <td>@item.TenVaiTro</td>
+
+                        <td>
+                            @if (item.HoatDong)
+                            {
+                                <span class="badge bg-success">
+                                    Hoạt động
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    Đã khóa
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            <form asp-area="Admin"
+                                  asp-controller="TaiKhoan"
+                                  asp-action="DoiTrangThai"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@item.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-sm @(item.HoatDong ? "btn-outline-danger" : "btn-outline-success")"
+                                        onclick="return confirm('Bạn có chắc muốn thay đổi trạng thái tài khoản này?')">
+
+                                    @(item.HoatDong ? "Khóa" : "Mở khóa")
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            Không tìm thấy tài khoản phù hợp.
+        </div>
+    }
+</div>
