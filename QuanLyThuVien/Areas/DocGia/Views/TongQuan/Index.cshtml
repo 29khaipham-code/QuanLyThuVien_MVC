@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Tổng quan";
+    var dg = (DocGium)ViewBag.DocGia;
+    var hetHan = dg.NgayHetHan < DateOnly.FromDateTime(DateTime.Today);
+}
+
+<div class="card mb-4">
+    <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+        <div>
+            <h5 class="mb-1">Xin chào, @dg.HoTen</h5>
+            <div class="text-muted small">Mã độc giả: <strong>@dg.MaDocGia</strong> · Loại: @dg.LoaiDocGia.TenLoai</div>
+        </div>
+        <div>
+            Thẻ đến hết <strong>@dg.NgayHetHan.ToString("dd/MM/yyyy")</strong>
+            @if (hetHan || dg.TrangThai != "HoatDong")
+            {
+                <span class="badge bg-danger ms-1">Không hiệu lực</span>
+            }
+            else
+            {
+                <span class="badge bg-success ms-1">Đang hoạt động</span>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-6 col-xl-3">
+        <a asp-controller="Muon" class="text-decoration-none">
+            <div class="card text-bg-primary h-100"><div class="card-body">
+                <div class="fs-2">@ViewBag.DangMuon <small class="fs-6">/ @dg.LoaiDocGia.SoSachToiDa</small></div>Đang mượn</div></div>
+        </a>
+    </div>
+    <div class="col-6 col-xl-3">
+        <div class="card text-bg-danger h-100"><div class="card-body">
+            <div class="fs-2">@ViewBag.QuaHan</div>Quá hạn</div></div>
+    </div>
+    <div class="col-6 col-xl-3">
+        <a asp-controller="DatTruoc" class="text-decoration-none">
+            <div class="card text-bg-info h-100"><div class="card-body">
+                <div class="fs-2">@ViewBag.DatTruoc</div>Đặt trước đang chờ</div></div>
+        </a>
+    </div>
+    <div class="col-6 col-xl-3">
+        <div class="card text-bg-warning h-100"><div class="card-body">
+            <div class="fs-2">@(((decimal)ViewBag.PhatChuaNop).ToString("N0"))đ</div>Phạt chưa nộp</div></div>
+    </div>
+</div>

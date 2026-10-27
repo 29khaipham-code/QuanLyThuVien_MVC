@@ -1,0 +1,97 @@
+﻿@model QuanLyThuVien.ViewModels.HoSo.HoSoViewModel
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+    var hetHan = Model.NgayHetHan < DateOnly.FromDateTime(DateTime.Today);
+}
+
+<div class="row g-4">
+    @* ===== Cột trái: thông tin thẻ (chỉ đọc) ===== *@
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-header fw-semibold">Thẻ thư viện</div>
+            <div class="card-body">
+                <table class="table table-sm table-borderless mb-3">
+                    <tr><th>Mã độc giả</th><td>@Model.MaDocGia</td></tr>
+                    <tr><th>Tên đăng nhập</th><td>@Model.TenDangNhap</td></tr>
+                    <tr><th>Loại</th><td>@Model.LoaiDocGia</td></tr>
+                    <tr><th>Ngày đăng ký</th><td>@Model.NgayDangKy.ToString("dd/MM/yyyy")</td></tr>
+                    <tr><th>Hạn thẻ</th><td>@Model.NgayHetHan.ToString("dd/MM/yyyy")</td></tr>
+                    <tr><th>Mượn tối đa</th><td>@Model.SoSachToiDa cuốn / @Model.SoNgayMuonToiDa ngày</td></tr>
+                    <tr>
+                        <th>Trạng thái</th>
+                        <td>
+                            @if (hetHan || Model.TrangThai != "HoatDong")
+                            {
+                                <span class="badge bg-danger">Không hiệu lực</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Đang hoạt động</span>
+                            }
+                        </td>
+                    </tr>
+                </table>
+                @if (hetHan)
+                {
+                    <div class="alert alert-warning small mb-3">Thẻ đã hết hạn. Vui lòng đến thư viện để gia hạn.</div>
+                }
+                <a asp-action="DoiMatKhau" class="btn btn-outline-secondary w-100">🔑 Đổi mật khẩu</a>
+            </div>
+        </div>
+    </div>
+
+    @* ===== Cột phải: form sửa thông tin ===== *@
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header fw-semibold">Thông tin cá nhân</div>
+            <div class="card-body">
+                <form asp-action="Index" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label asp-for="HoTen" class="form-label"></label>
+                            <input asp-for="HoTen" class="form-control" />
+                            <span asp-validation-for="HoTen" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="SoDienThoai" class="form-label"></label>
+                            <input asp-for="SoDienThoai" class="form-control" />
+                            <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="NgaySinh" class="form-label"></label>
+                            <input asp-for="NgaySinh" type="date" class="form-control" />
+                            <span asp-validation-for="NgaySinh" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="GioiTinh" class="form-label"></label>
+                            <select asp-for="GioiTinh" class="form-select">
+                                <option value="">-- Chọn --</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="DiaChi" class="form-label"></label>
+                            <input asp-for="DiaChi" class="form-control" />
+                            <span asp-validation-for="DiaChi" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

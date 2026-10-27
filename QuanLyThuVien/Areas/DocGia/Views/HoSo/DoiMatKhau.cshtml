@@ -1,0 +1,36 @@
+﻿@model QuanLyThuVien.ViewModels.HoSo.DoiMatKhauViewModel
+@{ ViewData["Title"] = "Đổi mật khẩu"; }
+
+<div class="row">
+    <div class="col-md-6 col-lg-5">
+        <div class="card">
+            <div class="card-header fw-semibold">Đổi mật khẩu</div>
+            <div class="card-body">
+                <form asp-action="DoiMatKhau" method="post" autocomplete="off">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="MatKhauCu" class="form-label"></label>
+                        <input asp-for="MatKhauCu" class="form-control" autocomplete="current-password" />
+                        <span asp-validation-for="MatKhauCu" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="MatKhauMoi" class="form-label"></label>
+                        <input asp-for="MatKhauMoi" class="form-control" autocomplete="new-password" />
+                        <span asp-validation-for="MatKhauMoi" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="XacNhanMatKhau" class="form-label"></label>
+                        <input asp-for="XacNhanMatKhau" class="form-control" autocomplete="new-password" />
+                        <span asp-validation-for="XacNhanMatKhau" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                    <a asp-action="Index" class="btn btn-link">Hủy</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

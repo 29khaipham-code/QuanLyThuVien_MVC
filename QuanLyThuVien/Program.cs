@@ -9,6 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 // 1. Đăng ký dịch vụ MVC
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 // 2. Lấy chuỗi kết nối từ appsettings.json
 var connectionString = builder.Configuration
     .GetConnectionString("QuanLyThuVienConnectionString");
@@ -86,6 +94,45 @@ if (app.Environment.IsDevelopment())
         db.TaiKhoans.Add(admin);
         db.SaveChanges();
     }
+    // ===== TÀI KHOẢN ĐỘC GIẢ ĐỂ TEST (chỉ chạy khi Development) =====
+    var vaiTroDocGia = db.VaiTros.FirstOrDefault(x => x.TenVaiTro == "DocGia");
+
+    if (vaiTroDocGia != null && !db.TaiKhoans.Any(x => x.TenDangNhap == "docgia1"))
+    {
+        var loai = db.LoaiDocGia.FirstOrDefault()
+                   ?? new LoaiDocGium
+                   {
+                       TenLoai = "Sinh viên",
+                       SoSachToiDa = 5,
+                       SoNgayMuonToiDa = 14
+                   };
+
+        var tkDocGia = new TaiKhoan
+        {
+            TenDangNhap = "docgia1",
+            HoTen = "Độc giả Test",
+            Email = "docgia1@example.invalid",
+            HoatDong = true,
+            NgayTao = DateTime.Now,
+            VaiTroId = vaiTroDocGia.Id,
+            MatKhauHash = ""
+        };
+        tkDocGia.MatKhauHash = hasher.HashPassword(tkDocGia, "DocGia@123");
+
+        tkDocGia.DocGium = new DocGium
+        {
+            MaDocGia = "DGTEST01",
+            HoTen = "Độc giả Test",
+            Email = "docgia1@example.invalid",
+            NgayDangKy = DateOnly.FromDateTime(DateTime.Today),
+            NgayHetHan = DateOnly.FromDateTime(DateTime.Today.AddYears(1)),
+            TrangThai = "HoatDong",
+            LoaiDocGia = loai
+        };
+
+        db.TaiKhoans.Add(tkDocGia);
+        db.SaveChanges();
+    }
 }
 
 // 7. Cấu hình HTTP Request Pipeline
@@ -98,12 +145,24 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseSession();
+
 // 8. Xác thực và phân quyền
 app.UseAuthentication();
 app.UseAuthorization();
 
 // 9. Cấu hình tài nguyên tĩnh
 app.MapStaticAssets();
+
+app.MapAreaControllerRoute(
+    name: "admin",
+    areaName: "Admin",
+    pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}");
+
+app.MapAreaControllerRoute(
+    name: "docgia",
+    areaName: "DocGia",
+    pattern: "DocGia/{controller=TongQuan}/{action=Index}/{id?}");
 
 // 10. Cấu hình đường dẫn Controller và Action
 app.MapControllerRoute(
