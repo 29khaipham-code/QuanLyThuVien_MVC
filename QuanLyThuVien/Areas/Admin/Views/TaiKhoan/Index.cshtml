@@ -17,11 +17,17 @@
                 Danh sách tài khoản trong hệ thống
             </p>
         </div>
+        
+<a asp-area="Admin"
+   asp-controller="TaiKhoan"
+   asp-action="Create"
+   class="btn btn-primary">
+    + Thêm tài khoản
+</a>
 
-        <button class="btn btn-primary" disabled
-                title="Sẽ triển khai chức năng thêm tài khoản">
-            + Thêm tài khoản
-        </button>
+       
+    
+
     </div>
 
     @if (TempData["Success"] != null)

@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
+using QuanLyThuVien.ViewModels.TaiKhoan;
 
 using QuanLyThuVien.Models;
 using QuanLyThuVien.ViewModels.TaiKhoan;
@@ -94,5 +95,30 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        // Hiển thị form thêm tài khoản
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            await LoadVaiTro();
+            return View(new TaoTaiKhoanViewModel());
+        }
+
+        // Lưu danh sách vai trò vào dropdown
+        private async Task LoadVaiTro()
+        {
+            var vaiTros = await _context.Set<VaiTro>()
+                .Where(x => x.TenVaiTro == "ThuThu"
+                         || x.TenVaiTro == "DocGia")
+                .OrderBy(x => x.TenVaiTro)
+                .ToListAsync();
+
+            ViewBag.VaiTro = new SelectList(
+                vaiTros,
+                "Id",
+                "TenVaiTro"
+            );
+        }
+
     }
 }
