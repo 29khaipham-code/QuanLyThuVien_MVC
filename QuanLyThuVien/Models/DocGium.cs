@@ -31,6 +31,8 @@ public partial class DocGium
 
     public int LoaiDocGiaId { get; set; }
 
+    public virtual ICollection<DatTruoc> DatTruocs { get; set; } = new List<DatTruoc>();
+
     public virtual LoaiDocGium LoaiDocGia { get; set; } = null!;
 
     public virtual ICollection<LuotDocSachDienTu> LuotDocSachDienTus { get; set; } = new List<LuotDocSachDienTu>();
