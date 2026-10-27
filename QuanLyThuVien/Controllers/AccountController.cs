@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+using System.Diagnostics;
 
 using QuanLyThuVien.Models;
 using QuanLyThuVien.ViewModels;
@@ -16,16 +19,21 @@ namespace QuanLyThuVien.Controllers
     {
         private readonly QuanLyThuVienContext _db;
         private readonly IPasswordHasher<TaiKhoan> _hasher;
+        private readonly IWebHostEnvironment _env;
 
         public AccountController(
             QuanLyThuVienContext db,
-            IPasswordHasher<TaiKhoan> hasher)
+            IPasswordHasher<TaiKhoan> hasher,
+            IWebHostEnvironment env)
         {
             _db = db;
             _hasher = hasher;
+            _env = env;
         }
 
-        // HIỂN THỊ TRANG ĐĂNG NHẬP
+        // =========================================
+        // 1. HIỂN THỊ TRANG ĐĂNG NHẬP
+        // =========================================
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
@@ -35,14 +43,15 @@ namespace QuanLyThuVien.Controllers
                 return RedirectToAction(
                     "Index",
                     "Dashboard",
-                    new { area = "Admin" }
-                );
+                    new { area = "Admin" });
             }
 
             return View(new DangNhapViewModel());
         }
 
-        // XỬ LÝ ĐĂNG NHẬP
+        // =========================================
+        // 2. XỬ LÝ ĐĂNG NHẬP
+        // =========================================
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -50,39 +59,135 @@ namespace QuanLyThuVien.Controllers
             DangNhapViewModel model)
         {
             if (!ModelState.IsValid)
-                return View(model);
+            {
+                if (_env.IsDevelopment())
+                {
+                    Debug.WriteLine(
+                        "LOGIN DEBUG - ModelState khong hop le");
+                }
 
+                return View(model);
+            }
+
+            // Tìm tài khoản trong SQL Server
             var tk = await _db.TaiKhoans
                 .Include(x => x.VaiTro)
                 .FirstOrDefaultAsync(x =>
                     x.TenDangNhap == model.TenDangNhap);
 
+            // =====================================
+            // 3. KIỂM TRA DEBUG
+            // Chỉ chạy ở môi trường Development
+            // =====================================
+            if (_env.IsDevelopment())
+            {
+                Debug.WriteLine("");
+                Debug.WriteLine("========== LOGIN DEBUG ==========");
+
+                Debug.WriteLine(
+                    "Tim thay tai khoan: " + (tk != null));
+
+                Debug.WriteLine(
+                    "Tai khoan hoat dong: " +
+                    tk?.HoatDong);
+
+                Debug.WriteLine(
+                    "Do dai ten dang nhap: " +
+                    model.TenDangNhap?.Length);
+
+                Debug.WriteLine(
+                    "Do dai mat khau nhap: " +
+                    model.MatKhau?.Length);
+
+                // Tạo dấu vân tay của hash để so sánh
+                // giữa hai laptop. Không in hash gốc.
+                if (tk != null &&
+                    !string.IsNullOrEmpty(tk.MatKhauHash))
+                {
+                    byte[] bytes = Encoding.UTF8.GetBytes(
+                        tk.MatKhauHash);
+
+                    byte[] fingerprintBytes =
+                        SHA256.HashData(bytes);
+
+                    string fingerprint =
+                        Convert.ToHexString(fingerprintBytes);
+
+                    Debug.WriteLine(
+                        "Hash fingerprint: " + fingerprint);
+                }
+            }
+
+            // =====================================
+            // 4. KIỂM TRA TÀI KHOẢN
+            // =====================================
             if (tk == null || !tk.HoatDong)
             {
                 ModelState.AddModelError(
-                    "", "Tài khoản hoặc mật khẩu không đúng");
+                    "",
+                    "Tài khoản hoặc mật khẩu không đúng");
+
                 return View(model);
             }
 
+            // =====================================
+            // 5. KIỂM TRA MẬT KHẨU
+            // =====================================
             var ketQua = _hasher.VerifyHashedPassword(
-                tk, tk.MatKhauHash, model.MatKhau);
+                tk,
+                tk.MatKhauHash,
+                model.MatKhau);
+
+            if (_env.IsDevelopment())
+            {
+                Debug.WriteLine(
+                    "Ket qua xac minh mat khau: " +
+                    ketQua);
+
+                Debug.WriteLine(
+                    "Vai tro: " +
+                    tk.VaiTro?.TenVaiTro);
+
+                Debug.WriteLine(
+                    "=================================");
+            }
 
             if (ketQua == PasswordVerificationResult.Failed)
             {
                 ModelState.AddModelError(
-                    "", "Tài khoản hoặc mật khẩu không đúng");
+                    "",
+                    "Tài khoản hoặc mật khẩu không đúng");
+
                 return View(model);
             }
 
-            // Lưu thông tin người dùng vào Claims
+            // =====================================
+            // 6. KIỂM TRA VAI TRÒ
+            // =====================================
+            if (tk.VaiTro == null)
+            {
+                ModelState.AddModelError(
+                    "",
+                    "Tài khoản chưa được phân quyền");
+
+                return View(model);
+            }
+
+            // =====================================
+            // 7. TẠO CLAIMS
+            // =====================================
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier,
+                new Claim(
+                    ClaimTypes.NameIdentifier,
                     tk.Id.ToString()),
 
-                new Claim(ClaimTypes.Name, tk.HoTen),
+                new Claim(
+                    ClaimTypes.Name,
+                    tk.HoTen),
 
-                new Claim(ClaimTypes.Role,
+                new Claim(
+                    ClaimTypes.Role,
                     tk.VaiTro.TenVaiTro)
             };
 
@@ -97,36 +202,51 @@ namespace QuanLyThuVien.Controllers
                 IsPersistent = model.GhiNho
             };
 
-            // Tạo Cookie đăng nhập
+            // =====================================
+            // 8. LƯU COOKIE ĐĂNG NHẬP
+            // =====================================
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 principal,
                 authProperties);
-            if (tk.VaiTro != null && tk.VaiTro.TenVaiTro == "QuanTri")
+
+            // =====================================
+            // 9. CHUYỂN HƯỚNG THEO VAI TRÒ
+            // =====================================
+            if (tk.VaiTro.TenVaiTro == "QuanTri")
             {
                 return RedirectToAction(
                     "Index",
                     "Dashboard",
-                    new { area = "Admin" }
-                );
+                    new { area = "Admin" });
             }
 
-            return RedirectToAction("Index", "Home");
+            // ThuThu và DocGia tạm thời về Home
+            return RedirectToAction(
+                "Index",
+                "Home",
+                new { area = "" });
         }
 
-        // ĐĂNG XUẤT
+        // =========================================
+        // 10. ĐĂNG XUẤT
+        // =========================================
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
+            HttpContext.Session.Clear();
+
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Login");
         }
 
-        // KHÔNG CÓ QUYỀN
+        // =========================================
+        // 11. TRANG KHÔNG CÓ QUYỀN
+        // =========================================
         [HttpGet]
         public IActionResult AccessDenied()
         {

@@ -1,0 +1,88 @@
+﻿
+@model QuanLyThuVien.ViewModels.TacGia.TacGiaFormViewModel
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Sửa tác giả";
+}
+
+<div class="content-card">
+
+    <h4>Chỉnh sửa tác giả</h4>
+    <hr />
+
+    <form asp-area="Admin"
+          asp-controller="TacGia"
+          asp-action="Edit"
+          asp-route-id="@Model.Id"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <input asp-for="Id" type="hidden" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="TenTacGia"
+                   class="form-label"></label>
+
+            <input asp-for="TenTacGia"
+                   class="form-control" />
+
+            <span asp-validation-for="TenTacGia"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NgaySinh"
+                   class="form-label"></label>
+
+            <input asp-for="NgaySinh"
+                   type="date"
+                   class="form-control" />
+
+            <span asp-validation-for="NgaySinh"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="QuocTich"
+                   class="form-label"></label>
+
+            <input asp-for="QuocTich"
+                   class="form-control" />
+
+            <span asp-validation-for="QuocTich"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="TieuSu"
+                   class="form-label"></label>
+
+            <textarea asp-for="TieuSu"
+                      class="form-control"
+                      rows="5"></textarea>
+
+            <span asp-validation-for="TieuSu"
+                  class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Lưu thay đổi
+        </button>
+
+        <a asp-area="Admin"
+           asp-controller="TacGia"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Quay lại
+        </a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

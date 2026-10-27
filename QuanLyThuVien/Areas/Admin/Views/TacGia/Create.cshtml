@@ -1,0 +1,89 @@
+﻿
+@model QuanLyThuVien.ViewModels.TacGia.TacGiaFormViewModel
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Thêm tác giả";
+}
+
+<div class="content-card">
+
+    <h4>Thêm tác giả mới</h4>
+    <hr />
+
+    <form asp-area="Admin"
+          asp-controller="TacGia"
+          asp-action="Create"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="TenTacGia"
+                   class="form-label"></label>
+
+            <input asp-for="TenTacGia"
+                   class="form-control"
+                   placeholder="Nhập tên tác giả" />
+
+            <span asp-validation-for="TenTacGia"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NgaySinh"
+                   class="form-label"></label>
+
+            <input asp-for="NgaySinh"
+                   type="date"
+                   class="form-control" />
+
+            <span asp-validation-for="NgaySinh"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="QuocTich"
+                   class="form-label"></label>
+
+            <input asp-for="QuocTich"
+                   class="form-control"
+                   placeholder="Ví dụ: Việt Nam" />
+
+            <span asp-validation-for="QuocTich"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="TieuSu"
+                   class="form-label"></label>
+
+            <textarea asp-for="TieuSu"
+                      class="form-control"
+                      rows="5"
+                      placeholder="Nhập tiểu sử tác giả"></textarea>
+
+            <span asp-validation-for="TieuSu"
+                  class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Lưu tác giả
+        </button>
+
+        <a asp-area="Admin"
+           asp-controller="TacGia"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Quay lại
+        </a>
+
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

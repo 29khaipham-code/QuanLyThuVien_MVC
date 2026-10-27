@@ -1,0 +1,191 @@
+﻿
+@model List<QuanLyThuVien.Models.NhaXuatBan>
+
+@{
+    ViewData["Title"] = "Quản lý nhà xuất bản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    string keyword = ViewBag.Keyword as string ?? "";
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 0;
+    int totalItems = ViewBag.TotalItems ?? 0;
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Quản lý nhà xuất bản</h3>
+            <p class="text-secondary mb-0">
+                Danh sách các nhà xuất bản trong thư viện
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="NhaXuatBan"
+           asp-action="Create"
+           class="btn btn-primary">
+            + Thêm nhà xuất bản
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get"
+                  asp-area="Admin"
+                  asp-controller="NhaXuatBan"
+                  asp-action="Index">
+
+                <div class="row g-2">
+                    <div class="col-md-9">
+                        <input type="text"
+                               name="keyword"
+                               value="@keyword"
+                               class="form-control"
+                               placeholder="Tìm theo tên, địa chỉ, email..." />
+                    </div>
+
+                    <div class="col-md-3 d-flex gap-2">
+                        <button type="submit"
+                                class="btn btn-primary flex-fill">
+                            Tìm kiếm
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            Đặt lại
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <div class="mb-3">
+                Tổng số: <strong>@totalItems</strong> nhà xuất bản
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên nhà xuất bản</th>
+                            <th>Địa chỉ</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th>Website</th>
+                            <th class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="7"
+                                    class="text-center py-4">
+                                    Không có nhà xuất bản nào.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+
+                                    <td>
+                                        <strong>@item.TenNhaXuatBan</strong>
+                                    </td>
+
+                                    <td>@(item.DiaChi ?? "—")</td>
+                                    <td>@(item.SoDienThoai ?? "—")</td>
+                                    <td>@(item.Email ?? "—")</td>
+
+                                    <td>
+                                        @if (!string.IsNullOrWhiteSpace(item.Website))
+                                        {
+                                            <a href="@item.Website"
+                                               target="_blank"
+                                               rel="noopener noreferrer">
+                                                Website
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span>—</span>
+                                        }
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="d-flex gap-2 justify-content-center">
+                                            <a asp-action="Edit"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-outline-primary">
+                                                Sửa
+                                            </a>
+
+                                            <form asp-action="Delete"
+                                                  asp-route-id="@item.Id"
+                                                  method="post"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa nhà xuất bản này?');">
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger">
+                                                    Xóa
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <nav class="mt-3">
+                    <ul class="pagination justify-content-end">
+
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            int currentPage = i;
+
+                            <li class="page-item @(currentPage == page ? "active" : "")">
+                                <a class="page-link"
+                                   asp-action="Index"
+                                   asp-route-page="@currentPage"
+                                   asp-route-keyword="@keyword">
+                                    @currentPage
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</div>

@@ -15,10 +15,21 @@
 
     <link rel="stylesheet"
           href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @*  <link rel="stylesheet"
+      href="~/css/admin.css"
+      asp-append-version="true" />
+      
+      <link rel="stylesheet"
+      href="~/css/admin-3d-ong-anh.css"
+      asp-append-version="true" />
+
 
     <link rel="stylesheet"
-          href="~/css/admin.css"
-          asp-append-version="true" />
+          href="~/css/playful-admin-theme.css"
+          asp-append-version="true" /> *@
+          <link rel="stylesheet"
+      href="~/css/admin-modern-dark.css"
+      asp-append-version="true" />
 </head>
 <body>
     <div class="admin-wrapper">
@@ -51,25 +62,28 @@
 
                 <div class="menu-heading">DANH MỤC</div>
 
+                
                 <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="TheLoai">
-                    📁 Thể loại
+                   asp-controller="TheLoai"
+                   asp-action="Index">
+                    📁 Quản lý thể loại
                 </a>
 
+
+                
                 <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="TacGia">
-                    ✍️ Tác giả
+                   asp-controller="TacGia"
+                   asp-action="Index">
+                    ✍️ Quản lý tác giả
                 </a>
 
+
                 <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="NhaXuatBan">
-                    🏢 Nhà xuất bản
+                   asp-controller="NhaXuatBan"
+                   asp-action="Index"
+                   class="nav-link">
+                    <i class="bi bi-building"></i>
+                    Nhà xuất bản
                 </a>
 
                 <div class="menu-heading">QUẢN LÝ THƯ VIỆN</div>

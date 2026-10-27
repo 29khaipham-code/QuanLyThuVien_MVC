@@ -9,6 +9,27 @@ var builder = WebApplication.CreateBuilder(args);
 // 1. Đăng ký dịch vụ MVC
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+});
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+});
+
+
 // 2. Lấy chuỗi kết nối từ appsettings.json
 var connectionString = builder.Configuration
     .GetConnectionString("QuanLyThuVienConnectionString");
@@ -95,12 +116,17 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseRouting();
 
-// 8. Xác thực và phân quyền
+// Kích hoạt Session
+app.UseSession();
+
+// Xác thực và phân quyền
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 // 9. Cấu hình tài nguyên tĩnh
 app.MapStaticAssets();
