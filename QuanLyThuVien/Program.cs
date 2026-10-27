@@ -118,6 +118,10 @@ if (!app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+
+// Phục vụ ảnh trong wwwroot
+app.UseStaticFiles();
+
 app.UseRouting();
 
 // Kích hoạt Session

@@ -1,8 +1,313 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿
+@{
+    ViewData["Title"] = "Trang chủ";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+
+<section class="home">
+    <header class="home-nav">
+        <a asp-controller="Home" asp-action="Index" class="brand" aria-label="Trang chủ thư viện">
+            <span class="brand-mark">B.</span>
+            <span>THƯ VIỆN SỐ</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Điều hướng chính">
+            <a href="#trang-chu" class="active">Trang chủ</a>
+            <a href="#gioi-thieu">Giới thiệu</a>
+            <a href="#the-loai">Thể loại</a>
+            <a href="#kham-pha">Khám phá</a>
+            <a href="#cach-su-dung">Hướng dẫn</a>
+            <a href="#cau-hoi">FAQ</a>
+        </nav>
+
+        <a asp-controller="Account" asp-action="Login" class="nav-login">
+            Đăng nhập <span aria-hidden="true">↗</span>
+        </a>
+    </header>
+
+    <main>
+        <section class="hero page-section" id="trang-chu">
+            <div class="hero-copy">
+                <p class="eyebrow">KHÔNG GIAN TRI THỨC</p>
+                <h1>Một cuốn sách.<br /><span>Một thế giới mới.</span></h1>
+                <p class="hero-description">
+                    Mở rộng góc nhìn, tìm kiếm cảm hứng và bắt đầu
+                    hành trình khám phá tri thức theo cách của riêng bạn.
+                </p>
+                <div class="hero-actions">
+                    <a asp-controller="Home"
+       asp-action="DanhSachSach"
+       class="button-primary">
+        Khám phá thư viện <span aria-hidden="true">↗</span>
+    </a>
+
+    <a href="#gioi-thieu" class="button-secondary">
+        Tìm hiểu thêm
+    </a>
+                </div>
+                <div class="hero-note">
+                    <span class="hero-note-dot"></span>
+                    Một nơi để đọc, học hỏi và khám phá mỗi ngày.
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img
+                    src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1100&q=85"
+                    alt="Không gian thư viện với những kệ sách"
+                    fetchpriority="high" />
+                <div class="image-caption">
+                    <span>01 / KHÔNG GIAN ĐỌC</span>
+                    <span>Tri thức không giới hạn.</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="intro-section page-section" id="gioi-thieu">
+            <div class="intro-number">01</div>
+            <div class="intro-content">
+                <p class="eyebrow">VỀ THƯ VIỆN</p>
+                <h2>Không chỉ là nơi lưu giữ sách.</h2>
+                <p>
+                    Thư viện là điểm bắt đầu của những ý tưởng mới.
+                    Từ kiến thức chuyên ngành đến những câu chuyện đời sống,
+                    mỗi cuốn sách đều có thể mở ra một góc nhìn khác.
+                </p>
+                <p>
+                    Website giúp bạn tiếp cận không gian thư viện thuận tiện hơn,
+                    tìm hiểu tài liệu và đăng nhập để sử dụng các chức năng
+                    dành cho bạn đọc.
+                </p>
+                <a asp-controller="Account" asp-action="Login" class="text-link">
+                    Đến với thư viện <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+            <div class="intro-visual" aria-hidden="true">
+                <div class="intro-shape intro-shape-one"></div>
+                <div class="intro-shape intro-shape-two"></div>
+                <div class="intro-shape intro-shape-three"></div>
+                <div class="intro-visual-label">READ<br />LEARN<br />GROW.</div>
+            </div>
+        </section>
+
+        <section class="category-section page-section" id="the-loai">
+            <div class="section-title">
+                <div>
+                    <p class="eyebrow">TÌM ĐIỀU BẠN QUAN TÂM</p>
+                    <h2>Mỗi chủ đề, một chân trời.</h2>
+                </div>
+                <p class="section-description">
+                    Chọn một lĩnh vực bạn yêu thích và bắt đầu hành trình
+                    tìm hiểu những điều mới mẻ.
+                </p>
+            </div>
+
+            <div class="category-list">
+                <a href="#kham-pha" class="category-item">
+                    <span class="category-number">01</span>
+                    <span class="category-text">Công nghệ</span>
+                    <span class="category-description">Ý tưởng và đổi mới</span>
+                    <span class="category-arrow" aria-hidden="true">↗</span>
+                </a>
+                <a href="#kham-pha" class="category-item">
+                    <span class="category-number">02</span>
+                    <span class="category-text">Kinh tế</span>
+                    <span class="category-description">Tư duy và thị trường</span>
+                    <span class="category-arrow" aria-hidden="true">↗</span>
+                </a>
+                <a href="#kham-pha" class="category-item">
+                    <span class="category-number">03</span>
+                    <span class="category-text">Văn học</span>
+                    <span class="category-description">Câu chuyện và cảm xúc</span>
+                    <span class="category-arrow" aria-hidden="true">↗</span>
+                </a>
+                <a href="#kham-pha" class="category-item">
+                    <span class="category-number">04</span>
+                    <span class="category-text">Khoa học</span>
+                    <span class="category-description">Khám phá thế giới</span>
+                    <span class="category-arrow" aria-hidden="true">↗</span>
+                </a>
+            </div>
+            <p class="section-footnote">
+                * Các chủ đề trên là gợi ý khám phá, chưa phải danh mục lấy trực tiếp từ cơ sở dữ liệu.
+            </p>
+        </section>
+
+        <section class="book-section page-section" id="kham-pha">
+            <div class="section-title">
+                <div>
+                    <p class="eyebrow">BẮT ĐẦU HÀNH TRÌNH</p>
+                    <h2>Mở sách, mở thế giới.</h2>
+                </div>
+                <a asp-controller="Account" asp-action="Login" class="text-link">
+                    Truy cập thư viện <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+            <div class="book-feature">
+                <img
+                    src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=1000&q=85"
+                    alt="Những cuốn sách được sắp xếp trên bàn"
+                    loading="lazy" />
+                <div class="book-feature-copy">
+                    <p class="eyebrow">DÀNH CHO NGƯỜI YÊU SÁCH</p>
+                    <h3>Bắt đầu từ sự tò mò.</h3>
+                    <p>
+                        Bạn đang tìm kiếm kiến thức mới, muốn học thêm một kỹ năng
+                        hay đơn giản là cần một câu chuyện hay? Hãy bắt đầu bằng
+                        điều khiến bạn tò mò nhất.
+                    </p>
+                    <a asp-controller="Account" asp-action="Login" class="button-primary">
+                        Bắt đầu khám phá <span aria-hidden="true">↗</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="reading-note">
+                <span class="reading-note-mark">“</span>
+                <p>
+                    Mỗi lần mở một cuốn sách, bạn có cơ hội nhìn thế giới
+                    bằng một đôi mắt khác.
+                </p>
+                <span class="reading-note-label">MỘT LỜI NHẮC DÀNH CHO NGƯỜI ĐỌC</span>
+            </div>
+        </section>
+
+        <section class="steps-section page-section" id="cach-su-dung">
+            <div class="section-title">
+                <div>
+                    <p class="eyebrow">BẮT ĐẦU THẬT ĐƠN GIẢN</p>
+                    <h2>Ba bước đến với tri thức.</h2>
+                </div>
+                <p class="section-description">
+                    Những bước cơ bản để bắt đầu sử dụng website thư viện.
+                </p>
+            </div>
+
+            <div class="steps-list">
+                <article class="step-item">
+                    <span class="step-number">01</span>
+                    <h3>Khám phá</h3>
+                    <p>Tìm hiểu website và lựa chọn chủ đề sách bạn quan tâm.</p>
+                </article>
+                <article class="step-item">
+                    <span class="step-number">02</span>
+                    <h3>Đăng nhập</h3>
+                    <p>Truy cập tài khoản của bạn để sử dụng chức năng được cấp quyền.</p>
+                </article>
+                <article class="step-item">
+                    <span class="step-number">03</span>
+                    <h3>Bắt đầu đọc</h3>
+                    <p>Tiếp tục khám phá tài liệu và sử dụng các chức năng thư viện hiện có.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="faq-section page-section" id="cau-hoi">
+            <div class="faq-heading">
+                <p class="eyebrow">CẦN BIẾT THÊM?</p>
+                <h2>Một vài câu hỏi thường gặp.</h2>
+                <p>
+                    Thông tin cơ bản để bạn dễ dàng bắt đầu sử dụng website.
+                </p>
+            </div>
+
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>
+                        Website này dùng để làm gì?
+                        <span aria-hidden="true"></span>
+                    </summary>
+                    <p>
+                        Đây là website hỗ trợ việc tiếp cận và sử dụng các chức năng
+                        của hệ thống quản lý thư viện.
+                    </p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>
+                        Làm thế nào để truy cập tài khoản?
+                        <span aria-hidden="true"></span>
+                    </summary>
+                    <p>
+                        Nhấn nút Đăng nhập ở phía trên để mở trang đăng nhập hiện có.
+                        Hãy sử dụng tài khoản được cấp cho bạn.
+                    </p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>
+                        Các mục thể loại có hiển thị sách thật không?
+                        <span aria-hidden="true"></span>
+                    </summary>
+                    <p>
+                        Các mục trên trang chủ hiện là phần giới thiệu giao diện.
+                        Việc lấy danh mục và sách thật từ cơ sở dữ liệu cần được
+                        kết nối với chức năng tương ứng của dự án.
+                    </p>
+                </details>
+            </div>
+        </section>
+
+        <section class="closing-section">
+            <div class="closing-confetti closing-confetti-one" aria-hidden="true"></div>
+            <div class="closing-confetti closing-confetti-two" aria-hidden="true"></div>
+            <p class="eyebrow">HÀNH TRÌNH CỦA BẠN BẮT ĐẦU TỪ ĐÂY</p>
+            <h2>Một trang sách hôm nay.<br />Một góc nhìn mới ngày mai.</h2>
+            <p>Hãy dành thời gian cho những điều khiến bạn muốn tìm hiểu thêm.</p>
+            <a asp-controller="Account" asp-action="Login" class="button-primary">
+                Đăng nhập thư viện <span aria-hidden="true">↗</span>
+            </a>
+        </section>
+    </main>
+
+    <footer class="home-footer">
+        <a asp-controller="Home" asp-action="Index" class="brand">
+            <span class="brand-mark">B.</span>
+            <span>THƯ VIỆN SỐ</span>
+        </a>
+        <p>Một không gian dành cho tri thức và những ý tưởng mới.</p>
+        <a href="#trang-chu" class="footer-top">Về đầu trang ↑</a>
+        <span>© @DateTime.Now.Year · QUẢN LÝ THƯ VIỆN</span>
+    </footer>
+</section>
+
+@section Scripts {
+    <script>
+        (() => {
+            const navLinks = [...document.querySelectorAll('.home-nav .nav-links a')];
+            const sections = navLinks
+                .map(link => document.querySelector(link.getAttribute('href')))
+                .filter(Boolean);
+
+            if (!('IntersectionObserver' in window)) return;
+
+            const observer = new IntersectionObserver(entries => {
+                const visible = entries
+                    .filter(entry => entry.isIntersecting)
+                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+                if (!visible.length) return;
+
+                const activeId = visible[0].target.id;
+
+                navLinks.forEach(link => {
+                    const active = link.getAttribute('href') === '#' + activeId;
+                    link.classList.toggle('active', active);
+
+                    if (active) {
+                        link.setAttribute('aria-current', 'location');
+                    } else {
+                        link.removeAttribute('aria-current');
+                    }
+                });
+            }, {
+                rootMargin: '-100px 0px -55% 0px',
+                threshold: [0, 0.15, 0.35, 0.6]
+            });
+
+            sections.forEach(section => observer.observe(section));
+        })();
+    </script>
+}

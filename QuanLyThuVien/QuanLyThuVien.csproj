@@ -17,4 +17,8 @@
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\images\sach\" />
+  </ItemGroup>
+
 </Project>
