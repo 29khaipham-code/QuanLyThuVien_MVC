@@ -31,6 +31,8 @@ public partial class Sach
 
     public virtual ICollection<BanSaoSach> BanSaoSaches { get; set; } = new List<BanSaoSach>();
 
+    public virtual ICollection<DatTruoc> DatTruocs { get; set; } = new List<DatTruoc>();
+
     public virtual NhaXuatBan NhaXuatBan { get; set; } = null!;
 
     public virtual ICollection<TepSachDienTu> TepSachDienTus { get; set; } = new List<TepSachDienTu>();
