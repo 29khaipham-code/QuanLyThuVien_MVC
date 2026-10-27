@@ -96,13 +96,16 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Phục vụ ảnh trong wwwroot
+app.UseStaticFiles();
+
 app.UseRouting();
 
-// 8. Xác thực và phân quyền
+// Xác thực và phân quyền
 app.UseAuthentication();
 app.UseAuthorization();
 
-// 9. Cấu hình tài nguyên tĩnh
 app.MapStaticAssets();
 //9.5
 app.MapControllerRoute(
