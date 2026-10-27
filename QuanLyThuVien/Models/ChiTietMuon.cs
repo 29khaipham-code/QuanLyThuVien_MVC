@@ -23,7 +23,7 @@ public partial class ChiTietMuon
 
     public virtual BanSaoSach BanSao { get; set; } = null!;
 
-    public virtual Phat? Phat { get; set; }
+    public virtual ICollection<Phat> Phats { get; set; } = new List<Phat>();
 
     public virtual PhieuMuon PhieuMuon { get; set; } = null!;
 }

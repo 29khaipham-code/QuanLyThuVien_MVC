@@ -19,6 +19,8 @@ public partial class QuanLyThuVienContext : DbContext
 
     public virtual DbSet<ChiTietMuon> ChiTietMuons { get; set; }
 
+    public virtual DbSet<DatTruoc> DatTruocs { get; set; }
+
     public virtual DbSet<DocGium> DocGia { get; set; }
 
     public virtual DbSet<LoaiDocGium> LoaiDocGia { get; set; }
@@ -49,7 +51,8 @@ public partial class QuanLyThuVienContext : DbContext
 
     public virtual DbSet<VwSoLuongSach> VwSoLuongSaches { get; set; }
 
-    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:QuanLyThuVienConnectionString");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -85,20 +88,16 @@ public partial class QuanLyThuVienContext : DbContext
         {
             entity.ToTable("ChiTietMuon");
 
-            entity.HasIndex(e => e.BanSaoId, "IX_ChiTietMuon_BanSaoId");
-
             entity.HasIndex(e => new { e.PhieuMuonId, e.BanSaoId }, "UQ_ChiTietMuon_Phieu_BanSao").IsUnique();
 
-            entity.HasIndex(e => e.BanSaoId, "UX_ChiTietMuon_BanSao_DangMuon")
-                .IsUnique()
-                .HasFilter("([NgayTra] IS NULL)");
+            entity.HasIndex(e => new { e.BanSaoId, e.NgayTra }, "UX_ChiTietMuon_BanSao_NgayTra").IsUnique();
 
             entity.Property(e => e.GhiChu).HasMaxLength(500);
             entity.Property(e => e.TinhTrangSau).HasMaxLength(255);
             entity.Property(e => e.TinhTrangTruoc).HasMaxLength(255);
 
-            entity.HasOne(d => d.BanSao).WithOne(p => p.ChiTietMuon)
-                .HasForeignKey<ChiTietMuon>(d => d.BanSaoId)
+            entity.HasOne(d => d.BanSao).WithMany(p => p.ChiTietMuons)
+                .HasForeignKey(d => d.BanSaoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ChiTietMuon_BanSao");
 
@@ -106,6 +105,38 @@ public partial class QuanLyThuVienContext : DbContext
                 .HasForeignKey(d => d.PhieuMuonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ChiTietMuon_PhieuMuon");
+        });
+
+        modelBuilder.Entity<DatTruoc>(entity =>
+        {
+            entity.ToTable("DatTruoc");
+
+            entity.HasIndex(e => e.BanSaoGiuId, "IX_DatTruoc_BanSaoGiuId");
+
+            entity.HasIndex(e => new { e.SachId, e.NgayDat }, "IX_DatTruoc_Sach_HangDoi");
+
+            entity.HasIndex(e => new { e.DocGiaId, e.SachId }, "UX_DatTruoc_ConHieuLuc")
+                .IsUnique()
+                .HasFilter("([TrangThai] IN (N'DangCho', N'DaGiu'))");
+
+            entity.Property(e => e.NgayDat).HasDefaultValueSql("(sysdatetime())", "DF_DatTruoc_NgayDat");
+            entity.Property(e => e.TrangThai)
+                .HasMaxLength(30)
+                .HasDefaultValue("DangCho", "DF_DatTruoc_TrangThai");
+
+            entity.HasOne(d => d.BanSaoGiu).WithMany(p => p.DatTruocs)
+                .HasForeignKey(d => d.BanSaoGiuId)
+                .HasConstraintName("FK_DatTruoc_BanSao");
+
+            entity.HasOne(d => d.DocGia).WithMany(p => p.DatTruocs)
+                .HasForeignKey(d => d.DocGiaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DatTruoc_DocGia");
+
+            entity.HasOne(d => d.Sach).WithMany(p => p.DatTruocs)
+                .HasForeignKey(d => d.SachId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DatTruoc_Sach");
         });
 
         modelBuilder.Entity<DocGium>(entity =>
@@ -219,19 +250,15 @@ public partial class QuanLyThuVienContext : DbContext
         {
             entity.ToTable("Phat");
 
-            entity.HasIndex(e => e.ChiTietMuonId, "IX_Phat_ChiTietMuonId");
-
-            entity.HasIndex(e => e.ChiTietMuonId, "UX_Phat_TraMuon")
-                .IsUnique()
-                .HasFilter("([LoaiPhat]=N'TraMuon')");
+            entity.HasIndex(e => new { e.ChiTietMuonId, e.LoaiPhat }, "UX_Phat_ChiTiet_Loai").IsUnique();
 
             entity.Property(e => e.LoaiPhat).HasMaxLength(50);
             entity.Property(e => e.LyDo).HasMaxLength(500);
             entity.Property(e => e.NgayTao).HasDefaultValueSql("(sysdatetime())", "DF_Phat_NgayTao");
             entity.Property(e => e.SoTien).HasColumnType("decimal(18, 2)");
 
-            entity.HasOne(d => d.ChiTietMuon).WithOne(p => p.Phat)
-                .HasForeignKey<Phat>(d => d.ChiTietMuonId)
+            entity.HasOne(d => d.ChiTietMuon).WithMany(p => p.Phats)
+                .HasForeignKey(d => d.ChiTietMuonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Phat_ChiTietMuon");
         });

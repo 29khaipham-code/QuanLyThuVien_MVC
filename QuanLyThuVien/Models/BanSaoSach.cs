@@ -21,7 +21,9 @@ public partial class BanSaoSach
 
     public decimal? GiaTri { get; set; }
 
-    public virtual ChiTietMuon? ChiTietMuon { get; set; }
+    public virtual ICollection<ChiTietMuon> ChiTietMuons { get; set; } = new List<ChiTietMuon>();
+
+    public virtual ICollection<DatTruoc> DatTruocs { get; set; } = new List<DatTruoc>();
 
     public virtual Sach Sach { get; set; } = null!;
 
