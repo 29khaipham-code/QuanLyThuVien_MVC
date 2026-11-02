@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] ?? "Khu vực độc giả") - Thư viện</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/docgia.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="dg-body dg-dashboard-body">
+    <aside class="dg-sidebar">
+        <a class="dg-sidebar-brand" asp-area="DocGia" asp-controller="TrangChu" asp-action="Index">
+            <span class="dg-brand-icon">T</span>
+            <span><strong>THƯ VIỆN</strong><small>KHÔNG GIAN ĐỘC GIẢ</small></span>
+        </a>
+
+        <div class="dg-sidebar-caption">TỔNG QUAN</div>
+        <nav class="dg-side-nav" aria-label="Điều hướng độc giả">
+            <a class="dg-side-link" asp-area="DocGia" asp-controller="TrangChu" asp-action="Index">
+                <span class="dg-side-icon">⌂</span><span>Trang chủ</span>
+            </a>
+
+            <div class="dg-sidebar-caption">THƯ VIỆN</div>
+            <a class="dg-side-link" asp-area="DocGia" asp-controller="TrangChu" asp-action="ChuaPhatTrien" asp-route-chucNang="Tra cứu sách">
+                <span class="dg-side-icon">▤</span><span>Tra cứu sách</span>
+            </a>
+            <a class="dg-side-link" asp-area="DocGia" asp-controller="TrangChu" asp-action="ChuaPhatTrien" asp-route-chucNang="Sách điện tử">
+                <span class="dg-side-icon">▣</span><span>Sách điện tử</span>
+            </a>
+
+            <div class="dg-sidebar-caption">CÁ NHÂN</div>
+            <a class="dg-side-link" asp-area="DocGia" asp-controller="TrangChu" asp-action="ChuaPhatTrien" asp-route-chucNang="Sách đang mượn">
+                <span class="dg-side-icon">▧</span><span>Sách đang mượn</span>
+            </a>
+            <a class="dg-side-link" asp-area="DocGia" asp-controller="TrangChu" asp-action="ChuaPhatTrien" asp-route-chucNang="Lịch sử mượn">
+                <span class="dg-side-icon">◷</span><span>Lịch sử mượn</span>
+            </a>
+            <a class="dg-side-link" asp-area="DocGia" asp-controller="TrangChu" asp-action="ChuaPhatTrien" asp-route-chucNang="Sách đặt trước">
+                <span class="dg-side-icon">☆</span><span>Sách đặt trước</span>
+            </a>
+
+            <div class="dg-sidebar-caption">TÀI KHOẢN</div>
+            <a class="dg-side-link" asp-area="DocGia" asp-controller="TrangChu" asp-action="ChuaPhatTrien" asp-route-chucNang="Thông tin cá nhân">
+                <span class="dg-side-icon">◎</span><span>Thông tin cá nhân</span>
+            </a>
+        </nav>
+
+        <div class="dg-sidebar-bottom">
+            <div class="dg-sidebar-help"><span>✦</span><strong>Cần hỗ trợ?</strong><small>Liên hệ nhân viên thư viện để được giúp đỡ.</small></div>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <div class="dg-sidebar-user">
+                    <span class="dg-user-avatar">@(User.Identity.Name?.Substring(0, 1).ToUpper() ?? "Đ")</span>
+                    <span class="dg-user-info"><strong>@User.Identity.Name</strong><small>Độc giả</small></span>
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                        @Html.AntiForgeryToken()
+                        <button class="dg-logout" type="submit" title="Đăng xuất">↗</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <a class="dg-login-link" asp-area="" asp-controller="Account" asp-action="Login">Đăng nhập tài khoản</a>
+            }
+        </div>
+    </aside>
+
+    <div class="dg-workspace">
+        <header class="dg-workspace-header">
+            <div><span class="dg-header-eyebrow">CỔNG THÔNG TIN ĐỘC GIẢ</span><strong>Không gian của bạn</strong></div>
+            <div class="dg-header-right"><span class="dg-header-date">✦ Tri thức mỗi ngày</span><span class="dg-header-avatar">Đ</span></div>
+        </header>
+        <main class="dg-main dg-workspace-main">
+            <div class="dg-content-wrap">
+                @RenderBody()
+            </div>
+        </main>
+        <footer class="dg-workspace-footer">© @DateTime.Now.Year Thư viện · Mỗi trang sách mở ra một hành trình mới.</footer>
+    </div>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

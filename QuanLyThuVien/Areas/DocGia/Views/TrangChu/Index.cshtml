@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Trang chủ độc giả";
+}
+
+<section class="dg-hero">
+    <div class="dg-hero-copy">
+        <span class="dg-eyebrow">CHÀO MỪNG BẠN ĐẾN VỚI THƯ VIỆN</span>
+        <h1>Mỗi cuốn sách<br />là một <em>thế giới mới.</em></h1>
+        <p>Khám phá kho tàng tri thức, tìm cuốn sách yêu thích và quản lý hành trình đọc của bạn ngay tại đây.</p>
+        <div class="dg-hero-actions">
+            <a class="dg-btn dg-btn-primary" asp-area="DocGia" asp-controller="Sach" asp-action="Index">Khám phá sách <span>→</span></a>
+            <a class="dg-text-link" asp-area="DocGia" asp-controller="LichSuMuon" asp-action="Index">Xem lịch sử mượn</a>
+        </div>
+        <div class="dg-hero-note"><span class="dg-note-dot"></span> Không gian đọc dành riêng cho bạn</div>
+    </div>
+    <div class="dg-hero-art" aria-label="Minh họa không gian đọc sách">
+        <div class="dg-art-sun"></div>
+        <div class="dg-art-plant">✦</div>
+        <div class="dg-art-book book-one"></div>
+        <div class="dg-art-book book-two"></div>
+        <div class="dg-art-book book-three"></div>
+        <div class="dg-art-person"><div class="dg-person-head"></div><div class="dg-person-body"></div></div>
+        <div class="dg-art-caption">Một chút thời gian<br />cho điều bạn yêu thích.</div>
+    </div>
+</section>
+
+<section class="dg-welcome-row">
+    <div><span class="dg-section-kicker">GÓC CỦA BẠN</span><h2>Xin chào, độc giả!</h2><p>Chúc bạn có những giờ phút đọc sách thật thú vị.</p></div>
+    <div class="dg-mini-card"><span class="dg-mini-icon">✧</span><div><strong>Hành trình đọc</strong><small>Khám phá thêm một cuốn sách hôm nay nhé!</small></div></div>
+</section>
+
+<section class="dg-section">
+    <div class="dg-section-heading"><div><span class="dg-section-kicker">BẮT ĐẦU KHÁM PHÁ</span><h2>Không gian dành cho bạn</h2></div><a class="dg-text-link" asp-area="DocGia" asp-controller="Sach" asp-action="Index">Xem tất cả <span>→</span></a></div>
+    <div class="dg-feature-grid">
+        <a class="dg-feature-card feature-purple" asp-area="DocGia" asp-controller="Sach" asp-action="Index"><span class="dg-feature-symbol">▤</span><span class="dg-feature-title">Khám phá sách</span><span class="dg-feature-desc">Tìm kiếm sách theo tên, tác giả và thể loại.</span><span class="dg-feature-arrow">↗</span></a>
+        <a class="dg-feature-card feature-mint" asp-area="DocGia" asp-controller="DatTruoc" asp-action="Index"><span class="dg-feature-symbol">♡</span><span class="dg-feature-title">Sách đặt trước</span><span class="dg-feature-desc">Theo dõi những cuốn sách bạn đang chờ.</span><span class="dg-feature-arrow">↗</span></a>
+        <a class="dg-feature-card feature-yellow" asp-area="DocGia" asp-controller="LichSuMuon" asp-action="Index"><span class="dg-feature-symbol">◷</span><span class="dg-feature-title">Lịch sử mượn</span><span class="dg-feature-desc">Kiểm tra các lượt mượn và hạn trả sách.</span><span class="dg-feature-arrow">↗</span></a>
+        <a class="dg-feature-card feature-pink" asp-area="DocGia" asp-controller="SachDienTu" asp-action="Index"><span class="dg-feature-symbol">▣</span><span class="dg-feature-title">Sách điện tử</span><span class="dg-feature-desc">Tiếp cận kho sách số mọi lúc, mọi nơi.</span><span class="dg-feature-arrow">↗</span></a>
+    </div>
+</section>
+
+<section class="dg-bottom-banner"><div><span class="dg-section-kicker">MỘT CUỐN SÁCH ĐANG CHỜ BẠN</span><h2>Hôm nay bạn muốn đọc gì?</h2><p>Hãy bắt đầu bằng việc tìm kiếm chủ đề mà bạn yêu thích.</p></div><a class="dg-btn dg-btn-dark" asp-area="DocGia" asp-controller="Sach" asp-action="Index">Tìm sách ngay <span>→</span></a></section>

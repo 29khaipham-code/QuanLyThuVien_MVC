@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = ViewData["ChucNang"]?.ToString() ?? "Đang phát triển";
+    var tenChucNang = ViewData["ChucNang"]?.ToString() ?? "Chức năng này";
+}
+
+<section class="dg-coming-page">
+    <div class="dg-coming-card">
+        <div class="dg-coming-art" aria-hidden="true">
+            <div class="dg-coming-sun"></div>
+            <div class="dg-coming-book book-a"></div>
+            <div class="dg-coming-book book-b"></div>
+            <div class="dg-coming-spark spark-a">✦</div>
+            <div class="dg-coming-spark spark-b">✧</div>
+            <div class="dg-coming-plant">❋</div>
+        </div>
+        <div class="dg-coming-copy">
+            <span class="dg-section-kicker">ĐANG HOÀN THIỆN</span>
+            <div class="dg-coming-pill"><span></span> CHỨC NĂNG SẮP RA MẮT</div>
+            <h1>@tenChucNang<br /><em>đang được phát triển!</em></h1>
+            <p>Chúng tôi đang chuẩn bị nội dung và hoàn thiện chức năng này để mang đến trải nghiệm thuận tiện hơn. Bạn có thể quay lại trang chủ trong lúc chờ nhé.</p>
+            <a class="dg-btn dg-btn-primary" asp-area="DocGia" asp-controller="TrangChu" asp-action="Index">← Quay về trang chủ</a>
+            <div class="dg-coming-footnote">Cảm ơn bạn đã kiên nhẫn chờ đợi <span>♥</span></div>
+        </div>
+    </div>
+</section>
