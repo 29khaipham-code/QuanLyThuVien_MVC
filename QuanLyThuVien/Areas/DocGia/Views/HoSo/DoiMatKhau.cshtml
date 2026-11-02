@@ -1,36 +1,54 @@
-﻿@model QuanLyThuVien.ViewModels.HoSo.DoiMatKhauViewModel
-@{ ViewData["Title"] = "Đổi mật khẩu"; }
+﻿@model QuanLyThuVien.ViewModels.DocGia.DoiMatKhauViewModel;
+@{
+    ViewData["Title"] = "Đổi mật khẩu";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="DocGia" asp-controller="HoSo" asp-action="Index">Hồ sơ cá nhân</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Đổi mật khẩu</li>
+    </ol>
+</nav>
 
 <div class="row">
-    <div class="col-md-6 col-lg-5">
-        <div class="card">
-            <div class="card-header fw-semibold">Đổi mật khẩu</div>
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white"><strong>Đổi mật khẩu</strong></div>
             <div class="card-body">
-                <form asp-action="DoiMatKhau" method="post" autocomplete="off">
+                <form method="post" asp-area="DocGia" asp-controller="HoSo" asp-action="DoiMatKhau" novalidate>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="mb-3">
-                        <label asp-for="MatKhauCu" class="form-label"></label>
-                        <input asp-for="MatKhauCu" class="form-control" autocomplete="current-password" />
-                        <span asp-validation-for="MatKhauCu" class="text-danger"></span>
+                        <label asp-for="MatKhauHienTai" class="form-label"></label>
+                        <input asp-for="MatKhauHienTai" class="form-control" autocomplete="current-password" />
+                        <span asp-validation-for="MatKhauHienTai" class="text-danger"></span>
                     </div>
+
                     <div class="mb-3">
                         <label asp-for="MatKhauMoi" class="form-label"></label>
                         <input asp-for="MatKhauMoi" class="form-control" autocomplete="new-password" />
+                        <div class="form-text">Từ 8 ký tự trở lên, gồm cả chữ và số.</div>
                         <span asp-validation-for="MatKhauMoi" class="text-danger"></span>
                     </div>
+
                     <div class="mb-3">
                         <label asp-for="XacNhanMatKhau" class="form-label"></label>
                         <input asp-for="XacNhanMatKhau" class="form-control" autocomplete="new-password" />
                         <span asp-validation-for="XacNhanMatKhau" class="text-danger"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
-                    <a asp-action="Index" class="btn btn-link">Hủy</a>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check2 me-1"></i>Đổi mật khẩu
+                        </button>
+                        <a class="btn btn-outline-secondary" asp-area="DocGia" asp-controller="HoSo" asp-action="Index">Hủy</a>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

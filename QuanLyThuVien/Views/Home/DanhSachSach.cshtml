@@ -1,0 +1,145 @@
+﻿@model List<QuanLyThuVien.Models.Sach>
+
+@{
+    ViewData["Title"] = "Khám phá thư viện";
+    var theLoais = ViewBag.TheLoais as List<QuanLyThuVien.Models.TheLoai>
+        ?? new List<QuanLyThuVien.Models.TheLoai>();
+}
+
+<link rel="stylesheet" href="~/css/danh-sach-sach.css" asp-append-version="true" />
+
+<div class="ds-page">
+    <header class="ds-nav">
+        <a asp-controller="Home" asp-action="Index" class="ds-brand">
+            <span class="ds-brand-mark">B.</span>
+            <strong>THƯ VIỆN SỐ</strong>
+        </a>
+
+        <form asp-controller="Home" asp-action="DanhSachSach"
+              method="get" class="ds-toolbar">
+            <label class="ds-search-box">
+                <span aria-hidden="true">⌕</span>
+                <input type="search" name="tuKhoa"
+                       value="@ViewBag.TuKhoa"
+                       placeholder="Tìm tên sách, tác giả..."
+                       aria-label="Tìm kiếm sách" />
+            </label>
+
+            <select name="theLoaiId" aria-label="Chọn thể loại"
+                    onchange="this.form.submit()">
+                <option value="">Tất cả thể loại</option>
+                @foreach (var loai in theLoais)
+                {
+                    <option value="@loai.Id"
+                            selected="@(ViewBag.TheLoaiId != null &&
+                                                        (int)ViewBag.TheLoaiId == loai.Id)">
+                        @loai.TenTheLoai
+                    </option>
+                }
+            </select>
+
+            <button type="submit" class="ds-search-button">Tìm</button>
+        </form>
+
+        <a asp-controller="Account" asp-action="Login" class="ds-login">
+            Đăng nhập ↗
+        </a>
+    </header>
+
+    <main class="ds-main">
+        <div class="ds-heading">
+            <div>
+                <span class="ds-eyebrow">GÓC ĐỌC CỦA BẠN</span>
+                <h1>Khám phá <span>thư viện.</span></h1>
+                <p>Chọn cuốn sách tiếp theo cho hành trình của bạn.</p>
+            </div>
+            <span class="ds-book-total">@Model.Count cuốn sách</span>
+        </div>
+
+        <div class="ds-category-chips">
+            <a asp-controller="Home" asp-action="DanhSachSach"
+               class="ds-chip @(ViewBag.TheLoaiId == null ? "ds-chip-active" : "")">
+                Tất cả
+            </a>
+            @foreach (var loai in theLoais)
+            {
+                <a asp-controller="Home" asp-action="DanhSachSach"
+                   asp-route-theLoaiId="@loai.Id"
+                   class="ds-chip @(ViewBag.TheLoaiId != null &&
+                                          (int)ViewBag.TheLoaiId == loai.Id ? "ds-chip-active" : "")">
+                    @loai.TenTheLoai
+                </a>
+            }
+        </div>
+
+        @if (Model.Count > 0)
+        {
+            <div class="ds-book-grid" id="ds-sach">
+                @foreach (var sach in Model)
+                {
+                    <article class="ds-book-card">
+                        <div class="ds-book-cover">
+                            @if (!string.IsNullOrWhiteSpace(sach.AnhBiaUrl))
+                            {
+                                <img src="@sach.AnhBiaUrl"
+                                     alt="Bìa sách @sach.TieuDe"
+                                     loading="lazy" />
+                            }
+                            else
+                            {
+                                <div class="ds-cover-placeholder ds-tone-@(Math.Abs(sach.Id % 4))">
+                                    <span class="ds-cover-brand">THƯ VIỆN SỐ</span>
+                                    <span class="ds-cover-symbol">✳</span>
+                                    <strong>@sach.TieuDe</strong>
+                                    <small>@sach.TheLoai?.TenTheLoai</small>
+                                </div>
+                            }
+
+                            <div class="ds-book-overlay">
+                                <a asp-controller="Home" asp-action="DocSach"
+                                   asp-route-id="@sach.Id" class="ds-overlay-read">
+                                    Đọc <span>↗</span>
+                                </a>
+                                <a asp-controller="Home" asp-action="GioiThieuSach"
+                                   asp-route-id="@sach.Id" class="ds-overlay-info">
+                                    Giới thiệu
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="ds-book-info">
+                            <span class="ds-book-category">
+                                @(sach.TheLoai?.TenTheLoai ?? "Chưa phân loại")
+                            </span>
+                            <h2 title="@sach.TieuDe">@sach.TieuDe</h2>
+                            <p>
+                                @(sach.TacGia.Count > 0
+                                    ? string.Join(", ", sach.TacGia.Select(t => t.TenTacGia))
+                                    : "Đang cập nhật tác giả")
+                            </p>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="ds-empty-state">
+                <span>✳</span>
+                <h2>Chưa tìm thấy sách phù hợp</h2>
+                <p>Thử tìm bằng từ khóa khác hoặc chọn thể loại khác nhé.</p>
+                <a asp-controller="Home" asp-action="DanhSachSach">Xem tất cả sách</a>
+            </div>
+        }
+    </main>
+
+    <footer class="ds-footer">
+        <span class="ds-brand-mark">B.</span>
+        <span>THƯ VIỆN SỐ · Mở ra một thế giới mới.</span>
+    </footer>
+    
+    <div class="footer-copy">
+        &copy; @DateTime.Now.Year - Quản lý thư viện
+    </div>
+    
+</div>

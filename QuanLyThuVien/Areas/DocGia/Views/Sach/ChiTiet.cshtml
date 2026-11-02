@@ -1,0 +1,138 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.SachChiTietViewModel;
+@{
+    ViewData["Title"] = Model.TieuDe;
+
+    string Anh(string u) => u.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+        ? u
+        : Url.Content("~/" + u.TrimStart('~', '/'));
+}
+
+<partial name="_ThongBao" />
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="DocGia" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-area="DocGia" asp-controller="Sach" asp-action="Index">Tra cứu sách</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.TieuDe</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <div class="col-12 col-md-4 col-lg-3">
+        @if (string.IsNullOrEmpty(Model.AnhBiaUrl))
+        {
+            <div class="bg-light text-center text-secondary py-5 rounded border">
+                <i class="bi bi-book" style="font-size:4rem"></i>
+            </div>
+        }
+        else
+        {
+            <img src="@Anh(Model.AnhBiaUrl)" alt="@Model.TieuDe" class="img-fluid rounded border" />
+        }
+    </div>
+
+    <div class="col-12 col-md-8 col-lg-9">
+        <h2 class="mb-1">@Model.TieuDe</h2>
+        <p class="text-muted mb-3">@Model.TacGia</p>
+
+        <dl class="row mb-3">
+            <dt class="col-sm-3">Thể loại</dt>
+            <dd class="col-sm-9">@Model.TheLoai</dd>
+
+            <dt class="col-sm-3">Nhà xuất bản</dt>
+            <dd class="col-sm-9">@Model.NhaXuatBan</dd>
+
+            @if (Model.NamXuatBan.HasValue)
+            {
+                <dt class="col-sm-3">Năm xuất bản</dt>
+                <dd class="col-sm-9">
+                    @Model.NamXuatBan@(Model.LanTaiBan.HasValue ? $" (tái bản lần {Model.LanTaiBan})" : "")
+                </dd>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.Isbn))
+            {
+                <dt class="col-sm-3">ISBN</dt>
+                <dd class="col-sm-9">@Model.Isbn</dd>
+            }
+
+            <dt class="col-sm-3">Bản giấy</dt>
+            <dd class="col-sm-9">
+                @if (Model.TongBanSao == 0)
+                {
+                    <span class="badge bg-secondary">Chưa có bản giấy</span>
+                }
+                else
+                {
+                    <span class="badge @(Model.SanSang > 0 ? "bg-success" : "bg-secondary")">Sẵn sàng @Model.SanSang/@Model.TongBanSao</span>
+                    <span class="small text-muted ms-2">Đang mượn: @Model.DangMuon · Đã đặt: @Model.DaDat</span>
+                }
+            </dd>
+
+            @if (Model.CoSachDienTu)
+            {
+                <dt class="col-sm-3">Sách điện tử</dt>
+                <dd class="col-sm-9">@string.Join(", ", Model.DinhDangs)</dd>
+            }
+        </dl>
+
+        @* ---------- Mượn / đặt trước / đọc online ---------- *@
+        <div class="mb-4">
+            @if (Model.DangMuonCuonNay)
+            {
+                <div class="alert alert-info mb-2">
+                    <i class="bi bi-journal-bookmark me-1"></i>Bạn đang mượn cuốn sách này.
+                    <a asp-area="DocGia" asp-controller="MuonTra" asp-action="Index">Xem hạn trả</a>
+                </div>
+            }
+            else if (Model.DatTruocTrangThai == "DaGiu")
+            {
+                <div class="alert alert-success mb-2">
+                    <i class="bi bi-check-circle me-1"></i>Thư viện đã giữ chỗ một bản cho bạn.
+                    <a asp-area="DocGia" asp-controller="DatTruoc" asp-action="Index">Xem hạn nhận sách</a>
+                </div>
+            }
+            else if (Model.DatTruocTrangThai == "DangCho")
+            {
+                <div class="alert alert-warning mb-2">
+                    <i class="bi bi-hourglass-split me-1"></i>Bạn đã đặt trước, đang đứng thứ <strong>@Model.ViTriHangDoi</strong> trong hàng đợi.
+                    <a asp-area="DocGia" asp-controller="DatTruoc" asp-action="Index">Quản lý đặt trước</a>
+                </div>
+            }
+            else if (Model.SanSang > 0)
+            {
+                <div class="alert alert-success mb-2">
+                    <i class="bi bi-check2-circle me-1"></i>Sách đang có sẵn trên kệ, bạn có thể đến thư viện mượn trực tiếp.
+                </div>
+            }
+            else if (Model.TongBanSao > 0 && Model.CoHoSo)
+            {
+                <form method="post" asp-area="DocGia" asp-controller="DatTruoc" asp-action="Tao" class="d-inline">
+                    <input type="hidden" name="sachId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-bookmark-plus me-1"></i>Đặt trước
+                    </button>
+                </form>
+                <span class="small text-muted ms-2">Tất cả bản giấy đang được mượn hoặc giữ chỗ.</span>
+            }
+            else if (Model.TongBanSao == 0)
+            {
+                <button type="button" class="btn btn-outline-secondary" disabled>Chưa có bản giấy để đặt trước</button>
+            }
+
+            @if (Model.CoSachDienTu)
+            {
+                @* Nút này sẽ được nối chức năng ở bước Sách điện tử *@
+                <button type="button" class="btn btn-outline-success ms-1" disabled title="Sắp có">
+                    <i class="bi bi-eye me-1"></i>Đọc online
+                </button>
+            }
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.MoTa))
+        {
+            <h5>Giới thiệu</h5>
+            <p style="white-space:pre-line">@Model.MoTa</p>
+        }
+    </div>
+</div>

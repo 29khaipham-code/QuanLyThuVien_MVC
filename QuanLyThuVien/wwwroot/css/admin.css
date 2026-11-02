@@ -1,0 +1,183 @@
+﻿
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f6f9;
+    color: #263445;
+}
+
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* MENU TRÁI */
+.admin-sidebar {
+    width: 260px;
+    background: #17324d;
+    color: white;
+    flex-shrink: 0;
+    min-height: 100vh;
+}
+
+.sidebar-brand {
+    text-align: center;
+    padding: 25px 12px;
+    border-bottom: 1px solid #344c62;
+}
+
+.brand-icon {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.sidebar-brand h5 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.sidebar-brand small {
+    color: #b9c9d9;
+}
+
+.sidebar-menu {
+    padding: 15px 10px;
+}
+
+.menu-heading {
+    padding: 15px 12px 7px;
+    color: #93a9bc;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.sidebar-menu a {
+    display: block;
+    color: #e6edf5;
+    text-decoration: none;
+    padding: 11px 15px;
+    margin-bottom: 3px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+    .sidebar-menu a:hover {
+        background: #285174;
+        color: white;
+    }
+
+/* KHU VỰC CHÍNH */
+.admin-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-header {
+    background: white;
+    padding: 17px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 30px;
+}
+
+.admin-footer {
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+    color: #7a8795;
+    font-size: 13px;
+}
+
+/* THẺ THỐNG KÊ */
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 23px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.03);
+    height: 100%;
+}
+
+.stat-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.stat-card h6 {
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+/* NỘI DUNG */
+.content-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.quick-link {
+    display: block;
+    padding: 18px;
+    background: #f5f8fc;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    text-decoration: none;
+    color: #17476f;
+    font-weight: 600;
+}
+
+    .quick-link:hover {
+        background: #e2efff;
+        color: #0d55b7;
+    }
+
+/* RESPONSIVE */
+@media (max-width: 991px) {
+    .admin-sidebar {
+        position: fixed;
+        left: -270px;
+        top: 0;
+        height: 100vh;
+        z-index: 1000;
+        overflow-y: auto;
+        transition: left 0.25s;
+    }
+
+        .admin-sidebar.show {
+            left: 0;
+        }
+
+    .admin-content {
+        padding: 15px;
+    }
+
+    .admin-header {
+        padding: 15px;
+    }
+
+    .admin-user {
+        gap: 8px;
+    }
+}

@@ -1,0 +1,45 @@
+﻿@model PhanTrangViewModel
+@{
+    int tu = Math.Max(1, Model.Trang - 2);
+    int den = Math.Min(Model.TongTrang, Model.Trang + 2);
+}
+
+@if (Model.TongTrang > 1)
+{
+    <nav class="mt-4" aria-label="Phân trang">
+        <ul class="pagination justify-content-center flex-wrap">
+            <li class="page-item @(Model.Trang == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Model.Link(Math.Max(1, Model.Trang - 1))" aria-label="Trang trước">&laquo;</a>
+            </li>
+
+            @if (tu > 1)
+            {
+                <li class="page-item"><a class="page-link" href="@Model.Link(1)">1</a></li>
+                @if (tu > 2)
+                {
+                    <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                }
+            }
+
+            @for (var p = tu; p <= den; p++)
+            {
+                <li class="page-item @(p == Model.Trang ? "active" : "")">
+                    <a class="page-link" href="@Model.Link(p)">@p</a>
+                </li>
+            }
+
+            @if (den < Model.TongTrang)
+            {
+                @if (den < Model.TongTrang - 1)
+                {
+                    <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                }
+                <li class="page-item"><a class="page-link" href="@Model.Link(Model.TongTrang)">@Model.TongTrang</a></li>
+            }
+
+            <li class="page-item @(Model.Trang == Model.TongTrang ? "disabled" : "")">
+                <a class="page-link" href="@Model.Link(Math.Min(Model.TongTrang, Model.Trang + 1))" aria-label="Trang sau">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+}

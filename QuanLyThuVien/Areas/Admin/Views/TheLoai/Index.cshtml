@@ -1,0 +1,106 @@
+﻿
+@model IEnumerable<QuanLyThuVien.Models.TheLoai>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý thể loại";
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    string keyword = ViewBag.Keyword ?? "";
+}
+
+<div class="content-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4>Quản lý thể loại</h4>
+            <p class="text-muted">Danh sách thể loại sách</p>
+        </div>
+
+        <a asp-area="Admin" asp-controller="TheLoai"
+           asp-action="Create" class="btn btn-primary">
+            + Thêm thể loại
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <form method="get" asp-action="Index" class="d-flex gap-2 mb-3">
+        <input name="keyword" value="@keyword"
+               class="form-control"
+               placeholder="Tìm kiếm thể loại..." />
+        <button class="btn btn-primary">Tìm kiếm</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            Làm mới
+        </a>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên thể loại</th>
+                    <th>Mô tả</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.TenTheLoai</td>
+                        <td>@item.MoTa</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-sm btn-warning">
+                                    Sửa
+                                </a>
+
+                                <form asp-action="Delete"
+                                      asp-route-id="@item.Id"
+                                      method="post"
+                                      onsubmit="return confirm('Bạn chắc chắn muốn xóa?')">
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn btn-sm btn-danger">
+                                        Xóa
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p>Không có thể loại phù hợp.</p>
+    }
+
+    <nav>
+        <ul class="pagination">
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == page ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@i"
+                       asp-route-keyword="@keyword">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

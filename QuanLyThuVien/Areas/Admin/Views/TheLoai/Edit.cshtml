@@ -1,0 +1,46 @@
+﻿
+@model QuanLyThuVien.ViewModels.TheLoai.TheLoaiFormViewModel
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Sửa thể loại";
+}
+
+<div class="content-card">
+    <h4>Chỉnh sửa thể loại</h4>
+    <hr />
+
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="TenTheLoai" class="form-label"></label>
+            <input asp-for="TenTheLoai" class="form-control" />
+            <span asp-validation-for="TenTheLoai"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="MoTa" class="form-label"></label>
+            <textarea asp-for="MoTa"
+                      rows="4" class="form-control"></textarea>
+            <span asp-validation-for="MoTa"
+                  class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Lưu thay đổi
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            Quay lại
+        </a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

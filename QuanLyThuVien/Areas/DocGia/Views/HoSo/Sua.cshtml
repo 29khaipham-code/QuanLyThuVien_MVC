@@ -1,0 +1,87 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.SuaHoSoViewModel;
+@{
+    ViewData["Title"] = "Chỉnh sửa hồ sơ";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="DocGia" asp-controller="HoSo" asp-action="Index">Hồ sơ cá nhân</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-12 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white"><strong>Chỉnh sửa thông tin cá nhân</strong></div>
+            <div class="card-body">
+                <form method="post" asp-area="DocGia" asp-controller="HoSo" asp-action="Sua" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Mã độc giả</label>
+                            <input class="form-control" value="@Model.MaDocGia" disabled />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Tên đăng nhập</label>
+                            <input class="form-control" value="@Model.TenDangNhap" disabled />
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="HoTen" class="form-label"></label>
+                            <input asp-for="HoTen" class="form-control" />
+                            <span asp-validation-for="HoTen" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="NgaySinh" class="form-label"></label>
+                            <input asp-for="NgaySinh" type="date" class="form-control" />
+                            <span asp-validation-for="NgaySinh" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="GioiTinh" class="form-label"></label>
+                            <select asp-for="GioiTinh" class="form-select">
+                                <option value="">-- Chọn --</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                            <span asp-validation-for="GioiTinh" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" type="email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="SoDienThoai" class="form-label"></label>
+                            <input asp-for="SoDienThoai" class="form-control" placeholder="0912345678" />
+                            <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="DiaChi" class="form-label"></label>
+                            <input asp-for="DiaChi" class="form-control" />
+                            <span asp-validation-for="DiaChi" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check2 me-1"></i>Lưu thay đổi
+                        </button>
+                        <a class="btn btn-outline-secondary" asp-area="DocGia" asp-controller="HoSo" asp-action="Index">Hủy</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

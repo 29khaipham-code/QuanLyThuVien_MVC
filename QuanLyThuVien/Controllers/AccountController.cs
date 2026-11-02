@@ -1,12 +1,10 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-
 using QuanLyThuVien.Models;
 using QuanLyThuVien.ViewModels;
 
@@ -14,6 +12,8 @@ namespace QuanLyThuVien.Controllers
 {
     public class AccountController : Controller
     {
+        private const string LoiDangNhap = "Tài khoản hoặc mật khẩu không đúng";
+
         private readonly QuanLyThuVienContext _db;
         private readonly IPasswordHasher<TaiKhoan> _hasher;
 
@@ -25,79 +25,62 @@ namespace QuanLyThuVien.Controllers
             _hasher = hasher;
         }
 
-        // HIỂN THỊ TRANG ĐĂNG NHẬP
+        // ĐĂNG NHẬP (GET)
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl = null)
         {
+            // Đã đăng nhập thì đưa thẳng về khu vực theo vai trò
             if (User.Identity?.IsAuthenticated == true)
-                return RedirectToAction("Index", "Home");
+                return ChuyenHuong(User.FindFirstValue(ClaimTypes.Role), returnUrl);
 
+            ViewData["ReturnUrl"] = returnUrl;
             return View(new DangNhapViewModel());
         }
 
-        // XỬ LÝ ĐĂNG NHẬP
+        // ĐĂNG NHẬP (POST)
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(
-            DangNhapViewModel model)
+            DangNhapViewModel model, string? returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
+
             if (!ModelState.IsValid)
                 return View(model);
 
             var tk = await _db.TaiKhoans
                 .Include(x => x.VaiTro)
-                .FirstOrDefaultAsync(x =>
-                    x.TenDangNhap == model.TenDangNhap);
+                .FirstOrDefaultAsync(x => x.TenDangNhap == model.TenDangNhap);
 
             if (tk == null || !tk.HoatDong)
-            {
-                ModelState.AddModelError(
-                    "", "Tài khoản hoặc mật khẩu không đúng");
-                return View(model);
-            }
+                return LoiView(model, LoiDangNhap);
 
-            var ketQua = _hasher.VerifyHashedPassword(
-                tk, tk.MatKhauHash, model.MatKhau);
-
+            var ketQua = _hasher.VerifyHashedPassword(tk, tk.MatKhauHash, model.MatKhau);
             if (ketQua == PasswordVerificationResult.Failed)
-            {
-                ModelState.AddModelError(
-                    "", "Tài khoản hoặc mật khẩu không đúng");
-                return View(model);
-            }
+                return LoiView(model, LoiDangNhap);
+
+            if (tk.VaiTro == null)
+                return LoiView(model, "Tài khoản chưa được phân quyền");
 
             // Lưu thông tin người dùng vào Claims
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier,
-                    tk.Id.ToString()),
-
-                new Claim(ClaimTypes.Name, tk.HoTen),
-
-                new Claim(ClaimTypes.Role,
-                    tk.VaiTro.TenVaiTro)
+                new(ClaimTypes.NameIdentifier, tk.Id.ToString()),
+                new(ClaimTypes.Name, tk.HoTen),
+                new(ClaimTypes.Role, tk.VaiTro.TenVaiTro)
             };
 
-            var identity = new ClaimsIdentity(
-                claims,
-                CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(
+                new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 
-            var principal = new ClaimsPrincipal(identity);
-
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = model.GhiNho
-            };
-
-            // Tạo Cookie đăng nhập
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 principal,
-                authProperties);
+                new AuthenticationProperties { IsPersistent = model.GhiNho });
 
-            return RedirectToAction("Index", "Home");
+            return ChuyenHuong(tk.VaiTro.TenVaiTro, returnUrl);
         }
 
         // ĐĂNG XUẤT
@@ -106,17 +89,36 @@ namespace QuanLyThuVien.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return RedirectToAction("Login");
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction(nameof(Login));
         }
 
         // KHÔNG CÓ QUYỀN
         [HttpGet]
-        public IActionResult AccessDenied()
+        public IActionResult AccessDenied() => View();
+
+        // ---------- Hàm hỗ trợ ----------
+
+        private IActionResult LoiView(DangNhapViewModel model, string thongBao)
         {
-            return View();
+            ModelState.AddModelError("", thongBao);
+            return View(model);
+        }
+
+        // Ưu tiên returnUrl (chỉ nhận URL nội bộ), nếu không có thì theo vai trò
+        private IActionResult ChuyenHuong(string? tenVaiTro, string? returnUrl = null)
+        {
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return LocalRedirect(returnUrl);
+
+            return tenVaiTro switch
+            {
+                "QuanTri" => RedirectToAction("Index", "Dashboard", new { area = "Admin" }),
+                "DocGia" => RedirectToAction("Index", "Home", new { area = "DocGia" }),
+                // ThuThu: tạm về trang khách cho đến khi có Area ThuThu
+                _ => RedirectToAction("Index", "Home", new { area = "" })
+            };
         }
     }
 }

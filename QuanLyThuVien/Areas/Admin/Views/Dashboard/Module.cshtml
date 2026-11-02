@@ -1,0 +1,22 @@
+﻿
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-card text-center py-5">
+    <div style="font-size: 50px;">🛠️</div>
+
+    <h3>@ViewData["Title"]</h3>
+
+    <p class="text-muted">
+        Chức năng này chưa được triển khai.
+        Chúng ta sẽ xây dựng trong các giai đoạn tiếp theo.
+    </p>
+
+    <a asp-area="Admin"
+       asp-controller="Dashboard"
+       asp-action="Index"
+       class="btn btn-primary">
+        Về trang tổng quan
+    </a>
+</div>

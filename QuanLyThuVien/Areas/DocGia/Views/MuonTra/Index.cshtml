@@ -1,0 +1,69 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.DangMuonViewModel;
+@{
+    ViewData["Title"] = "Sách đang mượn";
+    ViewData["Tab"] = "dangmuon";
+}
+
+<h2 class="mb-3">Mượn trả</h2>
+
+<partial name="_MuonTraTabs" />
+
+@if (Model.SoQuaHan > 0)
+{
+    <div class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        Bạn có <strong>@Model.SoQuaHan</strong> cuốn đã quá hạn. Vui lòng mang trả thư viện sớm để tránh phát sinh thêm tiền phạt.
+    </div>
+}
+
+<p class="text-muted">
+    Bạn đang mượn <strong>@Model.Items.Count</strong> / @Model.ToiDa cuốn.
+    Mỗi lượt mượn tối đa @Model.SoNgayMuonToiDa ngày.
+</p>
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">
+        Hiện bạn không mượn cuốn nào.
+        <a asp-area="DocGia" asp-controller="Sach" asp-action="Index">Tra cứu sách</a> để tìm cuốn bạn muốn mượn.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle bg-white border">
+            <thead class="table-light">
+                <tr>
+                    <th>Sách</th>
+                    <th>Mã vạch / Vị trí</th>
+                    <th>Phiếu</th>
+                    <th>Ngày mượn</th>
+                    <th>Hạn trả</th>
+                    <th>Tình trạng</th>
+                    <th class="text-end">Tiền phạt</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            <a asp-area="DocGia" asp-controller="Sach" asp-action="ChiTiet" asp-route-id="@m.SachId">@m.TieuDe</a>
+                        </td>
+                        <td>
+                            <div>@m.MaVach</div>
+                            <div class="small text-muted">@m.ViTri</div>
+                        </td>
+                        <td>@m.MaPhieu</td>
+                        <td>@m.NgayMuon.ToString("dd/MM/yyyy")</td>
+                        <td>@m.HanTra.ToString("dd/MM/yyyy")</td>
+                        <td><span class="badge @m.LopBadge">@m.TrangThaiText</span></td>
+                        <td class="text-end @(m.PhatChuaNop > 0 ? "text-danger fw-semibold" : "text-muted")">
+                            @(m.TongPhat > 0 ? HienThi.Tien(m.TongPhat) : "—")
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

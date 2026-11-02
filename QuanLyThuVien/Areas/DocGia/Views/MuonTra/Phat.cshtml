@@ -1,0 +1,85 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.PhatViewModel;
+@{
+    ViewData["Title"] = "Tiền phạt";
+    ViewData["Tab"] = "phat";
+
+    string Act(string loc) => Model.Loc == loc ? "active" : "";
+}
+
+<h2 class="mb-3">Mượn trả</h2>
+
+<partial name="_MuonTraTabs" />
+
+<div class="row g-2 mb-3">
+    <div class="col-6">
+        <div class="card card-body py-2 shadow-sm">
+            <div class="text-muted small">Chưa thanh toán</div>
+            <div class="fs-5 fw-semibold @(Model.TongChuaNop > 0 ? "text-danger" : "")">@HienThi.Tien(Model.TongChuaNop)</div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card card-body py-2 shadow-sm">
+            <div class="text-muted small">Đã thanh toán</div>
+            <div class="fs-5 fw-semibold">@HienThi.Tien(Model.TongDaNop)</div>
+        </div>
+    </div>
+</div>
+
+@if (Model.TongChuaNop > 0)
+{
+    <div class="alert alert-warning">
+        Bạn còn khoản phạt chưa thanh toán. Vui lòng đến quầy thủ thư để nộp phạt.
+    </div>
+}
+
+<div class="btn-group mb-3" role="group" aria-label="Lọc khoản phạt">
+    <a class="btn btn-outline-secondary @Act("tatca")" asp-action="Phat" asp-route-loc="tatca">Tất cả</a>
+    <a class="btn btn-outline-secondary @Act("chuanop")" asp-action="Phat" asp-route-loc="chuanop">Chưa thanh toán</a>
+    <a class="btn btn-outline-secondary @Act("danop")" asp-action="Phat" asp-route-loc="danop">Đã thanh toán</a>
+</div>
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">Không có khoản phạt nào.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle bg-white border">
+            <thead class="table-light">
+                <tr>
+                    <th>Sách</th>
+                    <th>Phiếu</th>
+                    <th>Loại phạt</th>
+                    <th>Lý do</th>
+                    <th>Ngày tạo</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end">Số tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.Items)
+                {
+                    <tr>
+                        <td>@p.TieuDe</td>
+                        <td>@p.MaPhieu</td>
+                        <td>@p.LoaiText</td>
+                        <td>@(string.IsNullOrEmpty(p.LyDo) ? "—" : p.LyDo)</td>
+                        <td>@p.NgayTao.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            @if (p.DaThanhToan)
+                            {
+                                <span class="badge bg-success">Đã nộp @p.NgayThanhToan?.ToString("dd/MM/yyyy")</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Chưa nộp</span>
+                            }
+                        </td>
+                        <td class="text-end fw-semibold">@HienThi.Tien(p.SoTien)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

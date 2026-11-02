@@ -1,0 +1,65 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.LichSuMuonViewModel;
+@{
+    // Link phân trang, giữ nguyên bộ lọc
+    string Link(int trang) => Url.Action("LichSu", "MuonTra", new
+    {
+        area = "DocGia",
+        tuKhoa = Model.TuKhoa,
+        trangThai = Model.TrangThai,
+        tuNgay = Model.TuNgay?.ToString("yyyy-MM-dd"),
+        denNgay = Model.DenNgay?.ToString("yyyy-MM-dd"),
+        trang
+    })!;
+
+    var phanTrang = new PhanTrangViewModel
+    {
+        Trang = Model.Trang,
+        TongTrang = Model.TongTrang,
+        Link = Link
+    };
+}
+
+<p class="text-muted">Tìm thấy <strong>@Model.TongSo</strong> lượt mượn</p>
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">Không có lượt mượn nào phù hợp với bộ lọc.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle bg-white border">
+            <thead class="table-light">
+                <tr>
+                    <th>Sách</th>
+                    <th>Phiếu</th>
+                    <th>Ngày mượn</th>
+                    <th>Hạn trả</th>
+                    <th>Ngày trả</th>
+                    <th>Tình trạng</th>
+                    <th class="text-end">Tiền phạt</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            <a asp-area="DocGia" asp-controller="Sach" asp-action="ChiTiet" asp-route-id="@m.SachId">@m.TieuDe</a>
+                        </td>
+                        <td>@m.MaPhieu</td>
+                        <td>@m.NgayMuon.ToString("dd/MM/yyyy")</td>
+                        <td>@m.HanTra.ToString("dd/MM/yyyy")</td>
+                        <td>@(m.NgayTra.HasValue ? m.NgayTra.Value.ToString("dd/MM/yyyy") : "—")</td>
+                        <td><span class="badge @m.LopBadge">@m.TrangThaiText</span></td>
+                        <td class="text-end @(m.PhatChuaNop > 0 ? "text-danger fw-semibold" : "text-muted")">
+                            @(m.TongPhat > 0 ? HienThi.Tien(m.TongPhat) : "—")
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <partial name="_PhanTrang" model="phanTrang" />
+}

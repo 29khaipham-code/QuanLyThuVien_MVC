@@ -1,0 +1,96 @@
+﻿
+@model QuanLyThuVien.ViewModels.TaiKhoan.TaoTaiKhoanViewModel
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Thêm tài khoản";
+}
+
+<div class="content-card">
+    <h4>Thêm tài khoản mới</h4>
+    <hr />
+
+    <form asp-area="Admin"
+          asp-controller="TaiKhoan"
+          asp-action="Create"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="TenDangNhap"
+                   class="form-label">Tên đăng nhập</label>
+            <input asp-for="TenDangNhap"
+                   class="form-control" />
+            <span asp-validation-for="TenDangNhap"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="HoTen"
+                   class="form-label">Họ tên</label>
+            <input asp-for="HoTen"
+                   class="form-control" />
+            <span asp-validation-for="HoTen"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email"
+                   class="form-label">Email</label>
+            <input asp-for="Email"
+                   class="form-control" />
+            <span asp-validation-for="Email"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="SoDienThoai"
+                   class="form-label">Số điện thoại</label>
+            <input asp-for="SoDienThoai"
+                   class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="MatKhau"
+                   class="form-label">Mật khẩu</label>
+            <input asp-for="MatKhau"
+                   class="form-control"
+                   type="password" />
+            <span asp-validation-for="MatKhau"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="VaiTroId"
+                   class="form-label">Vai trò</label>
+
+            <select asp-for="VaiTroId"
+                    asp-items="ViewBag.VaiTro"
+                    class="form-select">
+                <option value="">-- Chọn vai trò --</option>
+            </select>
+
+            <span asp-validation-for="VaiTroId"
+                  class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Lưu tài khoản
+        </button>
+
+        <a asp-area="Admin"
+           asp-controller="TaiKhoan"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Quay lại
+        </a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

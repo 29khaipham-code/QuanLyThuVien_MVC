@@ -142,14 +142,21 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
+
+// Phục vụ ảnh trong wwwroot
+app.UseStaticFiles();
+
 app.UseRouting();
 
+// Kích hoạt Session
 app.UseSession();
 
-// 8. Xác thực và phân quyền
+// Xác thực và phân quyền
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 // 9. Cấu hình tài nguyên tĩnh
 app.MapStaticAssets();
@@ -163,6 +170,11 @@ app.MapAreaControllerRoute(
     name: "docgia",
     areaName: "DocGia",
     pattern: "DocGia/{controller=TongQuan}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
 
 // 10. Cấu hình đường dẫn Controller và Action
 app.MapControllerRoute(

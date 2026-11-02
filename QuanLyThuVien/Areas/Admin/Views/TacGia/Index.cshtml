@@ -1,0 +1,167 @@
+﻿
+@model IEnumerable<QuanLyThuVien.Models.TacGium>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý tác giả";
+
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    string keyword = ViewBag.Keyword ?? "";
+}
+
+<div class="content-card">
+
+    <div class="d-flex justify-content-between
+                align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h4>Quản lý tác giả</h4>
+            <p>Danh sách tác giả trong thư viện</p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="TacGia"
+           asp-action="Create"
+           class="btn btn-primary">
+            + Thêm tác giả
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <!-- TÌM KIẾM -->
+    <form asp-area="Admin"
+          asp-controller="TacGia"
+          asp-action="Index"
+          method="get"
+          class="d-flex gap-2 mb-4">
+
+        <input type="text"
+               name="keyword"
+               value="@keyword"
+               class="form-control"
+               placeholder="Nhập tên tác giả..." />
+
+        <button type="submit" class="btn btn-primary">
+            Tìm kiếm
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+            Làm mới
+        </a>
+    </form>
+
+    <!-- BẢNG TÁC GIẢ -->
+    <div class="table-responsive">
+        <table class="table table-bordered
+                      table-hover align-middle">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên tác giả</th>
+                    <th>Ngày sinh</th>
+                    <th>Quốc tịch</th>
+                    <th>Tiểu sử</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+
+                        <td>@item.TenTacGia</td>
+
+                        <td>
+                            @(item.NgaySinh?.ToString("dd/MM/yyyy") ?? "")
+                        </td>
+
+                        <td>@item.QuocTich</td>
+
+                        <td>
+                            @{
+                                string tieuSu = item.TieuSu ?? "";
+                                string hienThi = tieuSu.Length > 80
+                                    ? tieuSu.Substring(0, 80) + "..."
+                                    : tieuSu;
+                            }
+
+                            @hienThi
+                        </td>
+
+                        <td>
+                            <div class="d-flex gap-2">
+
+                                <a asp-area="Admin"
+                                   asp-controller="TacGia"
+                                   asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-warning btn-sm">
+                                    Sửa
+                                </a>
+
+                                <form asp-area="Admin"
+                                      asp-controller="TacGia"
+                                      asp-action="Delete"
+                                      asp-route-id="@item.Id"
+                                      method="post"
+                                      onsubmit="return confirm('Bạn có chắc muốn xóa tác giả này?')">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm">
+                                        Xóa
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            Không tìm thấy tác giả phù hợp.
+        </div>
+    }
+
+    <!-- PHÂN TRANG -->
+    <nav aria-label="Phân trang tác giả">
+        <ul class="pagination">
+
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == page ? "active" : "")">
+                    <a class="page-link"
+                       asp-area="Admin"
+                       asp-controller="TacGia"
+                       asp-action="Index"
+                       asp-route-page="@i"
+                       asp-route-keyword="@keyword">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

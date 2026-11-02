@@ -1,0 +1,49 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.SachItemViewModel;
+@{
+    string Anh(string u) => u.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+        ? u
+        : Url.Content("~/" + u.TrimStart('~', '/'));
+}
+
+<div class="card h-100 shadow-sm">
+    @if (string.IsNullOrEmpty(Model.AnhBiaUrl))
+    {
+        <div class="bg-light text-center text-secondary py-5">
+            <i class="bi bi-book fs-1"></i>
+        </div>
+    }
+    else
+    {
+        <img src="@Anh(Model.AnhBiaUrl)" class="card-img-top" alt="@Model.TieuDe"
+             style="height:220px;object-fit:cover" />
+    }
+
+    <div class="card-body">
+        <h6 class="card-title mb-1">
+            <a class="stretched-link text-decoration-none text-dark"
+               asp-area="DocGia" asp-controller="Sach" asp-action="ChiTiet" asp-route-id="@Model.Id">@Model.TieuDe</a>
+        </h6>
+        <div class="small text-muted">@Model.TacGia</div>
+        <div class="small text-muted">@Model.TheLoai@(Model.NamXuatBan.HasValue ? " · " + Model.NamXuatBan : "")</div>
+    </div>
+
+    <div class="card-footer bg-white border-0 pt-0">
+        @if (Model.SanSang > 0)
+        {
+            <span class="badge bg-success">Còn @Model.SanSang/@Model.TongBanSao bản</span>
+        }
+        else if (Model.TongBanSao > 0)
+        {
+            <span class="badge bg-secondary">Tạm hết bản</span>
+        }
+        else if (!Model.CoSachDienTu)
+        {
+            <span class="badge bg-secondary">Chưa có bản</span>
+        }
+
+        @if (Model.CoSachDienTu)
+        {
+            <span class="badge bg-info text-dark">E-book</span>
+        }
+    </div>
+</div>
