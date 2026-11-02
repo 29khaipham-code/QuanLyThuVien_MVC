@@ -15,7 +15,7 @@
 
     <link rel="stylesheet"
           href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    @*  <link rel="stylesheet"
+     <link rel="stylesheet"
       href="~/css/admin.css"
       asp-append-version="true" />
       
@@ -24,12 +24,12 @@
       asp-append-version="true" />
 
 
-    <link rel="stylesheet"
+  @*   <link rel="stylesheet"
           href="~/css/playful-admin-theme.css"
           asp-append-version="true" /> *@
-          <link rel="stylesheet"
+      @*     <link rel="stylesheet"
       href="~/css/admin-modern-dark.css"
-      asp-append-version="true" />
+      asp-append-version="true" /> *@
 </head>
 <body>
     <div class="admin-wrapper">
@@ -88,31 +88,31 @@
 
                 <div class="menu-heading">QUẢN LÝ THƯ VIỆN</div>
 
+                
                 <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="Sach">
+                   asp-controller="Sach"
+                   asp-action="Index"
+                   class="nav-link">
                     📚 Quản lý sách
                 </a>
 
+
                 <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="BanSaoSach">
-                    📦 Bản sao sách
+                   asp-controller="BanSaoSach"
+                   asp-action="Index"
+                   class="nav-link">
+                    📚 Quản lý bản sao sách
                 </a>
 
                 <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="DocGia">
+                   asp-controller="DocGia"
+                   asp-action="Index"
+                   class="nav-link">
                     🪪 Độc giả
                 </a>
 
-                <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="MuonTra">
+                <a href="@Url.Action("Index", "MuonTra", new { area = "Admin" })"
+                      class="nav-link">
                     🔄 Mượn / Trả sách
                 </a>
 

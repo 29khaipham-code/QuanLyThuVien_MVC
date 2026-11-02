@@ -1,0 +1,126 @@
+﻿
+@model QuanLyThuVien.ViewModels.Sach.SachFormViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    var theLoais =
+        ViewBag.TheLoaiOptions as IEnumerable<SelectListItem>;
+    var nhaXuatBans =
+        ViewBag.NhaXuatBanOptions as IEnumerable<SelectListItem>;
+    var tacGias =
+        ViewBag.TacGiaOptions as IEnumerable<SelectListItem>;
+}
+
+<div asp-validation-summary="ModelOnly"
+     class="text-danger mb-3"></div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <label asp-for="Isbn" class="form-label">ISBN</label>
+        <input asp-for="Isbn" class="form-control" />
+        <span asp-validation-for="Isbn" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-8">
+        <label asp-for="TieuDe" class="form-label">Tên sách</label>
+        <input asp-for="TieuDe" class="form-control" />
+        <span asp-validation-for="TieuDe" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Thể loại</label>
+        <select asp-for="TheLoaiId"
+                asp-items="theLoais"
+                class="form-select">
+            <option value="0">-- Chọn thể loại --</option>
+        </select>
+        <span asp-validation-for="TheLoaiId"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Nhà xuất bản</label>
+        <select asp-for="NhaXuatBanId"
+                asp-items="nhaXuatBans"
+                class="form-select">
+            <option value="0">-- Chọn nhà xuất bản --</option>
+        </select>
+        <span asp-validation-for="NhaXuatBanId"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-12">
+        <label class="form-label">Tác giả</label>
+        <select asp-for="TacGiaIds"
+                class="form-select"
+                multiple
+                size="6">
+            @if (tacGias != null)
+            {
+                foreach (var tg in tacGias)
+                {
+                    bool selected = int.TryParse(tg.Value, out int id)
+                                    && Model.TacGiaIds.Contains(id);
+
+                    if (selected)
+                    {
+                        <option value="@tg.Value" selected>
+                            @tg.Text
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@tg.Value">
+                            @tg.Text
+                        </option>
+                    }
+                }
+            }
+        </select>
+        <small class="text-secondary">
+            Giữ Ctrl để chọn nhiều tác giả.
+        </small>
+        <span asp-validation-for="TacGiaIds"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Năm xuất bản</label>
+        <input asp-for="NamXuatBan"
+               type="number"
+               class="form-control" />
+        <span asp-validation-for="NamXuatBan"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Lần tái bản</label>
+        <input asp-for="LanTaiBan"
+               type="number"
+               class="form-control" />
+        <span asp-validation-for="LanTaiBan"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-12">
+        <label class="form-label">Đường dẫn ảnh bìa</label>
+        <input asp-for="AnhBiaUrl"
+               class="form-control"
+               placeholder="/images/sach/ten-anh.jpg" />
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Trạng thái</label>
+        <select asp-for="TrangThai" class="form-select">
+            <option value="HoatDong">Hoạt động</option>
+            <option value="NgungPhucVu">Ngừng phục vụ</option>
+        </select>
+    </div>
+
+    <div class="col-md-12">
+        <label class="form-label">Mô tả</label>
+        <textarea asp-for="MoTa"
+                  rows="5"
+                  class="form-control"></textarea>
+    </div>
+</div>

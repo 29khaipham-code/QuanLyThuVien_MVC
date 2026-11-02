@@ -1,0 +1,39 @@
+﻿
+@model QuanLyThuVien.ViewModels.DocGia.DocGiaFormViewModel
+
+@{
+    ViewData["Title"] = "Thêm độc giả";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <h3 class="mb-4">Thêm độc giả</h3>
+
+    <div class="card">
+        <div class="card-body p-4">
+            <form asp-area="Admin"
+                  asp-controller="DocGia"
+                  asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                @await Html.PartialAsync(
+                    "~/Areas/Admin/Views/DocGia/_Form.cshtml",
+                    Model
+                )
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        Lưu độc giả
+                    </button>
+
+                    <a href="@Url.Action("Index", "DocGia", new { area = "Admin" })"
+                       class="btn btn-outline-secondary">
+                        Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

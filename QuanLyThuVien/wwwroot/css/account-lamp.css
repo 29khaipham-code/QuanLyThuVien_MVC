@@ -1,0 +1,603 @@
+﻿:root {
+    color-scheme: dark;
+    font-family: Inter,'Segoe UI',Arial,sans-serif
+}
+
+* {
+    box-sizing: border-box
+}
+
+html, body {
+    margin: 0;
+    min-height: 100%;
+    background: #100e11;
+    color: #f9f4f5
+}
+
+button, input {
+    font: inherit
+}
+
+button {
+    cursor: pointer
+}
+
+a {
+    color: inherit;
+    text-decoration: none
+}
+
+.auth-scene {
+    --accent: #ff343c;
+    --accent-rgb: 255,52,60;
+    min-height: 100svh;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 43% 48%,rgba(var(--accent-rgb),.095),transparent 53%),radial-gradient(ellipse at 73% 90%,rgba(var(--accent-rgb),.055),transparent 53%),#100e11;
+    transition: background .4s
+}
+
+    .auth-scene.theme-green {
+        --accent: #20e88c;
+        --accent-rgb: 32,232,140
+    }
+
+.topbar {
+    max-width: 1260px;
+    padding: 30px 40px 16px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-left: 2px solid var(--accent);
+    padding-left: 18px
+}
+
+    .brand svg {
+        width: 42px;
+        color: var(--accent)
+    }
+
+    .brand strong {
+        font-size: 29px;
+        letter-spacing: -1px;
+        display: block;
+        font-weight: 600
+    }
+
+    .brand small {
+        display: block;
+        letter-spacing: 3px;
+        font-size: 9px;
+        color: #d4cdd1;
+        margin-top: 2px
+    }
+
+.topbar nav {
+    display: flex;
+    gap: 36px;
+    color: #c5bfc2
+}
+
+.topbar a:hover {
+    color: var(--accent)
+}
+
+.main-stage {
+    max-width: 1240px;
+    min-height: 720px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 48% 52%;
+    align-items: center;
+    padding: 18px 40px 32px;
+    position: relative
+}
+
+.lamp-side {
+    position: relative;
+    min-height: 650px;
+    display: grid;
+    place-items: center;
+    isolation: isolate
+}
+
+.lamp-button {
+    border: 0;
+    background: transparent;
+    color: var(--accent);
+    padding: 0;
+    width: min(100%,440px);
+    position: relative;
+    z-index: 2;
+    transition: transform .2s;
+    outline-offset: 9px
+}
+
+    .lamp-button:hover {
+        transform: translateY(-4px)
+    }
+
+    .lamp-button:focus-visible, .tab:focus-visible, .eye-toggle:focus-visible, .bottom-switch button:focus-visible, .submit-btn:focus-visible {
+        outline: 2px solid white;
+        outline-offset: 4px
+    }
+
+.lamp-art {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 20px 12px #0009)
+}
+
+.bulb, .bulb-halo, .shade-inside, .base-rim, .pull-ball {
+    transition: opacity .5s,fill .5s
+}
+
+.is-off .bulb, .is-off .bulb-halo, .is-off .base-rim {
+    opacity: .05
+}
+
+.is-off .shade-inside {
+    opacity: .28
+}
+
+.is-off .pull-ball {
+    opacity: .3
+}
+
+.light-pool {
+    position: absolute;
+    width: 660px;
+    height: 560px;
+    top: 90px;
+    left: 22%;
+    background: radial-gradient(ellipse at 30% 40%,rgba(var(--accent-rgb),.25),transparent 59%);
+    opacity: 1;
+    transition: opacity .5s;
+    pointer-events: none;
+    z-index: 0
+}
+
+    .light-pool:after {
+        content: "";
+        position: absolute;
+        left: 35%;
+        top: 18%;
+        width: 560px;
+        height: 340px;
+        transform: rotate(9deg);
+        background: linear-gradient(90deg,rgba(var(--accent-rgb),.20),rgba(var(--accent-rgb),0));
+        filter: blur(35px);
+        clip-path: polygon(0 10%,100% 0,100% 100%,0 75%)
+    }
+
+.is-off .light-pool {
+    opacity: 0
+}
+
+.lamp-hint {
+    position: absolute;
+    bottom: 18px;
+    color: #8d858b;
+    letter-spacing: 1px;
+    font-size: 12px
+}
+
+.auth-panel {
+    z-index: 4;
+    position: relative;
+    width: 100%;
+    max-width: 535px;
+    justify-self: end;
+    padding: 46px 48px 34px;
+    border: 1px solid rgba(var(--accent-rgb),.55);
+    border-radius: 32px;
+    background: linear-gradient(130deg,rgba(35,28,32,.98),rgba(21,19,22,.98));
+    box-shadow: 0 24px 80px #0007,0 0 45px rgba(var(--accent-rgb),.13),inset 0 -15px 35px rgba(var(--accent-rgb),.05);
+    transition: opacity .5s,transform .5s,border-color .4s,box-shadow .4s
+}
+
+.is-off .auth-panel {
+    opacity: 0;
+    transform: translateY(22px);
+    pointer-events: none;
+    visibility: hidden
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: 38px;
+    top: 42px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 15px var(--accent)
+}
+
+.eyebrow {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    font-weight: 700;
+    margin: 0 25px 18px 0
+}
+
+.auth-panel h1 {
+    font-family: Georgia,serif;
+    font-size: clamp(37px,4vw,55px);
+    font-weight: 400;
+    letter-spacing: -2px;
+    margin: 0 0 8px
+}
+
+.subtitle {
+    font-size: 15px;
+    color: #b6aeb2;
+    margin: 0 0 27px
+}
+
+.mode-tabs {
+    display: flex;
+    border-bottom: 1px solid #40383d;
+    gap: 18px;
+    margin-bottom: 26px
+}
+
+.tab {
+    background: transparent;
+    color: #948a91;
+    border: 0;
+    position: relative;
+    padding: 0 15px 16px;
+    font-weight: 600
+}
+
+    .tab.active {
+        color: white
+    }
+
+        .tab.active:after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 3px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent)
+        }
+
+.auth-panel form label {
+    font-size: 13px;
+    font-weight: 600;
+    display: block;
+    margin: 15px 0 9px
+}
+
+.input-shell {
+    height: 50px;
+    border: 1px solid #51464c;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 15px;
+    color: #b7aeb5
+}
+
+    .input-shell:focus-within {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(var(--accent-rgb),.12)
+    }
+
+    .input-shell > span {
+        min-width: 19px;
+        text-align: center;
+        font-size: 18px
+    }
+
+    .input-shell input {
+        flex: 1;
+        min-width: 0;
+        background: transparent;
+        border: 0;
+        outline: 0;
+        color: white;
+        font-size: 14px
+    }
+
+        .input-shell input::placeholder {
+            color: #8f858d
+        }
+
+.eye-toggle {
+    border: 0;
+    background: none;
+    color: #a69da3;
+    font-size: 20px
+}
+
+.check-line {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    margin: 23px 0 25px !important;
+    color: #c6bbc2;
+    font-weight: 400 !important
+}
+
+    .check-line input {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--accent)
+    }
+
+.submit-btn {
+    width: 100%;
+    padding: 17px;
+    border: 1px solid rgba(255,255,255,.12);
+    color: white;
+    background: linear-gradient(110deg,var(--accent),rgba(var(--accent-rgb),.62));
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 22px;
+    box-shadow: 0 10px 30px rgba(var(--accent-rgb),.15)
+}
+
+    .submit-btn:disabled {
+        opacity: .48;
+        cursor: not-allowed
+    }
+
+.bottom-switch {
+    color: #a89da4;
+    text-align: center;
+    font-size: 13px;
+    margin: 28px 0 0
+}
+
+    .bottom-switch button {
+        background: none;
+        border: 0;
+        color: var(--accent);
+        font-weight: 700
+    }
+
+.validation-message, .field-error {
+    color: #ff9298;
+    font-size: 12px
+}
+
+    .validation-message:empty, .field-error:empty {
+        display: none
+    }
+
+.register-note {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #b4aab1;
+    margin: 14px 0
+}
+
+footer {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #595257;
+    padding: 0 20px 26px
+}
+
+#signUpForm[hidden], #signInForm[hidden] {
+    display: none
+}
+
+@media(max-width:900px) {
+    .main-stage {
+        padding: 0 24px 40px;
+        grid-template-columns: 42% 58%;
+        min-height: 620px
+    }
+
+    .topbar {
+        padding: 20px 24px
+    }
+
+    .auth-panel {
+        padding: 30px 24px;
+        border-radius: 24px
+    }
+
+    .lamp-side {
+        min-height: 480px
+    }
+
+    .lamp-hint {
+        bottom: 0
+    }
+
+    .brand small {
+        letter-spacing: 1.5px
+    }
+}
+
+@media(max-width:650px) {
+    .topbar {
+        padding: 20px 18px
+    }
+
+        .topbar nav {
+            gap: 12px;
+            font-size: 12px
+        }
+
+    .brand {
+        gap: 8px;
+        padding-left: 8px
+    }
+
+        .brand strong {
+            font-size: 21px
+        }
+
+        .brand small {
+            font-size: 7px
+        }
+
+        .brand svg {
+            width: 29px
+        }
+
+    .main-stage {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 0 16px 28px
+    }
+
+    .lamp-side {
+        width: 100%;
+        min-height: 255px;
+        max-height: 255px
+    }
+
+    .lamp-button {
+        width: 185px;
+        transform: translateY(-70px)
+    }
+
+        .lamp-button:hover {
+            transform: translateY(-70px)
+        }
+
+    .lamp-hint {
+        bottom: 2px
+    }
+
+    .light-pool {
+        top: 0;
+        left: 25%;
+        width: 330px;
+        height: 300px
+    }
+
+    .auth-panel {
+        max-width: 480px;
+        justify-self: center;
+        padding: 28px 22px
+    }
+
+        .auth-panel h1 {
+            font-size: 38px
+        }
+
+    .eyebrow {
+        letter-spacing: 2.2px
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    *, *:before, *:after {
+        transition: none !important;
+        animation: none !important
+    }
+}
+
+/* Robot 3D image replaces the old SVG lamp; no changes to login styles. */
+.lamp-side {
+    min-height: 650px;
+}
+
+.lamp-button {
+    width: min(100%,420px);
+    display: block;
+    border-radius: 24px;
+}
+
+.robot-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 24px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 25px 55px rgba(0,0,0,.5);
+    -webkit-mask-image: linear-gradient(to bottom,black 0%,black 93%,transparent 100%);
+    mask-image: linear-gradient(to bottom,black 0%,black 93%,transparent 100%);
+    transition: filter .35s ease;
+}
+
+.robot-aura {
+    position: absolute;
+    inset: 15% 8%;
+    z-index: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    filter: blur(80px);
+    opacity: .24;
+    pointer-events: none;
+    transition: opacity .35s,background .35s;
+}
+
+.auth-scene.is-off .robot-aura {
+    opacity: 0;
+}
+
+.auth-scene.theme-red:not(.is-off) .robot-image {
+    filter: drop-shadow(0 0 16px rgba(255,52,60,.27));
+}
+
+.auth-scene.theme-green:not(.is-off) .robot-image {
+    filter: drop-shadow(0 0 20px rgba(32,232,140,.32));
+}
+
+.auth-scene.is-off .robot-image {
+    filter: brightness(.57);
+}
+
+.auth-scene:not(.is-off) .robot-image {
+    animation: robotHover 4.5s ease-in-out infinite;
+}
+
+@keyframes robotHover {
+    0%,100% {
+        transform: translateY(0)
+    }
+
+    50% {
+        transform: translateY(-9px)
+    }
+}
+/* Override old mobile lamp positioning, avoid cutting off robot */
+@media(max-width:650px) {
+    .lamp-side {
+        min-height: 320px;
+        max-height: none;
+    }
+
+    .lamp-button, .lamp-button:hover {
+        width: min(68vw,230px);
+        transform: none;
+    }
+
+    .light-pool {
+        top: 0;
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    .auth-scene:not(.is-off) .robot-image {
+        animation: none
+    }
+}
