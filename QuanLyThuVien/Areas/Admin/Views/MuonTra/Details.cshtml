@@ -1,0 +1,199 @@
+﻿
+@model QuanLyThuVien.ViewModels.Admin.MuonTra.PhieuMuonDetailsViewModel
+
+@{
+    ViewData["Title"] = "Chi tiết phiếu mượn";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    var homNay = DateOnly.FromDateTime(DateTime.Today);
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+            <h3 class="fw-bold">
+                Chi tiết phiếu @Model.MaPhieu
+            </h3>
+
+            <p class="mb-1">
+                Độc giả:
+                <strong>@Model.TenDocGia</strong>
+            </p>
+
+            <p class="text-secondary">
+                Ngày mượn:
+                @Model.NgayMuon.ToString("dd/MM/yyyy")
+            </p>
+
+            <p>
+                Trạng thái phiếu:
+                <strong>@Model.TrangThai</strong>
+            </p>
+        </div>
+
+        <a href="@Url.Action("Index", "MuonTra", new { area = "Admin" })"
+           class="btn btn-outline-secondary">
+            Quay lại
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+
+            <h5 class="mb-3">
+                Danh sách sách trong phiếu
+            </h5>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Mã vạch</th>
+                            <th>Tên sách</th>
+                            <th>Hạn trả</th>
+                            <th>Trạng thái</th>
+                            <th>Tình trạng trước</th>
+                            <th>Thao tác trả sách</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var ct in Model.ChiTiet)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@ct.MaVach</strong>
+                                </td>
+
+                                <td>@ct.TenSach</td>
+
+                                <td>
+                                    @ct.HanTra.ToString("dd/MM/yyyy")
+
+                                    @if (ct.NgayTra == null &&
+                                         ct.HanTra < homNay)
+                                    {
+                                        <span class="badge bg-danger">
+                                            Quá hạn
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (ct.NgayTra == null)
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            Chưa trả
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">
+                                            Đã trả
+                                        </span>
+
+                                        <div class="small text-secondary">
+                                            @ct.NgayTra.Value.ToString("dd/MM/yyyy HH:mm")
+                                        </div>
+                                    }
+                                </td>
+
+                                <td>@ct.TinhTrangTruoc</td>
+
+                                <td style="min-width:270px">
+
+                                    @if (ct.NgayTra == null &&
+                                         Model.TrangThai == "DangMuon")
+                                    {
+                                        <form method="post"
+                                              action="@Url.Action("Return", "MuonTra", new { area = "Admin", id = Model.Id })">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="ChiTietMuonId"
+                                                   value="@ct.Id" />
+
+                                            <div class="mb-2">
+                                                <label class="form-label small">
+                                                    Tình trạng sau trả
+                                                </label>
+
+                                                <input type="text"
+                                                       name="TinhTrangSau"
+                                                       class="form-control form-control-sm"
+                                                       maxlength="255"
+                                                       value="@ct.TinhTrangTruoc"
+                                                       required />
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <input type="text"
+                                                       name="GhiChu"
+                                                       maxlength="500"
+                                                       class="form-control form-control-sm"
+                                                       placeholder="Ghi chú..." />
+                                            </div>
+
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox"
+                                                       class="form-check-input"
+                                                       name="BaoHuHong"
+                                                       value="true"
+                                                       id="hong-@ct.Id" />
+
+                                                <label class="form-check-label"
+                                                       for="hong-@ct.Id">
+                                                    Sách bị hư hỏng
+                                                </label>
+                                            </div>
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-primary"
+                                                    onclick="return confirm('Xác nhận đã nhận lại cuốn sách này?');">
+                                                Xác nhận trả
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-secondary">
+                                            @(ct.TinhTrangSau ?? "—")
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                        @if (!Model.ChiTiet.Any())
+                        {
+                            <tr>
+                                <td colspan="6"
+                                    class="text-center py-4">
+                                    Phiếu chưa có chi tiết sách.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

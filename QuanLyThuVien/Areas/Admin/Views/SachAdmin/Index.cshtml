@@ -1,0 +1,277 @@
+﻿
+@model List<QuanLyThuVien.ViewModels.Admin.Sach.SachListItemViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý sách";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    string keyword = ViewBag.Keyword as string ?? "";
+    int page = ViewBag.Page == null ? 1 : (int)ViewBag.Page;
+    int totalPages = ViewBag.TotalPages == null
+        ? 0 : (int)ViewBag.TotalPages;
+    int total = ViewBag.Total == null
+        ? 0 : (int)ViewBag.Total;
+}
+
+<div class="container-fluid py-4">
+
+    <!-- TIÊU ĐỀ VÀ NÚT THÊM -->
+    <div class="d-flex justify-content-between
+                align-items-center mb-4">
+
+        <div>
+            <h3 class="fw-bold mb-1">Quản lý sách</h3>
+            <p class="text-muted mb-0">
+                Tổng cộng @total đầu sách
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="SachAdmin"
+           asp-action="Create"
+           class="btn btn-primary">
+            + Thêm sách mới
+        </a>
+    </div>
+
+    <!-- THÔNG BÁO THÀNH CÔNG -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"
+             role="alert">
+
+            @TempData["Success"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Đóng">
+            </button>
+        </div>
+    }
+
+    <!-- THÔNG BÁO LỖI -->
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show"
+             role="alert">
+
+            @TempData["Error"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Đóng">
+            </button>
+        </div>
+    }
+
+    <!-- TÌM KIẾM -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+
+            <form asp-area="Admin"
+                  asp-controller="SachAdmin"
+                  asp-action="Index"
+                  method="get">
+
+                <div class="row g-2">
+                    <div class="col-md-10">
+                        <input type="text"
+                               name="keyword"
+                               value="@keyword"
+                               class="form-control"
+                               placeholder="Tìm theo tên sách hoặc ISBN..." />
+                    </div>
+
+                    <div class="col-md-2 d-flex gap-2">
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Tìm
+                        </button>
+
+                        <a asp-area="Admin"
+                           asp-controller="SachAdmin"
+                           asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            Xóa lọc
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- BẢNG DANH SÁCH SÁCH -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-3">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Ảnh bìa</th>
+                            <th>ISBN</th>
+                            <th>Tiêu đề</th>
+                            <th>Thể loại</th>
+                            <th>Nhà xuất bản</th>
+                            <th>Năm XB</th>
+                            <th>Trạng thái</th>
+                            <th style="min-width:150px;">
+                                Thao tác
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <!-- ẢNH BÌA -->
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(item.AnhBiaUrl))
+                                    {
+                                        <img src="@item.AnhBiaUrl"
+                                             alt="Bìa @item.TieuDe"
+                                             style="width:65px;
+                                                    height:90px;
+                                                    object-fit:cover;
+                                                    border-radius:6px;
+                                                    border:1px solid #ddd;" />
+                                    }
+                                    else
+                                    {
+                                        <div class="bg-light text-muted
+                                                    d-flex align-items-center
+                                                    justify-content-center"
+                                             style="width:65px;height:90px;
+                                                    border-radius:6px;
+                                                    font-size:11px;">
+                                            Chưa có ảnh
+                                        </div>
+                                    }
+                                </td>
+
+                                <!-- ISBN -->
+                                <td>
+                                    @(item.Isbn ?? "—")
+                                </td>
+
+                                <!-- TIÊU ĐỀ -->
+                                <td>
+                                    <strong>@item.TieuDe</strong>
+                                </td>
+
+                                <!-- THỂ LOẠI -->
+                                <td>@item.TheLoai</td>
+
+                                <!-- NHÀ XUẤT BẢN -->
+                                <td>@item.NhaXuatBan</td>
+
+                                <!-- NĂM XUẤT BẢN -->
+                                <td>
+                                    @(item.NamXuatBan?.ToString() ?? "—")
+                                </td>
+
+                                <!-- TRẠNG THÁI -->
+                                <td>
+                                    @if (item.TrangThai == "HoatDong")
+                                    {
+                                        <span class="badge bg-success">
+                                            Hoạt động
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Ngừng phục vụ
+                                        </span>
+                                    }
+                                </td>
+
+                                <!-- NÚT SỬA VÀ XÓA -->
+                                <td>
+                                    <div class="d-flex gap-2 flex-nowrap">
+
+                                        <!-- SỬA -->
+                                        <a asp-area="Admin"
+                                           asp-controller="SachAdmin"
+                                           asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Sửa
+                                        </a>
+
+                                        <!-- XÓA -->
+                                        <form asp-area="Admin"
+                                              asp-controller="SachAdmin"
+                                              asp-action="Delete"
+                                              asp-route-id="@item.Id"
+                                              method="post"
+                                              onsubmit="return confirm('Bạn có chắc muốn xóa sách này? Hành động không thể hoàn tác.');">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger">
+                                                Xóa
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="8"
+                                    class="text-center text-muted py-5">
+                                    Không tìm thấy sách nào.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PHÂN TRANG -->
+            @if (totalPages > 1)
+            {
+                <nav class="mt-3">
+                    <ul class="pagination justify-content-end">
+
+                        @for (int p = 1; p <= totalPages; p++)
+                        {
+                            <li class="page-item @(p == page ? "active" : "")">
+
+                                <a class="page-link"
+                                   href="@Url.Action(
+                                       "Index",
+                                       "SachAdmin",
+                                       new
+                                       {
+                                           area = "Admin",
+                                           keyword = keyword,
+                                           page = p
+                                       })">
+                                    @p
+                                </a>
+
+                            </li>
+                        }
+
+                    </ul>
+                </nav>
+            }
+
+        </div>
+    </div>
+
+</div>

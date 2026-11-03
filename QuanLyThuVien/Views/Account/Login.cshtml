@@ -1,7 +1,9 @@
-﻿@model QuanLyThuVien.ViewModels.DangNhapViewModel
+﻿
+@model QuanLyThuVien.ViewModels.DangNhapViewModel
 
 @{
-    ViewData["Title"] = "Đăng nhập";
+    Layout = null;
+    ViewData["Title"] = "Login - Librista";
 }
 
 @section Styles {
@@ -179,6 +181,14 @@
 
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    <footer>
+        © Librista · Library Management System
+    </footer>
+
+</main>
+
+<script src="~/js/account-lamp.js"
+        asp-append-version="true"></script>
+
+</body>
+</html>

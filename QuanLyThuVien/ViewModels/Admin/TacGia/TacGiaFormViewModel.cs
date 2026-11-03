@@ -1,7 +1,6 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace QuanLyThuVien.ViewModels.TacGia
+namespace QuanLyThuVien.ViewModels.Admin.TacGia
 {
     public class TacGiaFormViewModel
     {

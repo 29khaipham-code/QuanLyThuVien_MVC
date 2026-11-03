@@ -1,7 +1,6 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace QuanLyThuVien.ViewModels.NhaXuatBan
+namespace QuanLyThuVien.ViewModels.Admin.NhaXuatBan
 {
     public class NhaXuatBanFormViewModel
     {

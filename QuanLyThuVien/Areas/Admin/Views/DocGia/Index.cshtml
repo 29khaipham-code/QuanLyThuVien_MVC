@@ -1,0 +1,172 @@
+﻿
+@model List<QuanLyThuVien.ViewModels.DocGia.DocGiaListItemViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý độc giả";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    string keyword = ViewBag.Keyword as string ?? "";
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 0;
+    int total = ViewBag.Total ?? 0;
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold">Quản lý độc giả</h3>
+            <p class="text-secondary">
+                Quản lý hồ sơ và thẻ thư viện
+            </p>
+        </div>
+
+        <a href="@Url.Action("Create", "DocGia", new { area = "Admin" })"
+           class="btn btn-primary">
+            + Thêm độc giả
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get"
+                  action="@Url.Action("Index", "DocGia", new { area = "Admin" })"
+                  class="d-flex gap-2">
+
+                <input name="keyword"
+                       value="@keyword"
+                       class="form-control"
+                       placeholder="Mã, tên, email hoặc số điện thoại..." />
+
+                <button type="submit" class="btn btn-primary">
+                    Tìm kiếm
+                </button>
+
+                <a href="@Url.Action("Index", "DocGia", new { area = "Admin" })"
+                   class="btn btn-outline-secondary">
+                    Đặt lại
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <p>Tổng số: <strong>@total</strong> độc giả</p>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Mã độc giả</th>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Điện thoại</th>
+                            <th>Loại độc giả</th>
+                            <th>Hạn thẻ</th>
+                            <th>Trạng thái</th>
+                            <th>Tài khoản</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var dg in Model)
+                        {
+                            <tr>
+                                <td><strong>@dg.MaDocGia</strong></td>
+                                <td>@dg.HoTen</td>
+                                <td>@(dg.Email ?? "—")</td>
+                                <td>@(dg.SoDienThoai ?? "—")</td>
+                                <td>@dg.TenLoai</td>
+                                <td>@dg.NgayHetHan.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    @{
+                                        string statusText = dg.TrangThai switch
+                                        {
+                                            "HoatDong" => "Hoạt động",
+                                            "TamKhoa" => "Tạm khóa",
+                                            "HetHan" => "Hết hạn",
+                                            _ => dg.TrangThai
+                                        };
+                                    }
+                                    <span class="badge bg-secondary">
+                                        @statusText
+                                    </span>
+                                </td>
+                                <td>
+                                    @(dg.TaiKhoanId.HasValue ? "Đã liên kết" : "Chưa có")
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="@Url.Action("Edit", "DocGia", new { area = "Admin", id = dg.Id })"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Sửa
+                                        </a>
+
+                                        <form method="post"
+                                              action="@Url.Action("ToggleStatus", "DocGia", new { area = "Admin", id = dg.Id })">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-warning">
+                                                @(dg.TrangThai == "TamKhoa" ? "Mở khóa" : "Khóa")
+                                            </button>
+                                        </form>
+
+                                        <form method="post"
+                                              action="@Url.Action("Delete", "DocGia", new { area = "Admin", id = dg.Id })"
+                                              onsubmit="return confirm('Bạn có chắc muốn xóa độc giả này?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger">
+                                                Xóa
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center py-4">
+                                    Chưa có độc giả nào.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <nav>
+                    <ul class="pagination justify-content-end">
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            <li class="page-item @(i == page ? "active" : "")">
+                                <a class="page-link"
+                                   href="@Url.Action("Index", "DocGia", new { area = "Admin", keyword, page = i })">
+                                    @i
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</div>

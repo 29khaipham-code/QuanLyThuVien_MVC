@@ -1,0 +1,35 @@
+﻿
+@model QuanLyThuVien.ViewModels.Admin.Sach.SachFormViewModel
+
+@{
+    ViewData["Title"] = "Thêm sách";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <h3 class="mb-4">Thêm sách mới</h3>
+
+    <div class="card">
+        <div class="card-body p-4">
+            <form asp-area="Admin"
+                  asp-controller="Sach"
+                  asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <partial name="_Form" model="Model" />
+
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        Lưu sách
+                    </button>
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,164 @@
+﻿@model List<QuanLyThuVien.ViewModels.Admin.Sach.SachListItemViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý sách";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    string keyword = ViewBag.Keyword as string ?? "";
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 0;
+    int total = ViewBag.Total ?? 0;
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3>Quản lý sách</h3>
+            <p class="text-secondary mb-0">
+                Danh sách sách trong thư viện
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Sach"
+           asp-action="Create"
+           class="btn btn-primary">
+            + Thêm sách
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" asp-action="Index"
+                  class="d-flex gap-2">
+                <input name="keyword"
+                       value="@keyword"
+                       class="form-control"
+                       placeholder="Tìm tên sách hoặc ISBN..." />
+
+                <button class="btn btn-primary"
+                        type="submit">
+                    Tìm kiếm
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Đặt lại
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <p>Tổng số: <strong>@total</strong> sách</p>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>ISBN</th>
+                            <th>Tên sách</th>
+                            <th>Thể loại</th>
+                            <th>Nhà xuất bản</th>
+                            <th>Năm XB</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var s in Model)
+                        {
+                            <tr>
+                                <td>@s.Id</td>
+                                <td>@(s.Isbn ?? "—")</td>
+                                <td><strong>@s.TieuDe</strong></td>
+                                <td>@s.TheLoai</td>
+                                <td>@s.NhaXuatBan</td>
+                                <td>@(s.NamXuatBan?.ToString() ?? "—")</td>
+
+                                <td>
+                                    @if (s.TrangThai == "HoatDong")
+                                    {
+                                        <span class="badge bg-success">
+                                            Hoạt động
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Ngừng phục vụ
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a asp-action="Edit"
+                                           asp-route-id="@s.Id"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Sửa
+                                        </a>
+
+                                        @if (s.TrangThai == "HoatDong")
+                                        {
+                                            <form asp-action="Disable"
+                                                  asp-route-id="@s.Id"
+                                                  method="post"
+                                                  onsubmit="return confirm('Ngừng phục vụ sách này?');">
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger">
+                                                    Ngừng
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="8"
+                                    class="text-center py-4">
+                                    Chưa có dữ liệu sách.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <nav>
+                    <ul class="pagination justify-content-end">
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            <li class="page-item @(i == page ? "active" : "")">
+                                <a asp-action="Index"
+                                   asp-route-page="@i"
+                                   asp-route-keyword="@keyword"
+                                   class="page-link">
+                                    @i
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+﻿
+@model QuanLyThuVien.ViewModels.Admin.BanSaoSach.BanSaoSachFormViewModel
+
+@{
+    ViewData["Title"] = "Sửa bản sao sách";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <h3 class="mb-4">Chỉnh sửa bản sao #@Model.Id</h3>
+
+    <div class="card">
+        <div class="card-body p-4">
+            <form method="post"
+                  asp-area="Admin"
+                  asp-controller="BanSaoSach"
+                  asp-action="Edit"
+                  asp-route-id="@Model.Id">
+
+                @Html.AntiForgeryToken()
+                <input asp-for="Id" type="hidden" />
+
+                @await Html.PartialAsync(
+                    "~/Areas/Admin/Views/BanSaoSach/_Form.cshtml",
+                    Model
+                )
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        Lưu thay đổi
+                    </button>
+
+                    <a href="@Url.Action("Index", "BanSaoSach", new { area = "Admin" })"
+                       class="btn btn-outline-secondary">
+                        Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

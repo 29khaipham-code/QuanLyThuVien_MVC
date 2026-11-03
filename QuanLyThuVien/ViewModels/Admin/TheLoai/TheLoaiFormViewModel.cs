@@ -1,7 +1,6 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace QuanLyThuVien.ViewModels.TheLoai
+namespace QuanLyThuVien.ViewModels.Admin.TheLoai
 {
     public class TheLoaiFormViewModel
     {

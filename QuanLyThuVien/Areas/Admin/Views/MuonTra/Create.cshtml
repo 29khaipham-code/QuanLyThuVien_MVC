@@ -1,0 +1,125 @@
+﻿
+@model QuanLyThuVien.ViewModels.Admin.MuonTra.TaoPhieuMuonViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Tạo phiếu mượn";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    var docGiaOptions =
+        ViewBag.DocGiaOptions as IEnumerable<SelectListItem>;
+
+    var banSaoOptions =
+        ViewBag.BanSaoOptions as IEnumerable<SelectListItem>;
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h3 class="fw-bold">Tạo phiếu mượn sách</h3>
+        <p class="text-secondary">
+            Chọn độc giả và các bản sao sách muốn mượn
+        </p>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-4">
+
+            <form method="post"
+                  action="@Url.Action("Create", "MuonTra", new { area = "Admin" })">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="All"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-4">
+                    <label asp-for="DocGiaId"
+                           class="form-label fw-semibold">
+                        Độc giả
+                    </label>
+
+                    <select asp-for="DocGiaId"
+                            asp-items="docGiaOptions"
+                            class="form-select">
+                        <option value="0">
+                            -- Chọn độc giả --
+                        </option>
+                    </select>
+
+                    <span asp-validation-for="DocGiaId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        Chọn các bản sao sách
+                    </label>
+
+                    <select name="BanSaoIds"
+                            class="form-select"
+                            multiple
+                            size="10">
+
+                        @if (banSaoOptions != null)
+                        {
+                            foreach (var item in banSaoOptions)
+                            {
+                                int.TryParse(item.Value, out int id);
+
+                                if (Model.BanSaoIds.Contains(id))
+                                {
+                                    <option value="@item.Value" selected>
+                                        @item.Text
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Value">
+                                        @item.Text
+                                    </option>
+                                }
+                            }
+                        }
+                    </select>
+
+                    <small class="text-secondary">
+                        Giữ Ctrl để chọn nhiều cuốn sách.
+                        Chỉ hiện bản sao đang sẵn sàng.
+                    </small>
+
+                    <span asp-validation-for="BanSaoIds"
+                          class="text-danger d-block"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="GhiChu"
+                           class="form-label fw-semibold">
+                        Ghi chú
+                    </label>
+
+                    <textarea asp-for="GhiChu"
+                              rows="3"
+                              class="form-control"
+                              placeholder="Nhập ghi chú nếu có..."></textarea>
+
+                    <span asp-validation-for="GhiChu"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Xác nhận tạo phiếu
+                    </button>
+
+                    <a href="@Url.Action("Index", "MuonTra", new { area = "Admin" })"
+                       class="btn btn-outline-secondary">
+                        Quay lại
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,178 @@
+﻿
+@model List<QuanLyThuVien.ViewModels.Admin.MuonTra.PhieuMuonListItemViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý mượn trả";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    string keyword = ViewBag.Keyword as string ?? "";
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 0;
+    int total = ViewBag.Total ?? 0;
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold">Quản lý mượn / trả sách</h3>
+            <p class="text-secondary mb-0">
+                Theo dõi phiếu mượn và tình trạng trả sách
+            </p>
+        </div>
+
+        <a href="@Url.Action("Create", "MuonTra", new { area = "Admin" })"
+           class="btn btn-primary">
+            + Tạo phiếu mượn
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get"
+                  action="@Url.Action("Index", "MuonTra", new { area = "Admin" })"
+                  class="d-flex gap-2">
+
+                <input type="text"
+                       name="keyword"
+                       value="@keyword"
+                       class="form-control"
+                       placeholder="Tìm theo mã phiếu hoặc độc giả..." />
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Tìm kiếm
+                </button>
+
+                <a href="@Url.Action("Index", "MuonTra", new { area = "Admin" })"
+                   class="btn btn-outline-secondary">
+                    Đặt lại
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            <p>
+                Tổng số:
+                <strong>@total</strong> phiếu mượn
+            </p>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Mã phiếu</th>
+                            <th>Độc giả</th>
+                            <th>Ngày mượn</th>
+                            <th>Số cuốn</th>
+                            <th>Chưa trả</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+
+                                <td>
+                                    <strong>@item.MaPhieu</strong>
+                                </td>
+
+                                <td>@item.TenDocGia</td>
+
+                                <td>
+                                    @item.NgayMuon.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>@item.SoCuon</td>
+
+                                <td>@item.ChuaTra</td>
+
+                                <td>
+                                    @if (item.TrangThai == "DangMuon")
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            Đang mượn
+                                        </span>
+                                    }
+                                    else if (item.TrangThai == "DaTraHet")
+                                    {
+                                        <span class="badge bg-success">
+                                            Đã trả hết
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            @item.TrangThai
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <a href="@Url.Action("Details", "MuonTra", new { area = "Admin", id = item.Id })"
+                                       class="btn btn-sm btn-outline-primary">
+                                        Chi tiết / Trả sách
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="8"
+                                    class="text-center py-4">
+                                    Chưa có phiếu mượn nào.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <nav class="mt-3">
+                    <ul class="pagination justify-content-end">
+
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            <li class="page-item @(i == page ? "active" : "")">
+                                <a class="page-link"
+                                   href="@Url.Action("Index", "MuonTra", new { area = "Admin", keyword = keyword, page = i })">
+                                    @i
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </nav>
+            }
+
+        </div>
+    </div>
+</div>
