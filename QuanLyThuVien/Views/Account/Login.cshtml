@@ -2,7 +2,6 @@
 @model QuanLyThuVien.ViewModels.DangNhapViewModel
 
 @{
-    Layout = null;
     ViewData["Title"] = "Login - Librista";
 }
 
@@ -92,6 +91,7 @@
                          class="login-validation-summary">
                     </div>
 
+                    <!-- TÊN ĐĂNG NHẬP -->
                     <div class="login-field">
 
                         <label asp-for="TenDangNhap">
@@ -113,7 +113,7 @@
 
                     </div>
 
-
+                    <!-- MẬT KHẨU -->
                     <div class="login-field">
 
                         <label asp-for="MatKhau">
@@ -135,7 +135,7 @@
 
                     </div>
 
-
+                    <!-- GHI NHỚ -->
                     <div class="login-options">
 
                         <label class="remember-option">
@@ -145,7 +145,7 @@
 
                     </div>
 
-
+                    <!-- NÚT ĐĂNG NHẬP -->
                     <button type="submit" class="login-submit">
                         ĐĂNG NHẬP
                         <span>→</span>
@@ -153,42 +153,35 @@
 
                 </form>
 
-
                 <div class="login-divider">
                     <span></span>
                     <small>KHÔNG GIAN CỦA TRI THỨC</small>
                     <span></span>
                 </div>
 
-
+                <!-- QUAY VỀ TRANG CHỦ -->
                 <a asp-controller="Home"
                    asp-action="Index"
                    class="back-home">
                     ← Quay về trang chủ
                 </a>
 
-
+                <!-- CHÂN TRANG -->
                 <div class="login-footer">
                     <span>© 2026 THƯ VIỆN SỐ</span>
                     <span>READ · LEARN · GROW</span>
                 </div>
 
             </div>
-
         </div>
 
     </div>
 
 </div>
 
-    <footer>
-        © Librista · Library Management System
-    </footer>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 
-</main>
-
-<script src="~/js/account-lamp.js"
-        asp-append-version="true"></script>
-
-</body>
-</html>
+    <script src="~/js/account-lamp.js"
+            asp-append-version="true"></script>
+}

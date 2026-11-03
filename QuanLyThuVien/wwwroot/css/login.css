@@ -454,3 +454,65 @@
         align-items: center;
     }
 }
+
+/* ==========================================
+   FIX FOOTER RIÊNG TRANG LOGIN
+========================================== */
+
+/* Ẩn footer chung nếu có */
+body:has(.login-page) footer:not(.login-footer),
+body:has(.login-page) .footer:not(.login-footer),
+body:has(.login-page) .site-footer {
+    display: none !important;
+}
+
+/* Không để nội dung ngoài trang login xuất hiện */
+body:has(.login-page) > .container-fluid > footer {
+    display: none !important;
+}
+
+/* Giữ footer Librista */
+.login-page .login-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 35px;
+    padding-top: 18px;
+    border-top: 1px solid var(--clay);
+}
+
+
+
+/* =========================================
+   FIX FOOTER VÀ KHOẢNG TRẮNG TRANG LOGIN
+========================================= */
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+    body:has(.login-page) {
+        margin-bottom: 0 !important;
+    }
+
+        body:has(.login-page) .container-fluid {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        body:has(.login-page) main {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+.login-page {
+    margin-bottom: 0 !important;
+    padding-bottom: 35px;
+}
