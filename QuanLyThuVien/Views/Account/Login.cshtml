@@ -4,74 +4,179 @@
     ViewData["Title"] = "Đăng nhập";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+}
 
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white text-center">
-                    <h4 class="mb-0">
-                        HỆ THỐNG QUẢN LÝ THƯ VIỆN
-                    </h4>
+<div class="login-page">
+
+    <div class="login-container">
+
+        <!-- BÊN TRÁI: GIỚI THIỆU THƯ VIỆN -->
+        <div class="login-intro">
+
+            <a asp-controller="Home" asp-action="Index" class="login-brand">
+                <span class="login-brand-icon">B.</span>
+                <span>THƯ VIỆN SỐ</span>
+            </a>
+
+            <div class="intro-content">
+
+                <span class="intro-label">
+                    <span></span>
+                    KHÔNG GIAN TRI THỨC
+                </span>
+
+                <h1>
+                    Mỗi cuốn sách
+                    <em>mở ra một thế giới.</em>
+                </h1>
+
+                <p>
+                    Chào mừng bạn đến với thư viện của chúng tôi.
+                    Đăng nhập để khám phá kho tàng tri thức,
+                    tìm kiếm những cuốn sách yêu thích và
+                    quản lý hoạt động đọc sách của mình.
+                </p>
+
+                <div class="intro-image">
+                    <img src="~/images/login-library.jpg"
+                         alt="Không gian thư viện" />
+
+                    <div class="intro-image-caption">
+                        <span>YOUR NEXT CHAPTER STARTS HERE</span>
+                        <strong>Một trang sách, một hành trình mới.</strong>
+                    </div>
                 </div>
 
-                <div class="card-body p-4">
+                <div class="intro-bottom">
+                    <span>ĐỌC ĐỂ KHÁM PHÁ</span>
+                    <span>01 — 03</span>
+                </div>
 
-                    <h5 class="text-center mb-4">Đăng nhập</h5>
+            </div>
+        </div>
 
-                    <form asp-controller="Account"
-                          asp-action="Login"
-                          asp-route-returnUrl="@ViewData["ReturnUrl"]"
-                          method="post">
 
-                        @Html.AntiForgeryToken()
+        <!-- BÊN PHẢI: FORM ĐĂNG NHẬP -->
+        <div class="login-form-side">
 
-                        <div asp-validation-summary="ModelOnly"
-                             class="text-danger"></div>
+            <div class="login-form-wrapper">
 
-                        <div class="mb-3">
-                            <label asp-for="TenDangNhap"
-                                   class="form-label"></label>
+                <div class="login-mobile-brand">
+                    <span class="login-brand-icon">B.</span>
+                    <span>THƯ VIỆN SỐ</span>
+                </div>
+
+                <div class="login-heading">
+                    <span class="login-eyebrow">WELCOME BACK</span>
+
+                    <h2>Chào mừng trở lại!</h2>
+
+                    <p>
+                        Đăng nhập vào tài khoản để tiếp tục
+                        hành trình khám phá tri thức.
+                    </p>
+                </div>
+
+                <form asp-controller="Account"
+                      asp-action="Login"
+                      asp-route-returnUrl="@ViewData["ReturnUrl"]"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="login-validation-summary">
+                    </div>
+
+                    <div class="login-field">
+
+                        <label asp-for="TenDangNhap">
+                            Tên đăng nhập
+                        </label>
+
+                        <div class="login-input-box">
+                            <span class="input-icon">✉</span>
 
                             <input asp-for="TenDangNhap"
-                                   class="form-control"
-                                   placeholder="Tên đăng nhập" />
-
-                            <span asp-validation-for="TenDangNhap"
-                                  class="text-danger"></span>
+                                   type="text"
+                                   placeholder="Nhập tên đăng nhập"
+                                   autocomplete="username" />
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="MatKhau"
-                                   class="form-label"></label>
+                        <span asp-validation-for="TenDangNhap"
+                              class="login-field-error">
+                        </span>
+
+                    </div>
+
+
+                    <div class="login-field">
+
+                        <label asp-for="MatKhau">
+                            Mật khẩu
+                        </label>
+
+                        <div class="login-input-box">
+                            <span class="input-icon">◆</span>
 
                             <input asp-for="MatKhau"
-                                   class="form-control"
-                                   placeholder="Mật khẩu" />
-
-                            <span asp-validation-for="MatKhau"
-                                  class="text-danger"></span>
+                                   type="password"
+                                   placeholder="Nhập mật khẩu"
+                                   autocomplete="current-password" />
                         </div>
 
-                        <div class="form-check mb-3">
-                            <input asp-for="GhiNho"
-                                   class="form-check-input" />
+                        <span asp-validation-for="MatKhau"
+                              class="login-field-error">
+                        </span>
 
-                            <label asp-for="GhiNho"
-                                   class="form-check-label"></label>
-                        </div>
+                    </div>
 
-                        <button type="submit"
-                                class="btn btn-primary w-100">
-                            Đăng nhập
-                        </button>
 
-                    </form>
+                    <div class="login-options">
+
+                        <label class="remember-option">
+                            <input asp-for="GhiNho" />
+                            <span>Ghi nhớ đăng nhập</span>
+                        </label>
+
+                    </div>
+
+
+                    <button type="submit" class="login-submit">
+                        ĐĂNG NHẬP
+                        <span>→</span>
+                    </button>
+
+                </form>
+
+
+                <div class="login-divider">
+                    <span></span>
+                    <small>KHÔNG GIAN CỦA TRI THỨC</small>
+                    <span></span>
                 </div>
+
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="back-home">
+                    ← Quay về trang chủ
+                </a>
+
+
+                <div class="login-footer">
+                    <span>© 2026 THƯ VIỆN SỐ</span>
+                    <span>READ · LEARN · GROW</span>
+                </div>
+
             </div>
 
         </div>
+
     </div>
+
 </div>
 
 @section Scripts {
