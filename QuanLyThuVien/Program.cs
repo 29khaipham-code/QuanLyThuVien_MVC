@@ -20,16 +20,6 @@ builder.Services.AddSession(options =>
     options.Cookie.SameSite = SameSiteMode.Lax;
 });
 
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.Cookie.SameSite = SameSiteMode.Lax;
-});
-
-
 // 2. Lấy chuỗi kết nối từ appsettings.json
 var connectionString = builder.Configuration
     .GetConnectionString("QuanLyThuVienConnectionString");
@@ -182,7 +172,7 @@ app.MapAreaControllerRoute(
 app.MapAreaControllerRoute(
     name: "docgia",
     areaName: "DocGia",
-    pattern: "DocGia/{controller=TongQuan}/{action=Index}/{id?}");
+    pattern: "DocGia/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "areas",
