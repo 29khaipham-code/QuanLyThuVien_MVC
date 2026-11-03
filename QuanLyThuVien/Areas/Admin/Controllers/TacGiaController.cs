@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuanLyThuVien.Models;
-using QuanLyThuVien.ViewModels.TacGia;
+using QuanLyThuVien.ViewModels.Admin.TacGia;
 
 namespace QuanLyThuVien.Areas.Admin.Controllers
 {

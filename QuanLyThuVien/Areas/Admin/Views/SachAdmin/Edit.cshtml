@@ -1,0 +1,66 @@
+﻿
+@model QuanLyThuVien.ViewModels.Admin.Sach.SachFormViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa sách";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Chỉnh sửa sách</h3>
+            <p class="text-muted mb-0">
+                Mã sách: #@Model.Id
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="SachAdmin"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            Quay lại danh sách
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+            <form asp-area="Admin"
+                  asp-controller="SachAdmin"
+                  asp-action="Edit"
+                  asp-route-id="@Model.Id"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+
+                @await Html.PartialAsync(
+                    "~/Areas/Admin/Views/SachAdmin/_Form.cshtml",
+                    Model)
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a asp-area="Admin"
+                       asp-controller="SachAdmin"
+                       asp-action="Index"
+                       class="btn btn-light border px-4">
+                        Hủy
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary px-4">
+                        Lưu thay đổi
+                    </button>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

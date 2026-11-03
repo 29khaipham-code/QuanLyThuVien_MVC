@@ -1,0 +1,110 @@
+﻿
+@model QuanLyThuVien.ViewModels.DocGia.DocGiaFormViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    var loaiOptions =
+        ViewBag.LoaiDocGiaOptions as IEnumerable<SelectListItem>;
+
+    var taiKhoanOptions =
+        ViewBag.TaiKhoanOptions as IEnumerable<SelectListItem>;
+}
+
+<div asp-validation-summary="ModelOnly"
+     class="text-danger mb-3"></div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <label asp-for="MaDocGia" class="form-label"></label>
+        <input asp-for="MaDocGia" class="form-control"
+               placeholder="VD: DG0001" />
+        <span asp-validation-for="MaDocGia" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-8">
+        <label asp-for="HoTen" class="form-label"></label>
+        <input asp-for="HoTen" class="form-control" />
+        <span asp-validation-for="HoTen" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="NgaySinh" class="form-label"></label>
+        <input asp-for="NgaySinh" type="date" class="form-control" />
+        <span asp-validation-for="NgaySinh" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="GioiTinh" class="form-label"></label>
+        <select asp-for="GioiTinh" class="form-select">
+            <option value="">-- Chọn --</option>
+            <option value="Nam">Nam</option>
+            <option value="Nu">Nữ</option>
+            <option value="Khac">Khác</option>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="LoaiDocGiaId" class="form-label"></label>
+        <select asp-for="LoaiDocGiaId"
+                asp-items="loaiOptions" class="form-select">
+            <option value="0">-- Chọn loại độc giả --</option>
+        </select>
+        <span asp-validation-for="LoaiDocGiaId"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="SoDienThoai" class="form-label"></label>
+        <input asp-for="SoDienThoai" class="form-control" />
+        <span asp-validation-for="SoDienThoai"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-12">
+        <label asp-for="DiaChi" class="form-label"></label>
+        <input asp-for="DiaChi" class="form-control" />
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="NgayDangKy" class="form-label"></label>
+        <input asp-for="NgayDangKy"
+               type="date" class="form-control" />
+        <span asp-validation-for="NgayDangKy"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="NgayHetHan" class="form-label"></label>
+        <input asp-for="NgayHetHan"
+               type="date" class="form-control" />
+        <span asp-validation-for="NgayHetHan"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="TaiKhoanId" class="form-label"></label>
+        <select asp-for="TaiKhoanId"
+                asp-items="taiKhoanOptions" class="form-select">
+            <option value="">-- Chưa liên kết tài khoản --</option>
+        </select>
+        <span asp-validation-for="TaiKhoanId"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="TrangThai" class="form-label"></label>
+        <select asp-for="TrangThai" class="form-select">
+            <option value="HoatDong">Hoạt động</option>
+            <option value="TamKhoa">Tạm khóa</option>
+            <option value="HetHan">Hết hạn</option>
+        </select>
+        <span asp-validation-for="TrangThai"
+              class="text-danger"></span>
+    </div>
+</div>

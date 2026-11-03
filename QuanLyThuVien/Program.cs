@@ -53,6 +53,8 @@ builder.Services.AddScoped<
     PasswordHasher<TaiKhoan>>();
 
 // 6. Tạo ứng dụng sau khi đăng ký tất cả dịch vụ
+
+builder.Services.AddScoped<QuanLyThuVien.Services.SachCoverService>();
 var app = builder.Build();
 // KHỞI TẠO TÀI KHOẢN QUẢN TRỊ - CHỈ DÙNG KHI PHÁT TRIỂN
 if (app.Environment.IsDevelopment())

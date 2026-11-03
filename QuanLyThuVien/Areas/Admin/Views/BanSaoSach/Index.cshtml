@@ -1,0 +1,164 @@
+﻿
+@model List<QuanLyThuVien.ViewModels.Admin.BanSaoSach.BanSaoSachListItemViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý bản sao sách";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    string keyword = ViewBag.Keyword as string ?? "";
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 0;
+    int total = ViewBag.Total ?? 0;
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold">Quản lý bản sao sách</h3>
+            <p class="text-secondary mb-0">
+                Quản lý từng cuốn sách vật lý trong thư viện
+            </p>
+        </div>
+
+        <a href="@Url.Action("Create", "BanSaoSach", new { area = "Admin" })"
+           class="btn btn-primary">
+            + Thêm bản sao
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get"
+                  action="@Url.Action("Index", "BanSaoSach", new { area = "Admin" })"
+                  class="d-flex gap-2">
+
+                <input type="text"
+                       name="keyword"
+                       value="@keyword"
+                       class="form-control"
+                       placeholder="Tìm mã vạch hoặc tên sách..." />
+
+                <button type="submit" class="btn btn-primary">
+                    Tìm kiếm
+                </button>
+
+                <a href="@Url.Action("Index", "BanSaoSach", new { area = "Admin" })"
+                   class="btn btn-outline-secondary">
+                    Đặt lại
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <p>Tổng số: <strong>@total</strong> bản sao</p>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Mã vạch</th>
+                            <th>Tên sách</th>
+                            <th>Trạng thái</th>
+                            <th>Tình trạng</th>
+                            <th>Ngày nhập</th>
+                            <th>Vị trí</th>
+                            <th>Giá trị</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td><strong>@item.MaVach</strong></td>
+                                <td>@item.TenSach</td>
+                                <td>
+                                    @{
+                                        string tenTrangThai = item.TrangThai switch
+                                        {
+                                            "SanSang" => "Sẵn sàng",
+                                            "DangMuon" => "Đang mượn",
+                                            "DaDat" => "Đã đặt",
+                                            "HuHong" => "Hư hỏng",
+                                            "Mat" => "Mất",
+                                            "DangSua" => "Đang sửa",
+                                            "DaThanhLy" => "Đã thanh lý",
+                                            _ => item.TrangThai
+                                        };
+                                    }
+                                    <span class="badge bg-secondary">
+                                        @tenTrangThai
+                                    </span>
+                                </td>
+                                <td>@item.TinhTrang</td>
+                                <td>@item.NgayNhap?.ToString("dd/MM/yyyy")</td>
+                                <td>@(item.ViTri ?? "—")</td>
+                                <td>
+                                    @(item.GiaTri?.ToString("N0") ?? "—")
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="@Url.Action("Edit", "BanSaoSach", new { area = "Admin", id = item.Id })"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Sửa
+                                        </a>
+
+                                        <form method="post"
+                                              action="@Url.Action("Delete", "BanSaoSach", new { area = "Admin", id = item.Id })"
+                                              onsubmit="return confirm('Bạn có chắc muốn xóa bản sao này?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger">
+                                                Xóa
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center py-4">
+                                    Chưa có bản sao sách nào.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <nav>
+                    <ul class="pagination justify-content-end">
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            <li class="page-item @(i == page ? "active" : "")">
+                                <a class="page-link"
+                                   href="@Url.Action("Index", "BanSaoSach", new { area = "Admin", keyword, page = i })">
+                                    @i
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</div>

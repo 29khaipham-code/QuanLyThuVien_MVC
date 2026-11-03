@@ -15,7 +15,7 @@
 
     <link rel="stylesheet"
           href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    @*  <link rel="stylesheet"
+     <link rel="stylesheet"
       href="~/css/admin.css"
       asp-append-version="true" />
       
@@ -24,12 +24,12 @@
       asp-append-version="true" />
 
 
-    <link rel="stylesheet"
+  @*   <link rel="stylesheet"
           href="~/css/playful-admin-theme.css"
           asp-append-version="true" /> *@
-          <link rel="stylesheet"
+      @*     <link rel="stylesheet"
       href="~/css/admin-modern-dark.css"
-      asp-append-version="true" />
+      asp-append-version="true" /> *@
 </head>
 <body>
     <div class="admin-wrapper">
@@ -88,47 +88,47 @@
 
                 <div class="menu-heading">QUẢN LÝ THƯ VIỆN</div>
 
+                
                 <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="Sach">
+                   asp-controller="Sach"
+                   asp-action="Index"
+                   class="nav-link">
                     📚 Quản lý sách
                 </a>
 
+
                 <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="BanSaoSach">
-                    📦 Bản sao sách
+                   asp-controller="BanSaoSach"
+                   asp-action="Index"
+                   class="nav-link">
+                    📚 Quản lý bản sao sách
                 </a>
 
                 <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="DocGia">
+                   asp-controller="DocGia"
+                   asp-action="Index"
+                   class="nav-link">
                     🪪 Độc giả
                 </a>
 
-                <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="MuonTra">
+                <a href="@Url.Action("Index", "MuonTra", new { area = "Admin" })"
+                      class="nav-link">
                     🔄 Mượn / Trả sách
                 </a>
 
-                <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="DatTruoc">
+                
+                <a href="@Url.Action("Index", "DatTruoc", new { area = "Admin" })"
+                   class="nav-link">
                     📌 Đặt trước sách
                 </a>
 
-                <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="Phat">
+
+                
+                <a href="@Url.Action("Index", "Phat", new { area = "Admin" })"
+                   class="nav-link">
                     💰 Tiền phạt
                 </a>
+
 
                 <a asp-area="Admin"
                    asp-controller="Dashboard"
@@ -143,6 +143,10 @@
                    asp-route-id="ThongKe">
                     📊 Thống kê
                 </a>
+                <a href="@Url.Action("Index", "SachAdmin", new { area = "Admin" })"
+                   class="nav-link">
+                    📚 Sách Admin
+                </a>
             </nav>
         </aside>
 
@@ -150,26 +154,34 @@
         <div class="admin-main">
 
             <header class="admin-header">
-                <div>
-                    <button type="button"
-                            class="btn btn-light d-lg-none"
-                            id="toggleSidebar">
-                        ☰
-                    </button>
 
-                    <strong>@pageTitle</strong>
-                </div>
+                <div class="d-flex justify-content-end w-100">
 
-                <div class="admin-user">
-                    <span>👤 @User.Identity?.Name</span>
+                    <form asp-area=""
+                          asp-controller="Account"
+                          asp-action="Logout"
+                          method="post"
+                          class="m-0">
 
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="btn btn-outline-danger">
+                            🚪 Đăng xuất
+                        </button>
+
+                    </form>
+                    
                     <a asp-area=""
                        asp-controller="Home"
                        asp-action="Index"
-                       class="btn btn-outline-secondary btn-sm">
-                        Trang chủ
+                       class="btn btn-outline-primary">
+                        🏠 Về trang chủ
                     </a>
-                </div>
+
+
+                </div>  
+
             </header>
 
             <main class="admin-content">

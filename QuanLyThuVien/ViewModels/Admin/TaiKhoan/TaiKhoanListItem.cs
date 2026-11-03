@@ -1,5 +1,4 @@
-﻿
-namespace QuanLyThuVien.ViewModels.TaiKhoan
+﻿namespace QuanLyThuVien.ViewModels.Admin.TaiKhoan
 {
     public class TaiKhoanListItem
     {

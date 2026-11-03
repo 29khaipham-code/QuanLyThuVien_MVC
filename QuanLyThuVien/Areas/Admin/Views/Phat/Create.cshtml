@@ -1,0 +1,148 @@
+﻿
+@model QuanLyThuVien.ViewModels.Admin.Phat.PhatFormViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Tạo khoản phạt";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    var luotMuonOptions =
+        ViewBag.ChiTietMuonOptions as IEnumerable<SelectListItem>;
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h3 class="fw-bold">Tạo khoản tiền phạt</h3>
+        <p class="text-secondary">
+            Ghi nhận vi phạm mượn trả sách của độc giả
+        </p>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-4">
+
+            <form method="post"
+                  action="@Url.Action("Create", "Phat", new { area = "Admin" })">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="All"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="ChiTietMuonId"
+                           class="form-label fw-semibold">
+                        Lượt mượn sách
+                    </label>
+
+                    <select asp-for="ChiTietMuonId"
+                            asp-items="luotMuonOptions"
+                            class="form-select">
+                        <option value="0">
+                            -- Chọn lượt mượn --
+                        </option>
+                    </select>
+
+                    <span asp-validation-for="ChiTietMuonId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="LoaiPhat"
+                           class="form-label fw-semibold">
+                        Loại phạt
+                    </label>
+
+                    <select asp-for="LoaiPhat"
+                            class="form-select"
+                            id="LoaiPhat">
+                        <option value="TraMuon">Trả muộn</option>
+                        <option value="HuHong">Hư hỏng sách</option>
+                        <option value="MatSach">Mất sách</option>
+                    </select>
+
+                    <span asp-validation-for="LoaiPhat"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="LyDo"
+                           class="form-label fw-semibold">
+                        Lý do phạt
+                    </label>
+
+                    <textarea asp-for="LyDo"
+                              rows="3"
+                              class="form-control"
+                              placeholder="Nhập lý do vi phạm..."></textarea>
+
+                    <span asp-validation-for="LyDo"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3" id="soTienBox">
+                    <label asp-for="SoTien"
+                           class="form-label fw-semibold">
+                        Số tiền phạt (VNĐ)
+                    </label>
+
+                    <input asp-for="SoTien"
+                           type="number"
+                           min="0"
+                           step="1000"
+                           class="form-control" />
+
+                    <span asp-validation-for="SoTien"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="alert alert-info" id="traMuonInfo">
+                    <strong>Phạt trả muộn:</strong>
+                    Hệ thống tự tính số ngày quá hạn
+                    dựa trên ngày trả và hạn trả.
+
+                    <div class="mt-2">
+                        Mức phạt demo:
+                        <strong>5.000 đồng/ngày</strong>.
+                    </div>
+
+                    <div class="mt-2">
+                        Số tiền được tính trên server,
+                        không cần nhập thủ công.
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        Lưu khoản phạt
+                    </button>
+
+                    <a href="@Url.Action("Index", "Phat", new { area = "Admin" })"
+                       class="btn btn-outline-secondary">
+                        Quay lại
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const loai = document.getElementById("LoaiPhat");
+        const soTienBox = document.getElementById("soTienBox");
+        const traMuonInfo = document.getElementById("traMuonInfo");
+
+        function capNhatGiaoDien() {
+            const traMuon = loai.value === "TraMuon";
+
+            soTienBox.style.display = traMuon ? "none" : "block";
+            traMuonInfo.style.display = traMuon ? "block" : "none";
+        }
+
+        loai.addEventListener("change", capNhatGiaoDien);
+        capNhatGiaoDien();
+    });
+</script>

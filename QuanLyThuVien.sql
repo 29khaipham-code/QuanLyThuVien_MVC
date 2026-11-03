@@ -69,6 +69,7 @@ CREATE TABLE dbo.DocGia (
     Email          VARCHAR(100)  NULL,
     SoDienThoai    VARCHAR(20)   NULL,
     DiaChi         NVARCHAR(255) NULL,
+    AnhDaiDienUrl  VARCHAR(255)  NULL,
     NgayDangKy     DATE          NOT NULL CONSTRAINT DF_DocGia_NgayDangKy DEFAULT (CAST(SYSDATETIME() AS DATE)),
     NgayHetHan     DATE          NOT NULL,
     TrangThai      NVARCHAR(30)  NOT NULL CONSTRAINT DF_DocGia_TrangThai DEFAULT (N'HoatDong'),

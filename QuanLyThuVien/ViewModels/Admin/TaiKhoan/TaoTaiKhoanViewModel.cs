@@ -1,7 +1,6 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace QuanLyThuVien.ViewModels.TaiKhoan
+namespace QuanLyThuVien.ViewModels.Admin.TaiKhoan
 {
     public class TaoTaiKhoanViewModel
     {
