@@ -1,559 +1,261 @@
-﻿@model QuanLyThuVien.   <v></v>
-@{
-    ViewData["Title"] = "Đăng nhập | Librista";
-    Layout = null;
-    bool hasErrors = !ViewData.ModelState.IsValid;
-}
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/css/account-lamp.css" asp-append-version="true" />
-</head>
-<body>
-<main class="auth-scene theme-red @(hasErrors ? "" : "is-off")" id="authScene"
+﻿
 @model QuanLyThuVien.ViewModels.DangNhapViewModel
 
 @{
-    ViewData["Title"] = "Đăng nhập - Librista";
     Layout = null;
-    bool hasErrors = !ViewData.ModelState.IsValid;
+    ViewData["Title"] = "Login - Librista";
 }
 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Librista - Đăng nhập</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
+
+    <title>Librista - Login & Register</title>
+
     <link rel="stylesheet"
           href="~/css/account-lamp.css"
           asp-append-version="true" />
 </head>
+
 <body>
+<main class="auth-page">
 
-<main id="authScene"
-      class="auth-scene theme-red @(hasErrors ? "" : "is-off")"
-      data-errors="@(hasErrors ? "true" : "false")">
+    <a class="brand" href="/">
+        <span class="brand-icon">✦</span>
+        <span>
+            <strong>Librista</strong>
+            <small>LIBRARY MANAGEMENT SYSTEM</small>
+        </span>
+    </a>
 
-    <header class="topbar">
-        <a class="brand" href="/">
-            <svg viewBox="0 0 48 44" aria-hidden="true">
-                <path d="M24 38C17 33 10 31 4 32V8c9-2 16 1 20 6 4-5 11-8 20-6v24c-6-1-13 1-20 6Z"
-                      fill="none" stroke="currentColor"
-                      stroke-width="3" stroke-linejoin="round"/>
-                <path d="M24 14v24" stroke="currentColor"
-                      stroke-width="2"/>
-            </svg>
-            <span>
-                <strong>Librista</strong>
-                <small>LIBRARY MANAGEMENT SYSTEM</small>
-            </span>
-        </a>
+    <div class="auth-box" id="authBox">
 
-        <nav aria-label="Điều hướng">
-            <a href="/">Home</a>
-            <a href="#intro">About</a>
-            <a href="#hint">Help</a>
-        </nav>
-    </header>
+        <!-- ========================= -->
+        <!-- FORM LOGIN BÊN PHẢI      -->
+        <!-- ========================= -->
 
-    <div class="stage">
+        <section class="form-side login-side"
+                 id="loginSide">
 
-        <!-- ROBOT SVG KHÔNG CẦN ẢNH -->
-        <section class="robot-area">
-            <div class="robot-aura" aria-hidden="true"></div>
-
-            <button type="button"
-                    id="robotToggle"
-                    class="robot-switch"
-                    aria-label="Bật robot và mở bảng đăng nhập"
-                    aria-pressed="false">
-
-                <svg class="robot-svg"
-                     viewBox="0 0 440 620"
-                     xmlns="http://www.w3.org/2000/svg"
-                     aria-hidden="true">
-
-                    <defs>
-                        <linearGradient id="whiteShell"
-                                        x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0" stop-color="#ffffff"/>
-                            <stop offset=".28" stop-color="#edf7ff"/>
-                            <stop offset=".65" stop-color="#99b6cc"/>
-                            <stop offset="1" stop-color="#435b71"/>
-                        </linearGradient>
-
-                        <linearGradient id="sideShell"
-                                        x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0" stop-color="#e6f6ff"/>
-                            <stop offset=".55" stop-color="#8ba8bf"/>
-                            <stop offset="1" stop-color="#25384a"/>
-                        </linearGradient>
-
-                        <linearGradient id="visor"
-                                        x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0" stop-color="#12263a"/>
-                            <stop offset=".45" stop-color="#020811"/>
-                            <stop offset="1" stop-color="#000207"/>
-                        </linearGradient>
-
-                        <linearGradient id="steel"
-                                        x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0" stop-color="#627889"/>
-                            <stop offset=".4" stop-color="#172534"/>
-                            <stop offset="1" stop-color="#040910"/>
-                        </linearGradient>
-
-                        <radialGradient id="earLight">
-                            <stop offset="0" stop-color="#ffffff"/>
-                            <stop offset=".4" stop-color="#baf8ff"/>
-                            <stop offset="1" stop-color="#008ac0"/>
-                        </radialGradient>
-
-                        <filter id="softGlow"
-                                x="-100%" y="-100%"
-                                width="300%" height="300%">
-                            <feGaussianBlur stdDeviation="8"/>
-                        </filter>
-                    </defs>
-
-                    <!-- Bóng dưới robot -->
-                    <ellipse cx="220" cy="594" rx="140" ry="17"
-                             fill="#000" opacity=".62"/>
-
-                    <!-- Chân trái -->
-                    <g>
-                        <path d="M154 448 L144 518 Q146 536 169 536
-                                 L194 485 L193 441Z"
-                              fill="url(#steel)" stroke="#50687d"
-                              stroke-width="3"/>
-                        <path d="M143 467 L183 462 L177 512
-                                 Q151 520 138 500Z"
-                              fill="url(#whiteShell)" stroke="#638199"
-                              stroke-width="3"/>
-                        <circle cx="163" cy="521" r="22"
-                                fill="url(#steel)" stroke="#728da1"
-                                stroke-width="5"/>
-                        <path d="M136 529 L180 527 L192 572
-                                 Q188 584 172 585 L120 582
-                                 Q114 579 119 559Z"
-                              fill="url(#whiteShell)" stroke="#526a7c"
-                              stroke-width="4"/>
-                        <path d="M123 572 L185 573"
-                              stroke="#142739" stroke-width="7"
-                              stroke-linecap="round"/>
-                    </g>
-
-                    <!-- Chân phải -->
-                    <g>
-                        <path d="M249 445 L249 493 L270 535
-                                 Q298 533 298 511 L288 448Z"
-                              fill="url(#steel)" stroke="#50687d"
-                              stroke-width="3"/>
-                        <path d="M254 467 L296 464 L305 496
-                                 Q291 518 263 513Z"
-                              fill="url(#whiteShell)" stroke="#638199"
-                              stroke-width="3"/>
-                        <circle cx="280" cy="521" r="22"
-                                fill="url(#steel)" stroke="#728da1"
-                                stroke-width="5"/>
-                        <path d="M255 529 L300 529 L321 560
-                                 Q328 581 305 585 L261 584
-                                 Q248 581 248 570Z"
-                              fill="url(#whiteShell)" stroke="#526a7c"
-                              stroke-width="4"/>
-                        <path d="M258 573 L314 573"
-                              stroke="#142739" stroke-width="7"
-                              stroke-linecap="round"/>
-                    </g>
-
-                    <!-- Tay trái -->
-                    <path d="M114 283 Q80 289 73 320 L65 388
-                             Q62 415 87 424 L111 414 L132 316Z"
-                          fill="url(#steel)" stroke="#46596b"
-                          stroke-width="4"/>
-                    <path d="M78 298 Q53 301 56 335 L55 362
-                             L92 368 L107 319 Q106 301 78 298Z"
-                          fill="url(#whiteShell)" stroke="#7997ad"
-                          stroke-width="3"/>
-                    <circle cx="78" cy="398" r="22"
-                            fill="url(#steel)" stroke="#64849c"
-                            stroke-width="4"/>
-                    <path d="M62 409 L58 448 L67 471 M77 413 L78 467
-                             M91 411 L99 462"
-                          stroke="#8297a9" stroke-width="9"
-                          fill="none" stroke-linecap="round"/>
-
-                    <!-- Tay phải -->
-                    <path d="M326 283 Q360 289 367 320 L375 388
-                             Q378 415 353 424 L329 414 L308 316Z"
-                          fill="url(#steel)" stroke="#46596b"
-                          stroke-width="4"/>
-                    <path d="M362 298 Q387 301 384 335 L385 362
-                             L348 368 L333 319 Q334 301 362 298Z"
-                          fill="url(#whiteShell)" stroke="#7997ad"
-                          stroke-width="3"/>
-                    <circle cx="362" cy="398" r="22"
-                            fill="url(#steel)" stroke="#64849c"
-                            stroke-width="4"/>
-                    <path d="M378 409 L382 448 L373 471 M363 413 L362 467
-                             M349 411 L341 462"
-                          stroke="#8297a9" stroke-width="9"
-                          fill="none" stroke-linecap="round"/>
-
-                    <!-- Khớp cổ -->
-                    <rect x="176" y="257" width="88" height="42"
-                          rx="14" fill="url(#steel)"/>
-
-                    <!-- Thân -->
-                    <path d="M158 276 Q220 262 282 276
-                             Q328 280 335 333
-                             L326 438 Q319 475 280 482
-                             L164 482 Q122 471 117 434
-                             L109 338 Q113 288 158 276Z"
-                          fill="url(#whiteShell)"
-                          stroke="#6d8aa0" stroke-width="4"/>
-
-                    <!-- Tấm giáp ngực -->
-                    <path d="M161 325 Q220 305 279 325
-                             L293 385 Q291 413 269 426
-                             L174 426 Q150 409 148 385Z"
-                          fill="url(#sideShell)"
-                          stroke="#bde5fb" stroke-width="3"/>
-
-                    <path d="M177 335 Q220 321 263 335
-                             L268 379 Q220 397 172 378Z"
-                          fill="url(#steel)" stroke="#71899a"
-                          stroke-width="3"/>
-
-                    <circle cx="220" cy="360" r="21"
-                            fill="none" stroke="#426d84"
-                            stroke-width="7"/>
-                    <circle class="robot-core" cx="220" cy="360" r="12"
-                            fill="currentColor"/>
-
-                    <path d="M139 347 L161 365 L156 401"
-                          fill="none" stroke="#d8f4ff"
-                          stroke-width="6"/>
-                    <path d="M301 347 L279 365 L284 401"
-                          fill="none" stroke="#d8f4ff"
-                          stroke-width="6"/>
-
-                    <!-- Hai vai -->
-                    <ellipse cx="126" cy="295" rx="27" ry="35"
-                             fill="url(#whiteShell)" stroke="#7293aa"
-                             stroke-width="4"/>
-                    <ellipse cx="314" cy="295" rx="27" ry="35"
-                             fill="url(#whiteShell)" stroke="#7293aa"
-                             stroke-width="4"/>
-
-                    <!-- Tai robot -->
-                    <g>
-                        <circle cx="91" cy="172" r="43"
-                                fill="url(#steel)" stroke="#a5c6da"
-                                stroke-width="8"/>
-                        <circle class="ear-ring" cx="91" cy="172" r="29"
-                                fill="none" stroke="currentColor"
-                                stroke-width="9"/>
-                        <circle cx="91" cy="172" r="19"
-                                fill="url(#earLight)"/>
-
-                        <circle cx="349" cy="172" r="43"
-                                fill="url(#steel)" stroke="#a5c6da"
-                                stroke-width="8"/>
-                        <circle class="ear-ring" cx="349" cy="172" r="29"
-                                fill="none" stroke="currentColor"
-                                stroke-width="9"/>
-                        <circle cx="349" cy="172" r="19"
-                                fill="url(#earLight)"/>
-                    </g>
-
-                    <!-- Đầu tròn lớn -->
-                    <path d="M130 60 Q220 9 310 60
-                             Q367 96 358 188
-                             Q354 266 286 287
-                             Q220 307 154 283
-                             Q80 263 80 180
-                             Q79 102 130 60Z"
-                          fill="url(#whiteShell)"
-                          stroke="#94b7ce"
-                          stroke-width="5"/>
-
-                    <!-- Highlight vỏ -->
-                    <path d="M127 82 Q215 34 300 73"
-                          fill="none" stroke="#ffffff"
-                          stroke-width="11" opacity=".65"
-                          stroke-linecap="round"/>
-
-                    <!-- Kính đen -->
-                    <path d="M144 99
-                             Q218 69 296 99
-                             Q326 110 329 157
-                             L324 209
-                             Q315 250 268 260
-                             Q206 278 151 245
-                             Q115 225 113 175
-                             Q111 119 144 99Z"
-                          fill="url(#visor)"
-                          stroke="#293d4d"
-                          stroke-width="6"/>
-
-                    <!-- Phản chiếu kính -->
-                    <path d="M138 126 Q167 96 226 96"
-                          stroke="#c6f2ff" stroke-width="6"
-                          opacity=".20" fill="none"
-                          stroke-linecap="round"/>
-                    <path d="M309 134 Q315 172 305 201"
-                          stroke="#a3eaff" stroke-width="4"
-                          opacity=".13" fill="none"
-                          stroke-linecap="round"/>
-
-                    <!-- Mắt LED: tắt thì tối -->
-                    <g class="robot-face">
-                        <ellipse class="robot-eye-glow"
-                                 cx="180" cy="175"
-                                 rx="31" ry="36"
-                                 fill="currentColor"
-                                 filter="url(#softGlow)"/>
-                        <ellipse class="robot-eye-glow"
-                                 cx="261" cy="175"
-                                 rx="31" ry="36"
-                                 fill="currentColor"
-                                 filter="url(#softGlow)"/>
-                        <ellipse cx="180" cy="175" rx="16" ry="23"
-                                 fill="currentColor"/>
-                        <ellipse cx="261" cy="175" rx="16" ry="23"
-                                 fill="currentColor"/>
-                        <circle cx="174" cy="166" r="5"
-                                fill="white" opacity=".9"/>
-                        <circle cx="255" cy="166" r="5"
-                                fill="white" opacity=".9"/>
-                    </g>
-
-                    <!-- Miệng cười -->
-                    <path class="robot-smile"
-                          d="M203 221 Q220 236 238 221"
-                          fill="none" stroke="currentColor"
-                          stroke-width="4" stroke-linecap="round"/>
-
-                </svg>
-            </button>
-
-            <p id="hint" class="robot-hint">
-                Nhấn vào robot để bật / tắt
-            </p>
-        </section>
-
-        <!-- FORM -->
-        <section id="authPanel"
-                 class="auth-panel"
-                 aria-label="Đăng nhập và đăng ký"
-                 aria-hidden="@(hasErrors ? "false" : "true")">
-
-            <span class="status-dot" aria-hidden="true"></span>
-
-            <p class="eyebrow">LIBRARY MANAGEMENT SYSTEM</p>
-            <h1 id="formTitle">Welcome Back</h1>
-            <p class="subtitle" id="formSubtitle">
-                Đăng nhập vào hệ thống thư viện
-            </p>
-
-            <div class="mode-tabs" role="tablist">
-                <button id="signInTab" class="tab active"
-                        type="button" role="tab"
-                        aria-selected="true"
-                        aria-controls="signInForm">
-                    Sign In
-                </button>
-                <button id="signUpTab" class="tab"
-                        type="button" role="tab"
-                        aria-selected="false"
-                        aria-controls="signUpForm">
-                    Sign Up
-                </button>
-            </div>
-
-            <!-- ĐĂNG NHẬP -->
-            <form id="signInForm"
+            <form id="loginForm"
+                  asp-area=""
                   asp-controller="Account"
                   asp-action="Login"
-                  method="post"
-                  role="tabpanel"
-                  aria-labelledby="signInTab">
+                  method="post">
 
                 @Html.AntiForgeryToken()
 
+                <h1>Login</h1>
+
+                <p class="form-subtitle">
+                    Đăng nhập vào thư viện của bạn
+                </p>
+
                 <div asp-validation-summary="ModelOnly"
-                     class="validation-message"
+                     class="validation-error"
                      role="alert"></div>
 
-                <label asp-for="TenDangNhap">Tên đăng nhập</label>
-                <div class="input-shell">
-                    <span class="input-icon" aria-hidden="true">✉</span>
+                <label asp-for="TenDangNhap">
+                    Username
+                </label>
+
+                <div class="field">
                     <input asp-for="TenDangNhap"
-                           autocomplete="username"
-                           placeholder="Nhập tên đăng nhập" />
+                           type="text"
+                           placeholder="Username"
+                           autocomplete="username" />
+
+                    <span class="field-icon">♙</span>
                 </div>
+
                 <span asp-validation-for="TenDangNhap"
                       class="field-error"></span>
 
-                <label asp-for="MatKhau">Mật khẩu</label>
-                <div class="input-shell">
-                    <span class="input-icon" aria-hidden="true">✦</span>
+                <label asp-for="MatKhau">
+                    Password
+                </label>
+
+                <div class="field">
                     <input asp-for="MatKhau"
                            type="password"
-                           autocomplete="current-password"
-                           placeholder="Nhập mật khẩu" />
+                           placeholder="Password"
+                           autocomplete="current-password" />
+
                     <button type="button"
-                            class="eye-toggle"
+                            class="password-toggle"
                             data-target="MatKhau"
-                            aria-label="Hiện mật khẩu">◉</button>
+                            aria-label="Hiện mật khẩu">
+                        ◉
+                    </button>
                 </div>
+
                 <span asp-validation-for="MatKhau"
                       class="field-error"></span>
 
-                <label class="remember-line">
+                <label class="remember">
                     <input asp-for="GhiNho" />
-                    <span>Ghi nhớ đăng nhập</span>
+                    <span>Remember me</span>
                 </label>
 
-                <button class="submit-btn" type="submit">
-                    Sign In <span aria-hidden="true">→</span>
+                <button type="submit"
+                        class="primary-button">
+                    Login
                 </button>
 
-                <p class="bottom-switch">
-                    Chưa có tài khoản?
-                    <button type="button" data-switch="signup">
-                        Sign Up
+                <p class="form-switch">
+                    Don't have an account?
+                    <button type="button"
+                            data-mode="register">
+                        Register
                     </button>
                 </p>
+
             </form>
+        </section>
 
-            <!-- ĐĂNG KÝ: GIAO DIỆN DEMO -->
-            <form id="signUpForm"
-                  role="tabpanel"
-                  aria-labelledby="signUpTab"
-                  hidden>
+        <!-- ========================= -->
+        <!-- FORM REGISTER BÊN TRÁI   -->
+        <!-- ========================= -->
 
-                <label for="regName">Tên đăng nhập</label>
-                <div class="input-shell">
-                    <span class="input-icon" aria-hidden="true">♙</span>
-                    <input id="regName" type="text"
-                           autocomplete="username"
-                           placeholder="Chọn tên đăng nhập" />
+        <section class="form-side register-side"
+                 id="registerSide"
+                 aria-hidden="true"
+                 inert>
+
+            <form id="registerForm">
+
+                <h1>Registration</h1>
+
+                <p class="form-subtitle">
+                    Tạo tài khoản thư viện mới
+                </p>
+
+                <label for="regUsername">Username</label>
+                <div class="field">
+                    <input id="regUsername"
+                           type="text"
+                           placeholder="Username"
+                           autocomplete="username" />
+                    <span class="field-icon">♙</span>
+                </div>
+
+                <label for="regFullName">Full name</label>
+                <div class="field">
+                    <input id="regFullName"
+                           type="text"
+                           placeholder="Full name"
+                           autocomplete="name" />
+                    <span class="field-icon">♙</span>
                 </div>
 
                 <label for="regEmail">Email</label>
-                <div class="input-shell">
-                    <span class="input-icon" aria-hidden="true">&#64;</span>
-                    <input id="regEmail" type="email"
-                           autocomplete="email"
-                           placeholder="Nhập email" />
+                <div class="field">
+                    <input id="regEmail"
+                           type="email"
+                           placeholder="Email"
+                           autocomplete="email" />
+                    <span class="field-icon">&#64;</span>
                 </div>
 
-                <label for="regPass">Mật khẩu</label>
-                <div class="input-shell">
-                    <span class="input-icon" aria-hidden="true">✦</span>
-                    <input id="regPass" type="password"
-                           autocomplete="new-password"
-                           placeholder="Tạo mật khẩu" />
-                    <button type="button" class="eye-toggle"
-                            data-target="regPass"
-                            aria-label="Hiện mật khẩu">◉</button>
+                <label for="regPassword">Password</label>
+                <div class="field">
+                    <input id="regPassword"
+                           type="password"
+                           placeholder="Password"
+                           autocomplete="new-password" />
+                    <button type="button"
+                            class="password-toggle"
+                            data-target="regPassword"
+                            aria-label="Hiện mật khẩu">
+                        ◉
+                    </button>
                 </div>
 
-                <label for="regConfirm">Nhập lại mật khẩu</label>
-                <div class="input-shell">
-                    <span class="input-icon" aria-hidden="true">✦</span>
-                    <input id="regConfirm" type="password"
-                           autocomplete="new-password"
-                           placeholder="Xác nhận mật khẩu" />
+                <label for="regConfirm">Confirm password</label>
+                <div class="field">
+                    <input id="regConfirm"
+                           type="password"
+                           placeholder="Confirm password"
+                           autocomplete="new-password" />
+                    <button type="button"
+                            class="password-toggle"
+                            data-target="regConfirm"
+                            aria-label="Hiện mật khẩu">
+                        ◉
+                    </button>
                 </div>
 
                 <p class="register-note">
-                    Chức năng đăng ký chưa được kết nối SQL Server.
+                    Chức năng đăng ký chưa được kết nối
+                    SQL Server.
                 </p>
 
-                <button type="button" class="submit-btn" disabled>
-                    Sign Up <span aria-hidden="true">→</span>
+                <button type="button"
+                        class="primary-button"
+                        disabled>
+                    Register
                 </button>
 
-                <p class="bottom-switch">
-                    Đã có tài khoản?
-                    <button type="button" data-switch="signin">
-                        Sign In
+                <p class="form-switch">
+                    Already have an account?
+                    <button type="button"
+                            data-mode="login">
+                        Login
                     </button>
                 </p>
+
             </form>
         </section>
+
+        <!-- ========================= -->
+        <!-- MẢNG XANH TRƯỢT          -->
+        <!-- ========================= -->
+
+        <div class="color-panel" id="colorPanel">
+
+            <div class="panel-content panel-register"
+                 id="panelRegister">
+
+                <h2>Hello, Welcome!</h2>
+                <p>Don't have an account?</p>
+
+                <button type="button"
+                        class="outline-button"
+                        id="switchRegister">
+                    Register
+                </button>
+            </div>
+
+            <div class="panel-content panel-login"
+                 id="panelLogin"
+                 aria-hidden="true"
+                 inert>
+
+                <h2>Welcome Back!</h2>
+                <p>Already have an account?</p>
+
+                <button type="button"
+                        class="outline-button"
+                        id="switchLogin">
+                    Login
+                </button>
+            </div>
+
+        </div>
+
     </div>
 
-    <footer id="intro">
-        Librista · Library Management System
+    <footer>
+        © Librista · Library Management System
     </footer>
+
 </main>
 
 <script src="~/js/account-lamp.js"
         asp-append-version="true"></script>
-</body>
-</html>
- data-errors="@(hasErrors ? "true" : "false")">
-    <header class="topbar">
-        <a class="brand" asp-controller="Home" asp-action="Index" aria-label="Librista - Trang chủ">
-            <svg viewBox="0 0 54 45" fill="none" aria-hidden="true"><path d="M27 39C20 33 11 31 4 32V6c10-2 18 1 23 7 5-6 13-9 23-7v26c-7-1-16 1-23 7Z" stroke="currentColor" stroke-width="3"/><path d="M27 13v26M9 2c7-1 14 2 18 6 4-4 11-7 18-6" stroke="currentColor" stroke-width="2"/></svg>
-            <span><strong>Librista</strong><small>LIBRARY MANAGEMENT SYSTEM</small></span>
-        </a>
-        <nav aria-label="Điều hướng"><a asp-controller="Home" asp-action="Index">Home</a><a href="#intro">About</a><a href="#hint">Help</a></nav>
-    </header>
-    <div class="main-stage">
-        <section class="lamp-side" aria-label="Robot AI tương tác">
-            <div class="light-pool" aria-hidden="true"></div>
-            <button type="button" class="lamp-button" id="lampToggle"
-                    aria-label="Bật robot và hiện bảng đăng nhập" aria-pressed="false">
-                <span class="robot-aura" aria-hidden="true"></span>
-                <img class="robot-image" src="~/images/robot-3d.png"
-                     asp-append-version="true" alt="" draggable="false" />
-            </button>
-            <p class="lamp-hint" id="hint">Nhấn vào robot để bật / tắt</p>
-        </section>
-        <section class="auth-panel" id="authPanel" aria-label="Đăng nhập và đăng ký">
-            <div class="status-dot" aria-hidden="true"></div>
-            <p class="eyebrow">LIBRARY MANAGEMENT SYSTEM</p>
-            <h1 id="formTitle">Welcome Back</h1>
-            <p class="subtitle" id="formSubtitle">Đăng nhập vào hệ thống thư viện</p>
-            <div class="mode-tabs" role="tablist" aria-label="Loại biểu mẫu">
-                <button type="button" id="signInTab" role="tab" aria-selected="true" aria-controls="signInForm" class="tab active">Sign In</button>
-                <button type="button" id="signUpTab" role="tab" aria-selected="false" aria-controls="signUpForm" class="tab">Sign Up</button>
-            </div>
-            <form asp-controller="Account" asp-action="Login" method="post" id="signInForm" role="tabpanel" aria-labelledby="signInTab">
-                @Html.AntiForgeryToken()
-                <div asp-validation-summary="ModelOnly" class="validation-message" role="alert"></div>
-                <label asp-for="TenDangNhap">Tên đăng nhập</label>
-                <div class="input-shell"><span aria-hidden="true">✉</span><input asp-for="TenDangNhap" autocomplete="username" placeholder="Nhập tên đăng nhập" /></div>
-                <span asp-validation-for="TenDangNhap" class="field-error"></span>
-                <div class="label-row"><label asp-for="MatKhau">Mật khẩu</label></div>
-                <div class="input-shell"><span aria-hidden="true">♙</span><input asp-for="MatKhau" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu" /><button class="eye-toggle" type="button" data-target="MatKhau" aria-label="Hiện mật khẩu">◉</button></div>
-                <span asp-validation-for="MatKhau" class="field-error"></span>
-                <label class="check-line"><input asp-for="GhiNho" /> <span>Ghi nhớ đăng nhập</span></label>
-                <button class="submit-btn" type="submit">Sign In <span aria-hidden="true">→</span></button>
-                <p class="bottom-switch">Chưa có tài khoản? <button type="button" data-switch="signup">Sign Up</button></p>
-            </form>
-            <form id="signUpForm" role="tabpanel" aria-labelledby="signUpTab" hidden>
-                <label for="regName">Tên đăng nhập</label><div class="input-shell"><span aria-hidden="true">✉</span><input id="regName" autocomplete="username" placeholder="Chọn tên đăng nhập" /></div>
-                <label for="regEmail">Email</label><div class="input-shell"><span aria-hidden="true">&#64;</span><input id="regEmail" type="email" autocomplete="email" placeholder="Nhập email" /></div>
-                <label for="regPass">Mật khẩu</label><div class="input-shell"><span aria-hidden="true">♙</span><input id="regPass" type="password" autocomplete="new-password" placeholder="Tạo mật khẩu" /><button class="eye-toggle" type="button" data-target="regPass" aria-label="Hiện mật khẩu">◉</button></div>
-                <label for="regConfirm">Nhập lại mật khẩu</label><div class="input-shell"><span aria-hidden="true">♙</span><input id="regConfirm" type="password" autocomplete="new-password" placeholder="Xác nhận mật khẩu" /><button class="eye-toggle" type="button" data-target="regConfirm" aria-label="Hiện mật khẩu">◉</button></div>
-                <p class="register-note">Giao diện đăng ký đang chờ kết nối API. Chưa tạo tài khoản thật.</p>
-                <button class="submit-btn" type="button" disabled title="Cần bổ sung Account/Register để đăng ký">Sign Up <span aria-hidden="true">→</span></button>
-                <p class="bottom-switch">Đã có tài khoản? <button type="button" data-switch="signin">Sign In</button></p>
-            </form>
-        </section>
-    </div>
-    <footer id="intro">Librista · Library Management System</footer>
-</main>
-<script src="~/js/account-lamp.js" asp-append-version="true"></script>
+
 </body>
 </html>

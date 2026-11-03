@@ -1,0 +1,155 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.HoSoViewModel;
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+
+    string Anh(string u) => u.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+        ? u
+        : Url.Content("~/" + u.TrimStart('~', '/'));
+}
+
+<partial name="_ThongBao" />
+
+<h2 class="mb-3">Hồ sơ cá nhân</h2>
+
+<div class="row g-4">
+    @* ---------- Ảnh đại diện ---------- *@
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                @if (string.IsNullOrEmpty(Model.AnhDaiDienUrl))
+                {
+                    <div class="rounded-circle bg-light border d-inline-flex align-items-center justify-content-center"
+                         style="width:140px;height:140px">
+                        <i class="bi bi-person text-secondary" style="font-size:4rem"></i>
+                    </div>
+                }
+                else
+                {
+                    <img src="@Anh(Model.AnhDaiDienUrl)" alt="Ảnh đại diện"
+                         class="rounded-circle border" style="width:140px;height:140px;object-fit:cover" />
+                }
+
+                <h5 class="mt-3 mb-0">@Model.HoTen</h5>
+                <div class="text-muted small">@Model.MaDocGia · @Model.LoaiDocGia</div>
+
+                <hr />
+
+                <form method="post" enctype="multipart/form-data"
+                      asp-area="DocGia" asp-controller="HoSo" asp-action="DoiAnhDaiDien">
+                    <input type="file" name="anh" accept=".jpg,.jpeg,.png,.webp"
+                           class="form-control form-control-sm mb-2" required />
+                    <button type="submit" class="btn btn-sm btn-primary w-100">
+                        <i class="bi bi-upload me-1"></i>Cập nhật ảnh
+                    </button>
+                </form>
+
+                @if (!string.IsNullOrEmpty(Model.AnhDaiDienUrl))
+                {
+                    <form method="post" asp-area="DocGia" asp-controller="HoSo" asp-action="XoaAnhDaiDien"
+                          onsubmit="return confirm('Xóa ảnh đại diện hiện tại?');" class="mt-2">
+                        <button type="submit" class="btn btn-sm btn-outline-danger w-100">
+                            <i class="bi bi-trash me-1"></i>Xóa ảnh
+                        </button>
+                    </form>
+                }
+
+                <div class="form-text mt-2">JPG, PNG hoặc WEBP, tối đa 2 MB.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-8 col-lg-9">
+        @* ---------- Thông tin cá nhân ---------- *@
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <strong>Thông tin cá nhân</strong>
+                <div class="d-flex gap-2">
+                    <a class="btn btn-sm btn-outline-primary" asp-area="DocGia" asp-controller="HoSo" asp-action="Sua">
+                        <i class="bi bi-pencil me-1"></i>Chỉnh sửa
+                    </a>
+                    <a class="btn btn-sm btn-outline-secondary" asp-area="DocGia" asp-controller="HoSo" asp-action="DoiMatKhau">
+                        <i class="bi bi-key me-1"></i>Đổi mật khẩu
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Tên đăng nhập</dt>
+                    <dd class="col-sm-8">@Model.TenDangNhap</dd>
+
+                    <dt class="col-sm-4">Họ và tên</dt>
+                    <dd class="col-sm-8">@Model.HoTen</dd>
+
+                    <dt class="col-sm-4">Ngày sinh</dt>
+                    <dd class="col-sm-8">@(Model.NgaySinh.HasValue ? Model.NgaySinh.Value.ToString("dd/MM/yyyy") : "—")</dd>
+
+                    <dt class="col-sm-4">Giới tính</dt>
+                    <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.GioiTinh) ? "—" : Model.GioiTinh)</dd>
+
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.Email) ? "—" : Model.Email)</dd>
+
+                    <dt class="col-sm-4">Số điện thoại</dt>
+                    <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.SoDienThoai) ? "—" : Model.SoDienThoai)</dd>
+
+                    <dt class="col-sm-4">Địa chỉ</dt>
+                    <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.DiaChi) ? "—" : Model.DiaChi)</dd>
+                </dl>
+            </div>
+        </div>
+
+        @* ---------- Thẻ thư viện ---------- *@
+        <div class="card shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <strong>Thẻ thư viện</strong>
+                @if (Model.TheConHieuLuc)
+                {
+                    <span class="badge bg-success">Còn hiệu lực</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Hết hạn hoặc bị khóa</span>
+                }
+            </div>
+            <div class="card-body">
+                <dl class="row mb-3">
+                    <dt class="col-sm-4">Mã độc giả</dt>
+                    <dd class="col-sm-8">@Model.MaDocGia</dd>
+
+                    <dt class="col-sm-4">Loại độc giả</dt>
+                    <dd class="col-sm-8">@Model.LoaiDocGia</dd>
+
+                    <dt class="col-sm-4">Quyền mượn</dt>
+                    <dd class="col-sm-8">Tối đa @Model.SoSachToiDa cuốn, mỗi lượt @Model.SoNgayMuonToiDa ngày</dd>
+
+                    <dt class="col-sm-4">Ngày đăng ký</dt>
+                    <dd class="col-sm-8">@Model.NgayDangKy.ToString("dd/MM/yyyy")</dd>
+
+                    <dt class="col-sm-4">Hạn thẻ</dt>
+                    <dd class="col-sm-8">@Model.NgayHetHan.ToString("dd/MM/yyyy")</dd>
+                </dl>
+
+                <div class="row g-2 text-center">
+                    <div class="col-4">
+                        <div class="border rounded py-2">
+                            <div class="fs-5 fw-semibold">@Model.DangMuon</div>
+                            <div class="small text-muted">Đang mượn</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="border rounded py-2">
+                            <div class="fs-5 fw-semibold">@Model.TongLuotMuon</div>
+                            <div class="small text-muted">Tổng lượt mượn</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="border rounded py-2">
+                            <div class="fs-5 fw-semibold @(Model.PhatChuaNop > 0 ? "text-danger" : "")">@HienThi.Tien(Model.PhatChuaNop)</div>
+                            <div class="small text-muted">Phạt chưa nộp</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

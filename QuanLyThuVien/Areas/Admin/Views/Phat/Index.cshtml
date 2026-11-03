@@ -1,0 +1,284 @@
+﻿
+@model List<QuanLyThuVien.ViewModels.Admin.Phat.PhatListItemViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý tiền phạt";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    string keyword = ViewBag.Keyword as string ?? "";
+    string trangThai = ViewBag.TrangThai as string ?? "";
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 0;
+    int total = ViewBag.Total ?? 0;
+
+    decimal tongNo = ViewBag.TongNo ?? 0m;
+    decimal daThu = ViewBag.DaThu ?? 0m;
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold">Quản lý tiền phạt</h3>
+            <p class="text-secondary mb-0">
+                Quản lý vi phạm và thanh toán tiền phạt thư viện
+            </p>
+        </div>
+
+        <a href="@Url.Action("Create", "Phat", new { area = "Admin" })"
+           class="btn btn-primary">
+            + Tạo khoản phạt
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-secondary">Khoản phạt trong kết quả lọc</p>
+                    <h3>@total</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-secondary">
+                        Tổng tiền chưa thanh toán
+                    </p>
+                    <h3 class="text-danger">
+                        @tongNo.ToString("N0") đ
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-secondary">
+                        Tổng tiền đã thu
+                    </p>
+                    <h3 class="text-success">
+                        @daThu.ToString("N0") đ
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get"
+                  action="@Url.Action("Index", "Phat", new { area = "Admin" })">
+
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <input name="keyword"
+                               value="@keyword"
+                               class="form-control"
+                               placeholder="Tìm độc giả, sách, mã phiếu..." />
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="trangThai" class="form-select">
+                            <option value="">Tất cả trạng thái</option>
+
+                            @if (trangThai == "ChuaThanhToan")
+                            {
+                                <option value="ChuaThanhToan" selected>
+                                    Chưa thanh toán
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="ChuaThanhToan">
+                                    Chưa thanh toán
+                                </option>
+                            }
+
+                            @if (trangThai == "DaThanhToan")
+                            {
+                                <option value="DaThanhToan" selected>
+                                    Đã thanh toán
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="DaThanhToan">
+                                    Đã thanh toán
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 d-flex gap-2">
+                        <button type="submit"
+                                class="btn btn-primary flex-fill">
+                            Tìm kiếm
+                        </button>
+
+                        <a href="@Url.Action("Index", "Phat", new { area = "Admin" })"
+                           class="btn btn-outline-secondary">
+                            Đặt lại
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Độc giả</th>
+                            <th>Sách</th>
+                            <th>Loại phạt</th>
+                            <th>Lý do</th>
+                            <th>Số tiền</th>
+                            <th>Ngày tạo</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            string tenLoai = item.LoaiPhat switch
+                            {
+                                "TraMuon" => "Trả muộn",
+                                "HuHong" => "Hư hỏng",
+                                "MatSach" => "Mất sách",
+                                _ => item.LoaiPhat
+                            };
+
+                            <tr>
+                                <td>@item.Id</td>
+
+                                <td>
+                                    <strong>@item.HoTen</strong>
+                                    <div class="small text-secondary">
+                                        @item.MaDocGia
+                                    </div>
+                                    <div class="small text-secondary">
+                                        @item.MaPhieu
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @item.TenSach
+                                    <div class="small text-secondary">
+                                        Mã vạch: @item.MaVach
+                                    </div>
+                                </td>
+
+                                <td>@tenLoai</td>
+
+                                <td>@(item.LyDo ?? "—")</td>
+
+                                <td>
+                                    <strong>
+                                        @item.SoTien.ToString("N0") đ
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    @item.NgayTao.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>
+                                    @if (item.DaThanhToan)
+                                    {
+                                        <span class="badge bg-success">
+                                            Đã thanh toán
+                                        </span>
+                                        <div class="small text-secondary">
+                                            @item.NgayThanhToan?.ToString("dd/MM/yyyy")
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            Chưa thanh toán
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (!item.DaThanhToan)
+                                    {
+                                        <form method="post"
+                                              action="@Url.Action("Pay", "Phat", new { area = "Admin", id = item.Id })"
+                                              onsubmit="return confirm('Xác nhận đã nhận tiền phạt?');">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-success">
+                                                Thanh toán
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-secondary">
+                                            Hoàn tất
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center py-4">
+                                    Không tìm thấy khoản phạt nào.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <nav class="mt-3">
+                    <ul class="pagination justify-content-end">
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            <li class="page-item @(i == page ? "active" : "")">
+                                <a class="page-link"
+                                   href="@Url.Action("Index", "Phat", new { area = "Admin", keyword = keyword, trangThai = trangThai, page = i })">
+                                    @i
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+
+        </div>
+    </div>
+</div>

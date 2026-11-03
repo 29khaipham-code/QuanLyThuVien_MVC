@@ -21,6 +21,8 @@ public partial class DocGium
 
     public string? DiaChi { get; set; }
 
+    public string? AnhDaiDienUrl { get; set; }
+
     public DateOnly NgayDangKy { get; set; }
 
     public DateOnly NgayHetHan { get; set; }

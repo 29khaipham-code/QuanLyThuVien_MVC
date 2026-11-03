@@ -1,0 +1,196 @@
+﻿@model QuanLyThuVien.ViewModels.Admin.Sach.SachFormViewModel
+
+<div asp-validation-summary="All"
+     class="text-danger mb-3"></div>
+
+<input asp-for="Id" type="hidden" />
+
+<div class="row g-3">
+
+    <div class="col-md-4">
+        <label class="form-label">ISBN</label>
+
+        <input asp-for="Isbn"
+               class="form-control"
+               placeholder="Nhập ISBN" />
+
+        <span asp-validation-for="Isbn"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-8">
+        <label class="form-label">Tên sách *</label>
+
+        <input asp-for="TieuDe"
+               class="form-control"
+               placeholder="Nhập tên sách" />
+
+        <span asp-validation-for="TieuDe"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Thể loại *</label>
+
+        <input asp-for="TenTheLoai"
+               class="form-control"
+               placeholder="" />
+
+        <span asp-validation-for="TenTheLoai"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Nhà xuất bản *</label>
+
+        <input asp-for="TenNhaXuatBan"
+               class="form-control"
+               placeholder="" />
+
+        <span asp-validation-for="TenNhaXuatBan"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label">Tác giả *</label>
+
+        <input asp-for="TenTacGia"
+               class="form-control"
+               placeholder="" />
+
+        <span asp-validation-for="TenTacGia"
+              class="text-danger"></span>
+
+        <div class="form-text">
+            Nếu có nhiều tác giả, ngăn cách bằng dấu ;
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Năm xuất bản</label>
+
+        <input asp-for="NamXuatBan"
+               type="number"
+               min="1"
+               max="9999"
+               class="form-control"
+               placeholder="2024" />
+
+        <span asp-validation-for="NamXuatBan"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Lần tái bản</label>
+
+        <input asp-for="LanTaiBan"
+               type="number"
+               min="1"
+               class="form-control"
+               placeholder="1" />
+
+        <span asp-validation-for="LanTaiBan"
+              class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Trạng thái</label>
+
+        <select asp-for="TrangThai" class="form-select">
+            <option value="HoatDong">Hoạt động</option>
+            <option value="NgungPhucVu">Ngừng phục vụ</option>
+        </select>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label">Mô tả</label>
+
+        <textarea asp-for="MoTa"
+                  rows="4"
+                  class="form-control"></textarea>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label fw-bold">Ảnh bìa sách</label>
+
+        @if (!string.IsNullOrWhiteSpace(Model.AnhBiaUrl))
+        {
+            <div class="mb-3">
+                <p class="text-muted small">Ảnh hiện tại:</p>
+
+                <img src="@Model.AnhBiaUrl"
+                     alt="Ảnh bìa hiện tại"
+                     style="width:130px;height:180px;
+                object-fit:cover;
+                border-radius:8px;" />
+            </div>
+        }
+
+        <input asp-for="AnhBiaFile"
+               type="file"
+               id="AnhBiaFile"
+               class="form-control"
+               accept=".jpg,.jpeg,.png,.webp" />
+
+        <span asp-validation-for="AnhBiaFile"
+              class="text-danger"></span>
+
+        <div class="form-text">
+            JPG, PNG, WebP — tối đa 2 MB.
+            Không chọn ảnh mới sẽ giữ nguyên ảnh cũ.
+        </div>
+
+        <div class="mt-3">
+            <img id="AnhBiaPreview"
+                 alt="Ảnh mới"
+                 style="display:none;
+            width:130px;height:180px;
+            object-fit:cover;
+            border-radius:8px;" />
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("AnhBiaFile");
+        const preview = document.getElementById("AnhBiaPreview");
+
+        if (!input || !preview) return;
+
+        let oldUrl = null;
+
+        input.addEventListener("change", function () {
+            if (oldUrl) {
+                URL.revokeObjectURL(oldUrl);
+                oldUrl = null;
+            }
+
+            const file = input.files[0];
+
+            if (!file) {
+                preview.style.display = "none";
+                preview.removeAttribute("src");
+                return;
+            }
+
+            const valid = [
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+            ];
+
+            if (!valid.includes(file.type) ||
+                file.size > 2 * 1024 * 1024) {
+                alert("Chỉ chọn JPG, PNG hoặc WebP tối đa 2 MB.");
+                input.value = "";
+                preview.style.display = "none";
+                return;
+            }
+
+            oldUrl = URL.createObjectURL(file);
+            preview.src = oldUrl;
+            preview.style.display = "block";
+        });
+    });
+</script>

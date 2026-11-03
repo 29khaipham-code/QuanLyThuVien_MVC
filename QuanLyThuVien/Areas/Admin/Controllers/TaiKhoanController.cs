@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using QuanLyThuVien.ViewModels.TaiKhoan;
+using QuanLyThuVien.ViewModels.Admin.TaiKhoan;
 
 using QuanLyThuVien.Models;
-using QuanLyThuVien.ViewModels.TaiKhoan;
+
 
 namespace QuanLyThuVien.Areas.Admin.Controllers
 {

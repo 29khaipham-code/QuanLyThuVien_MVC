@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyThuVien.Models;
-using QuanLyThuVien.ViewModels.Sach;
+using QuanLyThuVien.ViewModels.Admin.Sach;
+
 
 namespace QuanLyThuVien.Areas.Admin.Controllers
 {

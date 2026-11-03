@@ -1,0 +1,127 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.SachIndexViewModel;
+
+@{
+    // Tạo link phân trang, giữ nguyên bộ lọc
+    string Link(int trang) => Url.Action("Index", "Sach", new
+    {
+        area = "DocGia",
+        tuKhoa = Model.TuKhoa,
+        theLoaiId = Model.TheLoaiId,
+        nhaXuatBanId = Model.NhaXuatBanId,
+        conSach = Model.ConSach ? "true" : null,
+        sapXep = Model.SapXep,
+        trang
+    })!;
+
+    string Anh(string u) => u.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+        ? u
+        : Url.Content("~/" + u.TrimStart('~', '/'));
+
+    int tu = Math.Max(1, Model.Trang - 2);
+    int den = Math.Min(Model.TongTrang, Model.Trang + 2);
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3 px-1">
+    <p class="text-muted mb-0 fw-semibold">Tìm thấy <strong class="text-dark">@Model.TongSo</strong> đầu sách</p>
+</div>
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info p-4 mb-4">Không tìm thấy sách phù hợp. Hãy thử đổi từ khóa hoặc bỏ bớt bộ lọc.</div>
+}
+else
+{
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var s in Model.Items)
+        {
+            <div class="col">
+                <div class="card dg-book-item-card h-100">
+                    <div class="dg-card-img-wrapper overflow-hidden">
+                        @if (string.IsNullOrEmpty(s.AnhBiaUrl))
+                        {
+                            <div class="dg-img-placeholder text-center text-secondary py-5">
+                                <i class="bi bi-book fs-1"></i>
+                            </div>
+                        }
+                        else
+                        {
+                            <img src="@Anh(s.AnhBiaUrl)" class="card-img-top dg-book-img" alt="@s.TieuDe" />
+                        }
+                    </div>
+
+                    <div class="card-body d-flex flex-column p-3">
+                        <h6 class="card-title mb-2 dg-book-title">
+                            <a class="stretched-link text-decoration-none text-dark fw-bold"
+                               asp-area="DocGia" asp-controller="Sach" asp-action="ChiTiet" asp-route-id="@s.Id">@s.TieuDe</a>
+                        </h6>
+                        <div class="small text-muted mb-1 fw-medium"><i class="bi bi-person me-1"></i>@s.TacGia</div>
+                        <div class="small text-muted mt-auto">
+                            <span class="dg-category-tag">@s.TheLoai</span>@(s.NamXuatBan.HasValue ? " · " + s.NamXuatBan : "")
+                        </div>
+                    </div>
+
+                    <!-- Sử dụng lại hoàn toàn cấu trúc badge gốc của bạn để chắc chắn hiển thị đúng -->
+                    <div class="card-footer bg-white border-0 pt-0 pb-3 px-3">
+                        @if (s.SanSang > 0)
+                        {
+                            <span class="badge bg-success">Còn @s.SanSang/@s.TongBanSao bản</span>
+                        }
+                        else if (s.TongBanSao > 0)
+                        {
+                            <span class="badge bg-secondary">Tạm hết bản</span>
+                        }
+                        else if (!s.CoSachDienTu)
+                        {
+                            <span class="badge bg-secondary">Chưa có bản</span>
+                        }
+
+                        @if (s.CoSachDienTu)
+                        {
+                            <span class="badge bg-info text-dark">E-book</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (Model.TongTrang > 1)
+    {
+        <nav class="mt-5 mb-3" aria-label="Phân trang">
+            <ul class="pagination justify-content-center flex-wrap gap-1">
+                <li class="page-item @(Model.Trang == 1 ? "disabled" : "")">
+                    <a class="page-link dg-page-link" href="@Link(Math.Max(1, Model.Trang - 1))" aria-label="Trang trước">&laquo;</a>
+                </li>
+
+                @if (tu > 1)
+                {
+                    <li class="page-item"><a class="page-link dg-page-link" href="@Link(1)">1</a></li>
+                    @if (tu > 2)
+                    {
+                        <li class="page-item disabled"><span class="page-link border-0 bg-transparent">&hellip;</span></li>
+                    }
+                }
+
+                @for (var p = tu; p <= den; p++)
+                {
+                    <li class="page-item @(p == Model.Trang ? "active" : "")">
+                        <a class="page-link dg-page-link" href="@Link(p)">@p</a>
+                    </li>
+                }
+
+                @if (den < Model.TongTrang)
+                {
+                    @if (den < Model.TongTrang - 1)
+                    {
+                        <li class="page-item disabled"><span class="page-link border-0 bg-transparent">&hellip;</span></li>
+                    }
+                    <li class="page-item"><a class="page-link dg-page-link" href="@Link(Model.TongTrang)">@Model.TongTrang</a></li>
+                }
+
+                <li class="page-item @(Model.Trang == Model.TongTrang ? "disabled" : "")">
+                    <a class="page-link dg-page-link" href="@Link(Math.Min(Model.TongTrang, Model.Trang + 1))" aria-label="Trang sau">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    }
+}

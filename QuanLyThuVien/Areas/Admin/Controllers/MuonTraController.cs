@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Security.Claims;
 using QuanLyThuVien.Models;
-using QuanLyThuVien.ViewModels.MuonTra;
+using QuanLyThuVien.ViewModels.Admin.MuonTra;
 
 namespace QuanLyThuVien.Areas.Admin.Controllers
 {

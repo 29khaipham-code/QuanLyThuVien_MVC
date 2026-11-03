@@ -149,6 +149,9 @@ public partial class QuanLyThuVienContext : DbContext
                 .IsUnique()
                 .HasFilter("([TaiKhoanId] IS NOT NULL)");
 
+            entity.Property(e => e.AnhDaiDienUrl)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.DiaChi).HasMaxLength(255);
             entity.Property(e => e.Email)
                 .HasMaxLength(100)

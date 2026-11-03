@@ -1,0 +1,121 @@
+﻿@{
+    var ctrl = ViewContext.RouteData.Values["controller"]?.ToString();
+    string Active(string c) => ctrl == c ? "active" : "";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Thư viện</title>
+
+    <!-- Google Fonts for Playful Geometric typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@700;800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/DocGia/docgia.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="dg-body">
+    <!-- Geometric Background Decorative Shapes -->
+    <div class="pg-geo-shape pg-geo-circle" aria-hidden="true"></div>
+    <div class="pg-geo-shape pg-geo-triangle" aria-hidden="true"></div>
+    <div class="pg-geo-shape pg-geo-arch" aria-hidden="true"></div>
+
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-dark dg-navbar">
+            <div class="container">
+                <a class="navbar-brand fw-bold" asp-area="DocGia" asp-controller="Home" asp-action="Index">
+                    <span class="brand-badge"><i class="bi bi-book-half"></i></span>
+                    <span class="brand-title">Thư viện</span>
+                </a>
+
+                <button class="navbar-toggler dg-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#dgNav" aria-controls="dgNav" aria-expanded="false" aria-label="Mở menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="dgNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 dg-nav-list">
+                        <li class="nav-item">
+                            <a class="nav-link @Active("Home")" asp-area="DocGia" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @Active("Sach")" asp-area="DocGia" asp-controller="Sach" asp-action="Index">Tra cứu sách</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @Active("SachDienTu")" asp-area="DocGia" asp-controller="SachDienTu" asp-action="Index">Sách điện tử</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @Active("MuonTra")" asp-area="DocGia" asp-controller="MuonTra" asp-action="Index">Đang mượn</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @Active("DatTruoc")" asp-area="DocGia" asp-controller="DatTruoc" asp-action="Index">Đặt trước</a>
+                        </li>
+                    </ul>
+
+                    <form class="d-flex me-lg-3 mb-2 mb-lg-0 dg-search-form" method="get"
+                          asp-area="DocGia" asp-controller="Sach" asp-action="Index" role="search">
+                        <input class="form-control form-control-sm dg-search-input" type="search" name="tuKhoa"
+                               placeholder="Tìm sách, tác giả..." aria-label="Tìm kiếm" />
+                        <button class="btn btn-sm dg-btn-search" type="submit" aria-label="Tìm">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle dg-user-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle me-1"></i> @User.Identity?.Name
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end dg-dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-area="DocGia" asp-controller="HoSo" asp-action="Index">
+                                        <i class="bi bi-person me-2"></i>Hồ sơ cá nhân
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="DocGia" asp-controller="HoSo" asp-action="DoiMatKhau">
+                                        <i class="bi bi-key me-2"></i>Đổi mật khẩu
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                    <form method="post" asp-area="" asp-controller="Account" asp-action="Logout">
+                                        <button type="submit" class="dropdown-item text-danger fw-bold">
+                                            <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container py-4 dg-main-container">
+        <!-- Book Card Wrapper for main page body context -->
+        <div class="dg-book-shape">
+            <div class="dg-book-tab" aria-hidden="true"></div>
+            <div class="dg-book-content">
+                @RenderBody()
+            </div>
+        </div>
+    </main>
+
+    <footer class="dg-footer text-muted">
+        <div class="container text-center py-3 small">
+            &copy; @DateTime.Now.Year - Hệ thống quản lý thư viện
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

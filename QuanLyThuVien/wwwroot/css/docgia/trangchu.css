@@ -1,0 +1,251 @@
+﻿:root {
+    --dp-color-ground: #fffdf5;
+    --dp-color-panel: #ffffff;
+    --dp-color-ink: #253044;
+    --dp-color-outline: #252b3a;
+    --dp-color-accent: #6434df;
+    --dp-color-accent-secondary: #ff78c5;
+    --dp-color-accent-warm: #ffd05b;
+    --dp-color-accent-fresh: #9bf1cd;
+    --dp-color-field-soft: #e9fff5;
+    --dp-color-selection: #f1ebff;
+    --dp-color-rule-muted: #b8b6c5;
+    --dp-typography-display: "PlayfulGeometricDisplay", sans-serif;
+    --dp-typography-reading: "PlayfulGeometricReading", sans-serif;
+    --dp-radius-corner: 17px;
+    --dp-border-outline-width: 3px;
+    --dp-border-detail-width: 2px;
+    --dp-motion-interaction: 180ms;
+}
+
+body {
+    background-color: var(--dp-color-ground);
+    color: var(--dp-color-ink);
+    font-family: var(--dp-typography-reading);
+}
+
+.dg-home {
+    font-family: var(--dp-typography-reading);
+}
+
+/* Banner carousel styling */
+.dg-banner {
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    border-radius: var(--dp-radius-corner);
+}
+
+.dg-banner-body {
+    padding: 2.5rem 3.5rem;
+    max-width: 720px;
+}
+
+.dg-banner h2 {
+    font-family: var(--dp-typography-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+/* Playful Geometric Book/Panel containers */
+.dg-panel-box {
+    background-color: var(--dp-color-panel);
+    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
+    border-radius: var(--dp-radius-corner);
+    box-shadow: 4px 4px 0px var(--dp-color-outline);
+    transition: transform var(--dp-motion-interaction) ease, box-shadow var(--dp-motion-interaction) ease;
+}
+
+/* Stat cards styling with hard offset shadow */
+.dg-stat-card {
+    background-color: var(--dp-color-panel);
+    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
+    border-radius: var(--dp-radius-corner);
+    box-shadow: 3px 3px 0px var(--dp-color-outline);
+    transition: transform var(--dp-motion-interaction) ease, box-shadow var(--dp-motion-interaction) ease;
+}
+
+    .dg-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 3px 5px 0px var(--dp-color-outline);
+    }
+
+/* Horizontal book shelf */
+.dg-shelf {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: .75rem;
+    scroll-snap-type: x proximity;
+}
+
+.dg-shelf-item {
+    flex: 0 0 170px;
+    scroll-snap-align: start;
+}
+
+/* Buttons & Actions */
+.dg-btn-action {
+    background-color: var(--dp-color-accent);
+    color: #fff;
+    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
+    border-radius: var(--dp-radius-corner);
+    box-shadow: 3px 3px 0px var(--dp-color-outline);
+    font-family: var(--dp-typography-reading);
+    font-weight: 600;
+    transition: transform var(--dp-motion-interaction) ease, box-shadow var(--dp-motion-interaction) ease;
+}
+
+    .dg-btn-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 3px 5px 0px var(--dp-color-outline);
+        color: #fff;
+    }
+
+    .dg-btn-action:active {
+        transform: translateY(1px);
+        box-shadow: 1px 1px 0px var(--dp-color-outline);
+    }
+
+/* Topic pills / badges */
+.dg-topic-badge {
+    background-color: var(--dp-color-panel);
+    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
+    border-radius: 50rem;
+    color: var(--dp-color-ink);
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    box-shadow: 2px 2px 0px var(--dp-color-outline);
+    transition: transform var(--dp-motion-interaction) ease, background-color var(--dp-motion-interaction) ease;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+    .dg-topic-badge:hover {
+        background-color: var(--dp-color-selection);
+        color: var(--dp-color-accent);
+        transform: translateY(-2px);
+        box-shadow: 2px 4px 0px var(--dp-color-outline);
+    }
+
+/* Section Headings */
+.dg-section-title {
+    font-family: var(--dp-typography-display);
+    font-weight: 700;
+    color: var(--dp-color-ink);
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+}
+/* Khung panel bọc kệ sách */
+.dg-panel-box {
+    background-color: var(--dp-color-panel);
+    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
+    border-radius: var(--dp-radius-corner);
+    box-shadow: 4px 4px 0px var(--dp-color-outline);
+    transition: transform var(--dp-motion-interaction) ease, box-shadow var(--dp-motion-interaction) ease;
+}
+
+/* Kệ sách cuộn ngang */
+.dg-shelf {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: .75rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+}
+
+.dg-shelf-item {
+    flex: 0 0 170px;
+    scroll-snap-align: start;
+}
+
+/* Nút phụ / Badge tương tác */
+.dg-topic-badge {
+    background-color: var(--dp-color-panel);
+    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
+    border-radius: 50rem;
+    color: var(--dp-color-ink);
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    box-shadow: 2px 2px 0px var(--dp-color-outline);
+    transition: transform var(--dp-motion-interaction) ease, background-color var(--dp-motion-interaction) ease;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+    .dg-topic-badge:hover {
+        background-color: var(--dp-color-selection);
+        color: var(--dp-color-accent);
+        transform: translateY(-2px);
+        box-shadow: 2px 4px 0px var(--dp-color-outline);
+    }
+/* ==========================================
+   HIỆU ỨNG HOVER CHO QUYỂN SÁCH TRONG KỆ
+   ========================================== */
+.dg-shelf-item-card {
+    transition: transform var(--dp-motion-interaction) ease;
+}
+
+    /* Áp dụng hiệu ứng nổi khối hard-offset shadow cho thẻ card quyển sách */
+    .dg-shelf-item-card .card,
+    .dg-shelf-item-card .dg-sach-card {
+        border: var(--dp-border-outline-width) solid var(--dp-color-outline) !important;
+        border-radius: var(--dp-radius-corner) !important;
+        background-color: var(--dp-color-panel);
+        box-shadow: 3px 3px 0px var(--dp-color-outline);
+        transition: transform var(--dp-motion-interaction) cubic-bezier(0.16, 1, 0.3, 1), box-shadow var(--dp-motion-interaction) cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform, box-shadow;
+        overflow: hidden;
+    }
+
+    /* Kích hoạt khi di chuột (Hover) */
+    .dg-shelf-item-card:hover .card,
+    .dg-shelf-item-card:hover .dg-sach-card,
+    .dg-shelf-item-card:hover {
+        transform: translateY(-5px);
+    }
+
+        .dg-shelf-item-card:hover .card,
+        .dg-shelf-item-card:hover .dg-sach-card {
+            box-shadow: 5px 8px 0px var(--dp-color-outline);
+            border-color: var(--dp-color-accent) !important;
+        }
+
+    /* Khi nhấn vào (Active / Press) */
+    .dg-shelf-item-card:active .card,
+    .dg-shelf-item-card:active .dg-sach-card {
+        transform: translateY(-1px);
+        box-shadow: 2px 2px 0px var(--dp-color-outline);
+    }
+
+    /* Phóng to nhẹ ảnh bìa sách khi di chuột */
+    .dg-shelf-item-card img {
+        transition: transform 300ms ease;
+    }
+
+    .dg-shelf-item-card:hover img {
+        transform: scale(1.04);
+    }
+
+/* Tôn trọng cài đặt giảm chuyển động hệ thống (Accessibility) */
+@media (prefers-reduced-motion: reduce) {
+    .dg-shelf-item-card,
+    .dg-shelf-item-card .card,
+    .dg-shelf-item-card img {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+}

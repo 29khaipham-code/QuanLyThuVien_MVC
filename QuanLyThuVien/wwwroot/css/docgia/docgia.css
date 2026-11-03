@@ -1,0 +1,377 @@
+﻿/* Playful Geometric Design System Variables */
+:root {
+    --dp-color-ground: #fffdf5;
+    --dp-color-panel: #ffffff;
+    --dp-color-ink: #253044;
+    --dp-color-outline: #252b3a;
+    --dp-color-accent: #6434df;
+    --dp-color-accent-secondary: #ff78c5;
+    --dp-color-accent-warm: #ffd05b;
+    --dp-color-accent-fresh: #9bf1cd;
+    --dp-color-field-soft: #e9fff5;
+    --dp-color-selection: #f1ebff;
+    --dp-color-rule-muted: #b8b6c5;
+    --dp-typography-display: "Host Grotesk", sans-serif;
+    --dp-typography-reading: "Instrument Sans", sans-serif;
+    --dp-typography-reading-compact: 16px;
+    --dp-typography-label: 14px;
+    --dp-typography-metadata: 13px;
+    --dp-typography-reading-leading: 1.65;
+    --dp-radius-corner: 17px;
+    --dp-border-outline-width: 3px;
+    --dp-border-detail-width: 2px;
+    --dp-motion-interaction: 180ms;
+}
+
+/* Base Body Style */
+body.dg-body {
+    background-color: var(--dp-color-ground);
+    color: var(--dp-color-ink);
+    font-family: var(--dp-typography-reading);
+    font-size: var(--dp-typography-reading-compact);
+    line-height: var(--dp-typography-reading-leading);
+    margin: 0;
+    padding: 0;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Typography Headings */
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: var(--dp-typography-display);
+    color: var(--dp-color-outline);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+/* Background Decorative Geometry */
+.pg-geo-shape {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
+}
+
+.pg-geo-circle {
+    top: 60px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: var(--dp-color-accent-warm);
+    box-shadow: 4px 4px 0px var(--dp-color-outline);
+}
+
+.pg-geo-triangle {
+    bottom: 120px;
+    left: -20px;
+    width: 90px;
+    height: 90px;
+    background-color: var(--dp-color-accent-secondary);
+    border-radius: 12px;
+    transform: rotate(15deg);
+    box-shadow: 4px 4px 0px var(--dp-color-outline);
+}
+
+.pg-geo-arch {
+    top: 40%;
+    right: 2%;
+    width: 60px;
+    height: 90px;
+    background-color: var(--dp-color-accent-fresh);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    box-shadow: 4px 4px 0px var(--dp-color-outline);
+}
+
+/* Header & Navbar */
+.dg-navbar {
+    background-color: var(--dp-color-accent);
+    border-bottom: var(--dp-border-outline-width) solid var(--dp-color-outline);
+    box-shadow: 0 4px 0 var(--dp-color-outline);
+    padding: 0.75rem 1rem;
+    z-index: 1030;
+}
+
+.navbar-brand {
+    font-family: var(--dp-typography-display);
+    font-size: 1.35rem;
+    color: #ffffff !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.brand-badge {
+    background-color: var(--dp-color-accent-warm);
+    color: var(--dp-color-outline);
+    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
+    border-radius: 10px;
+    padding: 2px 8px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.dg-nav-list .nav-link {
+    font-weight: 600;
+    color: #ffffff !important;
+    padding: 8px 14px !important;
+    margin: 0 3px;
+    border-radius: 10px;
+    border: var(--dp-border-detail-width) solid transparent;
+    transition: all var(--dp-motion-interaction) ease;
+}
+
+    .dg-nav-list .nav-link:hover,
+    .dg-nav-list .nav-link.active {
+        background-color: var(--dp-color-accent-warm);
+        color: var(--dp-color-outline) !important;
+        border-color: var(--dp-color-outline);
+        box-shadow: 3px 3px 0px var(--dp-color-outline);
+        transform: translateY(-2px);
+    }
+
+.dg-toggler {
+    background-color: var(--dp-color-accent-warm);
+    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
+    border-radius: 10px;
+    box-shadow: 2px 2px 0 var(--dp-color-outline);
+}
+
+/* Search Form Component */
+.dg-search-form .dg-search-input {
+    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
+    border-radius: 12px;
+    padding: 6px 12px;
+    background-color: var(--dp-color-panel);
+}
+
+    .dg-search-form .dg-search-input:focus {
+        border-color: var(--dp-color-outline);
+        box-shadow: 0 0 0 3px var(--dp-color-selection);
+    }
+
+.dg-btn-search {
+    background-color: var(--dp-color-accent-secondary);
+    color: var(--dp-color-outline);
+    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
+    border-radius: 12px;
+    font-weight: bold;
+    box-shadow: 3px 3px 0 var(--dp-color-outline);
+    transition: transform var(--dp-motion-interaction), box-shadow var(--dp-motion-interaction);
+}
+
+    .dg-btn-search:hover {
+        transform: translateY(-2px);
+        box-shadow: 4px 4px 0 var(--dp-color-outline);
+        background-color: var(--dp-color-accent-secondary);
+    }
+
+    .dg-btn-search:active {
+        transform: translateY(1px);
+        box-shadow: 1px 1px 0 var(--dp-color-outline);
+    }
+
+/* User Dropdown */
+.dg-user-toggle {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.dg-dropdown-menu {
+    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
+    border-radius: var(--dp-radius-corner);
+    box-shadow: 4px 4px 0 var(--dp-color-outline);
+    padding: 8px;
+    background-color: var(--dp-color-panel);
+}
+
+    .dg-dropdown-menu .dropdown-item {
+        border-radius: 8px;
+        font-weight: 500;
+        padding: 8px 12px;
+        transition: background-color var(--dp-motion-interaction);
+    }
+
+        .dg-dropdown-menu .dropdown-item:hover {
+            background-color: var(--dp-color-selection);
+            color: var(--dp-color-accent);
+        }
+
+/* Main Container & Shared "Book Shape" Card */
+.dg-main-container {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.dg-book-shape {
+    position: relative;
+    background-color: var(--dp-color-panel);
+    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
+    border-radius: var(--dp-radius-corner);
+    box-shadow: 8px 8px 0px var(--dp-color-accent);
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+.dg-book-tab {
+    position: absolute;
+    top: -16px;
+    left: 30px;
+    width: 60px;
+    height: 16px;
+    background-color: var(--dp-color-accent-fresh);
+    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
+    border-bottom: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.dg-book-content {
+    padding: 2rem;
+}
+
+/* General Buttons, Inputs & Cards inside View pages */
+.btn-primary, .btn-main {
+    background-color: var(--dp-color-accent);
+    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
+    color: #ffffff;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 3px 3px 0 var(--dp-color-outline);
+    transition: transform var(--dp-motion-interaction), box-shadow var(--dp-motion-interaction);
+}
+
+    .btn-primary:hover, .btn-main:hover {
+        background-color: var(--dp-color-accent);
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 5px 5px 0 var(--dp-color-outline);
+    }
+
+    .btn-primary:active, .btn-main:active {
+        transform: translateY(1px);
+        box-shadow: 1px 1px 0 var(--dp-color-outline);
+    }
+
+.card {
+    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
+    border-radius: var(--dp-radius-corner);
+    box-shadow: 4px 4px 0 var(--dp-color-outline);
+    background-color: var(--dp-color-panel);
+    overflow: hidden;
+}
+
+/* Footer Style */
+.dg-footer {
+    margin-top: auto;
+    background-color: var(--dp-color-outline);
+    color: #e2e8f0 !important;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-top: var(--dp-border-outline-width) solid var(--dp-color-outline);
+    position: relative;
+    z-index: 1;
+}
+
+    .dg-footer div {
+        color: #e2e8f0;
+        font-family: var(--dp-typography-reading);
+    }
+
+/* Responsive Overrides */
+@media (max-width: 760px) {
+    .dg-book-content {
+        padding: 1.25rem;
+    }
+
+    .dg-book-shape {
+        box-shadow: 5px 5px 0px var(--dp-color-accent);
+    }
+
+    .pg-geo-shape {
+        display: none;
+    }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-delay: -1ms !important;
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        background-attachment: initial !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+        transform: none !important;
+    }
+}
+
+/* --- Playful Geometric Styles for Book Detail View (ChiTiet.cshtml) --- */
+.dg-detail-card {
+    border: var(--dp-border-outline-width) solid var(--dp-color-outline) !important;
+    border-radius: var(--dp-radius-corner) !important;
+    box-shadow: 6px 6px 0 var(--dp-color-outline) !important;
+    background-color: var(--dp-color-panel);
+}
+
+.dg-badge-category {
+    background-color: var(--dp-color-accent-warm) !important;
+    color: var(--dp-color-outline) !important;
+    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 6px 12px;
+    box-shadow: 2px 2px 0 var(--dp-color-outline);
+    display: inline-block;
+}
+
+.dg-meta-box {
+    background-color: var(--dp-color-field-soft) !important;
+    border: var(--dp-border-detail-width) solid var(--dp-color-outline) !important;
+    box-shadow: 3px 3px 0 var(--dp-color-outline);
+}
+
+.dg-btn-action {
+    border: var(--dp-border-detail-width) solid var(--dp-color-outline) !important;
+    border-radius: 12px !important;
+    font-weight: 700;
+    padding: 10px 20px;
+    box-shadow: 3px 3px 0 var(--dp-color-outline);
+    background-color: var(--dp-color-panel);
+    color: var(--dp-color-outline);
+    transition: transform var(--dp-motion-interaction), box-shadow var(--dp-motion-interaction);
+}
+
+    .dg-btn-action:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 4px 4px 0 var(--dp-color-outline);
+        background-color: var(--dp-color-selection);
+        color: var(--dp-color-accent);
+    }
+
+    .dg-btn-action:active:not(:disabled) {
+        transform: translateY(1px);
+        box-shadow: 1px 1px 0 var(--dp-color-outline);
+    }
+
+    .dg-btn-action:disabled {
+        opacity: 0.65;
+        background-color: #f1f5f9;
+        border-color: #cbd5e1;
+        box-shadow: none;
+        cursor: not-allowed;
+    }
+/* Ép màu chữ tối cho các badge trên nền pastel để dễ nhìn */
+.badge.dg-badge-available,
+.badge.dg-badge-out,
+.badge.dg-badge-ebook,
+.badge.dg-badge-none,
+.dg-badge-category {
+    color: var(--dp-color-outline) !important;
+    font-weight: 700 !important;
+}

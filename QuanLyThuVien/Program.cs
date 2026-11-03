@@ -63,6 +63,8 @@ builder.Services.AddScoped<
     PasswordHasher<TaiKhoan>>();
 
 // 6. Tạo ứng dụng sau khi đăng ký tất cả dịch vụ
+
+builder.Services.AddScoped<QuanLyThuVien.Services.SachCoverService>();
 var app = builder.Build();
 // KHỞI TẠO TÀI KHOẢN QUẢN TRỊ - CHỈ DÙNG KHI PHÁT TRIỂN
 if (app.Environment.IsDevelopment())
@@ -107,6 +109,45 @@ if (app.Environment.IsDevelopment())
         db.TaiKhoans.Add(admin);
         db.SaveChanges();
     }
+    // ===== TÀI KHOẢN ĐỘC GIẢ ĐỂ TEST (chỉ chạy khi Development) =====
+    var vaiTroDocGia = db.VaiTros.FirstOrDefault(x => x.TenVaiTro == "DocGia");
+
+    if (vaiTroDocGia != null && !db.TaiKhoans.Any(x => x.TenDangNhap == "docgia1"))
+    {
+        var loai = db.LoaiDocGia.FirstOrDefault()
+                   ?? new LoaiDocGium
+                   {
+                       TenLoai = "Sinh viên",
+                       SoSachToiDa = 5,
+                       SoNgayMuonToiDa = 14
+                   };
+
+        var tkDocGia = new TaiKhoan
+        {
+            TenDangNhap = "docgia1",
+            HoTen = "Độc giả Test",
+            Email = "docgia1@example.invalid",
+            HoatDong = true,
+            NgayTao = DateTime.Now,
+            VaiTroId = vaiTroDocGia.Id,
+            MatKhauHash = ""
+        };
+        tkDocGia.MatKhauHash = hasher.HashPassword(tkDocGia, "DocGia@123");
+
+        tkDocGia.DocGium = new DocGium
+        {
+            MaDocGia = "DGTEST01",
+            HoTen = "Độc giả Test",
+            Email = "docgia1@example.invalid",
+            NgayDangKy = DateOnly.FromDateTime(DateTime.Today),
+            NgayHetHan = DateOnly.FromDateTime(DateTime.Today.AddYears(1)),
+            TrangThai = "HoatDong",
+            LoaiDocGia = loai
+        };
+
+        db.TaiKhoans.Add(tkDocGia);
+        db.SaveChanges();
+    }
 }
 
 // 7. Cấu hình HTTP Request Pipeline
@@ -134,11 +175,22 @@ app.UseAuthorization();
 
 // 9. Cấu hình tài nguyên tĩnh
 app.MapStaticAssets();
-//9.5
+
+app.MapAreaControllerRoute(
+    name: "admin",
+    areaName: "Admin",
+    pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}");
+
+app.MapAreaControllerRoute(
+    name: "docgia",
+    areaName: "DocGia",
+    pattern: "DocGia/{controller=TongQuan}/{action=Index}/{id?}");
+
 app.MapControllerRoute(
     name: "areas",
-    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
-);
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
+
 // 10. Cấu hình đường dẫn Controller và Action
 app.MapControllerRoute(
     name: "default",
