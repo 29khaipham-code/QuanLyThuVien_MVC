@@ -1,0 +1,550 @@
+﻿
+/* =========================================
+   HỒ SƠ CÁ NHÂN
+========================================= */
+
+.dg-profile-page {
+    padding-top: 40px;
+    padding-bottom: 70px;
+    min-height: 70vh;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.dg-profile-header {
+    margin-bottom: 32px;
+}
+
+.dg-profile-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 12px;
+    color: var(--color-terracotta);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.dg-profile-title {
+    margin: 0 0 12px;
+    color: var(--text-primary);
+    font-family: Georgia, serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 700;
+}
+
+    .dg-profile-title span {
+        color: var(--color-terracotta);
+        font-style: italic;
+    }
+
+.dg-profile-description {
+    max-width: 650px;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.98rem;
+    line-height: 1.7;
+}
+
+/* =========================================
+   AVATAR CARD
+========================================= */
+
+.dg-profile-avatar-card {
+    position: sticky;
+    top: 100px;
+    padding: 28px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+}
+
+.dg-profile-avatar-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 17px;
+}
+
+.dg-profile-avatar,
+.dg-profile-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 140px;
+    border: 4px solid var(--color-sand);
+    border-radius: 50%;
+}
+
+.dg-profile-avatar {
+    object-fit: cover;
+}
+
+.dg-profile-avatar-placeholder {
+    color: var(--color-olive);
+    background: var(--color-paper);
+    font-size: 4rem;
+}
+
+.dg-profile-avatar-decoration {
+    position: absolute;
+    right: 2px;
+    bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    color: white;
+    background: var(--color-terracotta);
+    border: 3px solid var(--bg-card);
+    border-radius: 50%;
+    font-size: 0.85rem;
+}
+
+.dg-profile-name {
+    margin: 0 0 7px;
+    color: var(--text-primary);
+    font-family: Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.dg-profile-member-code {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.dg-profile-member-type {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 13px;
+    color: var(--color-terracotta);
+    background: var(--color-paper);
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.dg-profile-divider {
+    height: 1px;
+    margin: 22px 0;
+    background: var(--border-color);
+}
+
+/* Upload avatar */
+
+.dg-profile-upload-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: left;
+}
+
+.dg-profile-file-input {
+    width: 100%;
+    margin-bottom: 10px;
+    border-color: var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--color-paper);
+    font-size: 0.78rem;
+}
+
+    .dg-profile-file-input:focus {
+        border-color: var(--color-terracotta);
+        box-shadow: 0 0 0 3px rgba(200, 106, 74, 0.12);
+    }
+
+.dg-profile-upload-btn,
+.dg-profile-delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.86rem;
+    font-weight: 600;
+    transition: var(--transition-base);
+}
+
+.dg-profile-upload-btn {
+    color: white;
+    background: var(--color-terracotta);
+    border: 1px solid var(--color-terracotta);
+}
+
+    .dg-profile-upload-btn:hover {
+        color: white;
+        background: var(--color-brown);
+        border-color: var(--color-brown);
+    }
+
+.dg-profile-delete-btn {
+    color: var(--color-terracotta);
+    background: transparent;
+    border: 1px solid rgba(200, 106, 74, 0.35);
+}
+
+    .dg-profile-delete-btn:hover {
+        color: white;
+        background: var(--color-terracotta);
+    }
+
+.dg-profile-upload-note {
+    margin: 12px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.74rem;
+    line-height: 1.5;
+}
+
+/* =========================================
+   PROFILE SECTIONS
+========================================= */
+
+.dg-profile-section {
+    overflow: hidden;
+    margin-bottom: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+.dg-profile-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dg-profile-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.dg-profile-section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 45px;
+    height: 45px;
+    color: var(--color-terracotta);
+    background: var(--color-paper);
+    border-radius: var(--radius-md);
+    font-size: 1.25rem;
+}
+
+.dg-profile-section-heading h4 {
+    margin: 0 0 4px;
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.dg-profile-section-heading p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* Action buttons */
+
+.dg-profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dg-profile-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 9px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: var(--transition-base);
+}
+
+.dg-profile-edit-btn {
+    color: var(--color-terracotta);
+    background: var(--color-paper);
+    border-color: var(--color-clay);
+}
+
+    .dg-profile-edit-btn:hover {
+        color: white;
+        background: var(--color-terracotta);
+        border-color: var(--color-terracotta);
+    }
+
+.dg-profile-password-btn {
+    color: var(--text-secondary);
+    background: var(--bg-card);
+}
+
+    .dg-profile-password-btn:hover {
+        color: var(--color-brown);
+        background: var(--color-sand);
+        border-color: var(--color-clay);
+    }
+
+/* =========================================
+   INFORMATION LIST
+========================================= */
+
+.dg-profile-section-body {
+    padding: 24px;
+}
+
+.dg-profile-info-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 35px;
+    margin: 0;
+}
+
+.dg-profile-info-item {
+    display: grid;
+    grid-template-columns: minmax(110px, 0.8fr) minmax(0, 1.2fr);
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+    .dg-profile-info-item dt {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        color: var(--text-secondary);
+        font-size: 0.84rem;
+        font-weight: 500;
+    }
+
+        .dg-profile-info-item dt i {
+            margin-top: 2px;
+            color: var(--color-terracotta);
+        }
+
+    .dg-profile-info-item dd {
+        margin: 0;
+        color: var(--text-primary);
+        font-size: 0.88rem;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+.dg-profile-info-address {
+    grid-column: 1 / -1;
+}
+
+/* =========================================
+   LIBRARY CARD STATUS
+========================================= */
+
+.dg-profile-card-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 12px;
+    border-radius: 30px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+    .dg-profile-card-status.is-valid {
+        color: #536B3D;
+        background: rgba(122, 139, 94, 0.15);
+    }
+
+    .dg-profile-card-status.is-invalid {
+        color: #A94F35;
+        background: rgba(200, 106, 74, 0.13);
+    }
+
+/* =========================================
+   STATISTICS
+========================================= */
+
+.dg-profile-statistics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 26px;
+}
+
+.dg-profile-stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 12px;
+    background: var(--color-paper);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    text-align: center;
+    transition: var(--transition-base);
+}
+
+    .dg-profile-stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-soft);
+    }
+
+.dg-profile-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+}
+
+    .dg-profile-stat-icon.is-borrowing {
+        color: var(--color-terracotta);
+        background: rgba(200, 106, 74, 0.12);
+    }
+
+    .dg-profile-stat-icon.is-history {
+        color: var(--color-olive);
+        background: rgba(122, 139, 94, 0.14);
+    }
+
+    .dg-profile-stat-icon.is-fine {
+        color: #9A753E;
+        background: rgba(212, 191, 165, 0.35);
+    }
+
+.dg-profile-stat-value {
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+    .dg-profile-stat-value.is-danger {
+        color: var(--color-terracotta);
+    }
+
+.dg-profile-stat-label {
+    margin-top: 5px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 991px) {
+    .dg-profile-avatar-card {
+        position: static;
+    }
+
+    .dg-profile-section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .dg-profile-actions {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .dg-profile-page {
+        padding-top: 28px;
+        padding-bottom: 45px;
+    }
+
+    .dg-profile-section-body {
+        padding: 20px;
+    }
+
+    .dg-profile-info-list {
+        grid-template-columns: 1fr;
+    }
+
+    .dg-profile-info-address {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .dg-profile-title {
+        font-size: 2rem;
+    }
+
+    .dg-profile-section-header {
+        padding: 17px;
+    }
+
+    .dg-profile-section-body {
+        padding: 16px;
+    }
+
+    .dg-profile-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .dg-profile-action-btn {
+        font-size: 0.76rem;
+        padding: 9px 7px;
+    }
+
+    .dg-profile-info-item {
+        grid-template-columns: 115px minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .dg-profile-statistics {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .dg-profile-stat-card {
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        grid-template-rows: auto auto;
+        column-gap: 12px;
+        padding: 13px;
+        text-align: left;
+    }
+
+    .dg-profile-stat-icon {
+        grid-row: 1 / 3;
+        margin: 0;
+    }
+
+    .dg-profile-stat-value {
+        font-size: 1.1rem;
+    }
+
+    .dg-profile-stat-label {
+        margin-top: 2px;
+    }
+}

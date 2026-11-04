@@ -1,0 +1,24 @@
+﻿:root {
+    /* Màu sắc chủ đạo */
+    --color-paper: #F5F0EB;
+    --color-sand: #E8DED1;
+    --color-clay: #D4BFA5;
+    --color-terracotta: #C86A4A;
+    --color-olive: #7A8B5E;
+    --color-brown: #2D2A24;
+    /* Background */
+    --bg-primary: var(--color-paper);
+    --bg-card: #FFFFFF;
+    /* Text */
+    --text-primary: var(--color-brown);
+    --text-secondary: #777168;
+    /* Border và Shadow */
+    --border-color: var(--color-sand);
+    --shadow-soft: 0 4px 16px rgba(45, 42, 36, 0.08);
+    /* Bo góc */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    /* Hiệu ứng */
+    --transition-base: 0.3s ease;
+}

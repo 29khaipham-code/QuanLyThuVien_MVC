@@ -1,0 +1,367 @@
+﻿
+.dg-password-page {
+    padding-top: 28px;
+    padding-bottom: 64px;
+    max-width: 1100px;
+}
+
+/* Breadcrumb */
+.dg-password-breadcrumb {
+    margin-bottom: 28px;
+}
+
+    .dg-password-breadcrumb .breadcrumb {
+        margin-bottom: 0;
+        font-size: 0.9rem;
+    }
+
+    .dg-password-breadcrumb a {
+        color: var(--color-olive);
+        text-decoration: none;
+        transition: var(--transition-base);
+    }
+
+        .dg-password-breadcrumb a:hover {
+            color: var(--color-terracotta);
+        }
+
+    .dg-password-breadcrumb .breadcrumb-item.active {
+        color: var(--text-secondary);
+    }
+
+/* Header */
+.dg-password-header {
+    margin-bottom: 32px;
+}
+
+.dg-password-eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: var(--color-terracotta);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.dg-password-title {
+    margin-bottom: 10px;
+    color: var(--text-primary);
+    font-family: Georgia, serif;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+}
+
+.dg-password-description {
+    max-width: 600px;
+    margin-bottom: 0;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* Main layout */
+.dg-password-layout {
+    display: grid;
+    grid-template-columns: 0.8fr 1.5fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* Guide */
+.dg-password-guide {
+    padding: 30px;
+    background: var(--color-sand);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+}
+
+.dg-password-guide-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin-bottom: 22px;
+    color: var(--color-terracotta);
+    background: rgba(200, 106, 74, 0.12);
+    border-radius: var(--radius-md);
+    font-size: 1.7rem;
+}
+
+.dg-password-guide h2 {
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    font-family: Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.dg-password-guide > p {
+    margin-bottom: 24px;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.7;
+}
+
+.dg-password-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(45, 42, 36, 0.12);
+}
+
+.dg-password-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+    .dg-password-tip i {
+        margin-top: 2px;
+        color: var(--color-olive);
+        font-size: 1rem;
+    }
+
+/* Form card */
+.dg-password-card {
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+.dg-password-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dg-password-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    color: var(--color-terracotta);
+    background: rgba(200, 106, 74, 0.1);
+    border-radius: var(--radius-md);
+    font-size: 1.35rem;
+}
+
+.dg-password-card-heading h2 {
+    margin-bottom: 5px;
+    color: var(--text-primary);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.dg-password-card-heading p {
+    margin-bottom: 0;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+/* Fields */
+.dg-password-field {
+    margin-bottom: 22px;
+}
+
+    .dg-password-field .form-label {
+        display: block;
+        margin-bottom: 9px;
+        color: var(--text-primary);
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+.dg-password-input-wrapper {
+    position: relative;
+}
+
+.dg-password-input-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    z-index: 2;
+    color: var(--text-secondary);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.dg-password-input {
+    min-height: 48px;
+    padding: 10px 48px 10px 43px;
+    color: var(--text-primary);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 0.92rem;
+    transition: var(--transition-base);
+}
+
+    .dg-password-input::placeholder {
+        color: #aaa39a;
+    }
+
+    .dg-password-input:focus {
+        border-color: var(--color-terracotta);
+        box-shadow: 0 0 0 3px rgba(200, 106, 74, 0.12);
+    }
+
+.dg-password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-sm);
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+    .dg-password-toggle:hover {
+        color: var(--color-terracotta);
+        background: var(--color-paper);
+    }
+
+.dg-password-hint {
+    display: block;
+    margin-top: 8px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+    .dg-password-hint i {
+        margin-right: 4px;
+        color: var(--color-olive);
+    }
+
+.dg-password-field-error {
+    display: block;
+    margin-top: 6px;
+    color: #b5473c;
+    font-size: 0.82rem;
+}
+
+/* Validation */
+.dg-password-validation-summary {
+    margin-bottom: 18px;
+    color: #b5473c;
+    font-size: 0.88rem;
+}
+
+    .dg-password-validation-summary:empty {
+        display: none;
+    }
+
+    .dg-password-validation-summary ul {
+        margin-bottom: 0;
+        padding-left: 20px;
+    }
+
+.dg-password-input.input-validation-error {
+    border-color: #b5473c;
+}
+
+    .dg-password-input.input-validation-error:focus {
+        box-shadow: 0 0 0 3px rgba(181, 71, 60, 0.1);
+    }
+
+/* Actions */
+.dg-password-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border-color);
+}
+
+.dg-password-submit,
+.dg-password-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 11px 22px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition-base);
+}
+
+.dg-password-submit {
+    color: #fff;
+    background: var(--color-terracotta);
+    border: 1px solid var(--color-terracotta);
+    cursor: pointer;
+}
+
+    .dg-password-submit:hover {
+        color: #fff;
+        background: var(--color-brown);
+        border-color: var(--color-brown);
+        transform: translateY(-2px);
+    }
+
+.dg-password-cancel {
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border-color);
+}
+
+    .dg-password-cancel:hover {
+        color: var(--text-primary);
+        background: var(--color-paper);
+        border-color: var(--color-clay);
+    }
+
+/* Responsive */
+@media (max-width: 767.98px) {
+    .dg-password-page {
+        padding-top: 20px;
+        padding-bottom: 40px;
+    }
+
+    .dg-password-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .dg-password-guide {
+        padding: 24px;
+    }
+
+    .dg-password-card {
+        padding: 24px 20px;
+    }
+}
+
+@media (max-width: 420px) {
+    .dg-password-actions {
+        flex-direction: column;
+    }
+
+    .dg-password-submit,
+    .dg-password-cancel {
+        width: 100%;
+    }
+}
+

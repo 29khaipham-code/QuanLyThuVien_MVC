@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuanLyThuVien.Areas.DocGia.Helpers;
@@ -8,34 +7,30 @@ using QuanLyThuVien.ViewModels.TrangChu;
 
 namespace QuanLyThuVien.Areas.DocGia.Controllers
 {
+    // Khách (chưa đăng nhập) cũng xem được trang chủ; phần cá nhân chỉ hiện với độc giả đã đăng nhập
     [Area("DocGia")]
-    [Authorize(Roles = "DocGia")]
-    public class HomeController : Controller
+    [AllowAnonymous]
+    public class HomeController : DocGiaControllerBase
     {
         private const int SoSachMoiKe = 8;
         private const int SoKeChuDe = 3;
 
-        private readonly QuanLyThuVienContext _db;
-
-        public HomeController(QuanLyThuVienContext db)
+        public HomeController(QuanLyThuVienContext db) : base(db)
         {
-            _db = db;
         }
 
         public async Task<IActionResult> Index()
         {
-            var vm = new TrangChuViewModel { Banners = TaoBanner() };
-
-            var sachHoatDong = _db.Saches.AsNoTracking().Where(s => s.TrangThai == "HoatDong");
-
-            // 1. Hồ sơ độc giả gắn với tài khoản đang đăng nhập (có thể chưa có)
-            DocGium? dg = null;
-            if (int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var taiKhoanId))
+            var vm = new TrangChuViewModel
             {
-                dg = await _db.DocGia.AsNoTracking()
-                    .Include(d => d.LoaiDocGia)
-                    .FirstOrDefaultAsync(d => d.TaiKhoanId == taiKhoanId);
-            }
+                LaDocGia = LaDocGia,
+                Banners = TaoBanner(LaDocGia)
+            };
+
+            var sachHoatDong = Db.Saches.AsNoTracking().Where(s => s.TrangThai == "HoatDong");
+
+            // 1. Hồ sơ độc giả (null nếu là khách, nhân viên hoặc chưa có hồ sơ)
+            var dg = await LayDocGiaAsync();
 
             // Lịch sử: tiepCan = mọi sách từng mượn/đọc, daDocIds = sách đã trả hoặc đã mở đọc (mới nhất trước)
             var tiepCan = new List<int>();
@@ -62,10 +57,10 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             });
 
             // 3. Kệ "Gợi ý cho bạn": cùng thể loại với sách đã mượn/đọc, chưa mượn, nhiều lượt mượn nhất.
-            //    Chưa có lịch sử thì gợi ý các sách được mượn nhiều nhất.
+            //    Khách hoặc chưa có lịch sử thì gợi ý các sách được mượn nhiều nhất.
             var theLoaiYeuThich = tiepCan.Count == 0
                 ? new List<int>()
-                : await _db.Saches.AsNoTracking()
+                : await Db.Saches.AsNoTracking()
                     .Where(s => tiepCan.Contains(s.Id))
                     .GroupBy(s => s.TheLoaiId)
                     .OrderByDescending(g => g.Count())
@@ -85,14 +80,14 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
                     : "Những cuốn được mượn nhiều nhất",
                 Icon = "bi-lightbulb",
                 Items = await goiY
-                    .OrderByDescending(s => _db.ChiTietMuons.Count(c => c.BanSao.SachId == s.Id))
+                    .OrderByDescending(s => Db.ChiTietMuons.Count(c => c.BanSao.SachId == s.Id))
                     .ThenByDescending(s => s.Id)
                     .Take(SoSachMoiKe)
                     .ToItemViewModel()
                     .ToListAsync()
             });
 
-            // 4. Kệ "Sách đã đọc" (chỉ khi có hồ sơ và có lịch sử)
+            // 4. Kệ "Sách đã đọc" (chỉ khi là độc giả có lịch sử)
             if (daDocIds.Count > 0)
             {
                 var daDoc = await sachHoatDong
@@ -113,7 +108,7 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             vm.KeSach.Add(new KeSachViewModel
             {
                 TieuDe = "Sách điện tử",
-                MoTa = "Đọc trực tuyến mọi lúc mọi nơi",
+                MoTa = LaDocGia ? "Đọc trực tuyến mọi lúc mọi nơi" : "Đăng nhập để đọc trực tuyến",
                 Icon = "bi-tablet",
                 Items = await sachHoatDong
                     .Where(s => s.TepSachDienTus.Any(t => t.TrangThai == "HoatDong"))
@@ -124,7 +119,7 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             });
 
             // 6. Theo chủ đề: chip cho mọi thể loại + kệ cho các thể loại nhiều sách nhất
-            vm.TheLoais = await _db.TheLoais.AsNoTracking()
+            vm.TheLoais = await Db.TheLoais.AsNoTracking()
                 .Select(t => new TheLoaiThongKeViewModel
                 {
                     Id = t.Id,
@@ -156,34 +151,49 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
 
         // ---------- Hàm hỗ trợ ----------
 
-        // Các slide của carousel (muốn dùng ảnh thì gán AnhUrl, ví dụ "images/banner/b1.jpg")
-        private List<BannerViewModel> TaoBanner() => new()
+        // Các slide của carousel. Độc giả: slide 3 mời mượn sách; khách: slide 3 mời đăng nhập.
+        private List<BannerViewModel> TaoBanner(bool laDocGia)
         {
-            new BannerViewModel
+            var banners = new List<BannerViewModel>
             {
-                TieuDe = "Chào mừng đến với thư viện",
-                MoTa = "Tra cứu sách giấy và sách điện tử, đặt trước và theo dõi việc mượn trả ngay trên website.",
-                NutChu = "Tra cứu sách",
-                Url = Url.Action("Index", "Sach", new { area = "DocGia" })!,
-                LopNen = "bg-primary"
-            },
-            new BannerViewModel
-            {
-                TieuDe = "Sách mới về",
-                MoTa = "Cập nhật những đầu sách mới nhất của thư viện.",
-                NutChu = "Xem sách mới",
-                Url = Url.Action("Index", "Sach", new { area = "DocGia", sapXep = "moi" })!,
-                LopNen = "bg-success"
-            },
-            new BannerViewModel
-            {
-                TieuDe = "Mượn ngay hôm nay",
-                MoTa = "Lọc nhanh những cuốn còn sẵn trên kệ để đến mượn.",
-                NutChu = "Xem sách còn bản",
-                Url = Url.Action("Index", "Sach", new { area = "DocGia", conSach = "true" })!,
-                LopNen = "bg-dark"
-            }
-        };
+                new()
+                {
+                    TieuDe = "Chào mừng đến với thư viện",
+                    MoTa = "Tra cứu sách giấy và sách điện tử ngay trên website.",
+                    NutChu = "Tra cứu sách",
+                    Url = Url.Action("Index", "Sach", new { area = "DocGia" })!,
+                    LopNen = "bg-primary"
+                },
+                new()
+                {
+                    TieuDe = "Sách mới về",
+                    MoTa = "Cập nhật những đầu sách mới nhất của thư viện.",
+                    NutChu = "Xem sách mới",
+                    Url = Url.Action("Index", "Sach", new { area = "DocGia", sapXep = "moi" })!,
+                    LopNen = "bg-success"
+                }
+            };
+
+            banners.Add(laDocGia
+                ? new BannerViewModel
+                {
+                    TieuDe = "Mượn ngay hôm nay",
+                    MoTa = "Lọc nhanh những cuốn còn sẵn trên kệ để đến mượn.",
+                    NutChu = "Xem sách còn bản",
+                    Url = Url.Action("Index", "Sach", new { area = "DocGia", conSach = "true" })!,
+                    LopNen = "bg-dark"
+                }
+                : new BannerViewModel
+                {
+                    TieuDe = "Đăng nhập để dùng đầy đủ tính năng",
+                    MoTa = "Đặt trước sách, theo dõi mượn trả và đọc sách điện tử chỉ với một tài khoản độc giả.",
+                    NutChu = "Đăng nhập",
+                    Url = Url.Action("Login", "Account", new { area = "" })!,
+                    LopNen = "bg-dark"
+                });
+
+            return banners;
+        }
 
         private async Task NapThongTinDocGia(TrangChuViewModel vm, DocGium dg)
         {
@@ -196,7 +206,7 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             vm.SoSachToiDa = dg.LoaiDocGia.SoSachToiDa;
 
             // Sách đang mượn = chi tiết mượn chưa có ngày trả, thuộc phiếu chưa hủy
-            var dangMuon = _db.ChiTietMuons.AsNoTracking()
+            var dangMuon = Db.ChiTietMuons.AsNoTracking()
                 .Where(c => c.PhieuMuon.DocGiaId == dg.Id
                          && c.PhieuMuon.TrangThai != "Huy"
                          && c.NgayTra == null);
@@ -208,7 +218,7 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             vm.SapDenHan = await dangMuon.CountAsync(c =>
                 c.HanTra >= homNay && c.HanTra <= homNay.AddDays(3));
 
-            vm.PhatChuaThanhToan = await _db.Phats.AsNoTracking()
+            vm.PhatChuaThanhToan = await Db.Phats.AsNoTracking()
                 .Where(p => p.ChiTietMuon.PhieuMuon.DocGiaId == dg.Id && !p.DaThanhToan)
                 .SumAsync(p => (decimal?)p.SoTien) ?? 0;
         }
@@ -216,12 +226,12 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
         // Lịch sử mượn/đọc của độc giả
         private async Task<(List<int> TiepCan, List<int> DaDoc)> LayLichSu(int docGiaId)
         {
-            var muon = await _db.ChiTietMuons.AsNoTracking()
+            var muon = await Db.ChiTietMuons.AsNoTracking()
                 .Where(c => c.PhieuMuon.DocGiaId == docGiaId && c.PhieuMuon.TrangThai != "Huy")
                 .Select(c => new { SachId = c.BanSao.SachId, Ngay = c.NgayTra })
                 .ToListAsync();
 
-            var doc = await _db.LuotDocSachDienTus.AsNoTracking()
+            var doc = await Db.LuotDocSachDienTus.AsNoTracking()
                 .Where(l => l.DocGiaId == docGiaId)
                 .Select(l => new { SachId = l.TepSach.SachId, Ngay = (DateTime?)(l.LanTruyCapCuoi ?? l.NgayBatDau) })
                 .ToListAsync();

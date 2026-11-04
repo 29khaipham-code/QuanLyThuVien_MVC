@@ -1,0 +1,117 @@
+﻿
+/* BOOK CARD */
+.dg-book-card {
+    background: #fff;
+    border: 1px solid #E8DED1;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.dg-book-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 30px rgba(45, 42, 36, .12);
+}
+
+/* BOOK COVER */
+.dg-book-cover {
+    height: 195px; 
+    background: #F5F0EB;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dg-book-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 8px;
+    }
+
+.dg-book-card:hover .dg-book-cover img {
+    transform: scale(1.05);
+}
+
+.dg-book-placeholder {
+    font-size: 3rem;
+    color: #B7A58F;
+}
+
+/* BOOK INFORMATION */
+.dg-book-info {
+    padding: 16px 16px 10px;
+}
+
+.dg-book-title {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 45px;
+}
+
+    .dg-book-title a {
+        color: #2D2A24;
+        text-decoration: none;
+        transition: color .2s ease;
+    }
+
+        .dg-book-title a:hover {
+            color: #C86A4A;
+        }
+
+.dg-book-author,
+.dg-book-meta {
+    font-size: 13px;
+    color: #81786D;
+    margin-bottom: 5px;
+}
+
+.dg-book-meta {
+    min-height: 20px;
+}
+
+/* BOOK FOOTER */
+.dg-book-footer {
+    background: transparent;
+    border: none;
+    padding: 0 16px 16px;
+}
+
+.dg-book-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 9px;
+    border-radius: 20px;
+}
+
+.dg-badge-available {
+    background: #E8EFE2;
+    color: #536B43;
+}
+
+.dg-badge-unavailable {
+    background: #F0EAE4;
+    color: #8B7160;
+}
+
+.dg-badge-ebook {
+    background: #F8E9DF;
+    color: #B65F40;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dg-book-card,
+    .dg-book-cover img {
+        transition: none;
+    }
+}
+

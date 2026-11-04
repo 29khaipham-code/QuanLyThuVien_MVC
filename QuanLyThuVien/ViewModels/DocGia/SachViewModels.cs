@@ -76,5 +76,6 @@
 
         public bool CoSachDienTu => DinhDangs.Count > 0;
         public string TacGia => TacGias.Count == 0 ? "Chưa rõ tác giả" : string.Join(", ", TacGias);
+        public bool LaDocGia { get; set; }
     }
 }

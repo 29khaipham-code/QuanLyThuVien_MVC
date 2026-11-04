@@ -1,86 +1,258 @@
-﻿@model QuanLyThuVien.ViewModels.DocGia.SuaHoSoViewModel;
+﻿```cshtml
+@model QuanLyThuVien.ViewModels.DocGia.SuaHoSoViewModel
+
 @{
     ViewData["Title"] = "Chỉnh sửa hồ sơ";
 }
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/docgia/suahoso.css"
+          asp-append-version="true" />
+}
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-area="DocGia" asp-controller="HoSo" asp-action="Index">Hồ sơ cá nhân</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa</li>
-    </ol>
-</nav>
+<div class="container dg-edit-profile-page">
 
-<div class="row">
-    <div class="col-12 col-lg-8">
-        <div class="card shadow-sm">
-            <div class="card-header bg-white"><strong>Chỉnh sửa thông tin cá nhân</strong></div>
-            <div class="card-body">
-                <form method="post" asp-area="DocGia" asp-controller="HoSo" asp-action="Sua" novalidate>
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="dg-edit-breadcrumb" data-aos="fade-up">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a asp-area="DocGia"
+                   asp-controller="HoSo"
+                   asp-action="Index">
+                    Hồ sơ cá nhân
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Chỉnh sửa
+            </li>
+        </ol>
+    </nav>
 
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Mã độc giả</label>
-                            <input class="form-control" value="@Model.MaDocGia" disabled />
+    <!-- Header -->
+    <header class="dg-edit-header" data-aos="fade-up">
+        <span class="dg-edit-eyebrow">THÔNG TIN CÁ NHÂN</span>
+
+        <h1 class="dg-edit-title">
+            Chỉnh sửa hồ sơ
+        </h1>
+
+        <p class="dg-edit-description">
+            Cập nhật thông tin cá nhân để thư viện có thể liên hệ và hỗ trợ bạn tốt hơn.
+        </p>
+    </header>
+
+    <div class="dg-edit-layout" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- Form -->
+        <section class="dg-edit-card">
+
+            <div class="dg-edit-card-heading">
+                <div class="dg-edit-heading-icon">
+                    <i class="bi bi-person-lines-fill"></i>
+                </div>
+
+                <div>
+                    <h2>Thông tin của bạn</h2>
+                    <p>Kiểm tra và cập nhật các thông tin bên dưới.</p>
+                </div>
+            </div>
+
+            <form method="post"
+                  asp-area="DocGia"
+                  asp-controller="HoSo"
+                  asp-action="Sua"
+                  novalidate>
+
+                <div asp-validation-summary="ModelOnly"
+                     class="dg-edit-validation-summary"
+                     role="alert">
+                </div>
+
+                <div class="dg-edit-section-label">
+                    <i class="bi bi-person-badge"></i>
+                    Thông tin tài khoản
+                </div>
+
+                <div class="row g-3 dg-edit-account-fields">
+
+                    <div class="col-md-6">
+                        <label class="form-label">Mã độc giả</label>
+                        <input class="form-control dg-edit-readonly"
+                               value="@Model.MaDocGia"
+                               disabled />
+                        <small class="dg-edit-hint">
+                            <i class="bi bi-lock"></i>
+                            Thông tin không thể thay đổi
+                        </small>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Tên đăng nhập</label>
+                        <input class="form-control dg-edit-readonly"
+                               value="@Model.TenDangNhap"
+                               disabled />
+                        <small class="dg-edit-hint">
+                            <i class="bi bi-lock"></i>
+                            Thông tin không thể thay đổi
+                        </small>
+                    </div>
+                </div>
+
+                <div class="dg-edit-divider"></div>
+
+                <div class="dg-edit-section-label">
+                    <i class="bi bi-card-text"></i>
+                    Thông tin cá nhân
+                </div>
+
+                <div class="row g-3">
+
+                    <div class="col-12">
+                        <label asp-for="HoTen" class="form-label"></label>
+
+                        <div class="dg-edit-input-wrapper">
+                            <i class="bi bi-person dg-edit-input-icon"></i>
+                            <input asp-for="HoTen"
+                                   class="form-control dg-edit-input"
+                                   placeholder="Nhập họ và tên" />
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Tên đăng nhập</label>
-                            <input class="form-control" value="@Model.TenDangNhap" disabled />
+
+                        <span asp-validation-for="HoTen"
+                              class="dg-edit-field-error"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="NgaySinh" class="form-label"></label>
+
+                        <div class="dg-edit-input-wrapper">
+                            <i class="bi bi-calendar3 dg-edit-input-icon"></i>
+                            <input asp-for="NgaySinh"
+                                   type="date"
+                                   class="form-control dg-edit-input" />
                         </div>
 
-                        <div class="col-12">
-                            <label asp-for="HoTen" class="form-label"></label>
-                            <input asp-for="HoTen" class="form-control" />
-                            <span asp-validation-for="HoTen" class="text-danger"></span>
-                        </div>
+                        <span asp-validation-for="NgaySinh"
+                              class="dg-edit-field-error"></span>
+                    </div>
 
-                        <div class="col-md-6">
-                            <label asp-for="NgaySinh" class="form-label"></label>
-                            <input asp-for="NgaySinh" type="date" class="form-control" />
-                            <span asp-validation-for="NgaySinh" class="text-danger"></span>
-                        </div>
+                    <div class="col-md-6">
+                        <label asp-for="GioiTinh" class="form-label"></label>
 
-                        <div class="col-md-6">
-                            <label asp-for="GioiTinh" class="form-label"></label>
-                            <select asp-for="GioiTinh" class="form-select">
-                                <option value="">-- Chọn --</option>
+                        <div class="dg-edit-input-wrapper">
+                            <i class="bi bi-gender-ambiguous dg-edit-input-icon"></i>
+                            <select asp-for="GioiTinh"
+                                    class="form-select dg-edit-input dg-edit-select">
+                                <option value="">-- Chọn giới tính --</option>
                                 <option value="Nam">Nam</option>
                                 <option value="Nữ">Nữ</option>
                                 <option value="Khác">Khác</option>
                             </select>
-                            <span asp-validation-for="GioiTinh" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-6">
-                            <label asp-for="Email" class="form-label"></label>
-                            <input asp-for="Email" type="email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label asp-for="SoDienThoai" class="form-label"></label>
-                            <input asp-for="SoDienThoai" class="form-control" placeholder="0912345678" />
-                            <span asp-validation-for="SoDienThoai" class="text-danger"></span>
-                        </div>
-
-                        <div class="col-12">
-                            <label asp-for="DiaChi" class="form-label"></label>
-                            <input asp-for="DiaChi" class="form-control" />
-                            <span asp-validation-for="DiaChi" class="text-danger"></span>
-                        </div>
+                        <span asp-validation-for="GioiTinh"
+                              class="dg-edit-field-error"></span>
                     </div>
 
-                    <div class="mt-4 d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check2 me-1"></i>Lưu thay đổi
-                        </button>
-                        <a class="btn btn-outline-secondary" asp-area="DocGia" asp-controller="HoSo" asp-action="Index">Hủy</a>
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label"></label>
+
+                        <div class="dg-edit-input-wrapper">
+                            <i class="bi bi-envelope dg-edit-input-icon"></i>
+                            <input asp-for="Email"
+                                   type="email"
+                                   class="form-control dg-edit-input"
+                                   placeholder="example@email.com" />
+                        </div>
+
+                        <span asp-validation-for="Email"
+                              class="dg-edit-field-error"></span>
                     </div>
-                </form>
+
+                    <div class="col-md-6">
+                        <label asp-for="SoDienThoai" class="form-label"></label>
+
+                        <div class="dg-edit-input-wrapper">
+                            <i class="bi bi-telephone dg-edit-input-icon"></i>
+                            <input asp-for="SoDienThoai"
+                                   class="form-control dg-edit-input"
+                                   placeholder="0912345678" />
+                        </div>
+
+                        <span asp-validation-for="SoDienThoai"
+                              class="dg-edit-field-error"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="DiaChi" class="form-label"></label>
+
+                        <div class="dg-edit-input-wrapper">
+                            <i class="bi bi-geo-alt dg-edit-input-icon"></i>
+                            <input asp-for="DiaChi"
+                                   class="form-control dg-edit-input"
+                                   placeholder="Nhập địa chỉ của bạn" />
+                        </div>
+
+                        <span asp-validation-for="DiaChi"
+                              class="dg-edit-field-error"></span>
+                    </div>
+
+                </div>
+
+                <!-- Actions -->
+                <div class="dg-edit-actions">
+                    <button type="submit" class="dg-edit-submit">
+                        <i class="bi bi-check2-circle"></i>
+                        Lưu thay đổi
+                    </button>
+
+                    <a class="dg-edit-cancel"
+                       asp-area="DocGia"
+                       asp-controller="HoSo"
+                       asp-action="Index">
+                        Hủy
+                    </a>
+                </div>
+
+            </form>
+        </section>
+
+        <!-- Side note -->
+        <aside class="dg-edit-note">
+            <div class="dg-edit-note-icon">
+                <i class="bi bi-lightbulb"></i>
             </div>
-        </div>
+
+            <h2>Lưu ý khi cập nhật</h2>
+
+            <p>
+                Hãy đảm bảo thông tin cá nhân của bạn luôn chính xác và được cập nhật.
+            </p>
+
+            <div class="dg-edit-note-item">
+                <i class="bi bi-check-circle"></i>
+                <span>Sử dụng họ tên đầy đủ và chính xác.</span>
+            </div>
+
+            <div class="dg-edit-note-item">
+                <i class="bi bi-check-circle"></i>
+                <span>Kiểm tra email và số điện thoại liên hệ.</span>
+            </div>
+
+            <div class="dg-edit-note-item">
+                <i class="bi bi-check-circle"></i>
+                <span>Cập nhật địa chỉ hiện tại nếu có thay đổi.</span>
+            </div>
+
+            <div class="dg-edit-note-footer">
+                <i class="bi bi-shield-check"></i>
+                Thông tin tài khoản được bảo vệ.
+            </div>
+        </aside>
+
     </div>
 </div>
+
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

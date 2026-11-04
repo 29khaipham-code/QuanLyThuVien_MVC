@@ -1,121 +1,341 @@
-﻿@{
+﻿
+@{
     var ctrl = ViewContext.RouteData.Values["controller"]?.ToString();
     string Active(string c) => ctrl == c ? "active" : "";
+
+    var laDocGia = User.IsInRole("DocGia");
+    var daDangNhap = User.Identity?.IsAuthenticated == true;
+
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
 }
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Thư viện</title>
-
-    <!-- Google Fonts for Playful Geometric typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@700;800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="~/css/variables.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    <link rel="stylesheet" href="~/css/DocGia/docgia.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/docgia/docgia.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/docgia/sachcard.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/DocGia/SachChiTiet.css" asp-append-version="true" />
+    <!-- AOS Animation -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+          rel="stylesheet" />
+
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="dg-body">
-    <!-- Geometric Background Decorative Shapes -->
-    <div class="pg-geo-shape pg-geo-circle" aria-hidden="true"></div>
-    <div class="pg-geo-shape pg-geo-triangle" aria-hidden="true"></div>
-    <div class="pg-geo-shape pg-geo-arch" aria-hidden="true"></div>
 
-    <header class="sticky-top">
-        <nav class="navbar navbar-expand-lg navbar-dark dg-navbar">
+<body class="dg-body">
+
+    <header class="dg-header">
+        <nav class="navbar navbar-expand-lg dg-navbar">
             <div class="container">
-                <a class="navbar-brand fw-bold" asp-area="DocGia" asp-controller="Home" asp-action="Index">
-                    <span class="brand-badge"><i class="bi bi-book-half"></i></span>
-                    <span class="brand-title">Thư viện</span>
+
+                <!-- BRAND -->
+                <a class="navbar-brand dg-brand"
+                   asp-area="DocGia"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    <span class="dg-brand-icon">
+                        <i class="bi bi-book-half"></i>
+                    </span>
+
+                    <span>Thư viện</span>
                 </a>
 
-                <button class="navbar-toggler dg-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#dgNav" aria-controls="dgNav" aria-expanded="false" aria-label="Mở menu">
+                <!-- MOBILE TOGGLER -->
+                <button class="navbar-toggler dg-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#dgNav"
+                        aria-controls="dgNav"
+                        aria-expanded="false"
+                        aria-label="Mở menu">
+
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="dgNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 dg-nav-list">
+
+                    <!-- NAVIGATION -->
+                    <ul class="navbar-nav dg-nav me-auto">
+
                         <li class="nav-item">
-                            <a class="nav-link @Active("Home")" asp-area="DocGia" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                            <a class="nav-link @Active("Home")"
+                               asp-area="DocGia"
+                               asp-controller="Home"
+                               asp-action="Index">
+                                <i class="bi bi-house-door"></i>
+                                Trang chủ
+                            </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link @Active("Sach")" asp-area="DocGia" asp-controller="Sach" asp-action="Index">Tra cứu sách</a>
+                            <a class="nav-link @Active("Sach")"
+                               asp-area="DocGia"
+                               asp-controller="Sach"
+                               asp-action="Index">
+                                <i class="bi bi-search"></i>
+                                Tra cứu sách
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link @Active("SachDienTu")" asp-area="DocGia" asp-controller="SachDienTu" asp-action="Index">Sách điện tử</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @Active("MuonTra")" asp-area="DocGia" asp-controller="MuonTra" asp-action="Index">Đang mượn</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @Active("DatTruoc")" asp-area="DocGia" asp-controller="DatTruoc" asp-action="Index">Đặt trước</a>
-                        </li>
+
+                        @if (laDocGia)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @Active("SachDienTu")"
+                                   asp-area="DocGia"
+                                   asp-controller="SachDienTu"
+                                   asp-action="Index">
+                                    <i class="bi bi-tablet"></i>
+                                    Sách điện tử
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link @Active("MuonTra")"
+                                   asp-area="DocGia"
+                                   asp-controller="MuonTra"
+                                   asp-action="Index">
+                                    <i class="bi bi-journal-bookmark"></i>
+                                    Mượn trả
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link @Active("DatTruoc")"
+                                   asp-area="DocGia"
+                                   asp-controller="DatTruoc"
+                                   asp-action="Index">
+                                    <i class="bi bi-bookmark-star"></i>
+                                    Đặt trước
+                                </a>
+                            </li>
+                        }
                     </ul>
 
-                    <form class="d-flex me-lg-3 mb-2 mb-lg-0 dg-search-form" method="get"
-                          asp-area="DocGia" asp-controller="Sach" asp-action="Index" role="search">
-                        <input class="form-control form-control-sm dg-search-input" type="search" name="tuKhoa"
-                               placeholder="Tìm sách, tác giả..." aria-label="Tìm kiếm" />
-                        <button class="btn btn-sm dg-btn-search" type="submit" aria-label="Tìm">
-                            <i class="bi bi-search"></i>
+                    <!-- SEARCH -->
+                    <form class="dg-search"
+                          method="get"
+                          asp-area="DocGia"
+                          asp-controller="Sach"
+                          asp-action="Index"
+                          role="search">
+
+                        <i class="bi bi-search dg-search-icon"></i>
+
+                        <input type="search"
+                               name="tuKhoa"
+                               placeholder="Tìm sách, tác giả..."
+                               aria-label="Tìm kiếm" />
+
+                        <button type="submit" aria-label="Tìm">
+                            <i class="bi bi-arrow-right"></i>
                         </button>
                     </form>
+                    <!-- LANGUAGE SWITCHER -->
+                    <div class="dg-language dropdown">
 
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle dg-user-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle me-1"></i> @User.Identity?.Name
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end dg-dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" asp-area="DocGia" asp-controller="HoSo" asp-action="Index">
-                                        <i class="bi bi-person me-2"></i>Hồ sơ cá nhân
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="DocGia" asp-controller="HoSo" asp-action="DoiMatKhau">
-                                        <i class="bi bi-key me-2"></i>Đổi mật khẩu
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li>
-                                    <form method="post" asp-area="" asp-controller="Account" asp-action="Logout">
-                                        <button type="submit" class="dropdown-item text-danger fw-bold">
-                                            <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
+                        <button class="dg-language-toggle dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+
+                            <i class="bi bi-globe2"></i>
+                            <span>VI</span>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end dg-language-menu">
+
+                            <li>
+                                <button type="button"
+                                        class="dropdown-item active"
+                                        onclick="changeLanguage('vi')">
+                                    <span class="dg-language-flag">🇻🇳</span>
+                                    Tiếng Việt
+                                    <i class="bi bi-check2 ms-auto"></i>
+                                </button>
+                            </li>
+
+                            <li>
+                                <button type="button"
+                                        class="dropdown-item"
+                                        onclick="changeLanguage('en')">
+                                    <span class="dg-language-flag">🇬🇧</span>
+                                    English
+                                </button>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <!-- ACCOUNT -->
+                    <ul class="navbar-nav dg-account">
+
+                        @if (laDocGia)
+                        {
+                            <li class="nav-item dropdown">
+
+                                <a class="nav-link dg-account-toggle dropdown-toggle"
+                                   href="#"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+
+                                    <span class="dg-avatar">
+                                        <i class="bi bi-person"></i>
+                                    </span>
+
+                                    <span class="dg-account-name">
+                                        @User.Identity?.Name
+                                    </span>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end dg-dropdown">
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area="DocGia"
+                                           asp-controller="HoSo"
+                                           asp-action="Index">
+                                            <i class="bi bi-person-circle"></i>
+                                            Hồ sơ cá nhân
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area="DocGia"
+                                           asp-controller="HoSo"
+                                           asp-action="DoiMatKhau">
+                                            <i class="bi bi-key"></i>
+                                            Đổi mật khẩu
+                                        </a>
+                                    </li>
+
+                                    <li><hr class="dropdown-divider" /></li>
+
+                                    <li>
+                                        <form method="post"
+                                              asp-area=""
+                                              asp-controller="Account"
+                                              asp-action="Logout">
+
+                                            <button type="submit"
+                                                    class="dropdown-item dg-logout">
+                                                <i class="bi bi-box-arrow-right"></i>
+                                                Đăng xuất
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else if (daDangNhap)
+                        {
+                            <li class="nav-item dg-staff-account">
+
+                                <span class="dg-staff-name">
+                                    <i class="bi bi-person-badge"></i>
+                                    @User.Identity?.Name
+                                </span>
+
+                                <form method="post"
+                                      asp-area=""
+                                      asp-controller="Account"
+                                      asp-action="Logout">
+
+                                    <button type="submit" class="dg-login-btn dg-logout-btn">
+                                        Đăng xuất
+                                        <i class="bi bi-box-arrow-right"></i>
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="dg-login-btn"
+                                   asp-area=""
+                                   asp-controller="Account"
+                                   asp-action="Login"
+                                   asp-route-returnUrl="@returnUrl">
+
+                                    <i class="bi bi-person"></i>
+                                    Đăng nhập
+                                </a>
+                            </li>
+                        }
                     </ul>
+
                 </div>
             </div>
         </nav>
     </header>
 
-    <main role="main" class="container py-4 dg-main-container">
-        <!-- Book Card Wrapper for main page body context -->
-        <div class="dg-book-shape">
-            <div class="dg-book-tab" aria-hidden="true"></div>
-            <div class="dg-book-content">
-                @RenderBody()
-            </div>
-        </div>
+    <!-- MAIN CONTENT -->
+    <main role="main" class="dg-main">
+        @RenderBody()
     </main>
 
-    <footer class="dg-footer text-muted">
-        <div class="container text-center py-3 small">
-            &copy; @DateTime.Now.Year - Hệ thống quản lý thư viện
+    <!-- FOOTER -->
+    <footer class="dg-footer">
+        <div class="container">
+
+            <div class="dg-footer-content">
+
+                <div class="dg-footer-brand">
+                    <div class="dg-footer-logo">
+                        <i class="bi bi-book-half"></i>
+                        <span>Thư viện</span>
+                    </div>
+
+                    <p>
+                        Không gian kết nối tri thức,
+                        khám phá những trang sách và nuôi dưỡng niềm đam mê đọc.
+                    </p>
+                </div>
+
+                <div class="dg-footer-info">
+                    <span class="dg-footer-label">HỆ THỐNG THƯ VIỆN</span>
+                    <p>
+                        © @DateTime.Now.Year - Hệ thống quản lý thư viện.
+                    </p>
+                    <p>Tri thức bắt đầu từ một trang sách.</p>
+                </div>
+
+            </div>
+
+            <div class="dg-footer-bottom">
+                <span>Made with <i class="bi bi-heart-fill"></i> for readers</span>
+            </div>
+
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+    <!-- AOS Animation -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                AOS.init({
+                    duration: 750,
+                    easing: "ease-out-cubic",
+                    once: true,
+                    offset: 80,
+                    mirror: false
+                });
+            });
+    </script>
+
 </body>
 </html>

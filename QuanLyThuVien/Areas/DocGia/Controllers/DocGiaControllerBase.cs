@@ -1,14 +1,15 @@
 ﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuanLyThuVien.Models;
 
 namespace QuanLyThuVien.Areas.DocGia.Controllers
 {
-    // Lớp cha cho các controller của Area Độc giả: lấy hồ sơ độc giả của người đang đăng nhập
+    // Lớp cha cho các controller của Area Độc giả.
+    // Không đặt [Authorize] ở đây: mỗi controller tự khai báo
+    //   - [AllowAnonymous]                  cho trang khách được xem (Home, Sach)
+    //   - [Authorize(Roles = "DocGia")]     cho trang bắt buộc đăng nhập (MuonTra, DatTruoc, HoSo)
     [Area("DocGia")]
-    [Authorize(Roles = "DocGia")]
     public abstract class DocGiaControllerBase : Controller
     {
         protected readonly QuanLyThuVienContext Db;
@@ -21,11 +22,17 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             Db = db;
         }
 
-        // Hồ sơ độc giả gắn với tài khoản đang đăng nhập (null nếu chưa có hồ sơ). Chỉ truy vấn một lần mỗi request.
+        // True nếu người đang truy cập đã đăng nhập bằng vai trò DocGia
+        protected bool LaDocGia => User.IsInRole("DocGia");
+
+        // Hồ sơ độc giả của người đang đăng nhập.
+        // Trả về null nếu là khách, nhân viên (không phải DocGia) hoặc tài khoản chưa có hồ sơ.
         protected async Task<DocGium?> LayDocGiaAsync()
         {
             if (_daNap) return _docGia;
             _daNap = true;
+
+            if (!LaDocGia) return null;
 
             if (int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var taiKhoanId))
             {

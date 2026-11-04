@@ -1,0 +1,382 @@
+﻿
+/* =========================================
+   TRANG ĐẶT TRƯỚC
+   WARM ORGANIC
+========================================= */
+
+.dg-reservation-page {
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+}
+
+/* ---------- HEADER ---------- */
+
+.dg-reservation-header {
+    margin-bottom: 1.75rem;
+}
+
+.dg-reservation-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-terracotta);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.dg-reservation-title {
+    margin-bottom: 0.5rem;
+    color: var(--color-brown);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 800;
+}
+
+.dg-reservation-description {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* ---------- NOTIFICATION ---------- */
+
+.dg-reservation-notification {
+    margin-bottom: 1.5rem;
+}
+
+    .dg-reservation-notification:empty {
+        display: none;
+    }
+
+/* ---------- INFORMATION ---------- */
+
+.dg-reservation-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.2rem 1.35rem;
+    background: rgba(122, 139, 94, 0.09);
+    border: 1px solid rgba(122, 139, 94, 0.25);
+    border-left: 4px solid var(--color-olive);
+    border-radius: var(--radius-md);
+}
+
+.dg-reservation-info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    color: var(--color-olive);
+    background: rgba(122, 139, 94, 0.13);
+    border-radius: 50%;
+}
+
+    .dg-reservation-info-icon i {
+        font-size: 1.1rem;
+    }
+
+.dg-reservation-info strong {
+    color: var(--color-brown);
+}
+
+.dg-reservation-info p {
+    margin: 0.35rem 0 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+/* ---------- SECTION ---------- */
+
+.dg-reservation-section {
+    margin-top: 2rem;
+}
+
+.dg-reservation-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dg-section-eyebrow {
+    margin-bottom: 0.3rem;
+    color: var(--color-terracotta);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.dg-reservation-section-heading h4 {
+    margin: 0;
+    color: var(--color-brown);
+    font-size: 1.25rem;
+    font-weight: 750;
+}
+
+.dg-reservation-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.8rem;
+    color: var(--color-olive);
+    background: rgba(122, 139, 94, 0.12);
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.dg-history-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    color: var(--color-terracotta);
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    font-size: 1.15rem;
+}
+
+/* ---------- EMPTY STATE ---------- */
+
+.dg-reservation-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+    background: var(--bg-card);
+    border: 1px dashed var(--color-clay);
+    border-radius: var(--radius-lg);
+}
+
+    .dg-reservation-empty .dg-empty-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 76px;
+        height: 76px;
+        margin-bottom: 1.25rem;
+        color: var(--color-terracotta);
+        background: var(--bg-primary);
+        border-radius: 50%;
+    }
+
+        .dg-reservation-empty .dg-empty-icon i {
+            font-size: 2rem;
+        }
+
+    .dg-reservation-empty h5 {
+        margin-bottom: 0.6rem;
+        color: var(--color-brown);
+        font-weight: 700;
+    }
+
+    .dg-reservation-empty p {
+        max-width: 450px;
+        margin-bottom: 1.5rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+
+.dg-reservation-explore-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    color: #fff;
+    background: var(--color-terracotta);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-base);
+}
+
+    .dg-reservation-explore-btn:hover {
+        color: #fff;
+        background: var(--color-brown);
+        transform: translateY(-2px);
+    }
+
+/* ---------- TABLE CARD ---------- */
+
+.dg-reservation-table-card {
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+.dg-reservation-table {
+    min-width: 760px;
+    color: var(--color-brown);
+    font-size: 0.87rem;
+}
+
+    .dg-reservation-table thead th {
+        padding: 1rem;
+        color: var(--text-secondary);
+        background: var(--bg-primary);
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.76rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .dg-reservation-table tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        vertical-align: middle;
+    }
+
+    .dg-reservation-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .dg-reservation-table tbody tr {
+        transition: background var(--transition-base);
+    }
+
+        .dg-reservation-table tbody tr:hover {
+            background: rgba(245, 240, 235, 0.65);
+        }
+
+/* ---------- BOOK ---------- */
+
+.dg-reservation-book {
+    min-width: 190px;
+}
+
+    .dg-reservation-book a {
+        color: var(--color-brown);
+        font-weight: 700;
+        line-height: 1.5;
+        text-decoration: none;
+        transition: color var(--transition-base);
+    }
+
+        .dg-reservation-book a:hover {
+            color: var(--color-terracotta);
+        }
+
+.dg-reservation-date {
+    color: var(--text-secondary);
+    white-space: nowrap;
+    font-size: 0.83rem;
+}
+
+/* ---------- STATUS ---------- */
+
+.dg-reservation-status {
+    padding: 0.45rem 0.7rem;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+/* ---------- DETAIL ---------- */
+
+.dg-reservation-detail {
+    min-width: 210px;
+    line-height: 1.7;
+}
+
+.dg-queue-position {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    color: var(--text-secondary);
+}
+
+    .dg-queue-position i {
+        color: var(--color-olive);
+    }
+
+    .dg-queue-position strong {
+        color: var(--color-terracotta);
+    }
+
+.dg-pickup-deadline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    color: var(--text-secondary);
+}
+
+    .dg-pickup-deadline i {
+        color: var(--color-olive);
+    }
+
+    .dg-pickup-deadline strong {
+        color: var(--color-terracotta);
+    }
+
+.dg-reservation-location {
+    margin-top: 0.25rem;
+    color: var(--text-secondary);
+    font-size: 0.77rem;
+}
+
+/* ---------- CANCEL BUTTON ---------- */
+
+.dg-reservation-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.8rem;
+    color: var(--color-terracotta);
+    background: transparent;
+    border: 1px solid rgba(200, 106, 74, 0.4);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all var(--transition-base);
+}
+
+    .dg-reservation-cancel-btn:hover {
+        color: #fff;
+        background: var(--color-terracotta);
+        border-color: var(--color-terracotta);
+    }
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 576px) {
+    .dg-reservation-page {
+        padding-top: 1.5rem;
+    }
+
+    .dg-reservation-info {
+        padding: 1rem;
+    }
+
+    .dg-reservation-section-heading h4 {
+        font-size: 1.1rem;
+    }
+
+    .dg-reservation-empty {
+        padding: 2.5rem 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dg-reservation-explore-btn,
+    .dg-reservation-table tbody tr,
+    .dg-reservation-book a,
+    .dg-reservation-cancel-btn {
+        transition: none;
+    }
+}

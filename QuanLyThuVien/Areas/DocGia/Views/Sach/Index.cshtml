@@ -1,83 +1,185 @@
-﻿@model QuanLyThuVien.ViewModels.DocGia.SachIndexViewModel;
+﻿@model QuanLyThuVien.ViewModels.DocGia.SachIndexViewModel
+
 @{
     ViewData["Title"] = "Tra cứu sách";
 }
+
 @section Styles {
-    <link rel="stylesheet" href="~/css/DocGia/Sach.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/DocGia/danhsach.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/docGia/sach.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/docGia/danhsach.css" asp-append-version="true" />
 }
 
+<div class="container dg-sach-page">
 
-<div class="dg-sach-index-header mb-4">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-        <div>
-            <span class="badge dg-badge-accent mb-2">Khám phá thư viện</span>
-            <h2 class="mb-1 display-heading">Tra cứu sách</h2>
-            <p class="text-muted mb-0">Tìm kiếm nhanh chóng tài liệu, giáo trình và sách điện tử theo nhu cầu của bạn.</p>
-        </div>
-    </div>
-</div>
+    <!-- HEADER -->
+    <section class="dg-sach-index-header" data-aos="fade-up">
 
-<div class="card dg-filter-card mb-4 p-4">
-    <form id="formLoc" method="get"
-          asp-area="DocGia" asp-controller="Sach" asp-action="Index"
-          class="row g-3 align-items-end">
+        <div class="dg-sach-header-content">
+            <div class="dg-sach-header-text">
+                <span class="dg-sach-eyebrow">
+                    <i class="bi bi-book-half me-2"></i>
+                    KHÔNG GIAN TRI THỨC
+                </span>
 
-        <div class="col-12 col-md-4">
-            <label class="form-label fw-bold" for="tuKhoa">Từ khóa</label>
-            <div class="input-group dg-input-group">
-                <span class="input-group-text bg-white dg-input-icon"><i class="bi bi-search text-muted"></i></span>
-                <input id="tuKhoa" name="tuKhoa" value="@Model.TuKhoa" class="form-control dg-control border-start-0"
-                       placeholder="Tên sách, tác giả, ISBN" autocomplete="off" />
+                <h1 class="dg-sach-page-title">
+                    Khám phá thế giới <span>sách</span>
+                </h1>
+
+                <p class="dg-sach-page-description">
+                    Tìm kiếm tài liệu, giáo trình và sách điện tử.
+                    Hãy bắt đầu hành trình khám phá tri thức của bạn.
+                </p>
+            </div>
+
+            <div class="dg-sach-header-decoration">
+                <i class="bi bi-journal-bookmark"></i>
             </div>
         </div>
 
-        <div class="col-6 col-md-2">
-            <label class="form-label fw-bold" for="theLoaiId">Thể loại</label>
-            <select id="theLoaiId" name="theLoaiId" class="form-select dg-control">
-                <option value="">Tất cả</option>
-                @foreach (var o in Model.TheLoais)
-                {
-                    <option value="@o.Id" selected="@(o.Id == Model.TheLoaiId)">@o.Ten</option>
-                }
-            </select>
-        </div>
+        <div class="dg-sach-header-line"></div>
+    </section>
 
-        <div class="col-6 col-md-2">
-            <label class="form-label fw-bold" for="nhaXuatBanId">Nhà xuất bản</label>
-            <select id="nhaXuatBanId" name="nhaXuatBanId" class="form-select dg-control">
-                <option value="">Tất cả</option>
-                @foreach (var o in Model.NhaXuatBans)
-                {
-                    <option value="@o.Id" selected="@(o.Id == Model.NhaXuatBanId)">@o.Ten</option>
-                }
-            </select>
-        </div>
+    <!-- FILTER -->
+    <section class="dg-filter-card" data-aos="fade-up" data-aos-delay="100">
 
-        <div class="col-6 col-md-2">
-            <label class="form-label fw-bold" for="sapXep">Sắp xếp</label>
-            <select id="sapXep" name="sapXep" class="form-select dg-control">
-                <option value="moi" selected="@(Model.SapXep == "moi")">Mới nhất</option>
-                <option value="ten" selected="@(Model.SapXep == "ten")">Tên A-Z</option>
-                <option value="nam" selected="@(Model.SapXep == "nam")">Năm xuất bản</option>
-            </select>
-        </div>
-
-        <div class="col-6 col-md-2 d-flex align-items-center justify-content-between gap-2 pt-2">
-            <div class="form-check mb-0">
-                <input id="conSach" name="conSach" type="checkbox" value="true"
-                       class="form-check-input dg-checkbox" checked="@Model.ConSach" />
-                <label class="form-check-label fw-semibold" for="conSach">Còn sách</label>
+        <div class="dg-filter-heading">
+            <div class="dg-filter-icon">
+                <i class="bi bi-sliders"></i>
             </div>
-            <button type="submit" class="btn btn-primary dg-search-submit-btn" aria-label="Tìm kiếm">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
-    </form>
-</div>
 
-<div id="ketQua" class="dg-results-container">
-    <partial name="_DanhSach" model="Model" />
+            <div>
+                <h5>Tìm kiếm sách</h5>
+                <p>Sử dụng bộ lọc để tìm cuốn sách bạn cần</p>
+            </div>
+        </div>
+
+        <form id="formLoc"
+              method="get"
+              asp-area="DocGia"
+              asp-controller="Sach"
+              asp-action="Index"
+              class="row g-3 align-items-end">
+
+            <!-- TỪ KHÓA -->
+            <div class="col-12 col-lg-4">
+                <label class="dg-filter-label" for="tuKhoa">
+                    Từ khóa
+                </label>
+
+                <div class="input-group dg-input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+
+                    <input id="tuKhoa"
+                           name="tuKhoa"
+                           value="@Model.TuKhoa"
+                           class="form-control"
+                           placeholder="Tên sách, tác giả, ISBN..."
+                           autocomplete="off" />
+                </div>
+            </div>
+
+            <!-- THỂ LOẠI -->
+            <div class="col-6 col-lg-2">
+                <label class="dg-filter-label" for="theLoaiId">
+                    Thể loại
+                </label>
+
+                <select id="theLoaiId"
+                        name="theLoaiId"
+                        class="form-select dg-filter-control">
+                    <option value="">Tất cả</option>
+
+                    @foreach (var o in Model.TheLoais)
+                    {
+                        <option value="@o.Id" selected="@(o.Id == Model.TheLoaiId)">
+                            @o.Ten
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <!-- NHÀ XUẤT BẢN -->
+            <div class="col-6 col-lg-2">
+                <label class="dg-filter-label" for="nhaXuatBanId">
+                    Nhà xuất bản
+                </label>
+
+                <select id="nhaXuatBanId"
+                        name="nhaXuatBanId"
+                        class="form-select dg-filter-control">
+                    <option value="">Tất cả</option>
+
+                    @foreach (var o in Model.NhaXuatBans)
+                    {
+                        <option value="@o.Id" selected="@(o.Id == Model.NhaXuatBanId)">
+                            @o.Ten
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <!-- SẮP XẾP -->
+            <div class="col-6 col-lg-2">
+                <label class="dg-filter-label" for="sapXep">
+                    Sắp xếp
+                </label>
+
+                <select id="sapXep"
+                        name="sapXep"
+                        class="form-select dg-filter-control">
+                    <option value="moi" selected="@(Model.SapXep == "moi")">
+                        Mới nhất
+                    </option>
+                    <option value="ten" selected="@(Model.SapXep == "ten")">
+                        Tên A-Z
+                    </option>
+                    <option value="nam" selected="@(Model.SapXep == "nam")">
+                        Năm xuất bản
+                    </option>
+                </select>
+            </div>
+
+            <!-- CÒN SÁCH + BUTTON -->
+            <div class="col-6 col-lg-2">
+                <div class="dg-filter-last-row">
+
+                    <div class="form-check dg-available-check">
+                        <input id="conSach"
+                               name="conSach"
+                               type="checkbox"
+                               value="true"
+                               class="form-check-input"
+                               checked="@Model.ConSach" />
+
+                        <label class="form-check-label" for="conSach">
+                            Còn sách
+                        </label>
+                    </div>
+
+                    <button type="submit"
+                            class="dg-search-submit-btn"
+                            aria-label="Tìm kiếm">
+                        <i class="bi bi-search"></i>
+                    </button>
+
+                </div>
+            </div>
+
+        </form>
+    </section>
+
+    <!-- RESULTS -->
+    <section id="ketQua"
+             class="dg-results-container"
+             data-aos="fade-up"
+             data-aos-delay="150">
+
+        <partial name="_DanhSach" model="Model" />
+
+    </section>
+
 </div>
 
 @section Scripts {
@@ -86,48 +188,83 @@
             var $ketQua = $('#ketQua');
             var $form = $('#formLoc');
 
-            // Tải lại phần danh sách bằng AJAX, giữ nguyên bộ lọc
+            // Tải lại danh sách bằng AJAX
             function tai(url) {
-                $ketQua.css('opacity', 0.5);
-                $.ajax({ url: url, method: 'GET', cache: false })
+                $ketQua.addClass('dg-results-loading');
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    cache: false
+                })
                     .done(function (html) {
                         $ketQua.html(html);
                         history.pushState(null, '', url);
+
+                        // Cập nhật AOS cho các phần tử vừa được render
+                        if (window.AOS) {
+                            AOS.refreshHard();
+                        }
                     })
                     .fail(function () {
-                        $ketQua.html('<div class="alert alert-danger dg-alert-error">Không tải được dữ liệu, vui lòng thử lại.</div>');
+                        $ketQua.html(`
+                                <div class="dg-filter-error">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span>Không tải được dữ liệu, vui lòng thử lại.</span>
+                                </div>
+                            `);
                     })
                     .always(function () {
-                        $ketQua.css('opacity', 1);
+                        $ketQua.removeClass('dg-results-loading');
                     });
             }
 
+            // Submit bộ lọc
             $form.on('submit', function (e) {
                 e.preventDefault();
-                tai($form.attr('action') + '?' + $form.serialize());
+
+                var query = $form.serialize();
+                var url = $form.attr('action');
+
+                tai(url + (query ? '?' + query : ''));
             });
 
-            // Đổi dropdown / checkbox thì lọc ngay
-            $form.find('select, input[type=checkbox]').on('change', function () {
+            // Thay đổi select / checkbox thì lọc ngay
+            $form.find('select, input[type="checkbox"]').on('change', function () {
                 $form.trigger('submit');
             });
 
-            // Gõ từ khóa: chờ 400ms sau lần gõ cuối rồi mới lọc
+            // Tìm kiếm từ khóa có debounce
             var timer;
+
             $('#tuKhoa').on('input', function () {
                 clearTimeout(timer);
-                timer = setTimeout(function () { $form.trigger('submit'); }, 400);
+
+                timer = setTimeout(function () {
+                    $form.trigger('submit');
+                }, 400);
             });
 
-            // Bấm số trang
+            // Phân trang AJAX
             $ketQua.on('click', '.pagination a', function (e) {
                 e.preventDefault();
-                tai($(this).attr('href'));
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                var url = $(this).attr('href');
+
+                if (url) {
+                    tai(url);
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
             });
 
-            // Nút Back/Forward của trình duyệt
-            window.addEventListener('popstate', function () { location.reload(); });
+            // Back / Forward trình duyệt
+            window.addEventListener('popstate', function () {
+                location.reload();
+            });
+
         })();
     </script>
 }

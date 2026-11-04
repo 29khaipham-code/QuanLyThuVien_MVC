@@ -1,0 +1,430 @@
+﻿
+/* =========================================
+   TRANG TIỀN PHẠT
+========================================= */
+
+.dg-fine-page {
+    padding-top: 40px;
+    padding-bottom: 70px;
+    min-height: 70vh;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.dg-fine-header {
+    margin-bottom: 30px;
+}
+
+.dg-fine-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 12px;
+    color: var(--color-terracotta);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.dg-fine-title {
+    margin: 0 0 12px;
+    color: var(--text-primary);
+    font-family: Georgia, serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 700;
+}
+
+    .dg-fine-title span {
+        color: var(--color-terracotta);
+        font-style: italic;
+    }
+
+.dg-fine-description {
+    max-width: 650px;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.98rem;
+    line-height: 1.7;
+}
+
+/* =========================================
+   SUMMARY CARDS
+========================================= */
+
+.dg-fine-summary {
+    margin-bottom: 24px;
+}
+
+.dg-fine-summary-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    height: 100%;
+    min-height: 130px;
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-base);
+}
+
+    .dg-fine-summary-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(45, 42, 36, 0.1);
+    }
+
+.dg-fine-summary-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 54px;
+    height: 54px;
+    border-radius: var(--radius-md);
+    font-size: 1.5rem;
+}
+
+.dg-fine-unpaid .dg-fine-summary-icon {
+    color: var(--color-terracotta);
+    background: var(--color-paper);
+}
+
+.dg-fine-paid .dg-fine-summary-icon {
+    color: var(--color-olive);
+    background: rgba(122, 139, 94, 0.12);
+}
+
+.dg-fine-summary-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.dg-fine-summary-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.dg-fine-summary-value {
+    color: var(--text-primary);
+    font-size: clamp(1.25rem, 3vw, 1.65rem);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+    .dg-fine-summary-value.is-danger {
+        color: var(--color-terracotta);
+    }
+
+.dg-fine-summary-note {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* =========================================
+   WARNING
+========================================= */
+
+.dg-fine-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 20px;
+    margin-bottom: 30px;
+    background: rgba(200, 106, 74, 0.08);
+    border: 1px solid rgba(200, 106, 74, 0.25);
+    border-radius: var(--radius-md);
+}
+
+.dg-fine-warning-icon {
+    color: var(--color-terracotta);
+    font-size: 1.3rem;
+}
+
+.dg-fine-warning strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--color-brown);
+}
+
+.dg-fine-warning p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* =========================================
+   SECTION HEADING
+========================================= */
+
+.dg-fine-list-section {
+    margin-top: 10px;
+}
+
+.dg-fine-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+    .dg-fine-section-heading h4 {
+        margin: 0 0 5px;
+        color: var(--text-primary);
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .dg-fine-section-heading p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 0.88rem;
+    }
+
+.dg-fine-section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--color-terracotta);
+    background: var(--color-sand);
+    border-radius: var(--radius-md);
+    font-size: 1.2rem;
+}
+
+/* =========================================
+   FILTER BUTTONS
+========================================= */
+
+.dg-fine-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.dg-fine-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 17px;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: var(--transition-base);
+}
+
+    .dg-fine-filter-btn:hover {
+        color: var(--color-terracotta);
+        background: var(--color-paper);
+        border-color: var(--color-clay);
+    }
+
+    .dg-fine-filter-btn.active {
+        color: #fff;
+        background: var(--color-terracotta);
+        border-color: var(--color-terracotta);
+    }
+
+        .dg-fine-filter-btn.active:hover {
+            color: #fff;
+            background: var(--color-terracotta);
+        }
+
+/* =========================================
+   TABLE
+========================================= */
+
+.dg-fine-table-card {
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+.dg-fine-table {
+    min-width: 950px;
+    margin-bottom: 0;
+}
+
+    .dg-fine-table thead th {
+        padding: 16px 14px;
+        color: var(--text-primary);
+        background: var(--color-paper);
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.82rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .dg-fine-table tbody td {
+        padding: 16px 14px;
+        color: var(--text-secondary);
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.88rem;
+    }
+
+    .dg-fine-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .dg-fine-table tbody tr {
+        transition: var(--transition-base);
+    }
+
+        .dg-fine-table tbody tr:hover {
+            background: var(--color-paper);
+        }
+
+.dg-fine-book-title {
+    min-width: 150px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.dg-fine-ticket {
+    color: var(--color-terracotta);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.dg-fine-reason {
+    display: inline-block;
+    min-width: 100px;
+    max-width: 220px;
+    white-space: normal;
+    line-height: 1.5;
+}
+
+.dg-fine-date {
+    white-space: nowrap;
+}
+
+/* =========================================
+   STATUS
+========================================= */
+
+.dg-fine-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 11px;
+    border-radius: 30px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.dg-fine-status-paid {
+    color: #536B3D;
+    background: rgba(122, 139, 94, 0.15);
+}
+
+.dg-fine-status-unpaid {
+    color: #A94F35;
+    background: rgba(200, 106, 74, 0.13);
+}
+
+.dg-fine-amount {
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.dg-fine-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 55px 20px;
+    background: var(--bg-card);
+    border: 1px dashed var(--color-clay);
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+
+.dg-fine-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 18px;
+    color: var(--color-olive);
+    background: rgba(122, 139, 94, 0.12);
+    border-radius: 50%;
+    font-size: 1.8rem;
+}
+
+.dg-fine-empty h5 {
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.dg-fine-empty p {
+    max-width: 400px;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+    .dg-fine-page {
+        padding-top: 28px;
+        padding-bottom: 45px;
+    }
+
+    .dg-fine-summary-card {
+        padding: 19px;
+        min-height: 115px;
+    }
+}
+
+@media (max-width: 576px) {
+    .dg-fine-title {
+        font-size: 2rem;
+    }
+
+    .dg-fine-summary-card {
+        gap: 13px;
+        padding: 16px;
+    }
+
+    .dg-fine-summary-icon {
+        width: 46px;
+        height: 46px;
+        font-size: 1.25rem;
+    }
+
+    .dg-fine-filter {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .dg-fine-filter-btn {
+        justify-content: flex-start;
+    }
+}

@@ -1,23 +1,31 @@
-﻿@* Thanh tab của khu Mượn trả. Trang cha gán ViewData["Tab"] = "dangmuon" | "lichsu" | "phat" *@
-@{
+﻿@{
     var tab = ViewData["Tab"] as string;
+
     string Act(string t) => tab == t ? "active" : "";
 }
 
-<ul class="nav nav-tabs mb-3">
-    <li class="nav-item">
-        <a class="nav-link @Act("dangmuon")" asp-area="DocGia" asp-controller="MuonTra" asp-action="Index">
-            <i class="bi bi-journal-bookmark me-1"></i>Đang mượn
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @Act("lichsu")" asp-area="DocGia" asp-controller="MuonTra" asp-action="LichSu">
-            <i class="bi bi-clock-history me-1"></i>Lịch sử mượn
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @Act("phat")" asp-area="DocGia" asp-controller="MuonTra" asp-action="Phat">
-            <i class="bi bi-cash-coin me-1"></i>Tiền phạt
-        </a>
-    </li>
-</ul>
+<nav class="dg-muontra-tabs" aria-label="Điều hướng mượn trả">
+    <a class="dg-muontra-tab @Act("dangmuon")"
+       asp-area="DocGia"
+       asp-controller="MuonTra"
+       asp-action="Index">
+        <i class="bi bi-journal-bookmark"></i>
+        <span>Đang mượn</span>
+    </a>
+
+    <a class="dg-muontra-tab @Act("lichsu")"
+       asp-area="DocGia"
+       asp-controller="MuonTra"
+       asp-action="LichSu">
+        <i class="bi bi-clock-history"></i>
+        <span>Lịch sử mượn</span>
+    </a>
+
+    <a class="dg-muontra-tab @Act("phat")"
+       asp-area="DocGia"
+       asp-controller="MuonTra"
+       asp-action="Phat">
+        <i class="bi bi-cash-coin"></i>
+        <span>Tiền phạt</span>
+    </a>
+</nav>

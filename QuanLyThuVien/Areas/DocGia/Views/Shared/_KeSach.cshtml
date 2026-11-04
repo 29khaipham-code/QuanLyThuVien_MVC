@@ -1,35 +1,72 @@
 ﻿@model QuanLyThuVien.ViewModels.TrangChu.KeSachViewModel
 
-<section class="mb-4 dg-panel-box p-4 p-md-5">
+<section class="mb-4 dg-panel-box p-4 p-md-5"
+         data-aos="fade-up"
+         data-aos-duration="800"
+         data-aos-once="true">
+
+    <!-- TIÊU ĐỀ KỆ SÁCH -->
     <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
-        <div>
-            <h5 class="mb-1 fw-bold fs-4" style="font-family: var(--dp-typography-display); color: var(--dp-color-ink);">
+
+        <div data-aos="fade-up" data-aos-delay="100">
+
+            <h5 class="mb-1 fw-bold fs-4"
+                style="font-family: var(--dp-typography-display);
+                color: var(--dp-color-ink);">
+
                 @if (!string.IsNullOrEmpty(Model.Icon))
                 {
-                    <i class="bi @Model.Icon me-2" style="color: var(--dp-color-accent);"></i>
+                    <i class="bi @Model.Icon me-2"
+                       style="color: var(--dp-color-accent);"></i>
                 }
+
                 @Model.TieuDe
             </h5>
+
             @if (!string.IsNullOrEmpty(Model.MoTa))
             {
-                <div class="small text-muted" style="font-family: var(--dp-typography-reading);">@Model.MoTa</div>
+                <div class="small text-muted"
+                     style="font-family: var(--dp-typography-reading);">
+                    @Model.MoTa
+                </div>
             }
+
         </div>
 
         @if (!string.IsNullOrEmpty(Model.Url))
         {
-            <a class="dg-topic-badge text-decoration-none small py-1 px-3" href="@Model.Url">
-                Xem tất cả <i class="bi bi-arrow-right ms-1"></i>
+            <a class="dg-topic-badge text-decoration-none small py-1 px-3"
+               href="@Model.Url"
+               data-aos="fade-up"
+               data-aos-delay="150">
+
+                Xem tất cả
+                <i class="bi bi-arrow-right ms-1"></i>
+
             </a>
         }
+
     </div>
 
+
+    <!-- DANH SÁCH SÁCH -->
     <div class="dg-shelf">
-        @foreach (var s in Model.Items)
+
+        @for (var i = 0; i < Model.Items.Count; i++)
         {
-            <div class="dg-shelf-item dg-shelf-item-card">
+            var s = Model.Items[i];
+
+            <div class="dg-shelf-item dg-shelf-item-card"
+                 data-aos="fade-up"
+                 data-aos-delay="@((i % 5) * 100)"
+                 data-aos-duration="700"
+                 data-aos-once="true">
+
                 <partial name="_SachCard" model="s" />
+
             </div>
         }
+
     </div>
+
 </section>

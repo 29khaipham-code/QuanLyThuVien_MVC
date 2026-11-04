@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuanLyThuVien.Areas.DocGia.Helpers;
 using QuanLyThuVien.Models;
-using QuanLyThuVien.ViewModels;
 using QuanLyThuVien.ViewModels.DocGia;
 
 namespace QuanLyThuVien.Areas.DocGia.Controllers
 {
     [Area("DocGia")]
-    [Authorize(Roles = "DocGia")]
+    [AllowAnonymous]
     public class SachController : DocGiaControllerBase
     {
         private const int KichThuocTrang = 8;
@@ -131,6 +130,8 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
                 vm.DangMuon = sl.DangMuon ?? 0;
                 vm.DaDat = sl.DaDat ?? 0;
             }
+
+            vm.LaDocGia = LaDocGia;
 
             // Trạng thái của độc giả đối với cuốn sách này
             var dg = await LayDocGiaAsync();
