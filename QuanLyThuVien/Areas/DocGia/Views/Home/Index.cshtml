@@ -17,92 +17,115 @@
 
     @if (Model.Banners.Any())
     {
-        <div id="bannerTrangChu"
-             class="carousel slide mb-4"
-             data-bs-ride="carousel"
-             data-bs-interval="5000"
-             data-aos="fade-up"
-             data-aos-duration="900">
+        <section class="dg-hero"
+                 data-aos="fade-up"
+                 data-aos-duration="900">
 
-            @if (Model.Banners.Count > 1)
-            {
-                <div class="carousel-indicators">
-                    @for (var i = 0; i < Model.Banners.Count; i++)
-                    {
-                        <button type="button"
-                                data-bs-target="#bannerTrangChu"
-                                data-bs-slide-to="@i"
-                                class="@(i == 0 ? "active" : "")"
-                                aria-current="@(i == 0 ? "true" : null)"
-                                aria-label="Banner @(i + 1)">
-                        </button>
-                    }
-                </div>
-            }
+            <div id="bannerTrangChu"
+                 class="carousel slide dg-hero-carousel"
+                 data-bs-ride="carousel"
+                 data-bs-interval="5500">
 
-            <div class="carousel-inner rounded-3 shadow-sm">
-
-                @for (var i = 0; i < Model.Banners.Count; i++)
+                @if (Model.Banners.Count > 1)
                 {
-                    var b = Model.Banners[i];
-
-                    var kieu = string.IsNullOrEmpty(b.AnhUrl)
-                        ? null
-                        : $"background-image:linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),url('{Url.Content("~/" + b.AnhUrl.TrimStart('~', '/'))}')";
-
-                    <div class="carousel-item @(i == 0 ? "active" : "")">
-
-                        <div class="dg-banner @b.LopNen"
-                             style="@kieu">
-
-                            <div class="dg-banner-body text-white">
-
-                                <h2 class="display-6 fw-semibold">
-                                    @b.TieuDe
-                                </h2>
-
-                                <p class="lead mb-3">
-                                    @b.MoTa
-                                </p>
-
-                                <a class="btn btn-light"
-                                   href="@b.Url">
-                                    @b.NutChu
-                                </a>
-
-                            </div>
-                        </div>
+                    <div class="carousel-indicators dg-hero-indicators">
+                        @for (var i = 0; i < Model.Banners.Count; i++)
+                        {
+                            <button type="button"
+                                    data-bs-target="#bannerTrangChu"
+                                    data-bs-slide-to="@i"
+                                    class="@(i == 0 ? "active" : "")"
+                                    aria-current="@(i == 0 ? "true" : null)"
+                                    aria-label="Banner @(i + 1)">
+                            </button>
+                        }
                     </div>
                 }
+
+                <div class="carousel-inner dg-hero-inner">
+
+                    @for (var i = 0; i < Model.Banners.Count; i++)
+                    {
+                        var b = Model.Banners[i];
+
+                        var anhNen = string.IsNullOrEmpty(b.AnhUrl)
+                            ? null
+                            : Url.Content("~/" + b.AnhUrl.TrimStart('~', '/'));
+
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+
+                            <div class="dg-banner @b.LopNen"
+                                 style="@(anhNen != null
+                                    ? $"--banner-image: url('{anhNen}')"
+                                    : "")">
+
+                    <div class="dg-banner-overlay"></div>
+
+                    <div class="dg-banner-content">
+
+                        <span class="dg-banner-eyebrow">
+                            <span class="dg-banner-line"></span>
+                            KHÔNG GIAN TRI THỨC
+                        </span>
+
+                        <h2 class="dg-banner-title">
+                            @b.TieuDe
+                        </h2>
+
+                        <p class="dg-banner-description">
+                            @b.MoTa
+                        </p>
+
+                        <a class="dg-banner-button"
+                           href="@b.Url">
+                            <span>@b.NutChu</span>
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+
+                    </div>
+
+                    <div class="dg-banner-decoration">
+                        <span>READ</span>
+                        <span>LEARN</span>
+                        <span>GROW</span>
+                    </div>
+
+                    <div class="dg-banner-number">
+                        <span>@(i + 1)</span>
+                        <span class="dg-banner-number-divider"></span>
+                        <span>@Model.Banners.Count.ToString("00")</span>
+                    </div>
+
+                </div>
             </div>
-
-            @if (Model.Banners.Count > 1)
-            {
-                <button class="carousel-control-prev"
-                        type="button"
-                        data-bs-target="#bannerTrangChu"
-                        data-bs-slide="prev">
-
-                    <span class="carousel-control-prev-icon"
-                          aria-hidden="true">
-                    </span>
-
-                    <span class="visually-hidden">Trước</span>
-                </button>
-
-                <button class="carousel-control-next"
-                        type="button"
-                        data-bs-target="#bannerTrangChu"
-                        data-bs-slide="next">
-
-                    <span class="carousel-control-next-icon"
-                          aria-hidden="true">
-                    </span>
-
-                    <span class="visually-hidden">Sau</span>
-                </button>
-            }
+        }
         </div>
+
+        @if (Model.Banners.Count > 1)
+        {
+        <button class="carousel-control-prev dg-hero-control"
+                type="button"
+                data-bs-target="#bannerTrangChu"
+                data-bs-slide="prev">
+            <span class="dg-hero-arrow">
+                <i class="bi bi-arrow-left"></i>
+            </span>
+            <span class="visually-hidden">Trước</span>
+        </button>
+
+            <button class="carousel-control-next dg-hero-control"
+                type="button"
+                data-bs-target="#bannerTrangChu"
+                data-bs-slide="next">
+            <span class="dg-hero-arrow">
+                <i class="bi bi-arrow-right"></i>
+            </span>
+            <span class="visually-hidden">Sau</span>
+            </button>
+        }
+
+            </div>
+        </section>
     }
 
 

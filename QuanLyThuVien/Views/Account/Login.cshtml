@@ -1,8 +1,7 @@
-﻿
-@model QuanLyThuVien.ViewModels.DangNhapViewModel
+﻿@model QuanLyThuVien.ViewModels.DangNhapViewModel
 
 @{
-    ViewData["Title"] = "Login - Librista";
+    ViewData["Title"] = "Đăng nhập - Thư viện số";
 }
 
 @section Styles {
@@ -10,21 +9,20 @@
 }
 
 <div class="login-page">
+    <main class="login-card">
 
-    <div class="login-container">
-
-        <!-- BÊN TRÁI: GIỚI THIỆU THƯ VIỆN -->
-        <div class="login-intro">
-
-            <a asp-controller="Home" asp-action="Index" class="login-brand">
-                <span class="login-brand-icon">B.</span>
-                <span>THƯ VIỆN SỐ</span>
+        <!-- Cột giới thiệu -->
+        <section class="login-visual">
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="login-brand">
+                <span class="brand-mark">B.</span>
+                <span class="brand-name">THƯ VIỆN SỐ</span>
             </a>
 
-            <div class="intro-content">
-
-                <span class="intro-label">
-                    <span></span>
+            <div class="visual-content">
+                <span class="visual-eyebrow">
+                    <span class="eyebrow-dot"></span>
                     KHÔNG GIAN TRI THỨC
                 </span>
 
@@ -33,57 +31,51 @@
                     <em>mở ra một thế giới.</em>
                 </h1>
 
-                <p>
-                    Chào mừng bạn đến với thư viện của chúng tôi.
-                    Đăng nhập để khám phá kho tàng tri thức,
-                    tìm kiếm những cuốn sách yêu thích và
-                    quản lý hoạt động đọc sách của mình.
+                <p class="visual-description">
+                    Khám phá kho tàng tri thức, lưu giữ những cuốn sách yêu thích
+                    và bắt đầu hành trình học hỏi của riêng bạn.
                 </p>
 
-                <div class="intro-image">
-                    <img src="~/images/login-library.jpg"
+                <div class="visual-image">
+                    <img src="@Url.Content("~/images/login-library.jpg")"
                          alt="Không gian thư viện" />
 
-                    <div class="intro-image-caption">
+                    <div class="image-caption">
                         <span>YOUR NEXT CHAPTER STARTS HERE</span>
                         <strong>Một trang sách, một hành trình mới.</strong>
                     </div>
                 </div>
-
-                <div class="intro-bottom">
-                    <span>ĐỌC ĐỂ KHÁM PHÁ</span>
-                    <span>01 — 03</span>
-                </div>
-
             </div>
-        </div>
 
+            <div class="visual-footer">
+                <span>ĐỌC ĐỂ KHÁM PHÁ</span>
+                <span>READ · LEARN · GROW</span>
+            </div>
+        </section>
 
-        <!-- BÊN PHẢI: FORM ĐĂNG NHẬP -->
-        <div class="login-form-side">
-
+        <!-- Cột đăng nhập -->
+        <section class="login-panel">
             <div class="login-form-wrapper">
 
-                <div class="login-mobile-brand">
-                    <span class="login-brand-icon">B.</span>
-                    <span>THƯ VIỆN SỐ</span>
+                <div class="mobile-brand">
+                    <span class="brand-mark">B.</span>
+                    <span class="brand-name">THƯ VIỆN SỐ</span>
                 </div>
 
                 <div class="login-heading">
-                    <span class="login-eyebrow">WELCOME BACK</span>
-
-                    <h2>Chào mừng trở lại!</h2>
-
-                    <p>
-                        Đăng nhập vào tài khoản để khám phá tri thức.
-                    </p>
+                    <span class="form-eyebrow">CHÀO MỪNG BẠN QUAY TRỞ LẠI</span>
+                    <h2>Đăng nhập</h2>
+                    <p>Tiếp tục hành trình khám phá tri thức của bạn.</p>
                 </div>
+
                 @if (TempData["RegisterSuccess"] != null)
-{
-    <div class="register-success">
-        @TempData["RegisterSuccess"]
-    </div>
-}
+                {
+                    <div class="login-alert login-alert-success">
+                        <i class="bi bi-check-circle"></i>
+                        <span>@TempData["RegisterSuccess"]</span>
+                    </div>
+                }
+
                 <form asp-controller="Account"
                       asp-action="Login"
                       asp-route-returnUrl="@ViewData["ReturnUrl"]"
@@ -95,16 +87,11 @@
                          class="login-validation-summary">
                     </div>
 
-                    <!-- TÊN ĐĂNG NHẬP -->
                     <div class="login-field">
+                        <label asp-for="TenDangNhap">Tên đăng nhập</label>
 
-                        <label asp-for="TenDangNhap">
-                            Tên đăng nhập
-                        </label>
-
-                        <div class="login-input-box">
-                            <span class="input-icon">✉</span>
-
+                        <div class="login-input-wrap">
+                            <i class="bi bi-person"></i>
                             <input asp-for="TenDangNhap"
                                    type="text"
                                    placeholder="Nhập tên đăng nhập"
@@ -112,87 +99,101 @@
                         </div>
 
                         <span asp-validation-for="TenDangNhap"
-                              class="login-field-error">
-                        </span>
-
+                              class="login-field-error"></span>
                     </div>
 
-                    <!-- MẬT KHẨU -->
                     <div class="login-field">
+                        <label asp-for="MatKhau">Mật khẩu</label>
 
-                        <label asp-for="MatKhau">
-                            Mật khẩu
-                        </label>
-
-                        <div class="login-input-box">
-                            <span class="input-icon">◆</span>
-
+                        <div class="login-input-wrap">
+                            <i class="bi bi-lock"></i>
                             <input asp-for="MatKhau"
+                                   id="loginPassword"
                                    type="password"
                                    placeholder="Nhập mật khẩu"
                                    autocomplete="current-password" />
+
+                            <button type="button"
+                                    class="password-toggle"
+                                    id="togglePassword"
+                                    aria-label="Hiện mật khẩu"
+                                    aria-pressed="false">
+                                <i class="bi bi-eye"></i>
+                            </button>
                         </div>
 
                         <span asp-validation-for="MatKhau"
-                              class="login-field-error">
-                        </span>
-
+                              class="login-field-error"></span>
                     </div>
 
-                    <!-- GHI NHỚ -->
                     <div class="login-options">
-
                         <label class="remember-option">
                             <input asp-for="GhiNho" />
                             <span>Ghi nhớ đăng nhập</span>
                         </label>
-
                     </div>
 
-                    <!-- NÚT ĐĂNG NHẬP -->
                     <button type="submit" class="login-submit">
-                        ĐĂNG NHẬP
-                        <span>→</span>
+                        <span>ĐĂNG NHẬP</span>
+                        <i class="bi bi-arrow-right"></i>
                     </button>
-
                 </form>
 
                 <div class="login-divider">
-                    <span></span>
-                    <small>KHÔNG GIAN CỦA TRI THỨC</small>
-                    <span></span>
+                    <span>HOẶC</span>
                 </div>
-                <div class="register-prompt">
-    <span>Chưa có tài khoản?</span>
-    <a asp-controller="Account"
-       asp-action="Register">
-        Đăng ký ngay <span>↗</span>
-    </a>
-</div>
 
-                <!-- QUAY VỀ TRANG CHỦ -->
+                <div class="register-prompt">
+                    <span>Chưa có tài khoản?</span>
+                    <a asp-controller="Account" asp-action="Register">
+                        Đăng ký ngay <i class="bi bi-arrow-up-right"></i>
+                    </a>
+                </div>
+
                 <a asp-controller="Home"
                    asp-action="Index"
                    class="back-home">
-                    ← Quay về trang chủ
+                    <i class="bi bi-arrow-left"></i>
+                    Quay về trang chủ
                 </a>
 
-                <!-- CHÂN TRANG -->
-                <div class="login-footer">
-                    <span>© 2026 THƯ VIỆN SỐ</span>
-                    <span>READ · LEARN · GROW</span>
-                </div>
-
             </div>
-        </div>
 
-    </div>
+            <div class="login-panel-footer">
+                <span>© @DateTime.Now.Year THƯ VIỆN SỐ</span>
+                <span>READ · LEARN · GROW</span>
+            </div>
+        </section>
 
+    </main>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
-    <script src="~/js/account-lamp.js"
-            asp-append-version="true"></script>
+    <script src="~/js/account-lamp.js" asp-append-version="true"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const passwordInput = document.getElementById("loginPassword");
+            const toggleButton = document.getElementById("togglePassword");
+
+            if (!passwordInput || !toggleButton) return;
+
+            toggleButton.addEventListener("click", function () {
+                const isPassword = passwordInput.type === "password";
+
+                passwordInput.type = isPassword ? "text" : "password";
+                toggleButton.setAttribute("aria-pressed", String(isPassword));
+                toggleButton.setAttribute(
+                    "aria-label",
+                    isPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"
+                );
+
+                toggleButton.innerHTML = isPassword
+                    ? '<i class="bi bi-eye-slash"></i>'
+                    : '<i class="bi bi-eye"></i>';
+            });
+        });
+    </script>
 }

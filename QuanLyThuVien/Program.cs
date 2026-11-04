@@ -72,33 +72,23 @@ if (app.Environment.IsDevelopment())
 
     if (vaiTro == null)
         throw new Exception("Chưa có vai trò QuanTri");
-
-    if (!db.TaiKhoans.Any(x => x.TenDangNhap == "admin"))
+    var admin = db.TaiKhoans
+        .FirstOrDefault(x => x.TenDangNhap == "admin");
+    if (admin == null)
     {
-        // Thay bằng mật khẩu mạnh chỉ bạn biết
-        var matKhau = builder.Configuration["BootstrapAdminPassword"];
-
-        if (string.IsNullOrWhiteSpace(matKhau))
-            throw new Exception(
-                "Chưa cấu hình BootstrapAdminPassword");
-
-        var admin = new TaiKhoan
-        {
-            TenDangNhap = "admin",
-            HoTen = "Quản trị hệ thống",
-            Email = "admin@example.invalid",
-            HoatDong = true,
-            NgayTao = DateTime.Now,
-            VaiTroId = vaiTro.Id,
-            MatKhauHash = ""
-        };
-
-        admin.MatKhauHash =
-            hasher.HashPassword(admin, matKhau);
-
-        db.TaiKhoans.Add(admin);
-        db.SaveChanges();
+        throw new Exception("Không tìm thấy tài khoản admin!");
     }
+
+    admin.MatKhauHash = hasher.HashPassword(
+        admin,
+        "Admin@123456"
+    );
+
+    admin.HoatDong = true;
+
+    db.SaveChanges();
+
+
     // ===== TÀI KHOẢN ĐỘC GIẢ ĐỂ TEST (chỉ chạy khi Development) =====
     var vaiTroDocGia = db.VaiTros.FirstOrDefault(x => x.TenVaiTro == "DocGia");
 

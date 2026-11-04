@@ -1,0 +1,76 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.SachIndexViewModel
+
+@{
+    // Link phân trang, giữ nguyên bộ lọc
+    string Link(int trang) => Url.Action("Index", "SachDienTu", new
+    {
+        area = "DocGia",
+        tuKhoa = Model.TuKhoa,
+        theLoaiId = Model.TheLoaiId,
+        sapXep = Model.SapXep,
+        trang
+    })!;
+
+    var phanTrang = new PhanTrangViewModel
+    {
+        Trang = Model.Trang,
+        TongTrang = Model.TongTrang,
+        Link = Link
+    };
+}
+
+<div class="dg-ebook-list">
+
+    <!-- Thông tin kết quả -->
+    <div class="dg-ebook-list-heading">
+        <div class="dg-ebook-result-summary">
+            <span class="dg-ebook-result-icon">
+                <i class="bi bi-collection"></i>
+            </span>
+
+            <div>
+                <p class="dg-ebook-result-label">KẾT QUẢ TÌM KIẾM</p>
+                <p class="dg-ebook-result-count">
+                    Tìm thấy <strong>@Model.TongSo</strong> đầu sách có bản điện tử
+                </p>
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.Items.Any())
+    {
+        <div class="dg-ebook-empty">
+            <div class="dg-ebook-empty-icon">
+                <i class="bi bi-journal-x"></i>
+            </div>
+
+            <h3>Chưa tìm thấy sách phù hợp</h3>
+
+            <p>
+                Không có sách điện tử nào phù hợp với điều kiện tìm kiếm hiện tại.
+                Hãy thử thay đổi từ khóa hoặc chọn thể loại khác.
+            </p>
+        </div>
+    }
+    else
+    {
+        <!-- Danh sách sách -->
+        <div class="dg-ebook-grid">
+            @foreach (var s in Model.Items)
+            {
+                <div class="dg-ebook-grid-item">
+                    <partial name="_SachCard" model="s" />
+                </div>
+            }
+        </div>
+
+        <!-- Phân trang -->
+        @if (Model.TongTrang > 1)
+        {
+            <div class="dg-ebook-pagination">
+                <partial name="_PhanTrang" model="phanTrang" />
+            </div>
+        }
+    }
+
+</div>

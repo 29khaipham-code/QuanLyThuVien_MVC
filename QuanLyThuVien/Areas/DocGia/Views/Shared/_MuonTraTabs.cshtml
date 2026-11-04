@@ -5,27 +5,41 @@
 }
 
 <nav class="dg-muontra-tabs" aria-label="Điều hướng mượn trả">
+
     <a class="dg-muontra-tab @Act("dangmuon")"
        asp-area="DocGia"
        asp-controller="MuonTra"
        asp-action="Index">
-        <i class="bi bi-journal-bookmark"></i>
-        <span>Đang mượn</span>
+
+        <span class="dg-muontra-tab-icon">
+            <i class="bi bi-journal-bookmark"></i>
+        </span>
+
+        <span class="dg-muontra-tab-text">Đang mượn</span>
     </a>
 
     <a class="dg-muontra-tab @Act("lichsu")"
        asp-area="DocGia"
        asp-controller="MuonTra"
        asp-action="LichSu">
-        <i class="bi bi-clock-history"></i>
-        <span>Lịch sử mượn</span>
+
+        <span class="dg-muontra-tab-icon">
+            <i class="bi bi-clock-history"></i>
+        </span>
+
+        <span class="dg-muontra-tab-text">Lịch sử mượn</span>
     </a>
 
     <a class="dg-muontra-tab @Act("phat")"
        asp-area="DocGia"
        asp-controller="MuonTra"
        asp-action="Phat">
-        <i class="bi bi-cash-coin"></i>
-        <span>Tiền phạt</span>
+
+        <span class="dg-muontra-tab-icon">
+            <i class="bi bi-cash-coin"></i>
+        </span>
+
+        <span class="dg-muontra-tab-text">Tiền phạt</span>
     </a>
+
 </nav>

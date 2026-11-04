@@ -1,0 +1,315 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.SachCuaToiViewModel
+
+@{
+    ViewData["Title"] = "Sách điện tử của tôi";
+    ViewData["Tab"] = "cuatoi";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/docgia/sachdientucuatoi.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/docgia/sachdientutap.css" asp-append-version="true" />
+}
+
+<div class="container dg-my-ebook-page">
+
+    <partial name="_ThongBao" />
+
+    <!-- Header -->
+    <header class="dg-my-ebook-header" data-aos="fade-up">
+        <div class="dg-my-ebook-header-content">
+            <span class="dg-my-ebook-eyebrow">
+                <i class="bi bi-book-half"></i>
+                TỦ SÁCH CÁ NHÂN
+            </span>
+
+            <h1 class="dg-my-ebook-title">Sách điện tử của tôi</h1>
+
+            <p class="dg-my-ebook-description">
+                Quản lý những cuốn sách bạn đã đăng ký đọc, theo dõi thời hạn
+                và tiếp tục hành trình khám phá tri thức.
+            </p>
+        </div>
+
+        <div class="dg-my-ebook-header-icon">
+            <i class="bi bi-journal-bookmark"></i>
+        </div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="dg-my-ebook-tabs" data-aos="fade-up" data-aos-delay="80">
+        <partial name="_SachDienTuTabs" />
+    </div>
+
+    <!-- Thông tin quyền đọc -->
+    <section class="dg-my-ebook-overview" data-aos="fade-up" data-aos-delay="120">
+        <div class="dg-my-ebook-overview-icon">
+            <i class="bi bi-info-circle"></i>
+        </div>
+
+        <div class="dg-my-ebook-overview-content">
+            <h2>Thông tin quyền đọc</h2>
+            <p>
+                Mỗi quyền đọc có thời hạn
+                <strong>@Model.SoNgayDoc ngày</strong>.
+                Bạn có thể giữ tối đa
+                <strong>@Model.ToiDa quyền đọc</strong> cùng lúc.
+                Khi hết hạn, bạn cần đăng ký đọc lại tại trang chi tiết sách.
+            </p>
+        </div>
+
+        <div class="dg-my-ebook-limit">
+            <span>Quyền đọc đang dùng</span>
+            <strong>
+                @Model.DangHieuLuc.Count
+                <small>/ @Model.ToiDa</small>
+            </strong>
+        </div>
+    </section>
+
+    <!-- Quyền đọc đang hiệu lực -->
+    <section class="dg-my-ebook-section" data-aos="fade-up">
+        <div class="dg-my-ebook-section-heading">
+            <div>
+                <span class="dg-my-ebook-section-eyebrow">HIỆN TẠI</span>
+                <h2 class="dg-my-ebook-section-title">
+                    <i class="bi bi-bookmark-check"></i>
+                    Quyền đọc đang hiệu lực
+                </h2>
+                <p class="dg-my-ebook-section-description">
+                    Những cuốn sách bạn có thể tiếp tục đọc trong thời hạn cho phép.
+                </p>
+            </div>
+
+            <span class="dg-my-ebook-count">
+                @Model.DangHieuLuc.Count / @Model.ToiDa
+            </span>
+        </div>
+
+        @if (!Model.DangHieuLuc.Any())
+        {
+            <div class="dg-my-ebook-empty">
+                <div class="dg-my-ebook-empty-icon">
+                    <i class="bi bi-journal-x"></i>
+                </div>
+
+                <h3>Bạn chưa có quyền đọc nào</h3>
+
+                <p>
+                    Hãy khám phá thư viện điện tử, chọn một cuốn sách yêu thích
+                    và đăng ký đọc online để bắt đầu.
+                </p>
+
+                <a asp-area="DocGia"
+                   asp-controller="SachDienTu"
+                   asp-action="Index"
+                   class="dg-my-ebook-primary-btn">
+                    <i class="bi bi-compass"></i>
+                    Khám phá thư viện
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="dg-my-ebook-table-card">
+                <div class="dg-my-ebook-table-responsive">
+                    <table class="dg-my-ebook-table">
+                        <thead>
+                            <tr>
+                                <th>Sách</th>
+                                <th>Định dạng</th>
+                                <th>Bắt đầu</th>
+                                <th>Hết hạn</th>
+                                <th>Truy cập gần nhất</th>
+                                <th class="text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var q in Model.DangHieuLuc)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-area="DocGia"
+                                           asp-controller="Sach"
+                                           asp-action="ChiTiet"
+                                           asp-route-id="@q.SachId"
+                                           class="dg-my-ebook-book-title">
+                                            @q.TieuDe
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <span class="dg-my-ebook-format">
+                                            @q.DinhDang
+                                        </span>
+
+                                        <div class="dg-my-ebook-subtext">
+                                            @(q.CoTheTai ? "Cho phép tải" : "Chỉ đọc trực tuyến")
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="dg-my-ebook-date">
+                                            @q.NgayBatDau.ToString("dd/MM/yyyy")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="dg-my-ebook-date">
+                                            @q.NgayHetHan.ToString("dd/MM/yyyy HH:mm")
+                                        </span>
+
+                                        <div class="dg-my-ebook-remaining @(q.SoNgayConLai <= 2 ? "is-warning" : "")">
+                                            <i class="bi bi-clock"></i>
+                                            Còn @q.SoNgayConLai ngày
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        @if (q.LanTruyCapCuoi.HasValue)
+                                        {
+                                            <span class="dg-my-ebook-date">
+                                                @q.LanTruyCapCuoi.Value.ToString("dd/MM/yyyy HH:mm")
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="dg-my-ebook-never-opened">
+                                                Chưa mở
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td class="text-end">
+                                        <div class="dg-my-ebook-actions">
+                                            @if (!q.TepKhaDung)
+                                            {
+                                                <span class="dg-my-ebook-locked">
+                                                    <i class="bi bi-lock-fill"></i>
+                                                    Tệp tạm khóa
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <a class="dg-my-ebook-action-read"
+                                                   asp-area="DocGia"
+                                                   asp-controller="SachDienTu"
+                                                   asp-action="Doc"
+                                                   asp-route-id="@q.LuotDocId">
+                                                    <i class="bi bi-eye"></i>
+                                                    Đọc
+                                                </a>
+
+                                                @if (q.CoTheTai)
+                                                {
+                                                    <a class="dg-my-ebook-action-download"
+                                                       asp-area="DocGia"
+                                                       asp-controller="SachDienTu"
+                                                       asp-action="Tai"
+                                                       asp-route-id="@q.LuotDocId"
+                                                       title="Tải xuống">
+                                                        <i class="bi bi-download"></i>
+                                                        Tải
+                                                    </a>
+                                                }
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </section>
+
+    <!-- Lịch sử -->
+    @if (Model.LichSu.Any())
+    {
+        <section class="dg-my-ebook-section dg-my-ebook-history" data-aos="fade-up">
+            <div class="dg-my-ebook-section-heading">
+                <div>
+                    <span class="dg-my-ebook-section-eyebrow">LỊCH SỬ</span>
+                    <h2 class="dg-my-ebook-section-title">
+                        <i class="bi bi-clock-history"></i>
+                        Quyền đọc đã kết thúc
+                    </h2>
+                    <p class="dg-my-ebook-section-description">
+                        Những quyền đọc đã hết hạn hoặc bị thu hồi trước đó.
+                    </p>
+                </div>
+
+                <span class="dg-my-ebook-history-count">
+                    @Model.LichSu.Count lượt
+                </span>
+            </div>
+
+            <div class="dg-my-ebook-table-card">
+                <div class="dg-my-ebook-table-responsive">
+                    <table class="dg-my-ebook-table dg-my-ebook-history-table">
+                        <thead>
+                            <tr>
+                                <th>Sách</th>
+                                <th>Định dạng</th>
+                                <th>Bắt đầu</th>
+                                <th>Hết hạn</th>
+                                <th>Kết quả</th>
+                                <th class="text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var q in Model.LichSu)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="dg-my-ebook-book-title dg-history-book-title">
+                                            @q.TieuDe
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="dg-my-ebook-history-format">
+                                            @q.DinhDang
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="dg-my-ebook-date">
+                                            @q.NgayBatDau.ToString("dd/MM/yyyy")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="dg-my-ebook-date">
+                                            @q.NgayHetHan.ToString("dd/MM/yyyy")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="dg-my-ebook-history-status">
+                                            @q.TrangThaiText
+                                        </span>
+                                    </td>
+
+                                    <td class="text-end">
+                                        <a class="dg-my-ebook-action-renew"
+                                           asp-area="DocGia"
+                                           asp-controller="Sach"
+                                           asp-action="ChiTiet"
+                                           asp-route-id="@q.SachId">
+                                            <i class="bi bi-arrow-repeat"></i>
+                                            Đăng ký lại
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    }
+
+</div>
