@@ -162,7 +162,8 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
                     MoTa = "Tra cứu sách giấy và sách điện tử ngay trên website.",
                     NutChu = "Tra cứu sách",
                     Url = Url.Action("Index", "Sach", new { area = "DocGia" })!,
-                    LopNen = "bg-primary"
+                    LopNen = "bg-primary",
+                    AnhUrl="images/Banners/banner-1.jpg"
                 },
                 new()
                 {
@@ -170,7 +171,8 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
                     MoTa = "Cập nhật những đầu sách mới nhất của thư viện.",
                     NutChu = "Xem sách mới",
                     Url = Url.Action("Index", "Sach", new { area = "DocGia", sapXep = "moi" })!,
-                    LopNen = "bg-success"
+                    LopNen = "bg-success",
+                    AnhUrl="images/Banners/banner-2.jpg"
                 }
             };
 
@@ -181,7 +183,8 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
                     MoTa = "Lọc nhanh những cuốn còn sẵn trên kệ để đến mượn.",
                     NutChu = "Xem sách còn bản",
                     Url = Url.Action("Index", "Sach", new { area = "DocGia", conSach = "true" })!,
-                    LopNen = "bg-dark"
+                    LopNen = "bg-dark",
+                    AnhUrl = "images/Banners/banner-3.jpg"
                 }
                 : new BannerViewModel
                 {
@@ -189,7 +192,9 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
                     MoTa = "Đặt trước sách, theo dõi mượn trả và đọc sách điện tử chỉ với một tài khoản độc giả.",
                     NutChu = "Đăng nhập",
                     Url = Url.Action("Login", "Account", new { area = "" })!,
-                    LopNen = "bg-dark"
+                    LopNen = "bg-dark",
+                    AnhUrl = "images/Banners/banner-3.jpg"
+
                 });
 
             return banners;
