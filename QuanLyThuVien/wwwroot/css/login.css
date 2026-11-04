@@ -516,3 +516,97 @@ body {
     margin-bottom: 0 !important;
     padding-bottom: 35px;
 }
+
+
+.register-prompt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    font-size: 16px;
+    color: #777568;
+}
+
+    .register-prompt a {
+        color: #7a8b5e;
+        font-weight: 700;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+        .register-prompt a:hover {
+            color: #c86a4a;
+        }
+
+        .register-prompt a span {
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .register-prompt a:hover span {
+            transform: translate(3px, -3px);
+        }
+
+
+
+
+
+
+
+
+.register-prompt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 22px 0;
+    color: #777568;
+    font-size: 16px;
+}
+
+    .register-prompt a {
+        color: #7a8b5e;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+        .register-prompt a:hover {
+            color: #c86a4a;
+        }
+
+.login-field-error {
+    display: block;
+    margin-top: 5px;
+    color: #b94a48;
+    font-size: 13px;
+}
+
+.login-validation-summary {
+    color: #b94a48;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+    .login-validation-summary:empty {
+        display: none;
+    }
+
+
+
+
+
+
+
+
+
+.register-success {
+    padding: 12px 15px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    background: #edf7f0;
+    color: #286442;
+    font-size: 14px;
+    line-height: 1.6;
+}

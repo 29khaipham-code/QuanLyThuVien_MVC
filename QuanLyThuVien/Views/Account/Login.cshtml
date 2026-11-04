@@ -78,7 +78,12 @@
                         Đăng nhập vào tài khoản để khám phá tri thức.
                     </p>
                 </div>
-
+                @if (TempData["RegisterSuccess"] != null)
+{
+    <div class="register-success">
+        @TempData["RegisterSuccess"]
+    </div>
+}
                 <form asp-controller="Account"
                       asp-action="Login"
                       asp-route-returnUrl="@ViewData["ReturnUrl"]"
@@ -157,6 +162,13 @@
                     <small>KHÔNG GIAN CỦA TRI THỨC</small>
                     <span></span>
                 </div>
+                <div class="register-prompt">
+    <span>Chưa có tài khoản?</span>
+    <a asp-controller="Account"
+       asp-action="Register">
+        Đăng ký ngay <span>↗</span>
+    </a>
+</div>
 
                 <!-- QUAY VỀ TRANG CHỦ -->
                 <a asp-controller="Home"

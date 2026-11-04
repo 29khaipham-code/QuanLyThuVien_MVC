@@ -59,6 +59,58 @@ namespace QuanLyThuVien.Controllers
             return View(sach);
         }
 
+        
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> GuiYeuCau(
+    [Bind("HoTen,Email,ChuDe,LoiNhan")] YeuCauHoTro model)
+{
+    if (!ModelState.IsValid)
+    {
+        TempData["SupportStatus"] = "Vui lòng nhập đầy đủ thông tin hợp lệ.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    _db.YeuCauHoTros.Add(model);
+    await _db.SaveChangesAsync();
+
+    TempData["SupportStatus"] = "Gửi yêu cầu hỗ trợ thành công!";
+    return RedirectToAction(nameof(Index));
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> DangKyNhanTin(string email)
+{
+    email = email?.Trim() ?? "";
+
+    if (!new System.ComponentModel.DataAnnotations.EmailAddressAttribute()
+        .IsValid(email))
+    {
+        TempData["NewsletterStatus"] = "Vui lòng nhập email hợp lệ.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    bool daTonTai = await _db.DangKyNhanTins
+        .AnyAsync(x => x.Email == email);
+
+    if (daTonTai)
+    {
+        TempData["NewsletterStatus"] = "Email này đã đăng ký rồi!";
+        return RedirectToAction(nameof(Index));
+    }
+
+    _db.DangKyNhanTins.Add(new DangKyNhanTin
+    {
+        Email = email
+    });
+
+    await _db.SaveChangesAsync();
+
+    TempData["NewsletterStatus"] = "Đăng ký email thành công!";
+    return RedirectToAction(nameof(Index));
+}
+
         public IActionResult Privacy()
         {
             return View();

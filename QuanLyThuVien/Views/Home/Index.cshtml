@@ -39,7 +39,7 @@
                     <a asp-area="DocGia" asp-controller="Home" asp-action="Index" class="btn-clay">
                         Khám phá sách <span>↗</span>
                     </a>
-                    <a href="#gioi-thieu" class="btn-paper">Về thư viện</a>
+                    <a href="#trang-thu-2" class="btn-paper">Về thư viện</a>
                 </div>
                 <div class="hero-meta">
                     <span>● Đọc mỗi ngày</span>
@@ -58,76 +58,19 @@
             </div>
         </section>
 
-        <!-- 02. PALETTE / ĐỊNH HƯỚNG MÀU SẮC -->
-        <section class="sample-section palette-section" id="gioi-thieu">
-            <div class="section-heading">
-                <p class="eyebrow">BẢN SẮC THƯ VIỆN</p>
-                <h2>Một bảng màu của tri thức.</h2>
-                <p>Ấm áp như trang giấy, trầm tĩnh như một góc đọc và nổi bật vừa đủ để dẫn lối khám phá.</p>
-            </div>
-            <div class="palette-grid">
-                <div class="palette-chip"><span class="swatch swatch-paper"></span><b>Giấy ngà</b><small>#F5F0E8</small></div>
-                <div class="palette-chip"><span class="swatch swatch-sand"></span><b>Cát ấm</b><small>#E8DED0</small></div>
-                <div class="palette-chip"><span class="swatch swatch-clay"></span><b>Đất nung</b><small>#C96B4B</small></div>
-                <div class="palette-chip"><span class="swatch swatch-ink"></span><b>Mực nâu</b><small>#29251F</small></div>
-                <div class="palette-chip"><span class="swatch swatch-olive"></span><b>Olive</b><small>#87916B</small></div>
-                <div class="palette-chip"><span class="swatch swatch-linen"></span><b>Vải lanh</b><small>#D7C6AD</small></div>
-            </div>
-            <div class="palette-note">
-                <span class="palette-note-swatch"></span>
-                <div>
-                    <strong>Đất nung · Màu nhấn chính</strong>
-                    <p>Dùng cho nút hành động, liên kết quan trọng và những điểm cần được chú ý.</p>
-                </div>
-                <span class="mini-pill">Màu chủ đạo</span>
-            </div>
-        </section>
+        
 
-        <!-- 03. TYPOGRAPHY -->
-        <section class="sample-section type-section">
-            <div class="section-heading">
-                <p class="eyebrow">NGÔN NGỮ THỊ GIÁC</p>
-                <h2>Chữ nghĩa có chiều sâu.</h2>
-                <p>Kiểu chữ có chân tạo cảm giác gần gũi với sách in; phần nội dung vẫn rõ ràng và dễ đọc.</p>
-            </div>
-            <div class="type-specimen">
-                <div class="type-row type-display">
-                    <small>TIÊU ĐỀ LỚN</small>
-                    <strong>Những trang sách mở lối tương lai.</strong>
-                    <em>Display serif · 56 px</em>
-                </div>
-                <div class="type-row">
-                    <small>TIÊU ĐỀ MỤC</small>
-                    <strong>Khám phá kho tàng tri thức</strong>
-                    <em>Section title · 32 px</em>
-                </div>
-                <div class="type-row">
-                    <small>TÊN THẺ</small>
-                    <strong>Một cuốn sách đáng đọc</strong>
-                    <em>Card title · 20 px</em>
-                </div>
-                <div class="type-row">
-                    <small>NỘI DUNG</small>
-                    <span>Mỗi cuốn sách là một hành trình, mỗi trang sách là một cơ hội để hiểu thêm thế giới quanh ta.</span>
-                    <em>Body text · 15 px</em>
-                </div>
-                <div class="type-row">
-                    <small>Nhãn</small>
-                    <span class="type-label">BỘ SƯU TẬP · 2026</span>
-                    <em>Eyebrow · 10 px</em>
-                </div>
-            </div>
-        </section>
+        
 
         <!-- 04. BUTTONS -->
-        <section class="sample-section button-section">
+        <section id="trang-thu-2" class="sample-section button-section">
             <div class="section-heading">
                 <p class="eyebrow">TƯƠNG TÁC</p>
                 <h2>Nút bấm thân thiện.</h2>
                 <p>Mỗi thao tác được thể hiện rõ ràng, nhất quán và dễ nhận biết.</p>
             </div>
             <div class="button-showcase">
-                <a asp-controller="Home" asp-action="DanhSachSach" class="btn-clay">Khám phá sách</a>
+                <a asp-area="DocGia" asp-controller="Home" asp-action="Index" class="btn-clay">Khám phá sách</a>
                 <a asp-controller="Account" asp-action="Login" class="btn-olive">Đăng nhập</a>
                 <a href="#bo-suu-tap" class="btn-paper">Bộ sưu tập</a>
                 <a href="#quy-trinh" class="btn-outline">Cách sử dụng</a>
@@ -149,13 +92,13 @@
                     <small>GÓC ĐỌC</small>
                     <h3>Không gian yên tĩnh</h3>
                     <p>Một nơi để tạm dừng, đọc chậm và dành thời gian cho điều bạn yêu thích.</p>
-                    <span>● Đọc & suy ngẫm</span>
+                    <a asp-area="DocGia" asp-controller="Home" asp-action="Index" class="btn-clay">Đọc & suy ngẫm ↗</a>
                 </article>
                 <article class="surface-card surface-paper">
                     <small>KHÁM PHÁ</small>
                     <h3>Thế giới trong trang sách</h3>
                     <p>Từ văn học, công nghệ đến khoa học và đời sống.</p>
-                    <a asp-controller="Home" asp-action="DanhSachSach">Xem danh mục ↗</a>
+                    <a asp-area="DocGia" asp-controller="Home" asp-action="Index" class="btn-clay">Xem danh mục ↗</a>
                 </article>
                 <article class="surface-card surface-clay">
                     <small>BẠN ĐỌC MỚI</small>
@@ -208,31 +151,38 @@
                     </div>
                 </div>
 
-                <form class="support-form" id="libraryRequestForm">
-                    <small>GỬI THÔNG TIN</small>
-                    <h3>Yêu cầu hỗ trợ</h3>
+                <form id="libraryRequestForm"
+                      class="support-form"
+                      asp-controller="Home"
+                      asp-action="GuiYeuCau"
+                      method="post">
+                    
+                    @Html.AntiForgeryToken()
+                    @if (TempData["SupportStatus"] != null)
+                    {
+                        <p class="form-status">@TempData["SupportStatus"]</p>
+                    }
 
-                    <label for="supportName">Họ và tên</label>
-                    <input id="supportName" name="fullName" placeholder="Nhập họ và tên" required />
+                    <input name="HoTen" placeholder="Họ và tên" required />
+                    <input type="email" name="Email" placeholder="Địa chỉ email" required />
 
-                    <label for="supportEmail">Địa chỉ email</label>
-                    <input id="supportEmail" name="email" type="email" placeholder="you@example.com" required />
-
-                    <label for="supportTopic">Chủ đề cần hỗ trợ</label>
-                    <select id="supportTopic" name="topic" required>
-                        <option value="">Chọn chủ đề</option>
-                        <option>Tìm kiếm tài liệu</option>
-                        <option>Tài khoản bạn đọc</option>
-                        <option>Sách điện tử</option>
-                        <option>Vấn đề khác</option>
+                    <select name="ChuDe" required>
+                        <option value="Tìm kiếm tài liệu">Tìm kiếm tài liệu</option>
+                        <option value="Tài khoản bạn đọc">Tài khoản bạn đọc</option>
+                        <option value="Hướng dẫn sử dụng">Hướng dẫn sử dụng</option>
+                        <option value="Khác">Khác</option>
                     </select>
 
-                    <label for="supportMessage">Lời nhắn</label>
-                    <textarea id="supportMessage" name="message" rows="4" placeholder="Bạn cần thư viện hỗ trợ điều gì?" required></textarea>
+                    <textarea name="LoiNhan" placeholder="Lời nhắn" required></textarea>
+                    
 
-                    <button type="submit" class="btn-clay">Gửi yêu cầu <span>↗</span></button>
-                    <p class="form-note" id="supportMessageStatus">Biểu mẫu giao diện minh họa, chưa kết nối chức năng gửi về máy chủ.</p>
+                    <button type="submit">Gửi yêu cầu ↗</button>
                 </form>
+
+                @if (TempData["SupportStatus"] != null)
+                {
+                    <p>@TempData["SupportStatus"]</p>
+                }
             </div>
         </section>
 
@@ -350,7 +300,7 @@
             </div>
         </section>
 
-        <!-- 09. MARKS & LABELS -->
+        @* <!-- 09. MARKS & LABELS -->
         <section class="sample-section labels-section">
             <div class="section-heading">
                 <p class="eyebrow">NHÃN & TRẠNG THÁI</p>
@@ -379,7 +329,7 @@
                     </p>
                 </div>
             </div>
-        </section>
+        </section> *@
 
         <!-- 10. PROCESS -->
         <section class="sample-section process-section" id="quy-trinh">
@@ -536,12 +486,12 @@
 
                 <div class="table-footer">
                     <span>Bảng minh họa giao diện · Không phải dữ liệu mượn trả thực tế</span>
-                    <a asp-controller="Home" asp-action="DanhSachSach">Đến danh sách sách ↗</a>
+                    <a asp-area="DocGia" asp-controller="Home" asp-action="Index">Đến danh sách sách ↗</a>
                 </div>
             </div>
         </section>
 
-        <!-- 13. TESTIMONIAL -->
+        @* <!-- 13. TESTIMONIAL -->
         <section class="sample-section quote-section">
             <div class="section-heading">
                 <p class="eyebrow">GÓC NHÌN BẠN ĐỌC</p>
@@ -559,10 +509,10 @@
                 </div>
             </div>
             <div class="quote-dots"><i></i><i></i><i></i></div>
-        </section>
+        </section> *@
 
         <!-- 14. DIVIDERS -->
-        <section class="sample-section divider-section">
+        @* <section class="sample-section divider-section">
             <div class="section-heading">
                 <p class="eyebrow">CHI TIẾT TRANG TRÍ</p>
                 <h2>Những khoảng nghỉ cần thiết.</h2>
@@ -587,10 +537,10 @@
                     <hr class="accent-rule" />
                 </div>
             </div>
-        </section>
+        </section> *@
 
         <!-- 15. FORM LANGUAGE / SHADOWS -->
-        <section class="sample-section form-style-section">
+        @* <section class="sample-section form-style-section">
             <div class="section-heading">
                 <p class="eyebrow">TRẢI NGHIỆM SỬ DỤNG</p>
                 <h2>Gọn gàng và dễ thao tác.</h2>
@@ -624,7 +574,7 @@
                     <p>Bóng đổ mềm, không quá đậm để giữ cảm giác giấy tự nhiên.</p>
                 </div>
             </div>
-        </section>
+        </section> *@
 
         <!-- 16. DO / DON'T -->
         <section class="sample-section rules-section">
@@ -699,12 +649,29 @@
                 <p>Không gian để cập nhật những tin tức và hoạt động mới của thư viện.</p>
             </div>
 
-            <form class="newsletter-form" id="newsletterForm">
-                <label class="sr-only" for="newsletterEmail">Email của bạn</label>
-                <input id="newsletterEmail" type="email" placeholder="Địa chỉ email của bạn" required />
-                <button type="submit" class="btn-clay">Đăng ký <span>↗</span></button>
-                <p id="newsletterStatus">Biểu mẫu minh họa, chưa kết nối dịch vụ gửi email.</p>
+            <form id="newsletterForm"
+                  class="newsletter-form"
+                  asp-controller="Home"
+                  asp-action="DangKyNhanTin"
+                  method="post">
+                
+                @Html.AntiForgeryToken()
+                @if (TempData["NewsletterStatus"] != null)
+                {
+                    <p class="form-status">@TempData["NewsletterStatus"]</p>
+                }
+
+                <input type="email" name="email"
+                       placeholder="Địa chỉ email của bạn" required />
+                @if (TempData["NewsletterStatus"] != null)
+                {
+                    <p class="form-status">@TempData["NewsletterStatus"]</p>
+                }
+
+                <button type="submit">Đăng ký ↗</button>
             </form>
+
+            
         </section>
     </main>
 
@@ -722,7 +689,7 @@
 
             <div>
                 <small>KHÁM PHÁ</small>
-                <a asp-controller="Home" asp-action="DanhSachSach">Danh sách sách</a>
+                <a asp-area="DocGia" asp-controller="Home" asp-action="Index">Danh sách sách</a>
                 <a href="#bo-suu-tap">Bộ sưu tập</a>
                 <a href="#quy-trinh">Hướng dẫn sử dụng</a>
             </div>
@@ -736,7 +703,7 @@
 
             <div>
                 <small>VỀ CHÚNG TÔI</small>
-                <a href="#gioi-thieu">Giới thiệu thư viện</a>
+                <a href="#trang-thu-2">Giới thiệu thư viện</a>
                 <a href="#trang-chu">Trang chủ</a>
                 <a href="#trang-chu">Về đầu trang ↑</a>
             </div>
@@ -785,23 +752,7 @@
                 sections.forEach(section => observer.observe(section));
             }
 
-            const requestForm = document.getElementById('libraryRequestForm');
-
-            requestForm?.addEventListener('submit', event => {
-                event.preventDefault();
-
-                document.getElementById('supportMessageStatus').textContent =
-                    'Thông tin đã được kiểm tra ở giao diện. Chức năng gửi về máy chủ chưa được kết nối.';
-            });
-
-            const newsletterForm = document.getElementById('newsletterForm');
-
-            newsletterForm?.addEventListener('submit', event => {
-                event.preventDefault();
-
-                document.getElementById('newsletterStatus').textContent =
-                    'Email đã được nhập. Chức năng đăng ký nhận tin chưa được kết nối.';
-            });
+            
 
             document.querySelectorAll('.faq-list details').forEach(item => {
                 item.addEventListener('toggle', () => {

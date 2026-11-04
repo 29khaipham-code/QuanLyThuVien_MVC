@@ -405,6 +405,7 @@
     font-size: 11px;
     color: var(--soft);
     line-height: 1.8;
+    text-align:center
 }
 
 
@@ -2429,6 +2430,57 @@ body {
 
 
 
+/* Thông báo trạng thái của form */
+.form-status {
+    margin: 12px 0;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+    font-family: inherit;
+    background: #edf7f0;
+    color: #286442;
+    border: 1px solid #cce8d5;
+}
+
+/* Form hỗ trợ và đăng ký nhận tin */
+#libraryRequestForm,
+#newsletterForm {
+    width: 100%;
+}
+
+    #libraryRequestForm input,
+    #libraryRequestForm select,
+    #libraryRequestForm textarea,
+    #newsletterForm input {
+        box-sizing: border-box;
+        max-width: 100%;
+    }
+
+    /* Hiệu ứng khi bấm nút */
+    #libraryRequestForm button,
+    #newsletterForm button {
+        cursor: pointer;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+        #libraryRequestForm button:hover,
+        #newsletterForm button:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+        }
+
+/* Co giãn trên điện thoại */
+@media (max-width: 576px) {
+    .form-status {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+}
+
+
+
+
 
 
 
@@ -2491,3 +2543,155 @@ body,
         .home-page select {
             font-family: "Times New Roman", Times, serif !important;
         }
+
+
+
+
+
+
+
+
+
+
+
+/* ===== FORM HỖ TRỢ ===== */
+.library-home .support-form {
+    width: 100%;
+    min-width: 0;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+
+    .library-home .support-form input,
+    .library-home .support-form select,
+    .library-home .support-form textarea {
+        width: 100%;
+        min-width: 0;
+        padding: 13px 15px;
+        background: rgba(232, 222, 209, 0.4);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--ink);
+        font-size: 15px;
+    }
+
+    .library-home .support-form textarea {
+        min-height: 130px;
+        resize: vertical;
+    }
+
+        .library-home .support-form input:focus,
+        .library-home .support-form select:focus,
+        .library-home .support-form textarea:focus,
+        .library-home .newsletter-form input:focus {
+            outline: none;
+            border-color: var(--terracotta);
+            box-shadow: 0 0 0 3px rgba(200, 106, 74, 0.15);
+        }
+
+    .library-home .support-form button,
+    .library-home .newsletter-form button {
+        min-height: 46px;
+        padding: 12px 20px;
+        background: var(--terracotta);
+        border: 1px solid var(--terracotta);
+        border-radius: 8px;
+        color: white;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+        .library-home .support-form button:hover,
+        .library-home .newsletter-form button:hover {
+            background: var(--terracotta-dark);
+            transform: translateY(-1px);
+        }
+
+/* ===== FORM ĐĂNG KÝ NHẬN TIN ===== */
+.library-home .newsletter-form {
+    width: 100%;
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: start;
+    background: var(--sand);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+
+    .library-home .newsletter-form input {
+        width: 100%;
+        min-width: 0;
+        min-height: 46px;
+        padding: 12px 15px;
+        background: var(--paper);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--ink);
+        font-size: 15px;
+    }
+
+    .library-home .newsletter-form button {
+        white-space: nowrap;
+    }
+
+/* ===== THÔNG BÁO ===== */
+.library-home .form-status {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin: 0;
+    padding: 12px 15px;
+    border: 1px solid #cce8d5;
+    border-radius: 8px;
+    background: #edf7f0;
+    color: #286442;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ===== ĐIỆN THOẠI ===== */
+@media (max-width: 768px) {
+    .library-home .support-form {
+        padding: 22px 18px;
+    }
+
+    .library-home .newsletter-form {
+        grid-template-columns: 1fr;
+        padding: 18px;
+    }
+
+        .library-home .newsletter-form button {
+            width: 100%;
+        }
+}
+
+
+
+/* Tăng kích thước chữ trên thanh điều hướng */
+.library-home .navbar a,
+.library-home nav a,
+.navbar a,
+.nav-link {
+    font-size: 20px !important;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: 600;
+}
+
+
+
+/* Chỉ tăng cỡ chữ nút Đăng nhập ở trang Index */
+.home-page .nav-account {
+    font-size: 22px !important;
+    font-weight: 600;
+    font-family: "Times New Roman", Times, serif;
+}

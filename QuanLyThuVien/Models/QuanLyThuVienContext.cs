@@ -463,9 +463,29 @@ public partial class QuanLyThuVienContext : DbContext
 
             entity.Property(e => e.TieuDe).HasMaxLength(255);
         });
+        modelBuilder.Entity<YeuCauHoTro>(entity =>
+        {
+            entity.ToTable("YeuCauHoTro");
+            entity.Property(e => e.HoTen).HasMaxLength(100);
+            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.ChuDe).HasMaxLength(100);
+            entity.Property(e => e.LoiNhan).HasMaxLength(1000);
+            entity.Property(e => e.NgayGui).HasDefaultValueSql("(sysdatetime())");
+        });
+
+        modelBuilder.Entity<DangKyNhanTin>(entity =>
+        {
+            entity.ToTable("DangKyNhanTin");
+            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.NgayDangKy).HasDefaultValueSql("(sysdatetime())");
+            entity.HasIndex(e => e.Email).IsUnique();
+        });
 
         OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    public virtual DbSet<YeuCauHoTro> YeuCauHoTros { get; set; }
+
+    public virtual DbSet<DangKyNhanTin> DangKyNhanTins { get; set; }
 }
