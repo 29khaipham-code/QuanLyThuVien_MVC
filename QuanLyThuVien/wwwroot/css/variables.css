@@ -21,10 +21,37 @@
     --radius-lg: 20px;
     /* Hiệu ứng */
     --transition-base: 0.3s ease;
+/*    font chu*/
+    --font-primary: "Times New Roman", Times, serif;
+    --font-heading: "Times New Roman", Times, serif;
 }
 
 
 
+html,
+body {
+    font-family: var(--font-primary) !important;
+}
 
-
-
+body,
+button,
+input,
+textarea,
+select,
+option,
+label,
+a,
+p,
+span,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+table,
+th,
+td {
+    font-family: var(--font-primary) !important;
+}
