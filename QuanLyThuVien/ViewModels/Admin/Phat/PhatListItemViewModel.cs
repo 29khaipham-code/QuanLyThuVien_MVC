@@ -17,7 +17,6 @@ namespace QuanLyThuVien.ViewModels.Admin.Phat
 
         public decimal SoTien { get; set; }
         public bool DaThanhToan { get; set; }
-
         public DateOnly? NgayThanhToan { get; set; }
         public DateTime NgayTao { get; set; }
     }

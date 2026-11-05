@@ -1,0 +1,88 @@
+﻿
+@model List<QuanLyThuVien.ViewModels.Admin.SachDienTu.NhatKyVm>
+
+@{
+    ViewData["Title"] = "Lịch sử truy cập";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <h3 class="mb-4">Lịch sử truy cập sách điện tử</h3>
+
+    <div class="card">
+        <div class="card-body">
+            <p class="text-muted">
+                Hiển thị 200 lượt truy cập mới nhất.
+            </p>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Độc giả</th>
+                            <th>Sách</th>
+                            <th>Hành động</th>
+                            <th>Thời điểm</th>
+                            <th>IP</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.DocGia</td>
+                                <td>@item.TenSach</td>
+
+                                <td>
+                                    @if (item.HanhDong == "Mo")
+                                    {
+                                        <span class="badge bg-primary">
+                                            Mở sách
+                                        </span>
+                                    }
+                                    else if (item.HanhDong == "Doc")
+                                    {
+                                        <span class="badge bg-success">
+                                            Đọc sách
+                                        </span>
+                                    }
+                                    else if (item.HanhDong == "Tai")
+                                    {
+                                        <span class="badge bg-info text-dark">
+                                            Tải sách
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        @item.HanhDong
+                                    }
+                                </td>
+
+                                <td>
+                                    @item.ThoiDiem.ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+
+                                <td>@(item.DiaChiIP ?? "—")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.Count == 0)
+            {
+                <div class="alert alert-info">
+                    Chưa có lịch sử truy cập.
+                </div>
+            }
+        </div>
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary mt-3">
+        Quay lại
+    </a>
+</div>

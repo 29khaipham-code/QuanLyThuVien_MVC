@@ -1,0 +1,179 @@
+﻿
+@model List<QuanLyThuVien.ViewModels.Admin.SachDienTu.QuyenDocVm>
+
+@{
+    ViewData["Title"] = "Quản lý quyền đọc";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <h3 class="mb-4">Quản lý quyền đọc sách điện tử</h3>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-header">Cấp quyền đọc</div>
+
+        <div class="card-body">
+            <form asp-action="CapQuyen"
+                  method="post"
+                  class="row g-3">
+
+                @Html.AntiForgeryToken()
+
+                <div class="col-md-4">
+                    <label class="form-label">ID độc giả</label>
+                    <input type="number"
+                           name="DocGiaId"
+                           min="1"
+                           class="form-control"
+                           required />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">ID tệp sách</label>
+                    <input type="number"
+                           name="TepSachId"
+                           min="1"
+                           class="form-control"
+                           required />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Số ngày đọc</label>
+                    <input type="number"
+                           name="SoNgay"
+                           value="7"
+                           min="1"
+                           max="365"
+                           class="form-control"
+                           required />
+                </div>
+
+                <div class="col-12">
+                    <button class="btn btn-primary">
+                        Cấp quyền
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Danh sách quyền đọc</div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Độc giả</th>
+                            <th>Sách</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày hết hạn</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.DocGia</td>
+                                <td>@item.TenSach</td>
+
+                                <td>
+                                    @item.NgayBatDau.ToString("dd/MM/yyyy HH:mm")
+                                </td>
+
+                                <td>
+                                    @item.NgayHetHan.ToString("dd/MM/yyyy HH:mm")
+                                </td>
+
+                                <td>
+                                    @if (item.TrangThai == "ThuHoi")
+                                    {
+                                        <span class="badge bg-danger">
+                                            Đã thu hồi
+                                        </span>
+                                    }
+                                    else if (item.NgayHetHan <= DateTime.Now)
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Hết hạn
+                                        </span>
+                                    }
+                                    else if (item.TrangThai == "HieuLuc")
+                                    {
+                                        <span class="badge bg-success">
+                                            Còn hiệu lực
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            @item.TrangThai
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (item.TrangThai == "HieuLuc")
+                                    {
+                                        <div class="d-flex gap-2">
+                                            <form asp-action="GiaHan"
+                                                  method="post">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@item.Id" />
+                                                <input type="hidden"
+                                                       name="soNgay"
+                                                       value="7" />
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    +7 ngày
+                                                </button>
+                                            </form>
+
+                                            <form asp-action="ThuHoi"
+                                                  method="post">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@item.Id" />
+                                                <button class="btn btn-sm btn-outline-danger">
+                                                    Thu hồi
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.Count == 0)
+            {
+                <p class="text-muted">Chưa có quyền đọc nào.</p>
+            }
+        </div>
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-outline-secondary mt-3">
+        Quay lại
+    </a>
+</div>
