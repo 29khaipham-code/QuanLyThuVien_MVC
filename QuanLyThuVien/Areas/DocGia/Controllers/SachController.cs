@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuanLyThuVien.Areas.DocGia.Helpers;
 using QuanLyThuVien.Models;
-using QuanLyThuVien.ViewModels;
 using QuanLyThuVien.ViewModels.DocGia;
 
 namespace QuanLyThuVien.Areas.DocGia.Controllers
 {
+    // Khách cũng xem được danh sách và chi tiết sách; phần mượn, đặt trước, đọc online chỉ dành cho độc giả
     [Area("DocGia")]
-    [Authorize(Roles = "DocGia")]
+    [AllowAnonymous]
     public class SachController : DocGiaControllerBase
     {
         private const int KichThuocTrang = 8;
@@ -92,7 +92,7 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             return View(vm);
         }
 
-        // CHI TIẾT SÁCH (kèm trạng thái mượn / đặt trước của độc giả đang xem)
+        // CHI TIẾT SÁCH (kèm tệp điện tử và trạng thái mượn / đặt trước / quyền đọc của độc giả đang xem)
         [HttpGet]
         public async Task<IActionResult> ChiTiet(int id)
         {
@@ -109,11 +109,7 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
                     NhaXuatBan = s.NhaXuatBan.TenNhaXuatBan,
                     NamXuatBan = s.NamXuatBan,
                     LanTaiBan = s.LanTaiBan,
-                    TacGias = s.TacGia.Select(t => t.TenTacGia).ToList(),
-                    DinhDangs = s.TepSachDienTus
-                        .Where(t => t.TrangThai == "HoatDong")
-                        .Select(t => t.DinhDang)
-                        .ToList()
+                    TacGias = s.TacGia.Select(t => t.TenTacGia).ToList()
                 })
                 .FirstOrDefaultAsync();
 
@@ -131,6 +127,24 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
                 vm.DangMuon = sl.DangMuon ?? 0;
                 vm.DaDat = sl.DaDat ?? 0;
             }
+
+            // Tệp điện tử còn hoạt động và còn bản quyền
+            var homNay = DateOnly.FromDateTime(DateTime.Today);
+            vm.Teps = await Db.TepSachDienTus.AsNoTracking()
+                .Where(t => t.SachId == id
+                         && t.TrangThai == "HoatDong"
+                         && (t.NgayHetBanQuyen == null || t.NgayHetBanQuyen >= homNay))
+                .OrderBy(t => t.DinhDang)
+                .Select(t => new TepItemViewModel
+                {
+                    Id = t.Id,
+                    DinhDang = t.DinhDang,
+                    DungLuong = t.DungLuong,
+                    CheDoTruyCap = t.CheDoTruyCap
+                })
+                .ToListAsync();
+
+            vm.LaDocGia = LaDocGia;
 
             // Trạng thái của độc giả đối với cuốn sách này
             var dg = await LayDocGiaAsync();
@@ -157,6 +171,28 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
                     {
                         vm.ViTriHangDoi = 1 + await Db.DatTruocs.CountAsync(d =>
                             d.SachId == id && d.TrangThai == "DangCho" && d.NgayDat < dat.NgayDat);
+                    }
+                }
+
+                // Quyền đọc đang hiệu lực cho từng tệp
+                if (vm.Teps.Count > 0)
+                {
+                    var tepIds = vm.Teps.Select(t => t.Id).ToList();
+                    var bayGio = DateTime.Now;
+
+                    var quyen = await Db.LuotDocSachDienTus.AsNoTracking()
+                        .Where(l => l.DocGiaId == dg.Id
+                                 && l.TrangThai == "HieuLuc"
+                                 && l.NgayHetHan > bayGio
+                                 && tepIds.Contains(l.TepSachId))
+                        .Select(l => new { l.Id, l.TepSachId, l.NgayHetHan })
+                        .ToListAsync();
+
+                    foreach (var q in quyen)
+                    {
+                        var tep = vm.Teps.First(t => t.Id == q.TepSachId);
+                        tep.LuotDocId = q.Id;
+                        tep.NgayHetHanQuyen = q.NgayHetHan;
                     }
                 }
             }

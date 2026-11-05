@@ -1,0 +1,487 @@
+﻿/* =========================================
+   LỊCH SỬ MƯỢN SÁCH
+========================================= */
+
+.dg-history-page {
+    padding-top: 40px;
+    padding-bottom: 70px;
+    min-height: 70vh;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.dg-history-header {
+    margin-bottom: 30px;
+}
+
+.dg-history-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 12px;
+    color: var(--color-terracotta);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+    .dg-history-eyebrow i {
+        font-size: 1rem;
+    }
+
+.dg-history-title {
+    margin: 0 0 12px;
+    color: var(--text-primary);
+    font-family: Georgia, serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 700;
+}
+
+    .dg-history-title span {
+        color: var(--color-terracotta);
+        font-style: italic;
+    }
+
+.dg-history-description {
+    max-width: 650px;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.98rem;
+    line-height: 1.7;
+}
+
+/* =========================================
+   FILTER CARD
+========================================= */
+
+.dg-history-filter {
+    padding: 25px;
+    margin-bottom: 30px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+.dg-history-filter-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 22px;
+}
+
+.dg-history-filter-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--color-terracotta);
+    background: var(--color-paper);
+    border-radius: var(--radius-md);
+    font-size: 1.2rem;
+}
+
+.dg-history-filter-heading h5 {
+    margin: 0 0 4px;
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.dg-history-filter-heading p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+/* Labels */
+
+.dg-history-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+/* Input */
+
+.dg-history-input-wrapper {
+    position: relative;
+}
+
+    .dg-history-input-wrapper > i {
+        position: absolute;
+        top: 50%;
+        left: 14px;
+        z-index: 2;
+        color: var(--text-secondary);
+        transform: translateY(-50%);
+    }
+
+    .dg-history-input-wrapper .form-control {
+        padding-left: 40px;
+    }
+
+    .dg-history-control,
+    .dg-history-input-wrapper .form-control {
+        min-height: 44px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-sm);
+        background-color: var(--color-paper);
+        color: var(--text-primary);
+        font-size: 0.9rem;
+        transition: var(--transition-base);
+    }
+
+        .dg-history-control:focus,
+        .dg-history-input-wrapper .form-control:focus {
+            border-color: var(--color-terracotta);
+            background-color: var(--bg-card);
+            box-shadow: 0 0 0 3px rgba(200, 106, 74, 0.12);
+        }
+
+/* Filter button */
+
+.dg-history-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--color-terracotta);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: var(--transition-base);
+}
+
+    .dg-history-filter-btn:hover {
+        background: var(--color-brown);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-soft);
+    }
+
+/* =========================================
+   RESULTS
+========================================= */
+
+.dg-history-results {
+    transition: opacity var(--transition-base);
+}
+
+#ketQua.dg-history-loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.dg-history-error {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 20px;
+    color: #9F3D32;
+    background: #FCEDEA;
+    border: 1px solid #EAC4BD;
+    border-radius: var(--radius-md);
+}
+
+    .dg-history-error i {
+        font-size: 1.2rem;
+    }
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+    .dg-history-page {
+        padding-top: 28px;
+        padding-bottom: 45px;
+    }
+
+    .dg-history-filter {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .dg-history-title {
+        font-size: 2rem;
+    }
+
+    .dg-history-filter {
+        padding: 16px;
+    }
+
+    .dg-history-filter-heading {
+        margin-bottom: 18px;
+    }
+
+    .dg-history-filter-btn {
+        margin-top: 4px;
+    }
+}
+
+/* =========================================
+   LỊCH SỬ - KẾT QUẢ
+========================================= */
+
+.dg-history-list {
+    width: 100%;
+}
+
+.dg-history-result-summary {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 18px;
+}
+
+.dg-history-result-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+    color: var(--color-terracotta);
+    background: var(--color-sand);
+    border-radius: var(--radius-md);
+    font-size: 1.15rem;
+}
+
+.dg-history-result-label {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+}
+
+.dg-history-result-count {
+    color: var(--text-primary);
+    font-size: 0.92rem;
+}
+
+    .dg-history-result-count strong {
+        color: var(--color-terracotta);
+        font-weight: 700;
+    }
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.dg-history-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 55px 20px;
+    background: var(--bg-card);
+    border: 1px dashed var(--color-clay);
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+
+.dg-history-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 18px;
+    color: var(--color-olive);
+    background: rgba(122, 139, 94, 0.12);
+    border-radius: 50%;
+    font-size: 1.8rem;
+}
+
+.dg-history-empty h5 {
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.dg-history-empty p {
+    max-width: 420px;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* =========================================
+   TABLE
+========================================= */
+
+.dg-history-table-card {
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+.dg-history-table {
+    min-width: 900px;
+    margin-bottom: 0;
+}
+
+    .dg-history-table thead th {
+        padding: 16px 14px;
+        color: var(--text-primary);
+        background: var(--color-paper);
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.82rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .dg-history-table tbody td {
+        padding: 16px 14px;
+        color: var(--text-secondary);
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.87rem;
+    }
+
+    .dg-history-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .dg-history-table tbody tr {
+        transition: var(--transition-base);
+    }
+
+        .dg-history-table tbody tr:hover {
+            background: var(--color-paper);
+        }
+
+/* Tên sách */
+
+.dg-history-book-link {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 150px;
+    max-width: 240px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    line-height: 1.5;
+    transition: var(--transition-base);
+}
+
+    .dg-history-book-link i {
+        margin-top: 2px;
+        color: var(--color-terracotta);
+        flex-shrink: 0;
+    }
+
+    .dg-history-book-link:hover {
+        color: var(--color-terracotta);
+    }
+
+/* Mã phiếu và ngày */
+
+.dg-history-ticket {
+    color: var(--color-terracotta);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.dg-history-date {
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+/* =========================================
+   STATUS
+========================================= */
+
+.dg-history-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 11px;
+    border-radius: 30px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+    /*
+   LopBadge vẫn được giữ nguyên từ ViewModel.
+   Các class trạng thái phổ biến được hỗ trợ bên dưới.
+*/
+
+    .dg-history-status.bg-success,
+    .dg-history-status.bg-primary {
+        color: #536B3D !important;
+        background: rgba(122, 139, 94, 0.15) !important;
+    }
+
+    .dg-history-status.bg-warning {
+        color: #8A6529 !important;
+        background: rgba(212, 191, 165, 0.35) !important;
+    }
+
+    .dg-history-status.bg-danger {
+        color: #A94F35 !important;
+        background: rgba(200, 106, 74, 0.13) !important;
+    }
+
+    .dg-history-status.bg-secondary {
+        color: var(--text-secondary) !important;
+        background: var(--color-sand) !important;
+    }
+
+/* =========================================
+   FINE
+========================================= */
+
+.dg-history-fine {
+    white-space: nowrap;
+    font-weight: 700;
+}
+
+    .dg-history-fine.is-unpaid {
+        color: var(--color-terracotta);
+    }
+
+    .dg-history-fine.is-paid {
+        color: var(--color-olive);
+    }
+
+.dg-history-no-fine {
+    color: var(--text-secondary);
+}
+
+/* =========================================
+   PAGINATION
+========================================= */
+
+.dg-history-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+    .dg-history-table-card {
+        border-radius: var(--radius-md);
+    }
+
+    .dg-history-result-summary {
+        margin-bottom: 14px;
+    }
+}

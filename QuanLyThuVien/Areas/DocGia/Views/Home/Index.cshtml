@@ -3,158 +3,380 @@
 
 @{
     ViewData["Title"] = "Trang chủ";
+
     var vi = new CultureInfo("vi-VN");
+    var daDangNhap = User.Identity?.IsAuthenticated == true;
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/docgia/trangchu.css" asp-append-version="true" />
+    <link rel="stylesheet"
+          href="~/css/docgia/trangchu.css"
+          asp-append-version="true" />
 }
+<div class="container dg-home-container">
 
-<div class="dg-home py-3">
-    @* ---------- 1. Carousel banner ---------- *@
     @if (Model.Banners.Any())
     {
-        <div id="bannerTrangChu" class="carousel slide mb-5 dg-panel-box overflow-hidden" data-bs-ride="carousel" data-bs-interval="5000">
-            @if (Model.Banners.Count > 1)
-            {
-                <div class="carousel-indicators">
-                    @for (var i = 0; i < Model.Banners.Count; i++)
-                    {
-                        <button type="button" data-bs-target="#bannerTrangChu" data-bs-slide-to="@i"
-                                class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : null)"
-                                aria-label="Banner @(i + 1)"></button>
-                    }
-                </div>
-            }
+        <section class="dg-hero"
+                 data-aos="fade-up"
+                 data-aos-duration="900">
 
-            <div class="carousel-inner">
-                @for (var i = 0; i < Model.Banners.Count; i++)
+            <div id="bannerTrangChu"
+                 class="carousel slide dg-hero-carousel"
+                 data-bs-ride="carousel"
+                 data-bs-interval="5500">
+
+                @if (Model.Banners.Count > 1)
                 {
-                    var b = Model.Banners[i];
-                    var kieu = string.IsNullOrEmpty(b.AnhUrl)
-                        ? null
-                        : $"background-image:linear-gradient(rgba(37,48,68,0.55),rgba(37,48,68,0.75)),url('{Url.Content("~/" + b.AnhUrl.TrimStart('~', '/'))}')";
-
-                    <div class="carousel-item @(i == 0 ? "active" : "")">
-                        <div class="dg-banner @b.LopNen" style="@kieu">
-                            <div class="dg-banner-body text-white">
-                                <span class="badge mb-2 px-3 py-2 rounded-pill fw-bold" style="background-color: var(--dp-color-accent-secondary); color: var(--dp-color-outline); border: var(--dp-border-detail-width) solid var(--dp-color-outline);">
-                                    <i class="bi bi-stars me-1"></i> Sự kiện & Nổi bật
-                                </span>
-                                <h2 class="display-6 fw-bold mb-3 text-white">@b.TieuDe</h2>
-                                <p class="lead mb-4 text-light">@b.MoTa</p>
-                                <a class="btn dg-btn-action px-4 py-2 text-decoration-none" href="@b.Url">@b.NutChu <i class="bi bi-arrow-right ms-1"></i></a>
-                            </div>
-                        </div>
+                    <div class="carousel-indicators dg-hero-indicators">
+                        @for (var i = 0; i < Model.Banners.Count; i++)
+                        {
+                            <button type="button"
+                                    data-bs-target="#bannerTrangChu"
+                                    data-bs-slide-to="@i"
+                                    class="@(i == 0 ? "active" : "")"
+                                    aria-current="@(i == 0 ? "true" : null)"
+                                    aria-label="Banner @(i + 1)">
+                            </button>
+                        }
                     </div>
                 }
-            </div>
 
-            @if (Model.Banners.Count > 1)
-            {
-                <button class="carousel-control-prev" type="button" data-bs-target="#bannerTrangChu" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Trước</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#bannerTrangChu" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Sau</span>
-                </button>
-            }
+                <div class="carousel-inner dg-hero-inner">
+
+                    @for (var i = 0; i < Model.Banners.Count; i++)
+                    {
+                        var b = Model.Banners[i];
+
+                        var anhNen = string.IsNullOrEmpty(b.AnhUrl)
+                            ? null
+                            : Url.Content("~/" + b.AnhUrl.TrimStart('~', '/'));
+
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+
+                            <div class="dg-banner @b.LopNen"
+                                 style="@(anhNen != null
+                                    ? $"--banner-image: url('{anhNen}')"
+                                    : "")">
+
+                    <div class="dg-banner-overlay"></div>
+
+                    <div class="dg-banner-content">
+
+                        <span class="dg-banner-eyebrow">
+                            <span class="dg-banner-line"></span>
+                            KHÔNG GIAN TRI THỨC
+                        </span>
+
+                        <h2 class="dg-banner-title">
+                            @b.TieuDe
+                        </h2>
+
+                        <p class="dg-banner-description">
+                            @b.MoTa
+                        </p>
+
+                        <a class="dg-banner-button"
+                           href="@b.Url">
+                            <span>@b.NutChu</span>
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+
+                    </div>
+
+                    <div class="dg-banner-decoration">
+                        <span>READ</span>
+                        <span>LEARN</span>
+                        <span>GROW</span>
+                    </div>
+
+                    <div class="dg-banner-number">
+                        <span>@(i + 1)</span>
+                        <span class="dg-banner-number-divider"></span>
+                        <span>@Model.Banners.Count.ToString("00")</span>
+                    </div>
+
+                </div>
+            </div>
+        }
         </div>
+
+        @if (Model.Banners.Count > 1)
+        {
+        <button class="carousel-control-prev dg-hero-control"
+                type="button"
+                data-bs-target="#bannerTrangChu"
+                data-bs-slide="prev">
+            <span class="dg-hero-arrow">
+                <i class="bi bi-arrow-left"></i>
+            </span>
+            <span class="visually-hidden">Trước</span>
+        </button>
+
+            <button class="carousel-control-next dg-hero-control"
+                type="button"
+                data-bs-target="#bannerTrangChu"
+                data-bs-slide="next">
+            <span class="dg-hero-arrow">
+                <i class="bi bi-arrow-right"></i>
+            </span>
+            <span class="visually-hidden">Sau</span>
+            </button>
+        }
+
+            </div>
+        </section>
     }
 
-    @* ---------- 2. Thông tin cá nhân (gọn một hàng) ---------- *@
-    @if (!Model.CoHoSo)
+
+    <!-- ==========================================
+     2. KHU VỰC CÁ NHÂN
+========================================== -->
+    @if (!Model.LaDocGia && !daDangNhap)
     {
-        <div class="alert dg-panel-box p-4 mb-4 border-0" style="background-color: var(--dp-color-accent-warm);">
-            <i class="bi bi-info-circle me-2"></i>
-            Tài khoản của bạn chưa được gắn với hồ sơ độc giả, nên chưa thể xem thông tin mượn trả.
+        @* Khách chưa đăng nhập *@
+
+        <div class="alert alert-info dg-home-alert
+            d-flex flex-wrap justify-content-between
+            align-items-center gap-2 mb-4"
+             data-aos="fade-up"
+             data-aos-delay="100">
+
+            <div>
+                <i class="bi bi-info-circle me-1"></i>
+
+                Bạn đang xem với tư cách khách.
+                Hãy đăng nhập để đặt trước sách, theo dõi mượn trả
+                và đọc sách điện tử.
+            </div>
+
+            <a class="btn btn-primary btn-sm"
+               asp-area=""
+               asp-controller="Account"
+               asp-action="Login">
+
+                <i class="bi bi-box-arrow-in-right me-1"></i>
+                Đăng nhập
+            </a>
+        </div>
+    }
+    else if (!Model.LaDocGia)
+    {
+        @* Đã đăng nhập nhưng không phải độc giả *@
+
+        <div class="alert alert-secondary dg-home-alert mb-4"
+             data-aos="fade-up"
+             data-aos-delay="100">
+
+            <i class="bi bi-person-badge me-1"></i>
+
+            Bạn đang đăng nhập bằng tài khoản nhân viên,
+            nên các chức năng dành riêng cho độc giả
+            (mượn trả, đặt trước, hồ sơ độc giả) không khả dụng ở đây.
+        </div>
+    }
+    else if (!Model.CoHoSo)
+    {
+        @* Tài khoản chưa có hồ sơ độc giả *@
+
+        <div class="alert alert-warning dg-home-alert mb-4"
+             data-aos="fade-up"
+             data-aos-delay="100">
+
+            <i class="bi bi-exclamation-triangle me-1"></i>
+
+            Tài khoản của bạn chưa được gắn với hồ sơ độc giả,
+            nên chưa thể xem thông tin mượn trả.
+
             Vui lòng liên hệ thủ thư để được hỗ trợ.
         </div>
     }
     else
     {
+        @* Độc giả đã có hồ sơ *@
+
         @if (!Model.TheConHieuLuc)
         {
-            <div class="alert dg-panel-box p-4 mb-4 border-0" style="background-color: #ffd8d8;">
-                <i class="bi bi-exclamation-triangle me-2"></i>
-                Thẻ thư viện của bạn đã hết hạn hoặc đang bị khóa (hạn thẻ: @Model.NgayHetHan.ToString("dd/MM/yyyy")).
+            <div class="alert alert-warning dg-home-alert mb-4"
+                 data-aos="fade-up">
+
+                <i class="bi bi-exclamation-triangle me-1"></i>
+
+                Thẻ thư viện của bạn đã hết hạn hoặc đang bị khóa
+                (hạn thẻ: @Model.NgayHetHan.ToString("dd/MM/yyyy")).
+
                 Vui lòng liên hệ thủ thư để gia hạn.
             </div>
         }
 
-        <div class="row g-3 mb-5">
-            <div class="col-6 col-lg-3">
-                <div class="dg-stat-card p-3 h-100 d-flex flex-column justify-content-between">
-                    <div>
-                        <div class="text-muted small fw-semibold">Xin chào, @Model.HoTen</div>
-                        <div class="fw-bold fs-5 mt-1" style="font-family: var(--dp-typography-display);">Đang mượn @Model.DangMuon <small class="text-muted fw-normal">/ @Model.SoSachToiDa</small></div>
+        <!-- THỐNG KÊ ĐỘC GIẢ -->
+
+        <div class="row g-3 mb-4">
+
+            <!-- Đang mượn -->
+            <div class="col-6 col-lg-3"
+                 data-aos="fade-up"
+                 data-aos-delay="0">
+
+                <div class="dg-stat-card">
+
+                    <div class="dg-stat-icon">
+                        <i class="bi bi-book"></i>
                     </div>
-                    <span class="text-muted small mt-2"><i class="bi bi-book me-1 text-primary"></i>Sách đang giữ</span>
+
+                    <div class="dg-stat-label">
+                        Xin chào, @Model.HoTen
+                    </div>
+
+                    <div class="dg-stat-value">
+                        Đang mượn @Model.DangMuon / @Model.SoSachToiDa
+                    </div>
+
                 </div>
             </div>
-            <div class="col-6 col-lg-3">
-                <div class="dg-stat-card p-3 h-100 d-flex flex-column justify-content-between">
-                    <div>
-                        <div class="text-muted small fw-semibold">Sắp đến hạn (3 ngày)</div>
-                        <div class="fw-bold fs-5 mt-1 @(Model.SapDenHan > 0 ? "text-warning" : "")" style="font-family: var(--dp-typography-display);">@Model.SapDenHan cuốn</div>
+
+            <!-- Sắp đến hạn -->
+            <div class="col-6 col-lg-3"
+                 data-aos="fade-up"
+                 data-aos-delay="100">
+
+                <div class="dg-stat-card">
+
+                    <div class="dg-stat-icon">
+                        <i class="bi bi-calendar-check"></i>
                     </div>
-                    <span class="text-muted small mt-2"><i class="bi bi-clock-history me-1"></i>Cần chú ý</span>
+
+                    <div class="dg-stat-label">
+                        Sắp đến hạn (3 ngày)
+                    </div>
+
+                    <div class="dg-stat-value @(Model.SapDenHan > 0 ? "text-warning" : "")">
+                        @Model.SapDenHan cuốn
+                    </div>
+
                 </div>
             </div>
-            <div class="col-6 col-lg-3">
-                <div class="dg-stat-card p-3 h-100 d-flex flex-column justify-content-between">
-                    <div>
-                        <div class="text-muted small fw-semibold">Quá hạn</div>
-                        <div class="fw-bold fs-5 mt-1 @(Model.QuaHan > 0 ? "text-danger" : "")" style="font-family: var(--dp-typography-display);">@Model.QuaHan cuốn</div>
+
+            <!-- Quá hạn -->
+            <div class="col-6 col-lg-3"
+                 data-aos="fade-up"
+                 data-aos-delay="200">
+
+                <div class="dg-stat-card">
+
+                    <div class="dg-stat-icon">
+                        <i class="bi bi-exclamation-circle"></i>
                     </div>
-                    <span class="text-muted small mt-2"><i class="bi bi-exclamation-circle me-1"></i>Cần trả gấp</span>
+
+                    <div class="dg-stat-label">
+                        Quá hạn
+                    </div>
+
+                    <div class="dg-stat-value @(Model.QuaHan > 0 ? "text-danger" : "")">
+                        @Model.QuaHan cuốn
+                    </div>
+
                 </div>
             </div>
-            <div class="col-6 col-lg-3">
-                <div class="dg-stat-card p-3 h-100 d-flex flex-column justify-content-between">
-                    <div>
-                        <div class="text-muted small fw-semibold">Phạt chưa thanh toán</div>
-                        <div class="fw-bold fs-5 mt-1 @(Model.PhatChuaThanhToan > 0 ? "text-danger" : "")" style="font-family: var(--dp-typography-display);">
-                            @string.Format(vi, "{0:N0} đ", Model.PhatChuaThanhToan)
-                        </div>
+
+            <!-- Phạt chưa thanh toán -->
+            <div class="col-6 col-lg-3"
+                 data-aos="fade-up"
+                 data-aos-delay="300">
+
+                <div class="dg-stat-card">
+
+                    <div class="dg-stat-icon">
+                        <i class="bi bi-cash-coin"></i>
                     </div>
-                    <span class="text-muted small mt-2"><i class="bi bi-wallet2 me-1"></i>Hạn thẻ @Model.NgayHetHan.ToString("dd/MM/yyyy")</span>
+
+                    <div class="dg-stat-label">
+                        Phạt chưa thanh toán
+                    </div>
+
+                    <div class="dg-stat-value @(Model.PhatChuaThanhToan > 0 ? "text-danger" : "")">
+
+                        @string.Format(
+                            vi,
+                            "{0:N0} đ",
+                            Model.PhatChuaThanhToan
+                        )
+
+                    </div>
                 </div>
             </div>
+
         </div>
     }
 
-    @* ---------- 3. Các kệ sách: mới nhất, gợi ý, đã đọc, sách điện tử ---------- *@
+
+    <!-- ==========================================
+     3. CÁC KỆ SÁCH
+========================================== -->
     @foreach (var ke in Model.KeSach.Where(k => k.Items.Any()))
     {
-        <div class="mb-5">
+        <div class="dg-home-section"
+             data-aos="fade-up"
+             data-aos-duration="800">
+
             <partial name="_KeSach" model="ke" />
+
         </div>
     }
 
-    @* ---------- 4. Theo chủ đề ---------- *@
+
+    <!-- ==========================================
+     4. KHÁM PHÁ THEO CHỦ ĐỀ
+========================================== -->
     @if (Model.TheLoais.Any())
     {
-        <section class="mb-4 dg-panel-box p-4">
-            <h5 class="dg-section-title mb-3 fs-4"><i class="bi bi-tags me-2" style="color: var(--dp-color-accent);"></i>Khám phá theo chủ đề</h5>
+        <section class="dg-home-section"
+                 data-aos="fade-up"
+                 data-aos-duration="800">
+
+            <h5 class="dg-section-title">
+                <i class="bi bi-tags"></i>
+                Khám phá theo chủ đề
+            </h5>
+
             <div class="d-flex flex-wrap gap-2">
+
                 @foreach (var t in Model.TheLoais)
                 {
-                    <a class="dg-topic-badge text-decoration-none"
-                       asp-area="DocGia" asp-controller="Sach" asp-action="Index" asp-route-theLoaiId="@t.Id">
-                        @t.Ten <span class="badge ms-2 rounded-pill px-2 py-1" style="background-color: var(--dp-color-selection); color: var(--dp-color-accent); border: 1px solid var(--dp-color-outline);">@t.SoSach</span>
+                    <a class="btn btn-sm dg-topic-btn"
+                       asp-area="DocGia"
+                       asp-controller="Sach"
+                       asp-action="Index"
+                       asp-route-theLoaiId="@t.Id">
+
+                        @t.Ten
+
+                        <span class="badge rounded-pill ms-1">
+                            @t.SoSach
+                        </span>
+
                     </a>
                 }
+
             </div>
         </section>
     }
 
+
+    <!-- ==========================================
+     5. KỆ SÁCH THEO CHỦ ĐỀ
+========================================== -->
     @foreach (var ke in Model.KeTheoChuDe.Where(k => k.Items.Any()))
     {
-        <div class="mb-5">
+        <div class="dg-home-section"
+             data-aos="fade-up"
+             data-aos-duration="800">
+
             <partial name="_KeSach" model="ke" />
+
         </div>
     }
+
+
 </div>
+

@@ -1,69 +1,199 @@
-﻿@model QuanLyThuVien.ViewModels.DocGia.DangMuonViewModel;
+﻿@model QuanLyThuVien.ViewModels.DocGia.DangMuonViewModel
 @{
     ViewData["Title"] = "Sách đang mượn";
     ViewData["Tab"] = "dangmuon";
 }
-
-<h2 class="mb-3">Mượn trả</h2>
-
-<partial name="_MuonTraTabs" />
-
-@if (Model.SoQuaHan > 0)
-{
-    <div class="alert alert-danger">
-        <i class="bi bi-exclamation-triangle me-1"></i>
-        Bạn có <strong>@Model.SoQuaHan</strong> cuốn đã quá hạn. Vui lòng mang trả thư viện sớm để tránh phát sinh thêm tiền phạt.
-    </div>
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/docgia/dangmuon.css"
+          asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/docgia/thanhtapmuontra.css" asp-append-version="true"/>
 }
+<div class="container dg-borrow-page">
 
-<p class="text-muted">
-    Bạn đang mượn <strong>@Model.Items.Count</strong> / @Model.ToiDa cuốn.
-    Mỗi lượt mượn tối đa @Model.SoNgayMuonToiDa ngày.
-</p>
+    <!-- Tiêu đề -->
+    <div class="dg-borrow-header" data-aos="fade-up">
+        <div class="dg-borrow-eyebrow">
+            <i class="bi bi-book-half"></i>
+            <span>Thư viện của bạn</span>
+        </div>
 
-@if (!Model.Items.Any())
-{
-    <div class="alert alert-info">
-        Hiện bạn không mượn cuốn nào.
-        <a asp-area="DocGia" asp-controller="Sach" asp-action="Index">Tra cứu sách</a> để tìm cuốn bạn muốn mượn.
+        <h2 class="dg-borrow-title">Mượn trả</h2>
+
+        <p class="dg-borrow-description">
+            Theo dõi những cuốn sách bạn đang mượn và thời hạn trả sách.
+        </p>
     </div>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table table-hover align-middle bg-white border">
-            <thead class="table-light">
-                <tr>
-                    <th>Sách</th>
-                    <th>Mã vạch / Vị trí</th>
-                    <th>Phiếu</th>
-                    <th>Ngày mượn</th>
-                    <th>Hạn trả</th>
-                    <th>Tình trạng</th>
-                    <th class="text-end">Tiền phạt</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var m in Model.Items)
-                {
-                    <tr>
-                        <td>
-                            <a asp-area="DocGia" asp-controller="Sach" asp-action="ChiTiet" asp-route-id="@m.SachId">@m.TieuDe</a>
-                        </td>
-                        <td>
-                            <div>@m.MaVach</div>
-                            <div class="small text-muted">@m.ViTri</div>
-                        </td>
-                        <td>@m.MaPhieu</td>
-                        <td>@m.NgayMuon.ToString("dd/MM/yyyy")</td>
-                        <td>@m.HanTra.ToString("dd/MM/yyyy")</td>
-                        <td><span class="badge @m.LopBadge">@m.TrangThaiText</span></td>
-                        <td class="text-end @(m.PhatChuaNop > 0 ? "text-danger fw-semibold" : "text-muted")">
-                            @(m.TongPhat > 0 ? HienThi.Tien(m.TongPhat) : "—")
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+
+    <!-- Tabs -->
+    <div class="dg-borrow-tabs" data-aos="fade-up">
+        <partial name="_MuonTraTabs" />
     </div>
-}
+
+    <!-- Cảnh báo quá hạn -->
+    @if (Model.SoQuaHan > 0)
+    {
+        <div class="dg-overdue-alert" data-aos="fade-up">
+            <div class="dg-alert-icon">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+
+            <div>
+                <strong>Bạn có @Model.SoQuaHan cuốn sách đã quá hạn!</strong>
+                <p>
+                    Vui lòng mang trả thư viện sớm để tránh phát sinh thêm tiền phạt.
+                </p>
+            </div>
+        </div>
+    }
+
+    <!-- Thông tin mượn -->
+    <div class="dg-borrow-summary" data-aos="fade-up">
+
+        <div class="dg-summary-item">
+            <div class="dg-summary-icon">
+                <i class="bi bi-journal-bookmark"></i>
+            </div>
+
+            <div>
+                <span class="dg-summary-label">Đang mượn</span>
+                <div class="dg-summary-value">
+                    @Model.Items.Count
+                    <span>/ @Model.ToiDa cuốn</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dg-summary-divider"></div>
+
+        <div class="dg-summary-item">
+            <div class="dg-summary-icon">
+                <i class="bi bi-calendar-check"></i>
+            </div>
+
+            <div>
+                <span class="dg-summary-label">Thời hạn mỗi lượt</span>
+                <div class="dg-summary-value">
+                    @Model.SoNgayMuonToiDa
+                    <span>ngày</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Danh sách sách -->
+    @if (!Model.Items.Any())
+    {
+        <div class="dg-borrow-empty" data-aos="fade-up">
+            <div class="dg-empty-icon">
+                <i class="bi bi-book"></i>
+            </div>
+
+            <h5>Bạn chưa mượn cuốn sách nào</h5>
+
+            <p>
+                Hãy khám phá kho sách của thư viện và tìm đọc
+                những cuốn sách mà bạn yêu thích.
+            </p>
+
+            <a asp-area="DocGia"
+               asp-controller="Sach"
+               asp-action="Index"
+               class="dg-borrow-explore-btn">
+                <i class="bi bi-search"></i>
+                Khám phá sách
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="dg-borrow-table-card" data-aos="fade-up">
+
+            <div class="dg-table-heading">
+                <div>
+                    <h5>Sách đang mượn</h5>
+                    <p>Danh sách các cuốn sách bạn chưa hoàn trả.</p>
+                </div>
+
+                <span class="dg-table-count">
+                    @Model.Items.Count cuốn sách
+                </span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table dg-borrow-table align-middle mb-0">
+
+                    <thead>
+                        <tr>
+                            <th>Sách</th>
+                            <th>Mã vạch / Vị trí</th>
+                            <th>Phiếu</th>
+                            <th>Ngày mượn</th>
+                            <th>Hạn trả</th>
+                            <th>Tình trạng</th>
+                            <th class="text-end">Tiền phạt</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var m in Model.Items)
+                        {
+                            <tr>
+                                <td class="dg-table-book">
+                                    <a asp-area="DocGia"
+                                       asp-controller="Sach"
+                                       asp-action="ChiTiet"
+                                       asp-route-id="@m.SachId">
+                                        @m.TieuDe
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <div class="dg-table-barcode">
+                                        @m.MaVach
+                                    </div>
+                                    <div class="dg-table-location">
+                                        @m.ViTri
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="dg-ticket-code">
+                                        @m.MaPhieu
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="dg-table-date">
+                                        @m.NgayMuon.ToString("dd/MM/yyyy")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="dg-table-date">
+                                        @m.HanTra.ToString("dd/MM/yyyy")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="badge dg-status-badge @m.LopBadge">
+                                        @m.TrangThaiText
+                                    </span>
+                                </td>
+
+                                <td class="text-end">
+                                    <span class="dg-fine-amount @(m.PhatChuaNop > 0 ? "dg-fine-unpaid" : "dg-fine-normal")">
+                                        @(m.TongPhat > 0 ? HienThi.Tien(m.TongPhat) : "—")
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    }
+
+</div>

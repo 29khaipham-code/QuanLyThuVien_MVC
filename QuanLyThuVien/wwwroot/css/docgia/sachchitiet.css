@@ -1,0 +1,587 @@
+﻿/* EBOOK LIST */
+﻿
+.dg-detail-page {
+    max-width: 1250px;
+    padding-top: 28px;
+    padding-bottom: 60px;
+    color: #2D2A24;
+}
+
+/* BREADCRUMB */
+
+.dg-detail-breadcrumb {
+    margin-bottom: 24px;
+}
+
+    .dg-detail-breadcrumb .breadcrumb {
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+
+    .dg-detail-breadcrumb a {
+        color: #927D68;
+        text-decoration: none;
+    }
+
+        .dg-detail-breadcrumb a:hover {
+            color: #C86A4A;
+        }
+
+    .dg-detail-breadcrumb .active {
+        color: #2D2A24;
+        font-weight: 600;
+    }
+
+/* MAIN CARD */
+
+.dg-detail-card {
+    background: #FFFEFC;
+    border: 1px solid #E8DED1;
+    border-radius: 22px;
+    padding: 32px;
+    box-shadow: 0 8px 30px rgba(45, 42, 36, .045);
+}
+
+/* COVER */
+
+.dg-detail-cover-wrapper {
+    position: sticky;
+    top: 100px;
+}
+
+.dg-detail-cover {
+    width: 100%;
+    min-height: 350px;
+    height: 430px;
+    background: #F5F0EB;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #E8DED1;
+}
+
+    .dg-detail-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 16px;
+        transition: transform .5s ease;
+    }
+
+    .dg-detail-cover:hover img {
+        transform: scale(1.035);
+    }
+
+.dg-detail-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: #B7A58F;
+}
+
+    .dg-detail-placeholder i {
+        font-size: 5rem;
+    }
+
+    .dg-detail-placeholder span {
+        font-size: 13px;
+    }
+
+.dg-detail-cover-caption {
+    text-align: center;
+    color: #927D68;
+    font-size: 12px;
+    margin-top: 14px;
+    letter-spacing: .4px;
+}
+
+/* BOOK INFORMATION */
+
+.dg-detail-info {
+    padding: 5px 0;
+}
+
+.dg-detail-category {
+    display: inline-flex;
+    align-items: center;
+    background: #F2E9DF;
+    color: #A45F43;
+    padding: 7px 13px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 17px;
+}
+
+.dg-detail-title {
+    color: #2D2A24;
+    font-family: var(--dp-typography-display, Georgia, serif);
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 12px;
+}
+
+.dg-detail-author {
+    color: #897D70;
+    font-size: 15px;
+}
+
+.dg-detail-divider {
+    height: 1px;
+    background: #E8DED1;
+    margin: 25px 0;
+}
+
+/* METADATA */
+
+.dg-detail-metadata {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 28px;
+}
+
+.dg-detail-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.dg-detail-meta-label {
+    color: #9B8C7C;
+    font-size: 12px;
+}
+
+.dg-detail-meta-value {
+    color: #3D3932;
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+/* STOCK */
+
+.dg-detail-stock {
+    background: #F8F5F0;
+    border: 1px solid #EAE1D6;
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 26px;
+}
+
+.dg-detail-stock-heading {
+    color: #554A3E;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 13px;
+}
+
+.dg-detail-stock-note {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 22px;
+    color: #897D70;
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+/* BADGES */
+
+.dg-book-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 11px;
+    border-radius: 30px;
+}
+
+.dg-badge-available {
+    background: #E8EFE2;
+    color: #536B43;
+}
+
+.dg-badge-unavailable {
+    background: #F0EAE4;
+    color: #8B7160;
+}
+
+/* EBOOK */
+
+.dg-detail-ebook {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px;
+    border: 1px solid #E9D7C8;
+    background: #FBF4ED;
+    border-radius: 14px;
+    margin-top: 16px;
+}
+
+.dg-detail-ebook-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F1E1D3;
+    color: #B56A4A;
+    font-size: 20px;
+}
+
+.dg-detail-ebook-title {
+    font-weight: 700;
+    font-size: 13px;
+    color: #704B38;
+}
+
+.dg-detail-ebook-format {
+    font-size: 12px;
+    color: #927D68;
+    margin-top: 3px;
+}
+
+/* ACTIONS */
+
+.dg-detail-actions {
+    margin-top: 27px;
+}
+
+    .dg-detail-actions h5 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #38332C;
+    }
+
+.dg-detail-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.65;
+    margin-bottom: 12px;
+}
+
+    .dg-detail-alert > i {
+        font-size: 17px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .dg-detail-alert a {
+        font-weight: 700;
+        color: inherit;
+        margin-left: 4px;
+    }
+
+.dg-alert-neutral {
+    color: #746657;
+    background: #F4EFE9;
+    border: 1px solid #E8DED1;
+}
+
+.dg-alert-success {
+    color: #526C44;
+    background: #EEF3E9;
+    border: 1px solid #DCE8D3;
+}
+
+.dg-alert-info {
+    color: #547181;
+    background: #ECF3F5;
+    border: 1px solid #D9E8ED;
+}
+
+.dg-alert-warning {
+    color: #98703C;
+    background: #FBF3E5;
+    border: 1px solid #F0E1C4;
+}
+
+/* BUTTONS */
+
+.dg-detail-action-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.dg-btn-primary {
+    border: none;
+    background: #C86A4A;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all .25s ease;
+}
+
+    .dg-btn-primary:hover {
+        background: #AD5639;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(200, 106, 74, .22);
+    }
+
+.dg-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #7A8B5E;
+    background: transparent;
+    color: #64764B;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.dg-btn-disabled {
+    border: 1px solid #DDD4C9;
+    background: #F1ECE6;
+    color: #9B8C7C;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    cursor: not-allowed;
+}
+
+.dg-coming-soon {
+    margin-left: 10px;
+    font-size: 10px;
+    background: #EAE4D8;
+    color: #8C806D;
+    padding: 4px 7px;
+    border-radius: 20px;
+}
+
+.dg-detail-action-note {
+    color: #928577;
+    font-size: 12px;
+}
+
+/* DESCRIPTION */
+
+.dg-detail-description {
+    background: #FFFEFC;
+    border: 1px solid #E8DED1;
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-top: 28px;
+    box-shadow: 0 8px 30px rgba(45, 42, 36, .035);
+}
+
+.dg-detail-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.dg-detail-section-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F2E9DF;
+    color: #B56A4A;
+    border-radius: 13px;
+    font-size: 21px;
+}
+
+.dg-detail-section-heading h4 {
+    font-size: 19px;
+    font-weight: 700;
+    color: #38332C;
+    margin: 0 0 4px;
+}
+
+.dg-detail-section-heading p {
+    font-size: 12px;
+    color: #998B7D;
+    margin: 0;
+}
+
+.dg-detail-description-content {
+    white-space: pre-line;
+    color: #62594F;
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 767.98px) {
+
+    .dg-detail-page {
+        padding-top: 18px;
+        padding-bottom: 35px;
+    }
+
+    .dg-detail-card {
+        padding: 18px;
+        border-radius: 17px;
+    }
+
+    .dg-detail-cover-wrapper {
+        position: static;
+        max-width: 280px;
+        margin: 0 auto 10px;
+    }
+
+    .dg-detail-cover {
+        height: 330px;
+        min-height: 0;
+    }
+
+    .dg-detail-title {
+        font-size: 25px;
+    }
+
+    .dg-detail-metadata {
+        gap: 16px;
+    }
+
+    .dg-detail-stock {
+        padding: 15px;
+    }
+
+    .dg-detail-description {
+        padding: 20px;
+    }
+
+    .dg-detail-section-heading h4 {
+        font-size: 17px;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .dg-detail-metadata {
+        grid-template-columns: 1fr;
+    }
+
+    .dg-detail-stock-note {
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .dg-detail-action-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+        .dg-detail-action-row form,
+        .dg-btn-primary {
+            width: 100%;
+        }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+    .dg-detail-cover img,
+    .dg-btn-primary {
+        transition: none;
+    }
+}
+.dg-detail-ebook-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+    .dg-detail-ebook-list .dg-detail-ebook {
+        margin-top: 0;
+        width: 100%;
+        min-width: 0;
+    }
+
+.dg-detail-ebook-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.dg-detail-ebook-format {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 16px;
+}
+
+    .dg-detail-ebook-format span {
+        display: inline-flex;
+        align-items: center;
+    }
+
+.dg-detail-ebook-action {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+    .dg-detail-ebook-action form {
+        margin: 0;
+    }
+
+    .dg-detail-ebook-action .dg-btn-primary,
+    .dg-detail-ebook-action .dg-btn-outline {
+        white-space: nowrap;
+        text-decoration: none;
+    }
+
+.dg-detail-reading-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 7px;
+}
+
+    .dg-detail-reading-info > span {
+        color: var(--text-secondary);
+        font-size: 11px;
+    }
+
+/* RESPONSIVE EBOOK */
+
+@media (max-width: 767.98px) {
+    .dg-detail-ebook {
+        flex-wrap: wrap;
+    }
+
+    .dg-detail-ebook-content {
+        flex-basis: calc(100% - 60px);
+    }
+
+    .dg-detail-ebook-action {
+        width: 100%;
+        justify-content: flex-start;
+        padding-left: 56px;
+    }
+
+    .dg-detail-reading-info {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 420px) {
+    .dg-detail-ebook-action {
+        padding-left: 0;
+    }
+
+        .dg-detail-ebook-action form,
+        .dg-detail-ebook-action .dg-btn-primary,
+        .dg-detail-ebook-action .dg-btn-outline {
+            width: 100%;
+        }
+}

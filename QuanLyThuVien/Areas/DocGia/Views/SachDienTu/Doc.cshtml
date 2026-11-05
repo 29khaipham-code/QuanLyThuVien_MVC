@@ -1,0 +1,166 @@
+﻿
+@model QuanLyThuVien.ViewModels.DocGia.DocSachViewModel
+
+@{
+    ViewData["Title"] = "Đọc: " + Model.TieuDe;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/docgia/docsach.css" asp-append-version="true" />
+}
+<div class="container dg-reader-page">
+
+    <partial name="_ThongBao" />
+
+    <!-- HEADER -->
+    <div class="dg-reader-header" data-aos="fade-down">
+
+        <div class="dg-reader-heading">
+            <div class="dg-reader-eyebrow">
+                <i class="bi bi-book-half me-1"></i>
+                KHÔNG GIAN ĐỌC SÁCH
+            </div>
+
+            <h1 class="dg-reader-title">@Model.TieuDe</h1>
+
+            <div class="dg-reader-meta">
+                <span>
+                    <i class="bi bi-file-earmark-text me-1"></i>
+                    Định dạng @Model.DinhDang
+                </span>
+
+                <span class="dg-reader-meta-divider"></span>
+
+                <span>
+                    <i class="bi bi-hourglass-split me-1"></i>
+                    Quyền đọc còn
+                    <strong>@Model.SoNgayConLai ngày</strong>
+                </span>
+
+                <span class="dg-reader-meta-divider"></span>
+
+                <span>
+                    <i class="bi bi-calendar-check me-1"></i>
+                    Đến @Model.NgayHetHan.ToString("dd/MM/yyyy HH:mm")
+                </span>
+            </div>
+        </div>
+
+        <!-- TOOLBAR -->
+        <div class="dg-reader-toolbar">
+
+            <a class="dg-reader-btn dg-reader-btn-secondary"
+               asp-area="DocGia"
+               asp-controller="SachDienTu"
+               asp-action="CuaToi">
+                <i class="bi bi-arrow-left"></i>
+                <span>Sách của tôi</span>
+            </a>
+
+            <a class="dg-reader-btn dg-reader-btn-secondary"
+               asp-area="DocGia"
+               asp-controller="Sach"
+               asp-action="ChiTiet"
+               asp-route-id="@Model.SachId">
+                <i class="bi bi-info-circle"></i>
+                <span>Thông tin sách</span>
+            </a>
+
+            @if (Model.CoTheTai)
+            {
+                <a class="dg-reader-btn dg-reader-btn-primary"
+                   asp-area="DocGia"
+                   asp-controller="SachDienTu"
+                   asp-action="Tai"
+                   asp-route-id="@Model.LuotDocId">
+                    <i class="bi bi-download"></i>
+                    <span>Tải xuống</span>
+                </a>
+            }
+
+        </div>
+    </div>
+
+    <!-- READER -->
+    @if (Model.CoTheXemTrucTuyen)
+    {
+        <section class="dg-reader-card" data-aos="fade-up">
+
+            <div class="dg-reader-card-header">
+                <div class="dg-reader-card-title">
+                    <span class="dg-reader-icon">
+                        <i class="bi bi-book"></i>
+                    </span>
+
+                    <div>
+                        <h5>Trình đọc sách</h5>
+                        <p>Thưởng thức nội dung sách ngay trên website</p>
+                    </div>
+                </div>
+
+                <span class="dg-reader-format">
+                    @Model.DinhDang
+                </span>
+            </div>
+
+            <div class="dg-reader-frame-wrapper">
+                <iframe src="@Url.Action("Tep", "SachDienTu", new { area = "DocGia", token = Model.TokenXem })#toolbar=0&amp;navpanes=0"
+                        class="dg-reader-iframe"
+                        title="@Model.TieuDe">
+                </iframe>
+            </div>
+
+            <div class="dg-reader-note">
+                <i class="bi bi-info-circle"></i>
+                <span>
+                    Nếu khung đọc báo lỗi hoặc trống sau khi để trang quá lâu,
+                    hãy tải lại trang để lấy đường dẫn mới.
+                </span>
+            </div>
+
+        </section>
+    }
+    else
+    {
+        <section class="dg-reader-unsupported" data-aos="fade-up">
+
+            <div class="dg-reader-unsupported-icon">
+                <i class="bi bi-file-earmark-excel"></i>
+            </div>
+
+            <div class="dg-reader-unsupported-content">
+                <h4>Chưa hỗ trợ đọc trực tuyến</h4>
+
+                <p>
+                    Định dạng <strong>@Model.DinhDang</strong>
+                    chưa hỗ trợ đọc trực tuyến trên website.
+                </p>
+
+                @if (Model.CoTheTai)
+                {
+                    <p>
+                        Bạn có thể tải sách xuống để đọc bằng ứng dụng
+                        trên thiết bị của mình.
+                    </p>
+
+                    <a class="dg-reader-btn dg-reader-btn-primary"
+                       asp-area="DocGia"
+                       asp-controller="SachDienTu"
+                       asp-action="Tai"
+                       asp-route-id="@Model.LuotDocId">
+                        <i class="bi bi-download"></i>
+                        Tải sách xuống
+                    </a>
+                }
+                else
+                {
+                    <p>
+                        Sách này cũng không cho phép tải xuống,
+                        vui lòng liên hệ thủ thư để được hỗ trợ.
+                    </p>
+                }
+            </div>
+
+        </section>
+    }
+
+</div>

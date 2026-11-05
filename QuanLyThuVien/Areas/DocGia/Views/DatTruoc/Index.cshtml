@@ -1,103 +1,248 @@
-﻿@model QuanLyThuVien.ViewModels.DocGia.DatTruocIndexViewModel;
+﻿@model QuanLyThuVien.ViewModels.DocGia.DatTruocIndexViewModel
+
 @{
     ViewData["Title"] = "Đặt trước";
 }
-
-<partial name="_ThongBao" />
-
-<h2 class="mb-1">Đặt trước</h2>
-<p class="text-muted">
-    Bạn có thể đặt trước tối đa @Model.ToiDa cuốn cùng lúc. Khi có sách, thư viện giữ chỗ cho bạn @Model.SoNgayGiuCho ngày;
-    quá hạn mà chưa đến nhận thì yêu cầu sẽ tự hủy.
-</p>
-
-@* ---------- Yêu cầu đang hiệu lực ---------- *@
-<h5 class="mt-4 mb-2">Đang hiệu lực (@Model.DangHieuLuc.Count / @Model.ToiDa)</h5>
-
-@if (!Model.DangHieuLuc.Any())
-{
-    <div class="alert alert-info">
-        Bạn chưa đặt trước cuốn nào. Hãy mở trang chi tiết của một cuốn đang hết bản và bấm <strong>Đặt trước</strong>.
-        <a asp-area="DocGia" asp-controller="Sach" asp-action="Index">Tra cứu sách</a>
-    </div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/docgia/dattruoc.css" asp-append-version="true" />
 }
-else
-{
-    <div class="table-responsive">
-        <table class="table table-hover align-middle bg-white border">
-            <thead class="table-light">
-                <tr>
-                    <th>Sách</th>
-                    <th>Ngày đặt</th>
-                    <th>Trạng thái</th>
-                    <th>Chi tiết</th>
-                    <th class="text-end">Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var d in Model.DangHieuLuc)
-                {
-                    <tr>
-                        <td>
-                            <a asp-area="DocGia" asp-controller="Sach" asp-action="ChiTiet" asp-route-id="@d.SachId">@d.TieuDe</a>
-                        </td>
-                        <td>@d.NgayDat.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td><span class="badge @d.LopBadge">@d.TrangThaiText</span></td>
-                        <td>
-                            @if (d.TrangThai == "DangCho")
+
+<div class="container dg-reservation-page">
+
+    <!-- Header -->
+    <div class="dg-reservation-header" data-aos="fade-up">
+        <div class="dg-reservation-eyebrow">
+            <i class="bi bi-bookmark-heart"></i>
+            <span>Thư viện của bạn</span>
+        </div>
+
+        <h2 class="dg-reservation-title">Đặt trước sách</h2>
+
+        <p class="dg-reservation-description">
+            Quản lý những cuốn sách bạn đã đặt trước và theo dõi tình trạng giữ chỗ.
+        </p>
+    </div>
+
+    <!-- Thông báo hệ thống -->
+    <div class="dg-reservation-notification">
+        <partial name="_ThongBao" />
+    </div>
+
+    <!-- Quy định đặt trước -->
+    <div class="dg-reservation-info" data-aos="fade-up">
+        <div class="dg-reservation-info-icon">
+            <i class="bi bi-info-circle"></i>
+        </div>
+
+        <div>
+            <strong>Thông tin đặt trước</strong>
+            <p>
+                Bạn có thể đặt trước tối đa
+                <strong>@Model.ToiDa cuốn</strong> cùng lúc.
+                Khi có sách, thư viện giữ chỗ cho bạn
+                <strong>@Model.SoNgayGiuCho ngày</strong>.
+                Quá hạn mà chưa đến nhận thì yêu cầu sẽ tự hủy.
+            </p>
+        </div>
+    </div>
+
+    <!-- Yêu cầu đang hiệu lực -->
+    <section class="dg-reservation-section" data-aos="fade-up">
+
+        <div class="dg-reservation-section-heading">
+            <div>
+                <div class="dg-section-eyebrow">Theo dõi yêu cầu</div>
+                <h4>Đang hiệu lực</h4>
+            </div>
+
+            <span class="dg-reservation-count">
+                <i class="bi bi-bookmark-check"></i>
+                @Model.DangHieuLuc.Count / @Model.ToiDa
+            </span>
+        </div>
+
+        @if (!Model.DangHieuLuc.Any())
+        {
+            <div class="dg-reservation-empty">
+                <div class="dg-empty-icon">
+                    <i class="bi bi-bookmark-plus"></i>
+                </div>
+
+                <h5>Bạn chưa đặt trước cuốn sách nào</h5>
+
+                <p>
+                    Hãy mở trang chi tiết của một cuốn sách đang hết bản
+                    và chọn chức năng Đặt trước để đăng ký giữ chỗ.
+                </p>
+
+                <a asp-area="DocGia"
+                   asp-controller="Sach"
+                   asp-action="Index"
+                   class="dg-reservation-explore-btn">
+                    <i class="bi bi-search"></i>
+                    Tra cứu sách
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="dg-reservation-table-card">
+                <div class="table-responsive">
+                    <table class="table dg-reservation-table align-middle mb-0">
+
+                        <thead>
+                            <tr>
+                                <th>Sách</th>
+                                <th>Ngày đặt</th>
+                                <th>Trạng thái</th>
+                                <th>Chi tiết</th>
+                                <th class="text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var d in Model.DangHieuLuc)
                             {
-                                <span>Vị trí trong hàng đợi: <strong>@d.ViTriHangDoi</strong></span>
-                            }
-                            else if (d.TrangThai == "DaGiu")
-                            {
-                                <div>
-                                    Đến nhận trước
-                                    <strong>@(d.NgayHetHan.HasValue ? d.NgayHetHan.Value.ToString("dd/MM/yyyy HH:mm") : "—")</strong>
-                                </div>
-                                <div class="small text-muted">@d.ViTriKe @(string.IsNullOrEmpty(d.MaVach) ? "" : "· " + d.MaVach)</div>
-                            }
-                        </td>
-                        <td class="text-end">
-                            <form method="post" asp-area="DocGia" asp-controller="DatTruoc" asp-action="Huy"
-                                  onsubmit="return confirm('Bạn có chắc muốn hủy đặt trước cuốn này?');" class="d-inline">
-                                <input type="hidden" name="id" value="@d.Id" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-x-circle me-1"></i>Hủy
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
+                                <tr>
+                                    <td class="dg-reservation-book">
+                                        <a asp-area="DocGia"
+                                           asp-controller="Sach"
+                                           asp-action="ChiTiet"
+                                           asp-route-id="@d.SachId">
+                                            @d.TieuDe
+                                        </a>
+                                    </td>
 
-@* ---------- Lịch sử gần đây ---------- *@
-@if (Model.LichSu.Any())
-{
-    <h5 class="mt-4 mb-2">Lịch sử gần đây</h5>
-    <div class="table-responsive">
-        <table class="table align-middle bg-white border">
-            <thead class="table-light">
-                <tr>
-                    <th>Sách</th>
-                    <th>Ngày đặt</th>
-                    <th>Kết quả</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var d in Model.LichSu)
-                {
-                    <tr>
-                        <td>
-                            <a asp-area="DocGia" asp-controller="Sach" asp-action="ChiTiet" asp-route-id="@d.SachId">@d.TieuDe</a>
-                        </td>
-                        <td>@d.NgayDat.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td><span class="badge @d.LopBadge">@d.TrangThaiText</span></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
+                                    <td>
+                                        <span class="dg-reservation-date">
+                                            @d.NgayDat.ToString("dd/MM/yyyy HH:mm")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge dg-reservation-status @d.LopBadge">
+                                            @d.TrangThaiText
+                                        </span>
+                                    </td>
+
+                                    <td class="dg-reservation-detail">
+                                        @if (d.TrangThai == "DangCho")
+                                        {
+                                            <div class="dg-queue-position">
+                                                <i class="bi bi-people"></i>
+                                                Vị trí hàng đợi:
+                                                <strong>@d.ViTriHangDoi</strong>
+                                            </div>
+                                        }
+                                        else if (d.TrangThai == "DaGiu")
+                                        {
+                                            <div class="dg-pickup-deadline">
+                                                <i class="bi bi-calendar-check"></i>
+                                                Đến nhận trước
+                                                <strong>
+                                                    @(d.NgayHetHan.HasValue
+                                                        ? d.NgayHetHan.Value.ToString("dd/MM/yyyy HH:mm")
+                                                        : "—")
+                                                </strong>
+                                            </div>
+
+                                            <div class="dg-reservation-location">
+                                                @d.ViTriKe
+                                                @(string.IsNullOrEmpty(d.MaVach) ? "" : " · " + d.MaVach)
+                                            </div>
+                                        }
+                                    </td>
+
+                                    <td class="text-end">
+                                        <form method="post"
+                                              asp-area="DocGia"
+                                              asp-controller="DatTruoc"
+                                              asp-action="Huy"
+                                              onsubmit="return confirm('Bạn có chắc muốn hủy đặt trước cuốn này?');"
+                                              class="d-inline">
+
+                                            <input type="hidden" name="id" value="@d.Id" />
+
+                                            <button type="submit"
+                                                    class="dg-reservation-cancel-btn">
+                                                <i class="bi bi-x-circle"></i>
+                                                Hủy
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        }
+
+    </section>
+
+    <!-- Lịch sử gần đây -->
+    @if (Model.LichSu.Any())
+    {
+        <section class="dg-reservation-section dg-reservation-history"
+                 data-aos="fade-up">
+
+            <div class="dg-reservation-section-heading">
+                <div>
+                    <div class="dg-section-eyebrow">Các yêu cầu trước đây</div>
+                    <h4>Lịch sử đặt trước</h4>
+                </div>
+
+                <span class="dg-history-icon">
+                    <i class="bi bi-clock-history"></i>
+                </span>
+            </div>
+
+            <div class="dg-reservation-table-card">
+                <div class="table-responsive">
+                    <table class="table dg-reservation-table align-middle mb-0">
+
+                        <thead>
+                            <tr>
+                                <th>Sách</th>
+                                <th>Ngày đặt</th>
+                                <th>Kết quả</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var d in Model.LichSu)
+                            {
+                                <tr>
+                                    <td class="dg-reservation-book">
+                                        <a asp-area="DocGia"
+                                           asp-controller="Sach"
+                                           asp-action="ChiTiet"
+                                           asp-route-id="@d.SachId">
+                                            @d.TieuDe
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <span class="dg-reservation-date">
+                                            @d.NgayDat.ToString("dd/MM/yyyy HH:mm")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge dg-reservation-status @d.LopBadge">
+                                            @d.TrangThaiText
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+        </section>
+    }
+
+</div>

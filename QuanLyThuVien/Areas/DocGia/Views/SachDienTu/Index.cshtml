@@ -1,0 +1,217 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.SachIndexViewModel
+
+@{
+    ViewData["Title"] = "Thư viện điện tử";
+    ViewData["Tab"] = "thuvien";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/docgia/sachdientu.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/docgia/sachdientutap.css" asp-append-version="true" />
+}
+
+<div class="container dg-ebook-page">
+
+    <!-- Header -->
+    <header class="dg-ebook-header" data-aos="fade-up">
+        <div class="dg-ebook-header-content">
+            <span class="dg-ebook-eyebrow">
+                <i class="bi bi-book-half"></i>
+                KHÔNG GIAN TRI THỨC SỐ
+            </span>
+
+            <h1 class="dg-ebook-title">Thư viện điện tử</h1>
+
+            <p class="dg-ebook-description">
+                Khám phá và đọc những cuốn sách yêu thích ngay trên thiết bị của bạn.
+                Tri thức luôn sẵn sàng ở bất cứ đâu.
+            </p>
+        </div>
+
+        <div class="dg-ebook-header-icon">
+            <i class="bi bi-tablet-landscape"></i>
+        </div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="dg-ebook-tabs-wrapper" data-aos="fade-up" data-aos-delay="80">
+        <partial name="_SachDienTuTabs" />
+    </div>
+
+    <!-- Bộ lọc -->
+    <section class="dg-ebook-filter" data-aos="fade-up" data-aos-delay="120">
+        <div class="dg-ebook-filter-heading">
+            <div class="dg-ebook-filter-icon">
+                <i class="bi bi-sliders"></i>
+            </div>
+
+            <div>
+                <h2 class="dg-ebook-filter-title">Tìm kiếm sách điện tử</h2>
+                <p class="dg-ebook-filter-description">
+                    Lọc sách theo tên, tác giả hoặc thể loại bạn quan tâm.
+                </p>
+            </div>
+        </div>
+
+        <form id="formLoc"
+              method="get"
+              asp-area="DocGia"
+              asp-controller="SachDienTu"
+              asp-action="Index"
+              class="dg-ebook-filter-form">
+
+            <div class="dg-ebook-filter-keyword">
+                <label class="dg-ebook-label" for="tuKhoa">
+                    Từ khóa
+                </label>
+
+                <div class="dg-ebook-input-wrapper">
+                    <i class="bi bi-search"></i>
+
+                    <input id="tuKhoa"
+                           name="tuKhoa"
+                           value="@Model.TuKhoa"
+                           class="form-control dg-ebook-control"
+                           placeholder="Tên sách hoặc tác giả..."
+                           autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="dg-ebook-filter-category">
+                <label class="dg-ebook-label" for="theLoaiId">
+                    Thể loại
+                </label>
+
+                <select id="theLoaiId"
+                        name="theLoaiId"
+                        class="form-select dg-ebook-control">
+                    <option value="">Tất cả thể loại</option>
+
+                    @foreach (var o in Model.TheLoais)
+                    {
+                        <option value="@o.Id" selected="@(o.Id == Model.TheLoaiId)">
+                            @o.Ten
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="dg-ebook-filter-sort">
+                <label class="dg-ebook-label" for="sapXep">
+                    Sắp xếp
+                </label>
+
+                <select id="sapXep"
+                        name="sapXep"
+                        class="form-select dg-ebook-control">
+                    <option value="moi" selected="@(Model.SapXep == "moi")">
+                        Mới nhất
+                    </option>
+                    <option value="ten" selected="@(Model.SapXep == "ten")">
+                        Tên A-Z
+                    </option>
+                    <option value="nam" selected="@(Model.SapXep == "nam")">
+                        Năm xuất bản
+                    </option>
+                </select>
+            </div>
+
+            <div class="dg-ebook-filter-submit">
+                <button type="submit" class="dg-ebook-search-btn">
+                    <i class="bi bi-search"></i>
+                    <span>Tìm kiếm</span>
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Danh sách -->
+    <section class="dg-ebook-results" data-aos="fade-up" data-aos-delay="180">
+        <div id="ketQua">
+            <partial name="_DanhSach" model="Model" />
+        </div>
+    </section>
+
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            var $ketQua = $('#ketQua');
+            var $form = $('#formLoc');
+            var timer;
+
+            // Tải lại danh sách bằng AJAX
+            function tai(url) {
+                $ketQua.addClass('dg-ebook-loading');
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    cache: false
+                })
+                    .done(function (html) {
+                        $ketQua.html(html);
+                        history.pushState(null, '', url);
+
+                        if (window.AOS) {
+                            AOS.refreshHard();
+                        }
+                    })
+                    .fail(function () {
+                        $ketQua.html(`
+                                <div class="dg-ebook-error">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span>Không tải được dữ liệu, vui lòng thử lại.</span>
+                                </div>
+                            `);
+                    })
+                    .always(function () {
+                        $ketQua.removeClass('dg-ebook-loading');
+                    });
+            }
+
+            // Submit bộ lọc
+            $form.on('submit', function (e) {
+                e.preventDefault();
+
+                var url = $form.attr('action') + '?' + $form.serialize();
+                tai(url);
+            });
+
+            // Thay đổi thể loại hoặc cách sắp xếp
+            $form.find('select').on('change', function () {
+                $form.trigger('submit');
+            });
+
+            // Tìm kiếm theo từ khóa sau 400ms
+            $('#tuKhoa').on('input', function () {
+                clearTimeout(timer);
+
+                timer = setTimeout(function () {
+                    $form.trigger('submit');
+                }, 400);
+            });
+
+            // Phân trang AJAX
+            $ketQua.on('click', '.pagination a', function (e) {
+                e.preventDefault();
+
+                var url = $(this).attr('href');
+
+                if (url) {
+                    tai(url);
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+
+            // Quay lại / tiến tới trên trình duyệt
+            window.addEventListener('popstate', function () {
+                location.reload();
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,70 @@
+﻿/* =========================================
+   THANH TAB MƯỢN TRẢ
+========================================= */
+
+.dg-muontra-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    margin-bottom: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    overflow-x: auto;
+}
+
+.dg-muontra-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 22px;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    text-decoration: none;
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition-base);
+}
+
+    .dg-muontra-tab i {
+        font-size: 1.1rem;
+    }
+
+    .dg-muontra-tab:hover {
+        color: var(--color-terracotta);
+        background: var(--color-paper);
+    }
+
+    .dg-muontra-tab.active {
+        color: #fff;
+        background: var(--color-terracotta);
+        box-shadow: 0 3px 10px rgba(200, 106, 74, 0.2);
+    }
+
+        .dg-muontra-tab.active:hover {
+            color: #fff;
+            background: var(--color-terracotta);
+        }
+
+/* Responsive */
+@media (max-width: 576px) {
+    .dg-muontra-tabs {
+        gap: 4px;
+        padding: 6px;
+    }
+
+    .dg-muontra-tab {
+        flex: 1;
+        padding: 11px 12px;
+        font-size: 0.82rem;
+        gap: 6px;
+    }
+
+        .dg-muontra-tab i {
+            font-size: 1rem;
+        }
+}

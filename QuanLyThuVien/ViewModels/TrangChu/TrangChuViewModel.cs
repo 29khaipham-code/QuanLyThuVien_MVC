@@ -35,7 +35,10 @@ namespace QuanLyThuVien.ViewModels.TrangChu
         // Carousel
         public List<BannerViewModel> Banners { get; set; } = new();
 
-        // Thông tin độc giả
+        // Người đang xem: true nếu đã đăng nhập bằng vai trò DocGia, false nếu là khách hoặc nhân viên
+        public bool LaDocGia { get; set; }
+
+        // Thông tin độc giả (chỉ có khi LaDocGia và có hồ sơ)
         public bool CoHoSo { get; set; }
         public string HoTen { get; set; } = "";
         public string MaDocGia { get; set; } = "";

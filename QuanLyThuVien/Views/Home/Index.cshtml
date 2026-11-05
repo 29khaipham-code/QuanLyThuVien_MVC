@@ -2,17 +2,21 @@
     ViewData["Title"] = "Trang chủ";
 }
 
-<link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
 
 <div class="library-home" id="trang-chu">
+
+    <!-- HEADER -->
     <header class="library-nav">
         <a asp-controller="Home" asp-action="Index" class="library-brand">
             <span class="brand-symbol">B.</span>
-            <span>THƯ VIỆN SỐ</span>
+            <span class="brand-name">THƯ VIỆN SỐ</span>
         </a>
 
         <nav class="library-nav-links" aria-label="Điều hướng chính">
-            <a href="#trang-chu">Trang chủ</a>
+            <a href="#trang-chu" class="active">Trang chủ</a>
             <a href="#gioi-thieu">Giới thiệu</a>
             <a href="#bo-suu-tap">Bộ sưu tập</a>
             <a href="#kham-pha">Khám phá</a>
@@ -21,242 +25,120 @@
         </nav>
 
         <a asp-controller="Account" asp-action="Login" class="nav-account">
-            Đăng nhập <span>↗</span>
+            Đăng nhập <i class="bi bi-arrow-up-right"></i>
         </a>
     </header>
 
     <main>
-        <!-- 01. HERO -->
-        <section class="lib-hero">
-            <div class="hero-copy">
-                <p class="eyebrow"><span></span> KHÔNG GIAN TRI THỨC · 2026</p>
-                <h1>Mở từng trang sách, <em>chạm đến thế giới.</em></h1>
+        <!-- HERO -->
+        <section class="lib-hero" id="gioi-thieu">
+            <div class="hero-copy" data-aos="fade-up">
+                <p class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    KHÔNG GIAN TRI THỨC · 2026
+                </p>
+
+                <h1>
+                    Mở từng trang sách,
+                    chạm đến thế giới.
+                </h1>
+
                 <p class="hero-lead">
                     Một không gian đọc gần gũi, nơi bạn có thể tìm kiếm tài liệu,
                     khám phá những chủ đề mới và nuôi dưỡng niềm yêu thích học hỏi.
                 </p>
+
                 <div class="hero-actions">
-                    <a asp-controller="Home" asp-action="DanhSachSach" class="btn-clay">
-                        Khám phá sách <span>↗</span>
+                    <a asp-area="DocGia"
+                       asp-controller="Home"
+                       asp-action="Index"
+                       class="btn-clay">
+                        Khám phá sách
+                        <i class="bi bi-arrow-up-right"></i>
                     </a>
-                    <a href="#gioi-thieu" class="btn-paper">Về thư viện</a>
+
+                    <a href="#bo-suu-tap" class="btn-paper">
+                        Về thư viện
+                    </a>
                 </div>
+
                 <div class="hero-meta">
-                    <span>● Đọc mỗi ngày</span>
-                    <span>● Học điều mới</span>
-                    <span>● Mở rộng góc nhìn</span>
+                    <span><i class="bi bi-check-circle"></i> Đọc mỗi ngày</span>
+                    <span><i class="bi bi-check-circle"></i> Học điều mới</span>
+                    <span><i class="bi bi-check-circle"></i> Mở rộng góc nhìn</span>
                 </div>
             </div>
-            <div class="hero-art">
+
+            <div class="hero-art" data-aos="fade-left" data-aos-delay="150">
                 <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=85"
-                     alt="Không gian thư viện với những kệ sách" fetchpriority="high" />
+                     alt="Không gian thư viện với những kệ sách"
+                     fetchpriority="high" />
+
                 <div class="hero-image-note">
                     <span>GÓC ĐỌC CỦA BẠN</span>
                     <strong>Find a quiet place. Open a new world.</strong>
                 </div>
+
                 <span class="hero-stamp">READ<br />MORE</span>
+                <span class="hero-art-decoration">✳</span>
             </div>
         </section>
 
-        <!-- 02. PALETTE / ĐỊNH HƯỚNG MÀU SẮC -->
-        <section class="sample-section palette-section" id="gioi-thieu">
-            <div class="section-heading">
-                <p class="eyebrow">BẢN SẮC THƯ VIỆN</p>
-                <h2>Một bảng màu của tri thức.</h2>
-                <p>Ấm áp như trang giấy, trầm tĩnh như một góc đọc và nổi bật vừa đủ để dẫn lối khám phá.</p>
+        <!-- INTRO / BUTTON SHOWCASE -->
+        <section class="sample-section intro-section" id="trang-thu-2">
+            <div class="section-heading" data-aos="fade-up">
+                <p class="eyebrow">MỘT KHÔNG GIAN ĐỂ KHÁM PHÁ</p>
+                <h2>Tri thức bắt đầu từ <em>một lựa chọn nhỏ.</em></h2>
+                <p>
+                    Tìm một cuốn sách, đọc một chủ đề mới và để mỗi ngày
+                    trở thành một cơ hội học hỏi.
+                </p>
             </div>
-            <div class="palette-grid">
-                <div class="palette-chip"><span class="swatch swatch-paper"></span><b>Giấy ngà</b><small>#F5F0E8</small></div>
-                <div class="palette-chip"><span class="swatch swatch-sand"></span><b>Cát ấm</b><small>#E8DED0</small></div>
-                <div class="palette-chip"><span class="swatch swatch-clay"></span><b>Đất nung</b><small>#C96B4B</small></div>
-                <div class="palette-chip"><span class="swatch swatch-ink"></span><b>Mực nâu</b><small>#29251F</small></div>
-                <div class="palette-chip"><span class="swatch swatch-olive"></span><b>Olive</b><small>#87916B</small></div>
-                <div class="palette-chip"><span class="swatch swatch-linen"></span><b>Vải lanh</b><small>#D7C6AD</small></div>
-            </div>
-            <div class="palette-note">
-                <span class="palette-note-swatch"></span>
-                <div>
-                    <strong>Đất nung · Màu nhấn chính</strong>
-                    <p>Dùng cho nút hành động, liên kết quan trọng và những điểm cần được chú ý.</p>
-                </div>
-                <span class="mini-pill">Màu chủ đạo</span>
-            </div>
-        </section>
 
-        <!-- 03. TYPOGRAPHY -->
-        <section class="sample-section type-section">
-            <div class="section-heading">
-                <p class="eyebrow">NGÔN NGỮ THỊ GIÁC</p>
-                <h2>Chữ nghĩa có chiều sâu.</h2>
-                <p>Kiểu chữ có chân tạo cảm giác gần gũi với sách in; phần nội dung vẫn rõ ràng và dễ đọc.</p>
-            </div>
-            <div class="type-specimen">
-                <div class="type-row type-display">
-                    <small>TIÊU ĐỀ LỚN</small>
-                    <strong>Những trang sách mở lối tương lai.</strong>
-                    <em>Display serif · 56 px</em>
-                </div>
-                <div class="type-row">
-                    <small>TIÊU ĐỀ MỤC</small>
-                    <strong>Khám phá kho tàng tri thức</strong>
-                    <em>Section title · 32 px</em>
-                </div>
-                <div class="type-row">
-                    <small>TÊN THẺ</small>
-                    <strong>Một cuốn sách đáng đọc</strong>
-                    <em>Card title · 20 px</em>
-                </div>
-                <div class="type-row">
-                    <small>NỘI DUNG</small>
-                    <span>Mỗi cuốn sách là một hành trình, mỗi trang sách là một cơ hội để hiểu thêm thế giới quanh ta.</span>
-                    <em>Body text · 15 px</em>
-                </div>
-                <div class="type-row">
-                    <small>Nhãn</small>
-                    <span class="type-label">BỘ SƯU TẬP · 2026</span>
-                    <em>Eyebrow · 10 px</em>
-                </div>
-            </div>
-        </section>
+            <div class="button-showcase" data-aos="fade-up">
+                <a asp-area="DocGia" asp-controller="Home" asp-action="Index"
+                   class="btn-clay">Khám phá sách</a>
 
-        <!-- 04. BUTTONS -->
-        <section class="sample-section button-section">
-            <div class="section-heading">
-                <p class="eyebrow">TƯƠNG TÁC</p>
-                <h2>Nút bấm thân thiện.</h2>
-                <p>Mỗi thao tác được thể hiện rõ ràng, nhất quán và dễ nhận biết.</p>
-            </div>
-            <div class="button-showcase">
-                <a asp-controller="Home" asp-action="DanhSachSach" class="btn-clay">Khám phá sách</a>
-                <a asp-controller="Account" asp-action="Login" class="btn-olive">Đăng nhập</a>
+                <a asp-controller="Account" asp-action="Login"
+                   class="btn-olive">Đăng nhập</a>
+
                 <a href="#bo-suu-tap" class="btn-paper">Bộ sưu tập</a>
+
                 <a href="#quy-trinh" class="btn-outline">Cách sử dụng</a>
-                <a href="#faq" class="btn-icon" aria-label="Đi đến câu hỏi thường gặp">↗</a>
-                <span class="button-disabled">Sắp ra mắt</span>
-            </div>
-            <p class="sample-caption">Nút chính dùng màu đất nung · Nút phụ dùng olive · Nút viền dành cho thao tác ít ưu tiên hơn.</p>
-        </section>
-
-        <!-- 05. SURFACE CARDS -->
-        <section class="sample-section surfaces-section">
-            <div class="section-heading">
-                <p class="eyebrow">BỀ MẶT GIAO DIỆN</p>
-                <h2>Những tấm thẻ xếp lớp.</h2>
-                <p>Các bề mặt giấy, màu cát và đất nung tạo chiều sâu nhẹ nhàng cho nội dung.</p>
-            </div>
-            <div class="surface-grid">
-                <article class="surface-card surface-project">
-                    <small>GÓC ĐỌC</small>
-                    <h3>Không gian yên tĩnh</h3>
-                    <p>Một nơi để tạm dừng, đọc chậm và dành thời gian cho điều bạn yêu thích.</p>
-                    <span>● Đọc & suy ngẫm</span>
-                </article>
-                <article class="surface-card surface-paper">
-                    <small>KHÁM PHÁ</small>
-                    <h3>Thế giới trong trang sách</h3>
-                    <p>Từ văn học, công nghệ đến khoa học và đời sống.</p>
-                    <a asp-controller="Home" asp-action="DanhSachSach">Xem danh mục ↗</a>
-                </article>
-                <article class="surface-card surface-clay">
-                    <small>BẠN ĐỌC MỚI</small>
-                    <h3>Bắt đầu hành trình đọc</h3>
-                    <p>Đăng nhập để tiếp tục sử dụng những chức năng dành cho bạn đọc.</p>
-                    <a asp-controller="Account" asp-action="Login" class="surface-light-link">Đăng nhập ↗</a>
-                </article>
-            </div>
-            <div class="stat-strip">
-                <div><strong>01</strong><span>Tìm kiếm</span></div>
-                <div><strong>02</strong><span>Khám phá</span></div>
-                <div><strong>03</strong><span>Đọc và học</span></div>
-                <div><strong>∞</strong><span>Ý tưởng mới</span></div>
             </div>
         </section>
 
-        <!-- 06. SUPPORT FORM -->
-        <section class="sample-section support-section" id="ho-tro">
-            <div class="section-heading">
-                <p class="eyebrow">KẾT NỐI VỚI THƯ VIỆN</p>
-                <h2>Bắt đầu một cuộc trò chuyện.</h2>
-                <p>Cần hỗ trợ tra cứu hay sử dụng website? Hãy để lại lời nhắn cho thư viện.</p>
-            </div>
-            <div class="support-card">
-                <div class="support-intro">
-                    <small>CHÚNG TÔI CÓ THỂ GIÚP GÌ?</small>
-                    <h3>Mọi hành trình đọc đều có thể bắt đầu bằng một câu hỏi.</h3>
-                    <p>Tìm hiểu cách tra cứu tài liệu, đăng nhập tài khoản sử dụng các chức năng hiện có.</p>
-
-                    <div class="support-point">
-                        <b>01</b>
-                        <span>
-                            <strong>Tra cứu tài liệu</strong>
-                            <small>Tìm sách theo tên, tác giả hoặc thể loại.</small>
-                        </span>
-                    </div>
-                    <div class="support-point">
-                        <b>02</b>
-                        <span>
-                            <strong>Tài khoản bạn đọc</strong>
-                            <small>Hỗ trợ các vấn đề liên quan đến đăng nhập.</small>
-                        </span>
-                    </div>
-                    <div class="support-point">
-                        <b>03</b>
-                        <span>
-                            <strong>Hướng dẫn sử dụng</strong>
-                            <small>Tìm hiểu các chức năng trên website.</small>
-                        </span>
-                    </div>
-                </div>
-
-                <form class="support-form" id="libraryRequestForm">
-                    <small>GỬI THÔNG TIN</small>
-                    <h3>Yêu cầu hỗ trợ</h3>
-
-                    <label for="supportName">Họ và tên</label>
-                    <input id="supportName" name="fullName" placeholder="Nhập họ và tên" required />
-
-                    <label for="supportEmail">Địa chỉ email</label>
-                    <input id="supportEmail" name="email" type="email" placeholder="you@example.com" required />
-
-                    <label for="supportTopic">Chủ đề cần hỗ trợ</label>
-                    <select id="supportTopic" name="topic" required>
-                        <option value="">Chọn chủ đề</option>
-                        <option>Tìm kiếm tài liệu</option>
-                        <option>Tài khoản bạn đọc</option>
-                        <option>Sách điện tử</option>
-                        <option>Vấn đề khác</option>
-                    </select>
-
-                    <label for="supportMessage">Lời nhắn</label>
-                    <textarea id="supportMessage" name="message" rows="4" placeholder="Bạn cần thư viện hỗ trợ điều gì?" required></textarea>
-
-                    <button type="submit" class="btn-clay">Gửi yêu cầu <span>↗</span></button>
-                    <p class="form-note" id="supportMessageStatus">Biểu mẫu giao diện minh họa, chưa kết nối chức năng gửi về máy chủ.</p>
-                </form>
-            </div>
-        </section>
-
-        <!-- 07. COLLECTION / MATERIAL LIBRARY -->
+        <!-- COLLECTION -->
         <section class="sample-section collection-section" id="bo-suu-tap">
-            <div class="section-heading">
+            <div class="section-heading" data-aos="fade-up">
                 <p class="eyebrow">TỦ SÁCH THEO CHỦ ĐỀ</p>
-                <h2>Tri thức từ nhiều miền.</h2>
-                <p>Mỗi lĩnh vực là một cánh cửa khác nhau để bạn bước vào thế giới kiến thức.</p>
+                <h2>Tri thức từ <em>nhiều miền.</em></h2>
+                <p>
+                    Mỗi lĩnh vực là một cánh cửa khác nhau để bạn bước vào
+                    thế giới kiến thức.
+                </p>
             </div>
 
-            <div class="collection-tabs" aria-label="Chủ đề sách">
+            <div class="collection-tabs" data-aos="fade-up">
                 <a href="#kham-pha" class="tab-active">Văn học</a>
                 <a href="#kham-pha">Công nghệ</a>
                 <a href="#kham-pha">Khoa học</a>
                 <a href="#kham-pha">Kinh tế</a>
             </div>
 
-            <div class="collection-feature">
-                <div class="collection-icon">✦</div>
-                <div>
+            <div class="collection-feature" data-aos="fade-up">
+                <div class="collection-icon">
+                    <i class="bi bi-stars"></i>
+                </div>
+
+                <div class="collection-content">
                     <small>GỢI Ý KHÁM PHÁ</small>
                     <h3>Đọc để hiểu thêm về thế giới.</h3>
-                    <p>Từ những câu chuyện nuôi dưỡng cảm xúc đến các tài liệu mở rộng kiến thức. Hãy chọn chủ đề phù hợp với điều bạn muốn tìm hiểu.</p>
+                    <p>
+                        Từ những câu chuyện nuôi dưỡng cảm xúc đến các tài liệu
+                        mở rộng kiến thức. Hãy chọn chủ đề phù hợp với điều bạn muốn tìm hiểu.
+                    </p>
+
                     <div class="collection-tags">
                         <span>Văn học</span>
                         <span>Kỹ năng</span>
@@ -264,18 +146,25 @@
                     </div>
                 </div>
             </div>
-            <p class="sample-caption">Các nhóm chủ đề trên là nội dung giới thiệu giao diện; danh mục thực tế có thể được kết nối từ cơ sở dữ liệu sau.</p>
+
+            <p class="sample-caption">
+                Các nhóm chủ đề trên là nội dung giới thiệu giao diện;
+                danh mục thực tế có thể được kết nối từ cơ sở dữ liệu sau.
+            </p>
         </section>
 
-        <!-- 08. PROJECT GRID -> EXPLORE -->
+        <!-- EXPLORE -->
         <section class="sample-section explore-section" id="kham-pha">
-            <div class="section-heading">
+            <div class="section-heading" data-aos="fade-up">
                 <p class="eyebrow">KHÁM PHÁ KHO SÁCH</p>
-                <h2>Chọn một cuốn, mở một thế giới.</h2>
-                <p>Tìm kiếm những cuốn sách phù hợp với sở thích và nhu cầu học tập của bạn.</p>
+                <h2>Chọn một cuốn, <em>mở một thế giới.</em></h2>
+                <p>
+                    Tìm kiếm những cuốn sách phù hợp với sở thích
+                    và nhu cầu học tập của bạn.
+                </p>
             </div>
 
-            <div class="explore-filters">
+            <div class="explore-filters" data-aos="fade-up">
                 <span class="filter-active">Tất cả</span>
                 <span>Văn học</span>
                 <span>Kỹ năng</span>
@@ -284,10 +173,11 @@
             </div>
 
             <div class="explore-grid">
-                <article class="explore-card explore-wide">
+                <article class="explore-card explore-wide" data-aos="fade-up">
                     <div class="explore-cover cover-library">
                         <span>THƯ VIỆN SỐ</span>
                         <b>THE READING ROOM</b>
+                        <i class="bi bi-book-half"></i>
                     </div>
                     <div class="explore-info">
                         <small>KHÔNG GIAN ĐỌC</small>
@@ -296,10 +186,11 @@
                     </div>
                 </article>
 
-                <article class="explore-card">
+                <article class="explore-card" data-aos="fade-up" data-aos-delay="80">
                     <div class="explore-cover cover-clay">
                         <span>01 · FICTION</span>
                         <b>Stories to keep</b>
+                        <i class="bi bi-book"></i>
                     </div>
                     <div class="explore-info">
                         <small>VĂN HỌC</small>
@@ -308,10 +199,11 @@
                     </div>
                 </article>
 
-                <article class="explore-card">
+                <article class="explore-card" data-aos="fade-up" data-aos-delay="140">
                     <div class="explore-cover cover-olive">
                         <span>02 · LEARNING</span>
                         <b>Learn something</b>
+                        <i class="bi bi-lightbulb"></i>
                     </div>
                     <div class="explore-info">
                         <small>KỸ NĂNG</small>
@@ -320,10 +212,11 @@
                     </div>
                 </article>
 
-                <article class="explore-card">
+                <article class="explore-card" data-aos="fade-up" data-aos-delay="80">
                     <div class="explore-cover cover-sand">
                         <span>03 · KNOWLEDGE</span>
                         <b>Ideas & beyond</b>
+                        <i class="bi bi-brightness-high"></i>
                     </div>
                     <div class="explore-info">
                         <small>KHOA HỌC</small>
@@ -332,10 +225,11 @@
                     </div>
                 </article>
 
-                <article class="explore-card">
+                <article class="explore-card" data-aos="fade-up" data-aos-delay="140">
                     <div class="explore-cover cover-ink">
                         <span>04 · TECHNOLOGY</span>
                         <b>Future in pages</b>
+                        <i class="bi bi-cpu"></i>
                     </div>
                     <div class="explore-info">
                         <small>CÔNG NGHỆ</small>
@@ -345,82 +239,58 @@
                 </article>
             </div>
 
-            <div class="center-action">
-                <a asp-controller="Home" asp-action="DanhSachSach" class="btn-clay">Xem toàn bộ danh sách sách ↗</a>
+            <div class="center-action" data-aos="fade-up">
+                <a asp-controller="Home" asp-action="DanhSachSach" class="btn-clay">
+                    Xem toàn bộ danh sách sách
+                    <i class="bi bi-arrow-up-right"></i>
+                </a>
             </div>
         </section>
 
-        <!-- 09. MARKS & LABELS -->
-        <section class="sample-section labels-section">
-            <div class="section-heading">
-                <p class="eyebrow">NHÃN & TRẠNG THÁI</p>
-                <h2>Những dấu hiệu nhỏ, hữu ích.</h2>
-                <p>Nhãn giúp bạn nhận biết nhanh nhóm nội dung và trạng thái hiển thị.</p>
-            </div>
-
-            <div class="label-board">
-                <div>
-                    <small>THỂ LOẠI</small>
-                    <p>
-                        <span class="tag tag-clay">Văn học</span>
-                        <span class="tag tag-olive">Khoa học</span>
-                        <span class="tag tag-sand">Kỹ năng</span>
-                        <span class="tag tag-outline">Công nghệ</span>
-                        <span class="tag tag-dark">Nổi bật</span>
-                    </p>
-                </div>
-                <div>
-                    <small>TRẠNG THÁI MINH HỌA</small>
-                    <p>
-                        <span class="tag tag-olive">● Đang hoạt động</span>
-                        <span class="tag tag-clay">● Đang cập nhật</span>
-                        <span class="tag tag-sand">● Lưu trữ</span>
-                        <span class="tag tag-outline">● Sắp ra mắt</span>
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 10. PROCESS -->
+        <!-- PROCESS -->
         <section class="sample-section process-section" id="quy-trinh">
-            <div class="section-heading">
+            <div class="section-heading" data-aos="fade-up">
                 <p class="eyebrow">HÀNH TRÌNH BẠN ĐỌC</p>
-                <h2>Từ tìm kiếm đến khám phá.</h2>
+                <h2>Từ tìm kiếm <em>đến khám phá.</em></h2>
                 <p>Các bước cơ bản để bắt đầu sử dụng website thư viện.</p>
             </div>
 
             <div class="process-steps">
-                <article class="process-card">
-                    <span>1.</span>
+                <article class="process-card" data-aos="fade-up">
+                    <span class="process-number">01</span>
                     <small>BƯỚC 01</small>
                     <h3>Tìm kiếm</h3>
                     <p>Nhập tên sách, tác giả hoặc từ khóa bạn quan tâm.</p>
                 </article>
-                <article class="process-card process-current">
-                    <span>2.</span>
+
+                <article class="process-card process-current" data-aos="fade-up" data-aos-delay="80">
+                    <span class="process-number">02</span>
                     <small>BƯỚC 02</small>
                     <h3>Khám phá</h3>
                     <p>Xem thông tin và tìm hiểu những tài liệu phù hợp.</p>
                 </article>
-                <article class="process-card">
-                    <span>3.</span>
+
+                <article class="process-card" data-aos="fade-up" data-aos-delay="160">
+                    <span class="process-number">03</span>
                     <small>BƯỚC 03</small>
                     <h3>Đăng nhập</h3>
                     <p>Truy cập tài khoản để sử dụng chức năng được cấp quyền.</p>
                 </article>
-                <article class="process-card">
-                    <span>4.</span>
+
+                <article class="process-card" data-aos="fade-up" data-aos-delay="240">
+                    <span class="process-number">04</span>
                     <small>BƯỚC 04</small>
                     <h3>Tiếp tục đọc</h3>
                     <p>Sử dụng các tiện ích thư viện hiện có theo hướng dẫn.</p>
                 </article>
             </div>
 
-            <div class="process-detail">
+            <div class="process-detail" data-aos="fade-up">
                 <div class="detail-top">
                     <strong>Bước 02 · Khám phá</strong>
                     <span>Hành trình bạn đọc</span>
                 </div>
+
                 <div class="progress-line"><span style="width:72%"></span></div>
 
                 <div class="progress-row"><span>Tìm kiếm tài liệu</span><b>01</b></div>
@@ -432,42 +302,129 @@
                 <div class="progress-row"><span>Đăng nhập tài khoản</span><b>03</b></div>
                 <div class="progress-line thin"><span style="width:42%"></span></div>
 
-                <p class="sample-caption">Các bước mô tả quy trình sử dụng giao diện, không phải tiến độ tài khoản thực tế.</p>
+                <p class="sample-caption">
+                    Các bước mô tả quy trình sử dụng giao diện,
+                    không phải tiến độ tài khoản thực tế.
+                </p>
             </div>
         </section>
 
-        <!-- 11. NOTICES -->
+        <!-- SUPPORT -->
+        <section class="sample-section support-section" id="ho-tro">
+            <div class="section-heading" data-aos="fade-up">
+                <p class="eyebrow">KẾT NỐI VỚI THƯ VIỆN</p>
+                <h2>Bắt đầu một <em>cuộc trò chuyện.</em></h2>
+                <p>Cần hỗ trợ tra cứu hay sử dụng website? Hãy để lại lời nhắn cho thư viện.</p>
+            </div>
+
+            <div class="support-card" data-aos="fade-up">
+                <div class="support-intro">
+                    <small>CHÚNG TÔI CÓ THỂ GIÚP GÌ?</small>
+                    <h3>Mọi hành trình đọc đều có thể bắt đầu bằng một câu hỏi.</h3>
+                    <p>
+                        Tìm hiểu cách tra cứu tài liệu, đăng nhập tài khoản
+                        và sử dụng các chức năng hiện có.
+                    </p>
+
+                    <div class="support-point">
+                        <b>01</b>
+                        <span>
+                            <strong>Tra cứu tài liệu</strong>
+                            <small>Tìm sách theo tên, tác giả hoặc thể loại.</small>
+                        </span>
+                    </div>
+
+                    <div class="support-point">
+                        <b>02</b>
+                        <span>
+                            <strong>Tài khoản bạn đọc</strong>
+                            <small>Hỗ trợ các vấn đề liên quan đến đăng nhập.</small>
+                        </span>
+                    </div>
+
+                    <div class="support-point">
+                        <b>03</b>
+                        <span>
+                            <strong>Hướng dẫn sử dụng</strong>
+                            <small>Tìm hiểu các chức năng trên website.</small>
+                        </span>
+                    </div>
+                </div>
+
+                <form id="libraryRequestForm"
+                      class="support-form"
+                      asp-controller="Home"
+                      asp-action="GuiYeuCau"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    @if (TempData["SupportStatus"] != null)
+                    {
+                        <p class="form-status">@TempData["SupportStatus"]</p>
+                    }
+
+                    <label for="supportName">Họ và tên</label>
+                    <input id="supportName" name="HoTen" placeholder="Họ và tên" required />
+
+                    <label for="supportEmail">Địa chỉ email</label>
+                    <input id="supportEmail" type="email" name="Email"
+                           placeholder="example@email.com" required />
+
+                    <label for="supportSubject">Chủ đề</label>
+                    <select id="supportSubject" name="ChuDe" required>
+                        <option value="Tìm kiếm tài liệu">Tìm kiếm tài liệu</option>
+                        <option value="Tài khoản bạn đọc">Tài khoản bạn đọc</option>
+                        <option value="Hướng dẫn sử dụng">Hướng dẫn sử dụng</option>
+                        <option value="Khác">Khác</option>
+                    </select>
+
+                    <label for="supportMessage">Lời nhắn</label>
+                    <textarea id="supportMessage" name="LoiNhan"
+                              placeholder="Bạn cần thư viện hỗ trợ điều gì?" required></textarea>
+
+                    <button type="submit">
+                        Gửi yêu cầu <i class="bi bi-arrow-up-right"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- NOTICES -->
         <section class="sample-section notices-section">
-            <div class="section-heading">
+            <div class="section-heading" data-aos="fade-up">
                 <p class="eyebrow">THÔNG TIN THƯ VIỆN</p>
-                <h2>Những thông báo cần biết.</h2>
+                <h2>Những thông báo <em>cần biết.</em></h2>
                 <p>Một số nhắc nhở hữu ích trong quá trình sử dụng hệ thống.</p>
             </div>
 
             <div class="notice-list">
-                <div class="notice notice-neutral">
-                    <b>i</b>
+                <div class="notice notice-neutral" data-aos="fade-up">
+                    <b><i class="bi bi-info-lg"></i></b>
                     <p>
                         <strong>Lưu ý tài khoản</strong>
                         <span>Hãy bảo mật thông tin đăng nhập và không chia sẻ mật khẩu.</span>
                     </p>
                 </div>
-                <div class="notice notice-success">
-                    <b>✓</b>
+
+                <div class="notice notice-success" data-aos="fade-up" data-aos-delay="70">
+                    <b><i class="bi bi-check-lg"></i></b>
                     <p>
                         <strong>Tra cứu thuận tiện</strong>
                         <span>Bạn có thể tìm sách theo tiêu đề hoặc thông tin tác giả ở trang danh sách sách.</span>
                     </p>
                 </div>
-                <div class="notice notice-warning">
-                    <b>!</b>
+
+                <div class="notice notice-warning" data-aos="fade-up" data-aos-delay="140">
+                    <b><i class="bi bi-exclamation-lg"></i></b>
                     <p>
                         <strong>Thông tin đang cập nhật</strong>
                         <span>Một số nội dung giới thiệu trên trang chủ có thể được hoàn thiện theo tiến độ dự án.</span>
                     </p>
                 </div>
-                <div class="notice notice-clay">
-                    <b>↗</b>
+
+                <div class="notice notice-clay" data-aos="fade-up" data-aos-delay="210">
+                    <b><i class="bi bi-arrow-up-right"></i></b>
                     <p>
                         <strong>Truy cập đúng quyền</strong>
                         <span>Hãy sử dụng các chức năng phù hợp với tài khoản được cấp.</span>
@@ -476,166 +433,73 @@
             </div>
         </section>
 
-        <!-- 12. CATALOG TABLE -->
+        <!-- CATALOG TABLE -->
         <section class="sample-section catalog-section">
-            <div class="section-heading">
+            <div class="section-heading" data-aos="fade-up">
                 <p class="eyebrow">SỔ TAY THƯ VIỆN</p>
-                <h2>Thông tin được sắp xếp rõ ràng.</h2>
+                <h2>Thông tin được <em>sắp xếp rõ ràng.</em></h2>
                 <p>Khu vực minh họa cách trình bày thông tin tài liệu trong một bảng dễ theo dõi.</p>
             </div>
 
-            <div class="catalog-table-wrap">
-                <table class="catalog-table">
-                    <thead>
-                        <tr>
-                            <th>TÀI LIỆU</th>
-                            <th>NHÓM CHỦ ĐỀ</th>
-                            <th>THÔNG TIN</th>
-                            <th>TRẠNG THÁI</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <strong>Văn học & câu chuyện</strong>
-                                <small>Nhóm nội dung giới thiệu</small>
-                            </td>
-                            <td>Văn học</td>
-                            <td>Khám phá</td>
-                            <td><span class="table-status">Đang giới thiệu</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>Kỹ năng & phát triển</strong>
-                                <small>Nhóm nội dung giới thiệu</small>
-                            </td>
-                            <td>Kỹ năng</td>
-                            <td>Học tập</td>
-                            <td><span class="table-status">Đang giới thiệu</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>Khoa học thường thức</strong>
-                                <small>Nhóm nội dung giới thiệu</small>
-                            </td>
-                            <td>Khoa học</td>
-                            <td>Kiến thức</td>
-                            <td><span class="table-status">Đang giới thiệu</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>Công nghệ số</strong>
-                                <small>Nhóm nội dung giới thiệu</small>
-                            </td>
-                            <td>Công nghệ</td>
-                            <td>Nghiên cứu</td>
-                            <td><span class="table-status status-muted">Đang cập nhật</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="catalog-table-wrap" data-aos="fade-up">
+                <div class="table-responsive">
+                    <table class="catalog-table">
+                        <thead>
+                            <tr>
+                                <th>TÀI LIỆU</th>
+                                <th>NHÓM CHỦ ĐỀ</th>
+                                <th>THÔNG TIN</th>
+                                <th>TRẠNG THÁI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Văn học & câu chuyện</strong><small>Nhóm nội dung giới thiệu</small></td>
+                                <td>Văn học</td>
+                                <td>Khám phá</td>
+                                <td><span class="table-status">Đang giới thiệu</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Kỹ năng & phát triển</strong><small>Nhóm nội dung giới thiệu</small></td>
+                                <td>Kỹ năng</td>
+                                <td>Học tập</td>
+                                <td><span class="table-status">Đang giới thiệu</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Khoa học thường thức</strong><small>Nhóm nội dung giới thiệu</small></td>
+                                <td>Khoa học</td>
+                                <td>Kiến thức</td>
+                                <td><span class="table-status">Đang giới thiệu</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Công nghệ số</strong><small>Nhóm nội dung giới thiệu</small></td>
+                                <td>Công nghệ</td>
+                                <td>Nghiên cứu</td>
+                                <td><span class="table-status status-muted">Đang cập nhật</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div class="table-footer">
                     <span>Bảng minh họa giao diện · Không phải dữ liệu mượn trả thực tế</span>
-                    <a asp-controller="Home" asp-action="DanhSachSach">Đến danh sách sách ↗</a>
+                    <a asp-area="DocGia" asp-controller="Home" asp-action="Index">
+                        Đến danh sách sách <i class="bi bi-arrow-up-right"></i>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- 13. TESTIMONIAL -->
-        <section class="sample-section quote-section">
-            <div class="section-heading">
-                <p class="eyebrow">GÓC NHÌN BẠN ĐỌC</p>
-                <h2>Mang theo điều gì sau mỗi trang sách?</h2>
-            </div>
-
-            <div class="quote-card">
-                <span class="quote-mark">“</span>
-                <blockquote>Một cuốn sách hay không chỉ đưa ta đến một nơi khác, mà còn giúp ta nhìn lại thế giới quanh mình bằng một góc nhìn mới.</blockquote>
-                <div class="quote-author">
-                    <span></span>
-                    <strong>Một lời nhắn dành cho người đọc</strong>
-                    <small>GÓC ĐỌC THƯ VIỆN</small>
-                    <span></span>
-                </div>
-            </div>
-            <div class="quote-dots"><i></i><i></i><i></i></div>
-        </section>
-
-        <!-- 14. DIVIDERS -->
-        <section class="sample-section divider-section">
-            <div class="section-heading">
-                <p class="eyebrow">CHI TIẾT TRANG TRÍ</p>
-                <h2>Những khoảng nghỉ cần thiết.</h2>
-                <p>Đường kẻ mảnh và chi tiết nhỏ giúp các phần nội dung có nhịp điệu.</p>
-            </div>
-
-            <div class="divider-demo">
-                <div>
-                    <small>ĐƯỜNG KẺ MẢNH</small>
-                    <hr />
-                </div>
-                <div>
-                    <small>DẤU CHẤM PHÂN CÁCH</small>
-                    <hr class="dotted-rule" />
-                </div>
-                <div>
-                    <small>ĐƯỜNG KẺ CÓ NHÃN</small>
-                    <p class="ornament-line"><span>THƯ VIỆN SỐ</span></p>
-                </div>
-                <div>
-                    <small>ĐIỂM NHẤN MÀU</small>
-                    <hr class="accent-rule" />
-                </div>
-            </div>
-        </section>
-
-        <!-- 15. FORM LANGUAGE / SHADOWS -->
-        <section class="sample-section form-style-section">
-            <div class="section-heading">
-                <p class="eyebrow">TRẢI NGHIỆM SỬ DỤNG</p>
-                <h2>Gọn gàng và dễ thao tác.</h2>
-                <p>Các thành phần được giữ thống nhất để người đọc dễ nhận biết và sử dụng.</p>
-            </div>
-
-            <div class="form-style-grid">
-                <div class="style-panel">
-                    <small>THÀNH PHẦN BIỂU MẪU</small>
-                    <div class="fake-input">Họ và tên của bạn</div>
-                    <div class="fake-input">Địa chỉ email</div>
-                    <div class="fake-select">Chọn chủ đề <span>⌄</span></div>
-                    <div class="fake-check"><i>✓</i> Tôi đồng ý với quy định sử dụng</div>
-                    <p>Viền màu cát, nền giấy và điểm nhấn đất nung tạo cảm giác nhẹ nhàng.</p>
-                </div>
-
-                <div class="style-panel">
-                    <small>ĐỘ SÂU BỀ MẶT</small>
-                    <div class="shadow-sample shadow-one">
-                        <strong>Phẳng</strong>
-                        <span>Nội dung cơ bản</span>
-                    </div>
-                    <div class="shadow-sample shadow-two">
-                        <strong>Nổi nhẹ</strong>
-                        <span>Thẻ thông tin</span>
-                    </div>
-                    <div class="shadow-sample shadow-three">
-                        <strong>Nổi bật</strong>
-                        <span>Thẻ được nhấn mạnh</span>
-                    </div>
-                    <p>Bóng đổ mềm, không quá đậm để giữ cảm giác giấy tự nhiên.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 16. DO / DON'T -->
+        <!-- RULES -->
         <section class="sample-section rules-section">
-            <div class="section-heading">
+            <div class="section-heading" data-aos="fade-up">
                 <p class="eyebrow">NGUYÊN TẮC THƯ VIỆN</p>
-                <h2>Đọc có trách nhiệm, chia sẻ văn minh.</h2>
+                <h2>Đọc có trách nhiệm, <em>chia sẻ văn minh.</em></h2>
                 <p>Một vài nguyên tắc cơ bản để cùng xây dựng môi trường học tập tích cực.</p>
             </div>
 
             <div class="rules-grid">
-                <article class="rules-card rules-do">
+                <article class="rules-card rules-do" data-aos="fade-up">
                     <h3><span>✓</span> NÊN LÀM</h3>
                     <ul>
                         <li>Tra cứu bằng thông tin sách chính xác.</li>
@@ -646,7 +510,7 @@
                     </ul>
                 </article>
 
-                <article class="rules-card rules-dont">
+                <article class="rules-card rules-dont" data-aos="fade-up" data-aos-delay="100">
                     <h3><span>×</span> CẦN TRÁNH</h3>
                     <ul>
                         <li>Chia sẻ tài khoản tùy tiện.</li>
@@ -659,82 +523,103 @@
             </div>
         </section>
 
-        <!-- 17. FAQ -->
+        <!-- FAQ -->
         <section class="sample-section faq-section" id="faq">
-            <div class="section-heading">
+            <div class="section-heading" data-aos="fade-up">
                 <p class="eyebrow">GÓC GIẢI ĐÁP</p>
-                <h2>Những câu hỏi thường gặp.</h2>
+                <h2>Những câu hỏi <em>thường gặp.</em></h2>
                 <p>Một vài thông tin giúp bạn bắt đầu sử dụng thư viện dễ dàng hơn.</p>
             </div>
 
-            <div class="faq-list">
+            <div class="faq-list" data-aos="fade-up">
                 <details open>
                     <summary>Website Quản lý thư viện dùng để làm gì?<span>×</span></summary>
                     <p>Website hỗ trợ bạn đọc tiếp cận thông tin sách và sử dụng những chức năng thư viện được cung cấp trong hệ thống.</p>
                 </details>
+
                 <details>
                     <summary>Làm thế nào để tìm một cuốn sách?<span>+</span></summary>
                     <p>Chọn mục Khám phá thư viện hoặc Danh sách sách, sau đó nhập từ khóa để tìm tài liệu phù hợp.</p>
                 </details>
+
                 <details>
                     <summary>Tôi cần đăng nhập khi nào?<span>+</span></summary>
                     <p>Nhấn Đăng nhập và sử dụng tài khoản được cấp khi muốn truy cập các chức năng yêu cầu xác thực.</p>
                 </details>
+
                 <details>
                     <summary>Trang chủ có hiển thị toàn bộ dữ liệu sách không?<span>+</span></summary>
                     <p>Các thẻ nội dung trên trang chủ này là phần giới thiệu giao diện. Danh sách sách thực tế được xem tại trang DanhSachSach.</p>
                 </details>
+
                 <details>
                     <summary>Tôi có thể liên hệ hỗ trợ ở đâu?<span>+</span></summary>
-                    <p>Bạn có thể xem phần hỗ trợ trên trang chủ. Biểu mẫu hiện là giao diện minh họa và cần được kết nối backend để gửi yêu cầu.</p>
+                    <p>Bạn có thể xem phần hỗ trợ trên trang chủ. Biểu mẫu cần được kết nối backend để gửi yêu cầu.</p>
                 </details>
             </div>
         </section>
 
-        <!-- 18. NEWSLETTER -->
+        <!-- NEWSLETTER -->
         <section class="sample-section newsletter-section">
-            <div class="section-heading">
-                <p class="eyebrow">GHI CHÚ ĐỌC SÁCH</p>
-                <h2>Một lá thư dành cho người yêu sách.</h2>
-                <p>Không gian để cập nhật những tin tức và hoạt động mới của thư viện.</p>
-            </div>
+            <div class="newsletter-card" data-aos="fade-up">
+                <div class="newsletter-copy">
+                    <p class="eyebrow">GHI CHÚ ĐỌC SÁCH</p>
+                    <h2>Một lá thư dành cho <em>người yêu sách.</em></h2>
+                    <p>Không gian để cập nhật những tin tức và hoạt động mới của thư viện.</p>
+                </div>
 
-            <form class="newsletter-form" id="newsletterForm">
-                <label class="sr-only" for="newsletterEmail">Email của bạn</label>
-                <input id="newsletterEmail" type="email" placeholder="Địa chỉ email của bạn" required />
-                <button type="submit" class="btn-clay">Đăng ký <span>↗</span></button>
-                <p id="newsletterStatus">Biểu mẫu minh họa, chưa kết nối dịch vụ gửi email.</p>
-            </form>
+                <form id="newsletterForm"
+                      class="newsletter-form"
+                      asp-controller="Home"
+                      asp-action="DangKyNhanTin"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    @if (TempData["NewsletterStatus"] != null)
+                    {
+                        <p class="form-status">@TempData["NewsletterStatus"]</p>
+                    }
+
+                    <div class="newsletter-input-group">
+                        <input type="email" name="email"
+                               placeholder="Địa chỉ email của bạn" required />
+                        <button type="submit">
+                            Đăng ký <i class="bi bi-arrow-up-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </section>
     </main>
 
-    <!-- 19. FOOTER -->
+    <!-- FOOTER -->
     <footer class="library-footer">
         <div class="footer-main">
             <div class="footer-about">
                 <a asp-controller="Home" asp-action="Index" class="library-brand">
                     <span class="brand-symbol">B.</span>
-                    <span>THƯ VIỆN SỐ</span>
+                    <span class="brand-name">THƯ VIỆN SỐ</span>
                 </a>
                 <p>Một không gian dành cho tri thức, những câu chuyện và ý tưởng mới.</p>
                 <div class="footer-dots"><i></i><i></i><i></i></div>
             </div>
 
-            <div>
+            <div class="footer-column">
                 <small>KHÁM PHÁ</small>
-                <a asp-controller="Home" asp-action="DanhSachSach">Danh sách sách</a>
+                <a asp-area="DocGia" asp-controller="Home" asp-action="Index">Danh sách sách</a>
                 <a href="#bo-suu-tap">Bộ sưu tập</a>
                 <a href="#quy-trinh">Hướng dẫn sử dụng</a>
             </div>
 
-            <div>
+            <div class="footer-column">
                 <small>HỖ TRỢ</small>
                 <a href="#ho-tro">Gửi yêu cầu</a>
                 <a href="#faq">Câu hỏi thường gặp</a>
                 <a asp-controller="Account" asp-action="Login">Đăng nhập</a>
             </div>
 
-            <div>
+            <div class="footer-column">
                 <small>VỀ CHÚNG TÔI</small>
                 <a href="#gioi-thieu">Giới thiệu thư viện</a>
                 <a href="#trang-chu">Trang chủ</a>
@@ -752,7 +637,9 @@
 @section Scripts {
     <script>
         (() => {
+            // Cập nhật trạng thái menu theo section đang hiển thị
             const navLinks = [...document.querySelectorAll('.library-nav-links a')];
+
             const sections = navLinks
                 .map(link => document.querySelector(link.getAttribute('href')))
                 .filter(Boolean);
@@ -785,31 +672,11 @@
                 sections.forEach(section => observer.observe(section));
             }
 
-            const requestForm = document.getElementById('libraryRequestForm');
-
-            requestForm?.addEventListener('submit', event => {
-                event.preventDefault();
-
-                document.getElementById('supportMessageStatus').textContent =
-                    'Thông tin đã được kiểm tra ở giao diện. Chức năng gửi về máy chủ chưa được kết nối.';
-            });
-
-            const newsletterForm = document.getElementById('newsletterForm');
-
-            newsletterForm?.addEventListener('submit', event => {
-                event.preventDefault();
-
-                document.getElementById('newsletterStatus').textContent =
-                    'Email đã được nhập. Chức năng đăng ký nhận tin chưa được kết nối.';
-            });
-
+            // Đổi dấu + / × trong FAQ
             document.querySelectorAll('.faq-list details').forEach(item => {
                 item.addEventListener('toggle', () => {
                     const mark = item.querySelector('summary span');
-
-                    if (mark) {
-                        mark.textContent = item.open ? '×' : '+';
-                    }
+                    if (mark) mark.textContent = item.open ? '×' : '+';
                 });
             });
         })();

@@ -1,4 +1,5 @@
-﻿@model QuanLyThuVien.ViewModels.DocGia.PhatViewModel;
+﻿@model QuanLyThuVien.ViewModels.DocGia.PhatViewModel
+
 @{
     ViewData["Title"] = "Tiền phạt";
     ViewData["Tab"] = "phat";
@@ -6,80 +7,238 @@
     string Act(string loc) => Model.Loc == loc ? "active" : "";
 }
 
-<h2 class="mb-3">Mượn trả</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/docgia/phat.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/docgia/thanhtapmuontra.css" asp-append-version="true" />
+}
 
-<partial name="_MuonTraTabs" />
+<div class="container dg-fine-page">
 
-<div class="row g-2 mb-3">
-    <div class="col-6">
-        <div class="card card-body py-2 shadow-sm">
-            <div class="text-muted small">Chưa thanh toán</div>
-            <div class="fs-5 fw-semibold @(Model.TongChuaNop > 0 ? "text-danger" : "")">@HienThi.Tien(Model.TongChuaNop)</div>
+    @* Header *@
+    <header class="dg-fine-header" data-aos="fade-up">
+        <div class="dg-fine-eyebrow">
+            <i class="bi bi-wallet2"></i>
+            <span>KHÔNG GIAN ĐỌC SÁCH</span>
         </div>
+
+        <h1 class="dg-fine-title">
+            Quản lý <span>tiền phạt</span>
+        </h1>
+
+        <p class="dg-fine-description">
+            Theo dõi các khoản phạt phát sinh từ hoạt động mượn trả sách
+            và tình trạng thanh toán của bạn.
+        </p>
+    </header>
+
+    @* Thanh tab mượn trả *@
+    <div data-aos="fade-up" data-aos-delay="100">
+        <partial name="_MuonTraTabs" />
     </div>
-    <div class="col-6">
-        <div class="card card-body py-2 shadow-sm">
-            <div class="text-muted small">Đã thanh toán</div>
-            <div class="fs-5 fw-semibold">@HienThi.Tien(Model.TongDaNop)</div>
+
+    @* Tổng quan tiền phạt *@
+    <section class="dg-fine-summary" data-aos="fade-up" data-aos-delay="150">
+        <div class="row g-3">
+
+            <div class="col-12 col-md-6">
+                <div class="dg-fine-summary-card dg-fine-unpaid">
+                    <div class="dg-fine-summary-icon">
+                        <i class="bi bi-exclamation-circle"></i>
+                    </div>
+
+                    <div class="dg-fine-summary-content">
+                        <span class="dg-fine-summary-label">Chưa thanh toán</span>
+
+                        <strong class="dg-fine-summary-value @(Model.TongChuaNop > 0 ? "is-danger" : "")">
+                            @HienThi.Tien(Model.TongChuaNop)
+                        </strong>
+
+                        <span class="dg-fine-summary-note">
+                            Tổng số tiền cần thanh toán
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="dg-fine-summary-card dg-fine-paid">
+                    <div class="dg-fine-summary-icon">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+
+                    <div class="dg-fine-summary-content">
+                        <span class="dg-fine-summary-label">Đã thanh toán</span>
+
+                        <strong class="dg-fine-summary-value">
+                            @HienThi.Tien(Model.TongDaNop)
+                        </strong>
+
+                        <span class="dg-fine-summary-note">
+                            Tổng số tiền đã hoàn tất
+                        </span>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </div>
-</div>
+    </section>
 
-@if (Model.TongChuaNop > 0)
-{
-    <div class="alert alert-warning">
-        Bạn còn khoản phạt chưa thanh toán. Vui lòng đến quầy thủ thư để nộp phạt.
-    </div>
-}
+    @* Thông báo còn tiền phạt *@
+    @if (Model.TongChuaNop > 0)
+    {
+        <div class="dg-fine-warning" data-aos="fade-up">
+            <div class="dg-fine-warning-icon">
+                <i class="bi bi-info-circle-fill"></i>
+            </div>
 
-<div class="btn-group mb-3" role="group" aria-label="Lọc khoản phạt">
-    <a class="btn btn-outline-secondary @Act("tatca")" asp-action="Phat" asp-route-loc="tatca">Tất cả</a>
-    <a class="btn btn-outline-secondary @Act("chuanop")" asp-action="Phat" asp-route-loc="chuanop">Chưa thanh toán</a>
-    <a class="btn btn-outline-secondary @Act("danop")" asp-action="Phat" asp-route-loc="danop">Đã thanh toán</a>
-</div>
+            <div>
+                <strong>Bạn còn khoản phạt chưa thanh toán</strong>
+                <p>
+                    Vui lòng đến quầy thủ thư để nộp phạt và hoàn tất
+                    các khoản thanh toán còn lại.
+                </p>
+            </div>
+        </div>
+    }
 
-@if (!Model.Items.Any())
-{
-    <div class="alert alert-info">Không có khoản phạt nào.</div>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table table-hover align-middle bg-white border">
-            <thead class="table-light">
-                <tr>
-                    <th>Sách</th>
-                    <th>Phiếu</th>
-                    <th>Loại phạt</th>
-                    <th>Lý do</th>
-                    <th>Ngày tạo</th>
-                    <th>Trạng thái</th>
-                    <th class="text-end">Số tiền</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var p in Model.Items)
-                {
-                    <tr>
-                        <td>@p.TieuDe</td>
-                        <td>@p.MaPhieu</td>
-                        <td>@p.LoaiText</td>
-                        <td>@(string.IsNullOrEmpty(p.LyDo) ? "—" : p.LyDo)</td>
-                        <td>@p.NgayTao.ToString("dd/MM/yyyy")</td>
-                        <td>
-                            @if (p.DaThanhToan)
+    @* Danh sách khoản phạt *@
+    <section class="dg-fine-list-section" data-aos="fade-up" data-aos-delay="200">
+
+        <div class="dg-fine-section-heading">
+            <div>
+                <h4>Danh sách khoản phạt</h4>
+                <p>Chi tiết các khoản phạt trong tài khoản của bạn</p>
+            </div>
+
+            <div class="dg-fine-section-icon">
+                <i class="bi bi-receipt"></i>
+            </div>
+        </div>
+
+        @* Bộ lọc trạng thái *@
+        <div class="dg-fine-filter">
+            <a class="dg-fine-filter-btn @Act("tatca")"
+               asp-area="DocGia"
+               asp-controller="MuonTra"
+               asp-action="Phat"
+               asp-route-loc="tatca">
+                <i class="bi bi-list-ul"></i>
+                Tất cả
+            </a>
+
+            <a class="dg-fine-filter-btn @Act("chuanop")"
+               asp-area="DocGia"
+               asp-controller="MuonTra"
+               asp-action="Phat"
+               asp-route-loc="chuanop">
+                <i class="bi bi-clock-history"></i>
+                Chưa thanh toán
+            </a>
+
+            <a class="dg-fine-filter-btn @Act("danop")"
+               asp-area="DocGia"
+               asp-controller="MuonTra"
+               asp-action="Phat"
+               asp-route-loc="danop">
+                <i class="bi bi-check-circle"></i>
+                Đã thanh toán
+            </a>
+        </div>
+
+        @if (!Model.Items.Any())
+        {
+            <div class="dg-fine-empty">
+                <div class="dg-fine-empty-icon">
+                    <i class="bi bi-receipt-cutoff"></i>
+                </div>
+
+                <h5>Không có khoản phạt nào</h5>
+
+                <p>
+                    Hiện tại không có khoản phạt nào phù hợp với bộ lọc của bạn.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="dg-fine-table-card">
+                <div class="table-responsive">
+                    <table class="table dg-fine-table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Sách</th>
+                                <th>Phiếu</th>
+                                <th>Loại phạt</th>
+                                <th>Lý do</th>
+                                <th>Ngày tạo</th>
+                                <th>Trạng thái</th>
+                                <th class="text-end">Số tiền</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var p in Model.Items)
                             {
-                                <span class="badge bg-success">Đã nộp @p.NgayThanhToan?.ToString("dd/MM/yyyy")</span>
+                                <tr>
+                                    <td>
+                                        <div class="dg-fine-book-title">
+                                            @p.TieuDe
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="dg-fine-ticket">
+                                            @p.MaPhieu
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        @p.LoaiText
+                                    </td>
+
+                                    <td>
+                                        <span class="dg-fine-reason">
+                                            @(string.IsNullOrEmpty(p.LyDo) ? "—" : p.LyDo)
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="dg-fine-date">
+                                            @p.NgayTao.ToString("dd/MM/yyyy")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        @if (p.DaThanhToan)
+                                        {
+                                            <span class="dg-fine-status dg-fine-status-paid">
+                                                <i class="bi bi-check-circle-fill"></i>
+                                                Đã nộp
+                                                @p.NgayThanhToan?.ToString("dd/MM/yyyy")
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="dg-fine-status dg-fine-status-unpaid">
+                                                <i class="bi bi-exclamation-circle-fill"></i>
+                                                Chưa nộp
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td class="text-end">
+                                        <strong class="dg-fine-amount">
+                                            @HienThi.Tien(p.SoTien)
+                                        </strong>
+                                    </td>
+                                </tr>
                             }
-                            else
-                            {
-                                <span class="badge bg-danger">Chưa nộp</span>
-                            }
-                        </td>
-                        <td class="text-end fw-semibold">@HienThi.Tien(p.SoTien)</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+    </section>
+
+</div>

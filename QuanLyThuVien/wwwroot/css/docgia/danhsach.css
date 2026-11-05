@@ -1,149 +1,151 @@
-﻿/* --- Playful Geometric Styles for Book Grid & Pagination (_DanhSach.cshtml) --- */
-.dg-book-item-card {
-    border: var(--dp-border-outline-width) solid var(--dp-color-outline) !important;
-    border-radius: var(--dp-radius-corner) !important;
-    box-shadow: 4px 4px 0 var(--dp-color-outline) !important;
-    background-color: var(--dp-color-panel);
-    transition: transform var(--dp-motion-interaction), box-shadow var(--dp-motion-interaction);
-    overflow: hidden;
+﻿
+/* =========================================
+   DANH SÁCH SÁCH
+========================================= */
+
+.dg-list-result {
+    width: 100%;
 }
 
-    .dg-book-item-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 6px 6px 0 var(--dp-color-accent) !important;
+/* ---------- RESULT SUMMARY ---------- */
+
+.dg-result-summary {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0.25rem;
+}
+
+.dg-result-count {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+    .dg-result-count i {
+        color: var(--color-terracotta);
+        font-size: 1.1rem;
     }
 
-.dg-card-img-wrapper {
-    border-bottom: var(--dp-border-detail-width) solid var(--dp-color-outline);
-    background-color: var(--dp-color-ground);
-    height: 220px;
+    .dg-result-count strong {
+        color: var(--color-brown);
+        font-weight: 700;
+    }
+
+/* ---------- EMPTY STATE ---------- */
+
+.dg-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1.5rem;
+    text-align: center;
+    background: var(--bg-card);
+    border: 1px dashed var(--color-clay);
+    border-radius: var(--radius-lg);
 }
 
-.dg-book-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.dg-img-placeholder {
-    height: 100%;
+.dg-empty-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--dp-color-selection);
-    color: var(--dp-color-accent);
+    width: 76px;
+    height: 76px;
+    margin-bottom: 1.25rem;
+    color: var(--color-terracotta);
+    background: var(--bg-primary);
+    border-radius: 50%;
 }
 
-.dg-book-title a {
-    font-family: var(--dp-typography-display);
-    font-size: 1.05rem;
-    color: var(--dp-color-outline) !important;
-    transition: color var(--dp-motion-interaction);
-}
-
-    .dg-book-title a:hover {
-        color: var(--dp-color-accent) !important;
+    .dg-empty-icon i {
+        font-size: 2rem;
     }
 
-.dg-category-tag {
-    background-color: var(--dp-color-field-soft);
-    color: var(--dp-color-outline);
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-size: var(--dp-typography-metadata);
-    border: 1px solid var(--dp-color-outline);
-    display: inline-block;
-    margin-right: 4px;
-}
-
-/* Badges */
-.dg-badge-available {
-    background-color: var(--dp-color-accent-fresh) !important;
-    color: var(--dp-color-outline) !important;
-    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
+.dg-empty-state h5 {
+    margin-bottom: 0.6rem;
+    color: var(--color-brown);
     font-weight: 700;
-    border-radius: 8px;
-    padding: 4px 8px;
 }
 
-.dg-badge-out {
-    background-color: var(--dp-color-accent-warm) !important;
-    color: var(--dp-color-outline) !important;
-    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
-    font-weight: 700;
-    border-radius: 8px;
-    padding: 4px 8px;
+.dg-empty-state p {
+    max-width: 430px;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.7;
 }
 
-.dg-badge-none {
-    background-color: #e2e8f0 !important;
-    color: var(--dp-color-outline) !important;
-    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
-    font-weight: 700;
-    border-radius: 8px;
-    padding: 4px 8px;
+/* ---------- PAGINATION ---------- */
+
+.dg-pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 3rem 0 1.5rem;
 }
 
-.dg-badge-ebook {
-    background-color: var(--dp-color-accent-secondary) !important;
-    color: var(--dp-color-outline) !important;
-    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
-    font-weight: 700;
-    border-radius: 8px;
-    padding: 4px 8px;
+.dg-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
 }
 
-/* Alert Info */
-.dg-alert-info {
-    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
-    border-radius: var(--dp-radius-corner);
-    box-shadow: 4px 4px 0 var(--dp-color-accent-warm);
-    background-color: var(--dp-color-field-soft);
-    color: var(--dp-color-outline);
+.dg-page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0.5rem 0.8rem;
+    color: var(--color-brown);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm) !important;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: all var(--transition-base);
 }
 
-/* Pagination */
-.dg-pagination .dg-page-link {
-    border: var(--dp-border-detail-width) solid var(--dp-color-outline) !important;
-    border-radius: 10px !important;
-    color: var(--dp-color-outline) !important;
-    font-weight: 700;
-    background-color: var(--dp-color-panel);
-    padding: 8px 14px;
-    box-shadow: 2px 2px 0 var(--dp-color-outline);
-    transition: all var(--dp-motion-interaction) ease;
-}
-
-    .dg-pagination .dg-page-link:hover {
-        background-color: var(--dp-color-accent-warm) !important;
-        transform: translateY(-2px);
-        box-shadow: 3px 3px 0 var(--dp-color-outline);
+    .dg-page-link:hover {
+        color: var(--color-terracotta);
+        background: var(--bg-primary);
+        border-color: var(--color-terracotta);
     }
 
 .dg-pagination .page-item.active .dg-page-link {
-    background-color: var(--dp-color-accent) !important;
-    color: #ffffff !important;
-    border-color: var(--dp-color-outline) !important;
-    box-shadow: 3px 3px 0 var(--dp-color-outline);
+    color: #fff;
+    background: var(--color-terracotta);
+    border-color: var(--color-terracotta);
 }
 
 .dg-pagination .page-item.disabled .dg-page-link {
-    background-color: #f1f5f9 !important;
-    color: #94a3b8 !important;
-    box-shadow: none !important;
-    transform: none !important;
-}
-/* Hiệu ứng hover cho thẻ sách */
-.dg-book-item-card {
-    border: var(--dp-border-outline-width) solid var(--dp-color-outline) !important;
-    border-radius: var(--dp-radius-corner) !important;
-    box-shadow: 4px 4px 0 var(--dp-color-outline) !important;
-    background-color: var(--dp-color-panel);
-    transition: transform var(--dp-motion-interaction), box-shadow var(--dp-motion-interaction);
-    overflow: hidden;
+    color: var(--color-clay);
+    background: var(--bg-primary);
+    pointer-events: none;
 }
 
-    .dg-book-item-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 6px 6px 0 var(--dp-color-accent) !important;
+.dg-page-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 40px;
+    color: var(--text-secondary);
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 576px) {
+    .dg-pagination-wrapper {
+        margin-top: 2rem;
     }
+
+    .dg-page-link {
+        min-width: 36px;
+        height: 36px;
+    }
+}

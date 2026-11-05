@@ -1,0 +1,393 @@
+﻿
+
+.dg-borrow-page {
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+}
+
+/* ---------- HEADER ---------- */
+
+.dg-borrow-header {
+    margin-bottom: 1.75rem;
+}
+
+.dg-borrow-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-terracotta);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.dg-borrow-title {
+    margin-bottom: 0.5rem;
+    color: var(--color-brown);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 800;
+}
+
+.dg-borrow-description {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* ---------- TABS ---------- */
+
+.dg-borrow-tabs {
+    margin-bottom: 1.75rem;
+}
+
+/* ---------- OVERDUE ALERT ---------- */
+
+.dg-overdue-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1.1rem 1.25rem;
+    background: rgba(200, 106, 74, 0.09);
+    border: 1px solid rgba(200, 106, 74, 0.3);
+    border-left: 4px solid var(--color-terracotta);
+    border-radius: var(--radius-md);
+}
+
+.dg-alert-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    color: var(--color-terracotta);
+    background: rgba(200, 106, 74, 0.13);
+    border-radius: 50%;
+}
+
+    .dg-alert-icon i {
+        font-size: 1.1rem;
+    }
+
+.dg-overdue-alert strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--color-brown);
+}
+
+.dg-overdue-alert p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ---------- SUMMARY ---------- */
+
+.dg-borrow-summary {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1.75rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+.dg-summary-item {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+}
+
+.dg-summary-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    color: var(--color-terracotta);
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+}
+
+    .dg-summary-icon i {
+        font-size: 1.3rem;
+    }
+
+.dg-summary-label {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+}
+
+.dg-summary-value {
+    color: var(--color-brown);
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+    .dg-summary-value span {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+.dg-summary-divider {
+    width: 1px;
+    height: 42px;
+    background: var(--border-color);
+}
+
+/* ---------- EMPTY STATE ---------- */
+
+.dg-borrow-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+    background: var(--bg-card);
+    border: 1px dashed var(--color-clay);
+    border-radius: var(--radius-lg);
+}
+
+.dg-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    margin-bottom: 1.25rem;
+    color: var(--color-terracotta);
+    background: var(--bg-primary);
+    border-radius: 50%;
+}
+
+    .dg-empty-icon i {
+        font-size: 2rem;
+    }
+
+.dg-borrow-empty h5 {
+    margin-bottom: 0.6rem;
+    color: var(--color-brown);
+    font-weight: 700;
+}
+
+.dg-borrow-empty p {
+    max-width: 430px;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+.dg-borrow-explore-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    color: #fff;
+    background: var(--color-terracotta);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-base);
+}
+
+    .dg-borrow-explore-btn:hover {
+        color: #fff;
+        background: var(--color-brown);
+        transform: translateY(-2px);
+    }
+
+/* ---------- TABLE CARD ---------- */
+
+.dg-borrow-table-card {
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+.dg-table-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+    .dg-table-heading h5 {
+        margin-bottom: 0.3rem;
+        color: var(--color-brown);
+        font-weight: 700;
+    }
+
+    .dg-table-heading p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+    }
+
+.dg-table-count {
+    flex-shrink: 0;
+    padding: 0.4rem 0.75rem;
+    color: var(--color-olive);
+    background: rgba(122, 139, 94, 0.12);
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+/* ---------- TABLE ---------- */
+
+.dg-borrow-table {
+    min-width: 950px;
+    color: var(--color-brown);
+    font-size: 0.87rem;
+}
+
+    .dg-borrow-table thead th {
+        padding: 1rem 0.85rem;
+        color: var(--text-secondary);
+        background: var(--bg-primary);
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.76rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .dg-borrow-table tbody td {
+        padding: 1rem 0.85rem;
+        border-bottom: 1px solid var(--border-color);
+        vertical-align: middle;
+    }
+
+    .dg-borrow-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .dg-borrow-table tbody tr {
+        transition: background var(--transition-base);
+    }
+
+        .dg-borrow-table tbody tr:hover {
+            background: rgba(245, 240, 235, 0.65);
+        }
+
+.dg-table-book a {
+    color: var(--color-brown);
+    font-weight: 700;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: color var(--transition-base);
+}
+
+    .dg-table-book a:hover {
+        color: var(--color-terracotta);
+    }
+
+.dg-table-barcode {
+    color: var(--color-brown);
+    font-weight: 600;
+}
+
+.dg-table-location {
+    margin-top: 0.25rem;
+    color: var(--text-secondary);
+    font-size: 0.77rem;
+}
+
+.dg-ticket-code {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+.dg-table-date {
+    white-space: nowrap;
+}
+
+.dg-status-badge {
+    padding: 0.45rem 0.7rem;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.dg-fine-amount {
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.dg-fine-unpaid {
+    color: var(--color-terracotta);
+}
+
+.dg-fine-normal {
+    color: var(--text-secondary);
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 768px) {
+    .dg-borrow-page {
+        padding-top: 1.5rem;
+    }
+
+    .dg-borrow-summary {
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .dg-summary-item {
+        gap: 0.6rem;
+    }
+
+    .dg-summary-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .dg-summary-value {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .dg-borrow-summary {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dg-summary-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .dg-table-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .dg-overdue-alert {
+        padding: 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dg-borrow-explore-btn,
+    .dg-borrow-table tbody tr {
+        transition: none;
+    }
+}

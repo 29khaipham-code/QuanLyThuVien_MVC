@@ -1,54 +1,230 @@
-﻿@model QuanLyThuVien.ViewModels.DocGia.DoiMatKhauViewModel;
+﻿
+@model QuanLyThuVien.ViewModels.DocGia.DoiMatKhauViewModel
+
 @{
     ViewData["Title"] = "Đổi mật khẩu";
 }
+@section Styles{
+    <link rel="stylesheet" href="~/css/docgia/doimatkhau.css" asp-append-version="true" />
+}
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-area="DocGia" asp-controller="HoSo" asp-action="Index">Hồ sơ cá nhân</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Đổi mật khẩu</li>
-    </ol>
-</nav>
+<div class="container dg-password-page">
 
-<div class="row">
-    <div class="col-12 col-md-8 col-lg-6">
-        <div class="card shadow-sm">
-            <div class="card-header bg-white"><strong>Đổi mật khẩu</strong></div>
-            <div class="card-body">
-                <form method="post" asp-area="DocGia" asp-controller="HoSo" asp-action="DoiMatKhau" novalidate>
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="dg-password-breadcrumb" data-aos="fade-up">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a asp-area="DocGia"
+                   asp-controller="HoSo"
+                   asp-action="Index">
+                    Hồ sơ cá nhân
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Đổi mật khẩu
+            </li>
+        </ol>
+    </nav>
 
-                    <div class="mb-3">
-                        <label asp-for="MatKhauHienTai" class="form-label"></label>
-                        <input asp-for="MatKhauHienTai" class="form-control" autocomplete="current-password" />
-                        <span asp-validation-for="MatKhauHienTai" class="text-danger"></span>
-                    </div>
+    <!-- Header -->
+    <header class="dg-password-header" data-aos="fade-up">
+        <span class="dg-password-eyebrow">
+            BẢO MẬT TÀI KHOẢN
+        </span>
 
-                    <div class="mb-3">
-                        <label asp-for="MatKhauMoi" class="form-label"></label>
-                        <input asp-for="MatKhauMoi" class="form-control" autocomplete="new-password" />
-                        <div class="form-text">Từ 8 ký tự trở lên, gồm cả chữ và số.</div>
-                        <span asp-validation-for="MatKhauMoi" class="text-danger"></span>
-                    </div>
+        <h1 class="dg-password-title">
+            Đổi mật khẩu
+        </h1>
 
-                    <div class="mb-3">
-                        <label asp-for="XacNhanMatKhau" class="form-label"></label>
-                        <input asp-for="XacNhanMatKhau" class="form-control" autocomplete="new-password" />
-                        <span asp-validation-for="XacNhanMatKhau" class="text-danger"></span>
-                    </div>
+        <p class="dg-password-description">
+            Cập nhật mật khẩu mới để bảo vệ tài khoản và thông tin thư viện của bạn.
+        </p>
+    </header>
 
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check2 me-1"></i>Đổi mật khẩu
-                        </button>
-                        <a class="btn btn-outline-secondary" asp-area="DocGia" asp-controller="HoSo" asp-action="Index">Hủy</a>
-                    </div>
-                </form>
+    <div class="dg-password-layout" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- Thông tin hướng dẫn -->
+        <aside class="dg-password-guide">
+            <div class="dg-password-guide-icon">
+                <i class="bi bi-shield-lock"></i>
             </div>
-        </div>
+
+            <h2>Bảo vệ tài khoản</h2>
+
+            <p>
+                Hãy sử dụng mật khẩu đủ mạnh và không chia sẻ mật khẩu
+                với người khác.
+            </p>
+
+            <div class="dg-password-tips">
+                <div class="dg-password-tip">
+                    <i class="bi bi-check-circle"></i>
+                    <span>Tối thiểu 8 ký tự</span>
+                </div>
+
+                <div class="dg-password-tip">
+                    <i class="bi bi-check-circle"></i>
+                    <span>Có cả chữ và số</span>
+                </div>
+
+                <div class="dg-password-tip">
+                    <i class="bi bi-check-circle"></i>
+                    <span>Không sử dụng mật khẩu quá dễ đoán</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Form đổi mật khẩu -->
+        <section class="dg-password-card">
+            <div class="dg-password-card-heading">
+                <div class="dg-password-card-icon">
+                    <i class="bi bi-key"></i>
+                </div>
+
+                <div>
+                    <h2>Thông tin mật khẩu</h2>
+                    <p>Nhập thông tin bên dưới để thay đổi mật khẩu.</p>
+                </div>
+            </div>
+
+            <form method="post"
+                  asp-area="DocGia"
+                  asp-controller="HoSo"
+                  asp-action="DoiMatKhau"
+                  novalidate>
+
+                <div asp-validation-summary="ModelOnly"
+                     class="dg-password-validation-summary"
+                     role="alert">
+                </div>
+
+                <div class="dg-password-field">
+                    <label asp-for="MatKhauHienTai" class="form-label">
+                    </label>
+
+                    <div class="dg-password-input-wrapper">
+                        <i class="bi bi-lock dg-password-input-icon"></i>
+
+                        <input asp-for="MatKhauHienTai"
+                               type="password"
+                               class="form-control dg-password-input"
+                               autocomplete="current-password"
+                               placeholder="Nhập mật khẩu hiện tại" />
+
+                        <button type="button"
+                                class="dg-password-toggle"
+                                aria-label="Hiện mật khẩu hiện tại"
+                                data-password-toggle
+                                data-target="MatKhauHienTai">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+
+                    <span asp-validation-for="MatKhauHienTai"
+                          class="dg-password-field-error">
+                    </span>
+                </div>
+
+                <div class="dg-password-field">
+                    <label asp-for="MatKhauMoi" class="form-label">
+                    </label>
+
+                    <div class="dg-password-input-wrapper">
+                        <i class="bi bi-shield-lock dg-password-input-icon"></i>
+
+                        <input asp-for="MatKhauMoi"
+                               type="password"
+                               class="form-control dg-password-input"
+                               autocomplete="new-password"
+                               placeholder="Nhập mật khẩu mới" />
+
+                        <button type="button"
+                                class="dg-password-toggle"
+                                aria-label="Hiện mật khẩu mới"
+                                data-password-toggle
+                                data-target="MatKhauMoi">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+
+                    <small class="dg-password-hint">
+                        <i class="bi bi-info-circle"></i>
+                        Từ 8 ký tự trở lên, gồm cả chữ và số.
+                    </small>
+
+                    <span asp-validation-for="MatKhauMoi"
+                          class="dg-password-field-error">
+                    </span>
+                </div>
+
+                <div class="dg-password-field">
+                    <label asp-for="XacNhanMatKhau" class="form-label">
+                    </label>
+
+                    <div class="dg-password-input-wrapper">
+                        <i class="bi bi-shield-check dg-password-input-icon"></i>
+
+                        <input asp-for="XacNhanMatKhau"
+                               type="password"
+                               class="form-control dg-password-input"
+                               autocomplete="new-password"
+                               placeholder="Nhập lại mật khẩu mới" />
+
+                        <button type="button"
+                                class="dg-password-toggle"
+                                aria-label="Hiện mật khẩu xác nhận"
+                                data-password-toggle
+                                data-target="XacNhanMatKhau">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+
+                    <span asp-validation-for="XacNhanMatKhau"
+                          class="dg-password-field-error">
+                    </span>
+                </div>
+
+                <div class="dg-password-actions">
+                    <button type="submit" class="dg-password-submit">
+                        <i class="bi bi-check2-circle"></i>
+                        Đổi mật khẩu
+                    </button>
+
+                    <a class="dg-password-cancel"
+                       asp-area="DocGia"
+                       asp-controller="HoSo"
+                       asp-action="Index">
+                        Hủy
+                    </a>
+                </div>
+            </form>
+        </section>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.querySelectorAll('[data-password-toggle]').forEach(button => {
+            button.addEventListener('click', function () {
+                const targetId = this.dataset.target;
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+
+                if (!input || !icon) return;
+
+                const isPassword = input.type === 'password';
+
+                input.type = isPassword ? 'text' : 'password';
+                icon.classList.toggle('bi-eye', !isPassword);
+                icon.classList.toggle('bi-eye-slash', isPassword);
+
+                this.setAttribute(
+                    'aria-label',
+                    isPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
+                );
+            });
+        });
+    </script>
 }

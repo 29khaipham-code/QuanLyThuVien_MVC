@@ -1,0 +1,189 @@
+﻿
+@model QuanLyThuVien.ViewModels.DangKyViewModel
+
+@{
+    ViewData["Title"] = "Đăng ký - Thư viện số";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+}
+
+<div class="login-page register-page">
+    <main class="login-card register-card">
+
+        <!-- Cột giới thiệu -->
+        <section class="login-visual">
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="login-brand">
+                <span class="brand-mark">B.</span>
+                <span class="brand-name">THƯ VIỆN SỐ</span>
+            </a>
+
+            <div class="visual-content">
+                <span class="visual-eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    KHÔNG GIAN TRI THỨC
+                </span>
+
+                <h1>
+                    Bắt đầu hành trình
+                    <em>khám phá tri thức.</em>
+                </h1>
+
+                <p class="visual-description">
+                    Tạo tài khoản để khám phá sách, lưu lại hành trình đọc
+                    và sử dụng các tiện ích dành riêng cho bạn đọc.
+                </p>
+
+                <div class="visual-image">
+                    <img src="@Url.Content("~/images/login-library.jpg")"
+                         alt="Không gian thư viện" />
+
+                    <div class="image-caption">
+                        <span>YOUR NEXT CHAPTER STARTS HERE</span>
+                        <strong>Mỗi cuốn sách, một hành trình mới.</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="visual-footer">
+                <span>ĐỌC ĐỂ KHÁM PHÁ</span>
+                <span>READ · LEARN · GROW</span>
+            </div>
+        </section>
+
+        <!-- Cột đăng ký -->
+        <section class="login-panel register-panel">
+            <div class="login-form-wrapper register-form-wrapper">
+
+                <div class="mobile-brand">
+                    <span class="brand-mark">B.</span>
+                    <span class="brand-name">THƯ VIỆN SỐ</span>
+                </div>
+
+                <div class="login-heading register-heading">
+                    <span class="form-eyebrow">JOIN OUR LIBRARY</span>
+                    <h2>Tạo tài khoản</h2>
+                    <p>Chỉ cần vài thông tin để bắt đầu.</p>
+                </div>
+
+                <form asp-controller="Account"
+                      asp-action="Register"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="login-validation-summary">
+                    </div>
+
+                    <div class="register-fields">
+
+                        <!-- Họ và tên -->
+                        <div class="login-field register-field-full">
+                            <label asp-for="HoTen">Họ và tên</label>
+                            <div class="login-input-wrap">
+                                <i class="bi bi-person"></i>
+                                <input asp-for="HoTen"
+                                       placeholder="Nhập họ và tên"
+                                       autocomplete="name" />
+                            </div>
+                            <span asp-validation-for="HoTen"
+                                  class="login-field-error"></span>
+                        </div>
+
+                        <!-- Tên đăng nhập -->
+                        <div class="login-field">
+                            <label asp-for="TenDangNhap">Tên đăng nhập</label>
+                            <div class="login-input-wrap">
+                                <i class="bi bi-person-badge"></i>
+                                <input asp-for="TenDangNhap"
+                                       placeholder="Tối thiểu 4 ký tự"
+                                       autocomplete="username" />
+                            </div>
+                            <span asp-validation-for="TenDangNhap"
+                                  class="login-field-error"></span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="login-field">
+                            <label asp-for="Email">Email</label>
+                            <div class="login-input-wrap">
+                                <i class="bi bi-envelope"></i>
+                                <input asp-for="Email"
+                                       type="email"
+                                       placeholder="example@email.com"
+                                       autocomplete="email" />
+                            </div>
+                            <span asp-validation-for="Email"
+                                  class="login-field-error"></span>
+                        </div>
+
+                        <!-- Mật khẩu -->
+                        <div class="login-field">
+                            <label asp-for="MatKhau">Mật khẩu</label>
+                            <div class="login-input-wrap">
+                                <i class="bi bi-lock"></i>
+                                <input asp-for="MatKhau"
+                                       type="password"
+                                       placeholder="Ít nhất 8 ký tự"
+                                       autocomplete="new-password" />
+                            </div>
+                            <span asp-validation-for="MatKhau"
+                                  class="login-field-error"></span>
+                        </div>
+
+                        <!-- Xác nhận mật khẩu -->
+                        <div class="login-field">
+                            <label asp-for="XacNhanMatKhau">
+                                Xác nhận mật khẩu
+                            </label>
+                            <div class="login-input-wrap">
+                                <i class="bi bi-shield-lock"></i>
+                                <input asp-for="XacNhanMatKhau"
+                                       type="password"
+                                       placeholder="Nhập lại mật khẩu"
+                                       autocomplete="new-password" />
+                            </div>
+                            <span asp-validation-for="XacNhanMatKhau"
+                                  class="login-field-error"></span>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="login-submit register-submit">
+                        <span>ĐĂNG KÝ TÀI KHOẢN</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="register-prompt">
+                    <span>Đã có tài khoản?</span>
+                    <a asp-controller="Account" asp-action="Login">
+                        Đăng nhập <i class="bi bi-arrow-up-right"></i>
+                    </a>
+                </div>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="back-home">
+                    <i class="bi bi-arrow-left"></i>
+                    Quay về trang chủ
+                </a>
+
+            </div>
+
+            <div class="login-panel-footer">
+                <span>© @DateTime.Now.Year THƯ VIỆN SỐ</span>
+                <span>READ · LEARN · GROW</span>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

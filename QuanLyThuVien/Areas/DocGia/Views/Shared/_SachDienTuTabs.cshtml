@@ -1,0 +1,34 @@
+﻿@* Thanh tab của khu Sách điện tử.
+   Trang cha gán ViewData["Tab"] = "thuvien" | "cuatoi" *@
+
+@{
+    var tab = ViewData["Tab"] as string;
+
+    string Act(string t) => tab == t ? "active" : "";
+}
+
+<nav class="dg-ebook-tabs" aria-label="Điều hướng sách điện tử">
+    <a class="dg-ebook-tab @Act("thuvien")"
+       asp-area="DocGia"
+       asp-controller="SachDienTu"
+       asp-action="Index">
+
+        <span class="dg-ebook-tab-icon">
+            <i class="bi bi-tablet"></i>
+        </span>
+
+        <span class="dg-ebook-tab-text">Thư viện điện tử</span>
+    </a>
+
+    <a class="dg-ebook-tab @Act("cuatoi")"
+       asp-area="DocGia"
+       asp-controller="SachDienTu"
+       asp-action="CuaToi">
+
+        <span class="dg-ebook-tab-icon">
+            <i class="bi bi-bookmark-check"></i>
+        </span>
+
+        <span class="dg-ebook-tab-text">Sách của tôi</span>
+    </a>
+</nav>

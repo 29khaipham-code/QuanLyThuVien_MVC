@@ -1,54 +1,148 @@
-﻿@model QuanLyThuVien.ViewModels.DocGia.LichSuMuonViewModel;
+﻿@model QuanLyThuVien.ViewModels.DocGia.LichSuMuonViewModel
+
 @{
     ViewData["Title"] = "Lịch sử mượn";
     ViewData["Tab"] = "lichsu";
 }
 
-<h2 class="mb-3">Mượn trả</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/docgia/lichsumuon.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/docgia/thanhtapmuontra.css" asp-append-version="true" />
+}
 
-<partial name="_MuonTraTabs" />
+<div class="container dg-history-page">
 
-<form id="formLoc" method="get"
-      asp-area="DocGia" asp-controller="MuonTra" asp-action="LichSu"
-      class="row g-2 align-items-end mb-4">
+    @* Tiêu đề trang *@
+    <header class="dg-history-header" data-aos="fade-up">
+        <div class="dg-history-eyebrow">
+            <i class="bi bi-book-half"></i>
+            <span>KHÔNG GIAN ĐỌC SÁCH</span>
+        </div>
 
-    <div class="col-12 col-md-4">
-        <label class="form-label" for="tuKhoa">Từ khóa</label>
-        <input id="tuKhoa" name="tuKhoa" value="@Model.TuKhoa" class="form-control"
-               placeholder="Tên sách hoặc mã phiếu" autocomplete="off" />
+        <h1 class="dg-history-title">
+            Lịch sử <span>mượn sách</span>
+        </h1>
+
+        <p class="dg-history-description">
+            Theo dõi những cuốn sách bạn đã mượn, tình trạng trả sách
+            và lịch sử giao dịch tại thư viện.
+        </p>
+    </header>
+
+    @* Thanh điều hướng mượn trả *@
+    <div data-aos="fade-up" data-aos-delay="100">
+        <partial name="_MuonTraTabs" />
     </div>
 
-    <div class="col-6 col-md-2">
-        <label class="form-label" for="trangThai">Trạng thái</label>
-        <select id="trangThai" name="trangThai" class="form-select">
-            <option value="tatca" selected="@(Model.TrangThai == "tatca")">Tất cả</option>
-            <option value="dangmuon" selected="@(Model.TrangThai == "dangmuon")">Đang mượn</option>
-            <option value="datra" selected="@(Model.TrangThai == "datra")">Đã trả</option>
-            <option value="tramuon" selected="@(Model.TrangThai == "tramuon")">Trả muộn</option>
-        </select>
-    </div>
+    @* Bộ lọc lịch sử *@
+    <section class="dg-history-filter" data-aos="fade-up" data-aos-delay="150">
 
-    <div class="col-6 col-md-2">
-        <label class="form-label" for="tuNgay">Mượn từ ngày</label>
-        <input id="tuNgay" name="tuNgay" type="date" class="form-control"
-               value="@Model.TuNgay?.ToString("yyyy-MM-dd")" />
-    </div>
+        <div class="dg-history-filter-heading">
+            <div class="dg-history-filter-icon">
+                <i class="bi bi-funnel"></i>
+            </div>
 
-    <div class="col-6 col-md-2">
-        <label class="form-label" for="denNgay">Đến ngày</label>
-        <input id="denNgay" name="denNgay" type="date" class="form-control"
-               value="@Model.DenNgay?.ToString("yyyy-MM-dd")" />
-    </div>
+            <div>
+                <h5>Lọc lịch sử mượn</h5>
+                <p>Tìm kiếm và lọc các lượt mượn sách của bạn</p>
+            </div>
+        </div>
 
-    <div class="col-6 col-md-2">
-        <button type="submit" class="btn btn-primary w-100">
-            <i class="bi bi-funnel me-1"></i>Lọc
-        </button>
-    </div>
-</form>
+        <form id="formLoc"
+              method="get"
+              asp-area="DocGia"
+              asp-controller="MuonTra"
+              asp-action="LichSu"
+              class="dg-history-filter-form">
 
-<div id="ketQua">
-    <partial name="_LichSuDanhSach" model="Model" />
+            <div class="row g-3 align-items-end">
+
+                @* Từ khóa *@
+                <div class="col-12 col-md-6 col-lg-4">
+                    <label class="dg-history-label" for="tuKhoa">
+                        Từ khóa
+                    </label>
+
+                    <div class="dg-history-input-wrapper">
+                        <i class="bi bi-search"></i>
+                        <input id="tuKhoa"
+                               name="tuKhoa"
+                               value="@Model.TuKhoa"
+                               class="form-control"
+                               placeholder="Tên sách hoặc mã phiếu"
+                               autocomplete="off" />
+                    </div>
+                </div>
+
+                @* Trạng thái *@
+                <div class="col-12 col-sm-6 col-lg-2">
+                    <label class="dg-history-label" for="trangThai">
+                        Trạng thái
+                    </label>
+
+                    <select id="trangThai"
+                            name="trangThai"
+                            class="form-select dg-history-control">
+                        <option value="tatca" selected="@(Model.TrangThai == "tatca")">
+                            Tất cả
+                        </option>
+                        <option value="dangmuon" selected="@(Model.TrangThai == "dangmuon")">
+                            Đang mượn
+                        </option>
+                        <option value="datra" selected="@(Model.TrangThai == "datra")">
+                            Đã trả
+                        </option>
+                        <option value="tramuon" selected="@(Model.TrangThai == "tramuon")">
+                            Trả muộn
+                        </option>
+                    </select>
+                </div>
+
+                @* Từ ngày *@
+                <div class="col-6 col-sm-6 col-lg-2">
+                    <label class="dg-history-label" for="tuNgay">
+                        Mượn từ ngày
+                    </label>
+
+                    <input id="tuNgay"
+                           name="tuNgay"
+                           type="date"
+                           class="form-control dg-history-control"
+                           value="@Model.TuNgay?.ToString("yyyy-MM-dd")" />
+                </div>
+
+                @* Đến ngày *@
+                <div class="col-6 col-sm-6 col-lg-2">
+                    <label class="dg-history-label" for="denNgay">
+                        Đến ngày
+                    </label>
+
+                    <input id="denNgay"
+                           name="denNgay"
+                           type="date"
+                           class="form-control dg-history-control"
+                           value="@Model.DenNgay?.ToString("yyyy-MM-dd")" />
+                </div>
+
+                @* Nút lọc *@
+                <div class="col-12 col-lg-2">
+                    <button type="submit" class="dg-history-filter-btn w-100">
+                        <i class="bi bi-funnel-fill"></i>
+                        <span>Lọc kết quả</span>
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </section>
+
+    @* Danh sách lịch sử *@
+    <section class="dg-history-results" data-aos="fade-up" data-aos-delay="200">
+        <div id="ketQua">
+            <partial name="_LichSuDanhSach" model="Model" />
+        </div>
+    </section>
+
 </div>
 
 @section Scripts {
@@ -57,47 +151,75 @@
             var $ketQua = $('#ketQua');
             var $form = $('#formLoc');
 
-            // Tải lại phần danh sách bằng AJAX, giữ nguyên bộ lọc
+            // Tải lại danh sách bằng AJAX
             function tai(url) {
-                $ketQua.css('opacity', 0.5);
-                $.ajax({ url: url, method: 'GET', cache: false })
+                $ketQua.addClass('dg-history-loading');
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    cache: false
+                })
                     .done(function (html) {
                         $ketQua.html(html);
                         history.pushState(null, '', url);
+
+                        if (window.AOS) {
+                            AOS.refreshHard();
+                        }
                     })
                     .fail(function () {
-                        $ketQua.html('<div class="alert alert-danger">Không tải được dữ liệu, vui lòng thử lại.</div>');
+                        $ketQua.html(`
+                                <div class="dg-history-error">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span>Không tải được dữ liệu, vui lòng thử lại.</span>
+                                </div>
+                            `);
                     })
                     .always(function () {
-                        $ketQua.css('opacity', 1);
+                        $ketQua.removeClass('dg-history-loading');
                     });
             }
 
+            // Submit bộ lọc
             $form.on('submit', function (e) {
                 e.preventDefault();
-                tai($form.attr('action') + '?' + $form.serialize());
+
+                var url = $form.attr('action') + '?' + $form.serialize();
+                tai(url);
             });
 
-            // Đổi trạng thái hoặc ngày thì lọc ngay
-            $form.find('select, input[type=date]').on('change', function () {
+            // Thay đổi trạng thái hoặc ngày
+            $form.find('select, input[type="date"]').on('change', function () {
                 $form.trigger('submit');
             });
 
-            // Gõ từ khóa: chờ 400ms sau lần gõ cuối rồi mới lọc
+            // Tìm kiếm từ khóa sau 400ms
             var timer;
+
             $('#tuKhoa').on('input', function () {
                 clearTimeout(timer);
-                timer = setTimeout(function () { $form.trigger('submit'); }, 400);
+
+                timer = setTimeout(function () {
+                    $form.trigger('submit');
+                }, 400);
             });
 
-            // Bấm số trang
+            // Phân trang AJAX
             $ketQua.on('click', '.pagination a', function (e) {
                 e.preventDefault();
-                tai($(this).attr('href'));
+
+                var url = $(this).attr('href');
+
+                if (url) {
+                    tai(url);
+                }
             });
 
-            // Nút Back/Forward của trình duyệt
-            window.addEventListener('popstate', function () { location.reload(); });
+            // Back / Forward trình duyệt
+            window.addEventListener('popstate', function () {
+                location.reload();
+            });
         })();
     </script>
 }

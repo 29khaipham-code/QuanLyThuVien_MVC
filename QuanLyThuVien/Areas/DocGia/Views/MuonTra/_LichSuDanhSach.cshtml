@@ -1,4 +1,5 @@
-﻿@model QuanLyThuVien.ViewModels.DocGia.LichSuMuonViewModel;
+﻿@model QuanLyThuVien.ViewModels.DocGia.LichSuMuonViewModel
+
 @{
     // Link phân trang, giữ nguyên bộ lọc
     string Link(int trang) => Url.Action("LichSu", "MuonTra", new
@@ -19,47 +20,131 @@
     };
 }
 
-<p class="text-muted">Tìm thấy <strong>@Model.TongSo</strong> lượt mượn</p>
+<div class="dg-history-list">
 
-@if (!Model.Items.Any())
-{
-    <div class="alert alert-info">Không có lượt mượn nào phù hợp với bộ lọc.</div>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table table-hover align-middle bg-white border">
-            <thead class="table-light">
-                <tr>
-                    <th>Sách</th>
-                    <th>Phiếu</th>
-                    <th>Ngày mượn</th>
-                    <th>Hạn trả</th>
-                    <th>Ngày trả</th>
-                    <th>Tình trạng</th>
-                    <th class="text-end">Tiền phạt</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var m in Model.Items)
-                {
-                    <tr>
-                        <td>
-                            <a asp-area="DocGia" asp-controller="Sach" asp-action="ChiTiet" asp-route-id="@m.SachId">@m.TieuDe</a>
-                        </td>
-                        <td>@m.MaPhieu</td>
-                        <td>@m.NgayMuon.ToString("dd/MM/yyyy")</td>
-                        <td>@m.HanTra.ToString("dd/MM/yyyy")</td>
-                        <td>@(m.NgayTra.HasValue ? m.NgayTra.Value.ToString("dd/MM/yyyy") : "—")</td>
-                        <td><span class="badge @m.LopBadge">@m.TrangThaiText</span></td>
-                        <td class="text-end @(m.PhatChuaNop > 0 ? "text-danger fw-semibold" : "text-muted")">
-                            @(m.TongPhat > 0 ? HienThi.Tien(m.TongPhat) : "—")
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    @* Thông tin kết quả *@
+    <div class="dg-history-result-summary">
+        <div class="dg-history-result-icon">
+            <i class="bi bi-journal-check"></i>
+        </div>
+
+        <div>
+            <span class="dg-history-result-label">Kết quả tìm kiếm</span>
+            <div class="dg-history-result-count">
+                Tìm thấy <strong>@Model.TongSo</strong> lượt mượn
+            </div>
+        </div>
     </div>
 
-    <partial name="_PhanTrang" model="phanTrang" />
-}
+    @if (!Model.Items.Any())
+    {
+        <div class="dg-history-empty">
+            <div class="dg-history-empty-icon">
+                <i class="bi bi-journal-x"></i>
+            </div>
+
+            <h5>Không tìm thấy lượt mượn</h5>
+
+            <p>
+                Không có lượt mượn nào phù hợp với bộ lọc hiện tại.
+                Hãy thử thay đổi từ khóa hoặc điều kiện tìm kiếm.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="dg-history-table-card">
+            <div class="table-responsive">
+                <table class="table dg-history-table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Sách</th>
+                            <th>Phiếu</th>
+                            <th>Ngày mượn</th>
+                            <th>Hạn trả</th>
+                            <th>Ngày trả</th>
+                            <th>Tình trạng</th>
+                            <th class="text-end">Tiền phạt</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var m in Model.Items)
+                        {
+                            <tr>
+                                @* Tên sách *@
+                                <td>
+                                    <a class="dg-history-book-link"
+                                       asp-area="DocGia"
+                                       asp-controller="Sach"
+                                       asp-action="ChiTiet"
+                                       asp-route-id="@m.SachId">
+                                        <i class="bi bi-book"></i>
+                                        <span>@m.TieuDe</span>
+                                    </a>
+                                </td>
+
+                                @* Mã phiếu *@
+                                <td>
+                                    <span class="dg-history-ticket">
+                                        @m.MaPhieu
+                                    </span>
+                                </td>
+
+                                @* Ngày mượn *@
+                                <td>
+                                    <span class="dg-history-date">
+                                        @m.NgayMuon.ToString("dd/MM/yyyy")
+                                    </span>
+                                </td>
+
+                                @* Hạn trả *@
+                                <td>
+                                    <span class="dg-history-date">
+                                        @m.HanTra.ToString("dd/MM/yyyy")
+                                    </span>
+                                </td>
+
+                                @* Ngày trả *@
+                                <td>
+                                    <span class="dg-history-date">
+                                        @(m.NgayTra.HasValue
+                                            ? m.NgayTra.Value.ToString("dd/MM/yyyy")
+                                            : "—")
+                                    </span>
+                                </td>
+
+                                @* Trạng thái *@
+                                <td>
+                                    <span class="dg-history-status @m.LopBadge">
+                                        @m.TrangThaiText
+                                    </span>
+                                </td>
+
+                                @* Tiền phạt *@
+                                <td class="text-end">
+                                    @if (m.TongPhat > 0)
+                                    {
+                                        <strong class="dg-history-fine @(m.PhatChuaNop > 0 ? "is-unpaid" : "is-paid")">
+                                            @HienThi.Tien(m.TongPhat)
+                                        </strong>
+                                    }
+                                    else
+                                    {
+                                        <span class="dg-history-no-fine">—</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* Phân trang *@
+        <div class="dg-history-pagination">
+            <partial name="_PhanTrang" model="phanTrang" />
+        </div>
+    }
+
+</div>

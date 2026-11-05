@@ -1,251 +1,711 @@
-﻿:root {
-    --dp-color-ground: #fffdf5;
-    --dp-color-panel: #ffffff;
-    --dp-color-ink: #253044;
-    --dp-color-outline: #252b3a;
-    --dp-color-accent: #6434df;
-    --dp-color-accent-secondary: #ff78c5;
-    --dp-color-accent-warm: #ffd05b;
-    --dp-color-accent-fresh: #9bf1cd;
-    --dp-color-field-soft: #e9fff5;
-    --dp-color-selection: #f1ebff;
-    --dp-color-rule-muted: #b8b6c5;
-    --dp-typography-display: "PlayfulGeometricDisplay", sans-serif;
-    --dp-typography-reading: "PlayfulGeometricReading", sans-serif;
-    --dp-radius-corner: 17px;
-    --dp-border-outline-width: 3px;
-    --dp-border-detail-width: 2px;
-    --dp-motion-interaction: 180ms;
+﻿
+/* =========================================
+   TRANG CHỦ - WARM ORGANIC
+========================================= */
+
+:root {
+    --home-paper: #F5F0EB;
+    --home-sand: #E8DED1;
+    --home-clay: #D4BFA5;
+    --home-terracotta: #C86A4A;
+    --home-olive: #7A8B5E;
+    --home-brown: #2D2A24;
+    --home-muted: #81776B;
 }
 
-body {
-    background-color: var(--dp-color-ground);
-    color: var(--dp-color-ink);
-    font-family: var(--dp-typography-reading);
+/* Khoảng cách các khu vực */
+.dg-home-section {
+    margin-bottom: 2.5rem;
 }
 
-.dg-home {
-    font-family: var(--dp-typography-reading);
-}
+/* =========================================
+   BANNER CAROUSEL
+========================================= */
 
-/* Banner carousel styling */
 .dg-banner {
-    min-height: 280px;
+    min-height: 320px;
     display: flex;
     align-items: center;
     background-size: cover;
     background-position: center;
-    border-radius: var(--dp-radius-corner);
+    background-color: var(--home-sand);
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
 }
 
 .dg-banner-body {
-    padding: 2.5rem 3.5rem;
+    padding: 3rem 4rem;
     max-width: 720px;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, .25);
 }
 
-.dg-banner h2 {
-    font-family: var(--dp-typography-display);
-    font-weight: 800;
-    letter-spacing: -0.02em;
+    .dg-banner-body h2 {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+    }
+
+    .dg-banner-body p {
+        font-size: 1.1rem;
+        max-width: 550px;
+    }
+
+    .dg-banner-body .btn {
+        border: none;
+        border-radius: 30px;
+        padding: .7rem 1.6rem;
+        color: var(--home-brown);
+        font-weight: 600;
+        transition: all .3s ease;
+    }
+
+        .dg-banner-body .btn:hover {
+            background: var(--home-terracotta);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+/* Caption chạy lại khi chuyển slide */
+.dg-banner .dg-banner-body {
+    opacity: 0;
 }
 
-/* Playful Geometric Book/Panel containers */
-.dg-panel-box {
-    background-color: var(--dp-color-panel);
-    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
-    border-radius: var(--dp-radius-corner);
-    box-shadow: 4px 4px 0px var(--dp-color-outline);
-    transition: transform var(--dp-motion-interaction) ease, box-shadow var(--dp-motion-interaction) ease;
+.carousel-item.active .dg-banner-body {
+    animation: bannerFadeUp .8s ease forwards;
 }
 
-/* Stat cards styling with hard offset shadow */
+@keyframes bannerFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Nút chuyển banner */
+#bannerTrangChu .carousel-control-prev,
+#bannerTrangChu .carousel-control-next {
+    width: 7%;
+    opacity: .75;
+    transition: opacity .3s ease;
+}
+
+    #bannerTrangChu .carousel-control-prev:hover,
+    #bannerTrangChu .carousel-control-next:hover {
+        opacity: 1;
+    }
+
+/* Indicator */
+#bannerTrangChu .carousel-indicators button {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 0;
+}
+
+/* =========================================
+   ALERT / THÔNG BÁO
+========================================= */
+
+.dg-home-alert {
+    border: 1px solid rgba(122, 139, 94, .2);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 4px 15px rgba(45, 42, 36, .04);
+}
+
+    .dg-home-alert.alert-info {
+        background: #EDF0E8;
+        color: var(--home-brown);
+    }
+
+    .dg-home-alert.alert-warning {
+        background: #F5EBDD;
+        color: var(--home-brown);
+    }
+
+    .dg-home-alert.alert-secondary {
+        background: #EEEAE4;
+        color: var(--home-brown);
+    }
+
+    .dg-home-alert .btn {
+        border-radius: 30px;
+    }
+
+/* =========================================
+   THỐNG KÊ ĐỘC GIẢ
+========================================= */
+
 .dg-stat-card {
-    background-color: var(--dp-color-panel);
-    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
-    border-radius: var(--dp-radius-corner);
-    box-shadow: 3px 3px 0px var(--dp-color-outline);
-    transition: transform var(--dp-motion-interaction) ease, box-shadow var(--dp-motion-interaction) ease;
+    background: #fff;
+    border: 1px solid rgba(212, 191, 165, .4);
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    height: 100%;
+    box-shadow: 0 4px 15px rgba(45, 42, 36, .04);
+    transition: all .3s ease;
 }
 
     .dg-stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 3px 5px 0px var(--dp-color-outline);
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(45, 42, 36, .09);
+        border-color: var(--home-clay);
     }
 
-/* Horizontal book shelf */
-.dg-shelf {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding-bottom: .75rem;
-    scroll-snap-type: x proximity;
-}
-
-.dg-shelf-item {
-    flex: 0 0 170px;
-    scroll-snap-align: start;
-}
-
-/* Buttons & Actions */
-.dg-btn-action {
-    background-color: var(--dp-color-accent);
-    color: #fff;
-    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
-    border-radius: var(--dp-radius-corner);
-    box-shadow: 3px 3px 0px var(--dp-color-outline);
-    font-family: var(--dp-typography-reading);
-    font-weight: 600;
-    transition: transform var(--dp-motion-interaction) ease, box-shadow var(--dp-motion-interaction) ease;
-}
-
-    .dg-btn-action:hover {
-        transform: translateY(-2px);
-        box-shadow: 3px 5px 0px var(--dp-color-outline);
-        color: #fff;
+    .dg-stat-card .dg-stat-label {
+        color: var(--home-muted);
+        font-size: .85rem;
+        margin-bottom: .4rem;
     }
 
-    .dg-btn-action:active {
-        transform: translateY(1px);
-        box-shadow: 1px 1px 0px var(--dp-color-outline);
+    .dg-stat-card .dg-stat-value {
+        color: var(--home-brown);
+        font-size: 1.15rem;
+        font-weight: 700;
     }
 
-/* Topic pills / badges */
-.dg-topic-badge {
-    background-color: var(--dp-color-panel);
-    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
-    border-radius: 50rem;
-    color: var(--dp-color-ink);
-    font-weight: 600;
-    padding: 0.4rem 1rem;
-    box-shadow: 2px 2px 0px var(--dp-color-outline);
-    transition: transform var(--dp-motion-interaction) ease, background-color var(--dp-motion-interaction) ease;
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-}
-
-    .dg-topic-badge:hover {
-        background-color: var(--dp-color-selection);
-        color: var(--dp-color-accent);
-        transform: translateY(-2px);
-        box-shadow: 2px 4px 0px var(--dp-color-outline);
+    .dg-stat-card .dg-stat-icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: var(--home-paper);
+        color: var(--home-terracotta);
+        margin-bottom: .7rem;
+        font-size: 1.1rem;
     }
 
-/* Section Headings */
+/* =========================================
+   TIÊU ĐỀ SECTION
+========================================= */
+
 .dg-section-title {
-    font-family: var(--dp-typography-display);
+    color: var(--home-brown);
     font-weight: 700;
-    color: var(--dp-color-ink);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
 }
 
-/* Accessibility: Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-    *, ::before, ::after {
-        animation: none !important;
-        transition: none !important;
-        transform: none !important;
+    .dg-section-title i {
+        color: var(--home-terracotta);
     }
-}
-/* Khung panel bọc kệ sách */
-.dg-panel-box {
-    background-color: var(--dp-color-panel);
-    border: var(--dp-border-outline-width) solid var(--dp-color-outline);
-    border-radius: var(--dp-radius-corner);
-    box-shadow: 4px 4px 0px var(--dp-color-outline);
-    transition: transform var(--dp-motion-interaction) ease, box-shadow var(--dp-motion-interaction) ease;
+
+    .dg-section-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--home-sand);
+        margin-left: .5rem;
+    }
+
+/* =========================================
+   CHỦ ĐỀ
+========================================= */
+
+.dg-topic-btn {
+    border: 1px solid var(--home-clay);
+    color: var(--home-brown);
+    background: #fff;
+    border-radius: 30px;
+    padding: .55rem 1rem;
+    transition: all .3s ease;
 }
 
-/* Kệ sách cuộn ngang */
+    .dg-topic-btn:hover {
+        background: var(--home-terracotta);
+        color: #fff;
+        border-color: var(--home-terracotta);
+        transform: translateY(-3px);
+    }
+
+    .dg-topic-btn .badge {
+        background: var(--home-sand) !important;
+        color: var(--home-brown) !important;
+        transition: all .3s ease;
+    }
+
+    .dg-topic-btn:hover .badge {
+        background: rgba(255,255,255,.2) !important;
+        color: white !important;
+    }
+
+/* =========================================
+   KỆ SÁCH - SCROLL NGANG
+========================================= */
+
 .dg-shelf {
     display: flex;
-    gap: 1rem;
+    gap: 1.2rem;
     overflow-x: auto;
-    padding-bottom: .75rem;
+    padding: .5rem .2rem 1.2rem;
     scroll-snap-type: x proximity;
     scrollbar-width: thin;
+    scrollbar-color: var(--home-clay) transparent;
 }
+
+    .dg-shelf::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .dg-shelf::-webkit-scrollbar-thumb {
+        background: var(--home-clay);
+        border-radius: 10px;
+    }
 
 .dg-shelf-item {
     flex: 0 0 170px;
     scroll-snap-align: start;
 }
 
-/* Nút phụ / Badge tương tác */
-.dg-topic-badge {
-    background-color: var(--dp-color-panel);
-    border: var(--dp-border-detail-width) solid var(--dp-color-outline);
-    border-radius: 50rem;
-    color: var(--dp-color-ink);
-    font-weight: 600;
-    padding: 0.4rem 1rem;
-    box-shadow: 2px 2px 0px var(--dp-color-outline);
-    transition: transform var(--dp-motion-interaction) ease, background-color var(--dp-motion-interaction) ease;
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-}
+/* =========================================
+   RESPONSIVE
+========================================= */
 
-    .dg-topic-badge:hover {
-        background-color: var(--dp-color-selection);
-        color: var(--dp-color-accent);
-        transform: translateY(-2px);
-        box-shadow: 2px 4px 0px var(--dp-color-outline);
-    }
-/* ==========================================
-   HIỆU ỨNG HOVER CHO QUYỂN SÁCH TRONG KỆ
-   ========================================== */
-.dg-shelf-item-card {
-    transition: transform var(--dp-motion-interaction) ease;
-}
-
-    /* Áp dụng hiệu ứng nổi khối hard-offset shadow cho thẻ card quyển sách */
-    .dg-shelf-item-card .card,
-    .dg-shelf-item-card .dg-sach-card {
-        border: var(--dp-border-outline-width) solid var(--dp-color-outline) !important;
-        border-radius: var(--dp-radius-corner) !important;
-        background-color: var(--dp-color-panel);
-        box-shadow: 3px 3px 0px var(--dp-color-outline);
-        transition: transform var(--dp-motion-interaction) cubic-bezier(0.16, 1, 0.3, 1), box-shadow var(--dp-motion-interaction) cubic-bezier(0.16, 1, 0.3, 1);
-        will-change: transform, box-shadow;
-        overflow: hidden;
+@media (max-width: 768px) {
+    .dg-banner {
+        min-height: 260px;
     }
 
-    /* Kích hoạt khi di chuột (Hover) */
-    .dg-shelf-item-card:hover .card,
-    .dg-shelf-item-card:hover .dg-sach-card,
-    .dg-shelf-item-card:hover {
-        transform: translateY(-5px);
+    .dg-banner-body {
+        padding: 2rem 1.5rem;
     }
 
-        .dg-shelf-item-card:hover .card,
-        .dg-shelf-item-card:hover .dg-sach-card {
-            box-shadow: 5px 8px 0px var(--dp-color-outline);
-            border-color: var(--dp-color-accent) !important;
+        .dg-banner-body p {
+            font-size: .95rem;
         }
 
-    /* Khi nhấn vào (Active / Press) */
-    .dg-shelf-item-card:active .card,
-    .dg-shelf-item-card:active .dg-sach-card {
-        transform: translateY(-1px);
-        box-shadow: 2px 2px 0px var(--dp-color-outline);
+    .dg-stat-card {
+        padding: .9rem;
     }
 
-    /* Phóng to nhẹ ảnh bìa sách khi di chuột */
-    .dg-shelf-item-card img {
-        transition: transform 300ms ease;
+    .dg-shelf-item {
+        flex-basis: 145px;
     }
+}
 
-    .dg-shelf-item-card:hover img {
-        transform: scale(1.04);
-    }
+/* =========================================
+   ACCESSIBILITY
+========================================= */
 
-/* Tôn trọng cài đặt giảm chuyển động hệ thống (Accessibility) */
 @media (prefers-reduced-motion: reduce) {
-    .dg-shelf-item-card,
-    .dg-shelf-item-card .card,
-    .dg-shelf-item-card img {
+    .dg-banner-body,
+    .dg-stat-card,
+    .dg-topic-btn,
+    .dg-banner-body .btn {
         animation: none !important;
         transition: none !important;
         transform: none !important;
     }
 }
+
+/* =========================================
+   BOOK SHELF - ANIMATION
+========================================= */
+
+.dg-shelf {
+    display: flex;
+    gap: 1.2rem;
+    overflow-x: auto;
+    padding: .5rem .2rem 1.2rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    scrollbar-color: var(--home-clay, #D4BFA5) transparent;
+}
+
+.dg-shelf-item {
+    flex: 0 0 210px;
+}
+
+/* Card sách */
+.dg-shelf-item-card {
+    transition: transform .35s ease, box-shadow .35s ease;
+}
+
+    .dg-shelf-item-card:hover {
+        transform: translateY(-7px);
+    }
+
+/* Nút xem tất cả */
+.dg-topic-badge {
+    transition: all .3s ease;
+}
+
+    .dg-topic-badge:hover {
+        color: var(--dp-color-accent);
+        transform: translateX(4px);
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dg-shelf-item {
+        flex-basis: 145px;
+    }
+}
+
+/* Giảm chuyển động */
+@media (prefers-reduced-motion: reduce) {
+    .dg-shelf-item-card,
+    .dg-topic-badge {
+        transition: none !important;
+    }
+}
+
+/* =========================================
+   HERO BANNER - WARM ORGANIC
+========================================= */
+.dg-hero {
+    margin: 24px 0 42px;
+}
+
+.dg-hero-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    background: var(--color-sand);
+    box-shadow: 0 14px 38px rgba(45, 42, 36, 0.12);
+}
+
+.dg-hero-inner {
+    border-radius: 22px;
+}
+
+.dg-banner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 430px;
+    overflow: hidden;
+    isolation: isolate;
+    background-color: var(--color-brown);
+    background-image: linear-gradient( 90deg, rgba(35, 30, 25, 0.88) 0%, rgba(45, 38, 30, 0.70) 48%, rgba(45, 38, 30, 0.18) 100% ), var(--banner-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Lớp phủ tạo chiều sâu */
+.dg-banner-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient( 0deg, rgba(35, 30, 25, 0.35), transparent 45% );
+}
+
+/* Nội dung */
+.dg-banner-content {
+    position: relative;
+    z-index: 2;
+    width: min(650px, 75%);
+    padding: 65px 75px;
+    color: #FFFFFF;
+    animation: dgBannerContent 0.8s ease both;
+}
+
+.dg-banner-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+    color: #E8DED1;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+}
+
+.dg-banner-line {
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--color-terracotta);
+}
+
+.dg-banner-title {
+    max-width: 620px;
+    margin: 0 0 20px;
+    color: #FFF9F2;
+    font-family: Georgia, serif;
+    font-size: clamp(32px, 4vw, 54px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -1px;
+}
+
+.dg-banner-description {
+    max-width: 500px;
+    margin-bottom: 30px;
+    color: rgba(255, 249, 242, 0.84);
+    font-size: 15px;
+    line-height: 1.85;
+}
+
+/* Nút CTA */
+.dg-banner-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    min-height: 49px;
+    padding: 0 23px;
+    border: 1px solid var(--color-terracotta);
+    border-radius: 6px;
+    background: var(--color-terracotta);
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+    .dg-banner-button i {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+    }
+
+    .dg-banner-button:hover {
+        background: #A95137;
+        border-color: #A95137;
+        color: #FFFFFF;
+        transform: translateY(-3px);
+    }
+
+        .dg-banner-button:hover i {
+            transform: translate(3px, -3px);
+        }
+
+/* Chữ trang trí bên phải */
+.dg-banner-decoration {
+    position: absolute;
+    z-index: 1;
+    right: 55px;
+    bottom: 65px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.58);
+    font-family: Georgia, serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-align: right;
+}
+
+.dg-banner-number {
+    position: absolute;
+    z-index: 2;
+    right: 75px;
+    top: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: Georgia, serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+}
+
+.dg-banner-number-divider {
+    width: 28px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.55);
+}
+
+/* Nút chuyển slide */
+.dg-hero-control {
+    z-index: 5;
+    top: auto;
+    bottom: 35px;
+    width: 42px;
+    height: 42px;
+    opacity: 1;
+}
+
+    .dg-hero-control.carousel-control-prev {
+        left: auto;
+        right: 125px;
+    }
+
+    .dg-hero-control.carousel-control-next {
+        right: 75px;
+    }
+
+.dg-hero-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.10);
+    color: #FFFFFF;
+    transition: all 0.3s ease;
+}
+
+.dg-hero-control:hover .dg-hero-arrow {
+    background: var(--color-terracotta);
+    border-color: var(--color-terracotta);
+}
+
+/* Indicator */
+.dg-hero-indicators {
+    z-index: 6;
+    right: auto;
+    bottom: 44px;
+    left: 75px;
+    justify-content: flex-start;
+    gap: 7px;
+    margin: 0;
+}
+
+    .dg-hero-indicators button {
+        width: 23px;
+        height: 3px;
+        margin: 0;
+        border: 0;
+        background: rgba(255, 255, 255, 0.55);
+        opacity: 1;
+        transition: width 0.3s ease, background 0.3s ease;
+    }
+
+        .dg-hero-indicators button.active {
+            width: 42px;
+            background: var(--color-terracotta);
+        }
+
+/* Animation */
+@keyframes dgBannerContent {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tablet */
+@media (max-width: 991px) {
+    .dg-banner {
+        min-height: 390px;
+    }
+
+    .dg-banner-content {
+        width: 85%;
+        padding: 55px 45px;
+    }
+
+    .dg-banner-decoration {
+        right: 30px;
+    }
+
+    .dg-banner-number {
+        right: 35px;
+    }
+
+    .dg-hero-indicators {
+        left: 45px;
+    }
+
+    .dg-hero-control.carousel-control-prev {
+        right: 105px;
+    }
+
+    .dg-hero-control.carousel-control-next {
+        right: 55px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .dg-hero {
+        margin: 15px 0 30px;
+    }
+
+    .dg-hero-carousel,
+    .dg-hero-inner {
+        border-radius: 14px;
+    }
+
+    .dg-banner {
+        min-height: 390px;
+        background-position: center;
+    }
+
+    .dg-banner-content {
+        width: 100%;
+        padding: 55px 25px 80px;
+    }
+
+    .dg-banner-eyebrow {
+        margin-bottom: 17px;
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+
+    .dg-banner-title {
+        font-size: 34px;
+        line-height: 1.25;
+    }
+
+    .dg-banner-description {
+        margin-bottom: 22px;
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .dg-banner-button {
+        min-height: 44px;
+        padding: 0 17px;
+        font-size: 11px;
+    }
+
+    .dg-banner-decoration {
+        display: none;
+    }
+
+    .dg-banner-number {
+        top: 20px;
+        right: 22px;
+        font-size: 11px;
+    }
+
+    .dg-hero-indicators {
+        bottom: 25px;
+        left: 25px;
+    }
+
+    .dg-hero-control {
+        bottom: 15px;
+        width: 34px;
+        height: 34px;
+    }
+
+    .dg-hero-arrow {
+        width: 34px;
+        height: 34px;
+        font-size: 12px;
+    }
+
+    .dg-hero-control.carousel-control-prev {
+        right: 65px;
+    }
+
+    .dg-hero-control.carousel-control-next {
+        right: 25px;
+    }
+}
+

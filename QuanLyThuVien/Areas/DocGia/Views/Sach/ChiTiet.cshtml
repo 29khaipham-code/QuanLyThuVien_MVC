@@ -1,138 +1,446 @@
 ﻿@model QuanLyThuVien.ViewModels.DocGia.SachChiTietViewModel;
+
 @{
     ViewData["Title"] = Model.TieuDe;
 
     string Anh(string u) => u.StartsWith("http", StringComparison.OrdinalIgnoreCase)
         ? u
         : Url.Content("~/" + u.TrimStart('~', '/'));
+
+    // Sau khi đăng nhập sẽ quay lại đúng trang sách này
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
-<partial name="_ThongBao" />
+<div class="container dg-detail-page">
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-area="DocGia" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
-        <li class="breadcrumb-item"><a asp-area="DocGia" asp-controller="Sach" asp-action="Index">Tra cứu sách</a></li>
-        <li class="breadcrumb-item active" aria-current="page">@Model.TieuDe</li>
-    </ol>
-</nav>
+    <partial name="_ThongBao" />
 
-<div class="row g-4">
-    <div class="col-12 col-md-4 col-lg-3">
-        @if (string.IsNullOrEmpty(Model.AnhBiaUrl))
-        {
-            <div class="bg-light text-center text-secondary py-5 rounded border">
-                <i class="bi bi-book" style="font-size:4rem"></i>
+    <!-- BREADCRUMB -->
+    <nav aria-label="breadcrumb" class="dg-detail-breadcrumb" data-aos="fade-down">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a asp-area="DocGia" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-house-door me-1"></i>
+                    Trang chủ
+                </a>
+            </li>
+
+            <li class="breadcrumb-item">
+                <a asp-area="DocGia" asp-controller="Sach" asp-action="Index">
+                    Tra cứu sách
+                </a>
+            </li>
+
+            <li class="breadcrumb-item active" aria-current="page">
+                @Model.TieuDe
+            </li>
+        </ol>
+    </nav>
+
+    <!-- THÔNG TIN SÁCH -->
+    <section class="dg-detail-card" data-aos="fade-up">
+
+        <div class="row g-4 g-lg-5">
+
+            <!-- ẢNH BÌA -->
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="dg-detail-cover-wrapper">
+
+                    <div class="dg-detail-cover">
+                        @if (string.IsNullOrEmpty(Model.AnhBiaUrl))
+                        {
+                            <div class="dg-detail-placeholder">
+                                <i class="bi bi-book"></i>
+                                <span>Chưa có ảnh bìa</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <img src="@Anh(Model.AnhBiaUrl)" alt="@Model.TieuDe" />
+                        }
+                    </div>
+
+                    <div class="dg-detail-cover-caption">
+                        <i class="bi bi-book-half me-2"></i>
+                        Thông tin sách thư viện
+                    </div>
+
+                </div>
             </div>
-        }
-        else
-        {
-            <img src="@Anh(Model.AnhBiaUrl)" alt="@Model.TieuDe" class="img-fluid rounded border" />
-        }
-    </div>
 
-    <div class="col-12 col-md-8 col-lg-9">
-        <h2 class="mb-1">@Model.TieuDe</h2>
-        <p class="text-muted mb-3">@Model.TacGia</p>
+            <!-- THÔNG TIN SÁCH -->
+            <div class="col-12 col-md-8 col-lg-8">
 
-        <dl class="row mb-3">
-            <dt class="col-sm-3">Thể loại</dt>
-            <dd class="col-sm-9">@Model.TheLoai</dd>
+                <div class="dg-detail-info">
 
-            <dt class="col-sm-3">Nhà xuất bản</dt>
-            <dd class="col-sm-9">@Model.NhaXuatBan</dd>
+                    <!-- THỂ LOẠI -->
+                    <div class="dg-detail-category">
+                        <i class="bi bi-bookmark me-1"></i>
+                        @Model.TheLoai
+                    </div>
 
-            @if (Model.NamXuatBan.HasValue)
-            {
-                <dt class="col-sm-3">Năm xuất bản</dt>
-                <dd class="col-sm-9">
-                    @Model.NamXuatBan@(Model.LanTaiBan.HasValue ? $" (tái bản lần {Model.LanTaiBan})" : "")
-                </dd>
-            }
+                    <!-- TÊN SÁCH -->
+                    <h1 class="dg-detail-title">
+                        @Model.TieuDe
+                    </h1>
 
-            @if (!string.IsNullOrEmpty(Model.Isbn))
-            {
-                <dt class="col-sm-3">ISBN</dt>
-                <dd class="col-sm-9">@Model.Isbn</dd>
-            }
+                    <!-- TÁC GIẢ -->
+                    <div class="dg-detail-author">
+                        <i class="bi bi-person-circle me-2"></i>
+                        @Model.TacGia
+                    </div>
 
-            <dt class="col-sm-3">Bản giấy</dt>
-            <dd class="col-sm-9">
-                @if (Model.TongBanSao == 0)
-                {
-                    <span class="badge bg-secondary">Chưa có bản giấy</span>
-                }
-                else
-                {
-                    <span class="badge @(Model.SanSang > 0 ? "bg-success" : "bg-secondary")">Sẵn sàng @Model.SanSang/@Model.TongBanSao</span>
-                    <span class="small text-muted ms-2">Đang mượn: @Model.DangMuon · Đã đặt: @Model.DaDat</span>
-                }
-            </dd>
+                    <div class="dg-detail-divider"></div>
 
-            @if (Model.CoSachDienTu)
-            {
-                <dt class="col-sm-3">Sách điện tử</dt>
-                <dd class="col-sm-9">@string.Join(", ", Model.DinhDangs)</dd>
-            }
-        </dl>
+                    <!-- THÔNG TIN XUẤT BẢN -->
+                    <div class="dg-detail-metadata">
 
-        @* ---------- Mượn / đặt trước / đọc online ---------- *@
-        <div class="mb-4">
-            @if (Model.DangMuonCuonNay)
-            {
-                <div class="alert alert-info mb-2">
-                    <i class="bi bi-journal-bookmark me-1"></i>Bạn đang mượn cuốn sách này.
-                    <a asp-area="DocGia" asp-controller="MuonTra" asp-action="Index">Xem hạn trả</a>
+                        <div class="dg-detail-meta-item">
+                            <span class="dg-detail-meta-label">Thể loại</span>
+                            <span class="dg-detail-meta-value">@Model.TheLoai</span>
+                        </div>
+
+                        <div class="dg-detail-meta-item">
+                            <span class="dg-detail-meta-label">Nhà xuất bản</span>
+                            <span class="dg-detail-meta-value">@Model.NhaXuatBan</span>
+                        </div>
+
+                        @if (Model.NamXuatBan.HasValue)
+                        {
+                            <div class="dg-detail-meta-item">
+                                <span class="dg-detail-meta-label">Năm xuất bản</span>
+                                <span class="dg-detail-meta-value">
+                                    @Model.NamXuatBan
+                                    @(Model.LanTaiBan.HasValue
+                                        ? $" (tái bản lần {Model.LanTaiBan})"
+                                        : "")
+                                </span>
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.Isbn))
+                        {
+                            <div class="dg-detail-meta-item">
+                                <span class="dg-detail-meta-label">ISBN</span>
+                                <span class="dg-detail-meta-value">@Model.Isbn</span>
+                            </div>
+                        }
+
+                    </div>
+
+                    <!-- TÌNH TRẠNG BẢN GIẤY -->
+                    <div class="dg-detail-stock">
+
+                        <div class="dg-detail-stock-heading">
+                            <i class="bi bi-collection me-2"></i>
+                            Tình trạng bản giấy
+                        </div>
+
+                        @if (Model.TongBanSao == 0)
+                        {
+                            <span class="dg-book-badge dg-badge-unavailable">
+                                <i class="bi bi-book me-1"></i>
+                                Chưa có bản giấy
+                            </span>
+                        }
+                        else
+                        {
+                            <div class="dg-detail-stock-status">
+                                <span class="dg-book-badge @(Model.SanSang > 0 ? "dg-badge-available" : "dg-badge-unavailable")">
+                                    <i class="bi @(Model.SanSang > 0 ? "bi-check-circle" : "bi-clock-history") me-1"></i>
+                                    Sẵn sàng @Model.SanSang/@Model.TongBanSao
+                                </span>
+                            </div>
+
+                            <div class="dg-detail-stock-note">
+                                <span>
+                                    <i class="bi bi-journal-arrow-up me-1"></i>
+                                    Đang mượn: @Model.DangMuon
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-bookmark-check me-1"></i>
+                                    Đã đặt: @Model.DaDat
+                                </span>
+                            </div>
+                        }
+
+                    </div>
+
+                    <!-- THAO TÁC BẢN GIẤY -->
+                    <div class="dg-detail-actions">
+
+                        <h5>
+                            <i class="bi bi-lightning-charge me-2"></i>
+                            Thao tác
+                        </h5>
+
+                        @if (!Model.LaDocGia)
+                        {
+                            @* Khách hoặc nhân viên: chỉ xem thông tin *@
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <div class="dg-detail-alert dg-alert-neutral">
+                                    <i class="bi bi-lock"></i>
+                                    <div>
+                                        Chức năng đặt trước và đọc sách điện tử
+                                        chỉ dành cho tài khoản độc giả.
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="dg-detail-alert dg-alert-neutral">
+                                    <i class="bi bi-lock"></i>
+                                    <div>
+                                        Đăng nhập bằng tài khoản độc giả để đặt trước
+                                        và đọc sách điện tử.
+
+                                        <a asp-area=""
+                                           asp-controller="Account"
+                                           asp-action="Login"
+                                           asp-route-returnUrl="@returnUrl">
+                                            Đăng nhập
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (Model.SanSang > 0)
+                            {
+                                <div class="dg-detail-alert dg-alert-success">
+                                    <i class="bi bi-check-circle"></i>
+                                    <div>
+                                        Sách đang có sẵn trên kệ,
+                                        bạn có thể đến thư viện mượn trực tiếp.
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else if (Model.DangMuonCuonNay)
+                        {
+                            <div class="dg-detail-alert dg-alert-info">
+                                <i class="bi bi-journal-bookmark"></i>
+                                <div>
+                                    Bạn đang mượn cuốn sách này.
+
+                                    <a asp-area="DocGia"
+                                       asp-controller="MuonTra"
+                                       asp-action="Index">
+                                        Xem hạn trả
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                        else if (Model.DatTruocTrangThai == "DaGiu")
+                        {
+                            <div class="dg-detail-alert dg-alert-success">
+                                <i class="bi bi-check-circle"></i>
+                                <div>
+                                    Thư viện đã giữ chỗ một bản cho bạn.
+
+                                    <a asp-area="DocGia"
+                                       asp-controller="DatTruoc"
+                                       asp-action="Index">
+                                        Xem hạn nhận sách
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                        else if (Model.DatTruocTrangThai == "DangCho")
+                        {
+                            <div class="dg-detail-alert dg-alert-warning">
+                                <i class="bi bi-hourglass-split"></i>
+                                <div>
+                                    Bạn đã đặt trước, đang đứng thứ
+                                    <strong>@Model.ViTriHangDoi</strong>
+                                    trong hàng đợi.
+
+                                    <a asp-area="DocGia"
+                                       asp-controller="DatTruoc"
+                                       asp-action="Index">
+                                        Quản lý đặt trước
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                        else if (Model.SanSang > 0)
+                        {
+                            <div class="dg-detail-alert dg-alert-success">
+                                <i class="bi bi-check-circle"></i>
+                                <div>
+                                    Sách đang có sẵn trên kệ,
+                                    bạn có thể đến thư viện mượn trực tiếp.
+                                </div>
+                            </div>
+                        }
+                        else if (Model.TongBanSao > 0 && Model.CoHoSo)
+                        {
+                            <div class="dg-detail-action-row">
+                                <form method="post"
+                                      asp-area="DocGia"
+                                      asp-controller="DatTruoc"
+                                      asp-action="Tao">
+                                    <input type="hidden" name="sachId" value="@Model.Id" />
+
+                                    <button type="submit" class="dg-btn-primary">
+                                        <i class="bi bi-bookmark-plus me-2"></i>
+                                        Đặt trước sách
+                                    </button>
+                                </form>
+
+                                <span class="dg-detail-action-note">
+                                    Tất cả bản giấy đang được mượn hoặc giữ chỗ.
+                                </span>
+                            </div>
+                        }
+                        else if (Model.TongBanSao == 0 && !Model.CoSachDienTu)
+                        {
+                            <button type="button" class="dg-btn-disabled" disabled>
+                                <i class="bi bi-book me-2"></i>
+                                Chưa có bản giấy để đặt trước
+                            </button>
+                        }
+
+                    </div>
+
+                    <!-- SÁCH ĐIỆN TỬ -->
+                    @if (Model.CoSachDienTu)
+                    {
+                        <div class="dg-detail-divider"></div>
+
+                        <div class="dg-detail-actions">
+
+                            <h5>
+                                <i class="bi bi-tablet me-2"></i>
+                                Phiên bản sách điện tử
+                            </h5>
+
+                            <div class="dg-detail-ebook-list">
+
+                                @foreach (var t in Model.Teps)
+                                {
+                                    <div class="dg-detail-ebook">
+
+                                        <div class="dg-detail-ebook-icon">
+                                            <i class="bi bi-file-earmark-pdf"></i>
+                                        </div>
+
+                                        <div class="dg-detail-ebook-content">
+                                            <div class="dg-detail-ebook-title">
+                                                Phiên bản @t.DinhDang
+                                            </div>
+
+                                            <div class="dg-detail-ebook-format">
+                                                <span>
+                                                    <i class="bi bi-file-earmark me-1"></i>
+                                                    @t.DungLuongText
+                                                </span>
+
+                                                <span>
+                                                    <i class="bi bi-download me-1"></i>
+                                                    @(t.ChoPhepTai
+                                                        ? "Cho phép tải xuống"
+                                                        : "Chỉ đọc trực tuyến")
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="dg-detail-ebook-action">
+
+                                            @if (!Model.LaDocGia)
+                                            {
+                                                @if (User.Identity?.IsAuthenticated != true)
+                                                {
+                                                    <a class="dg-btn-outline"
+                                                       asp-area=""
+                                                       asp-controller="Account"
+                                                       asp-action="Login"
+                                                       asp-route-returnUrl="@returnUrl">
+                                                        <i class="bi bi-box-arrow-in-right me-1"></i>
+                                                        Đăng nhập để đọc
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="dg-detail-action-note">
+                                                        Chỉ dành cho độc giả
+                                                    </span>
+                                                }
+                                            }
+                                            else if (t.LuotDocId.HasValue)
+                                            {
+                                                <div class="dg-detail-reading-info">
+                                                    <span>
+                                                        Quyền đọc đến
+                                                        @t.NgayHetHanQuyen?.ToString("dd/MM/yyyy")
+                                                    </span>
+
+                                                    <a class="dg-btn-primary"
+                                                       asp-area="DocGia"
+                                                       asp-controller="SachDienTu"
+                                                       asp-action="Doc"
+                                                       asp-route-id="@t.LuotDocId">
+                                                        <i class="bi bi-eye me-1"></i>
+                                                        Đọc tiếp
+                                                    </a>
+                                                </div>
+                                            }
+                                            else if (Model.CoHoSo)
+                                            {
+                                                <form method="post"
+                                                      asp-area="DocGia"
+                                                      asp-controller="SachDienTu"
+                                                      asp-action="MuonDoc">
+                                                    <input type="hidden"
+                                                           name="tepSachId"
+                                                           value="@t.Id" />
+
+                                                    <button type="submit" class="dg-btn-outline">
+                                                        <i class="bi bi-book-half me-1"></i>
+                                                        Đọc online
+                                                    </button>
+                                                </form>
+                                            }
+
+                                        </div>
+
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    }
+
                 </div>
-            }
-            else if (Model.DatTruocTrangThai == "DaGiu")
-            {
-                <div class="alert alert-success mb-2">
-                    <i class="bi bi-check-circle me-1"></i>Thư viện đã giữ chỗ một bản cho bạn.
-                    <a asp-area="DocGia" asp-controller="DatTruoc" asp-action="Index">Xem hạn nhận sách</a>
-                </div>
-            }
-            else if (Model.DatTruocTrangThai == "DangCho")
-            {
-                <div class="alert alert-warning mb-2">
-                    <i class="bi bi-hourglass-split me-1"></i>Bạn đã đặt trước, đang đứng thứ <strong>@Model.ViTriHangDoi</strong> trong hàng đợi.
-                    <a asp-area="DocGia" asp-controller="DatTruoc" asp-action="Index">Quản lý đặt trước</a>
-                </div>
-            }
-            else if (Model.SanSang > 0)
-            {
-                <div class="alert alert-success mb-2">
-                    <i class="bi bi-check2-circle me-1"></i>Sách đang có sẵn trên kệ, bạn có thể đến thư viện mượn trực tiếp.
-                </div>
-            }
-            else if (Model.TongBanSao > 0 && Model.CoHoSo)
-            {
-                <form method="post" asp-area="DocGia" asp-controller="DatTruoc" asp-action="Tao" class="d-inline">
-                    <input type="hidden" name="sachId" value="@Model.Id" />
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-bookmark-plus me-1"></i>Đặt trước
-                    </button>
-                </form>
-                <span class="small text-muted ms-2">Tất cả bản giấy đang được mượn hoặc giữ chỗ.</span>
-            }
-            else if (Model.TongBanSao == 0)
-            {
-                <button type="button" class="btn btn-outline-secondary" disabled>Chưa có bản giấy để đặt trước</button>
-            }
+            </div>
 
-            @if (Model.CoSachDienTu)
-            {
-                @* Nút này sẽ được nối chức năng ở bước Sách điện tử *@
-                <button type="button" class="btn btn-outline-success ms-1" disabled title="Sắp có">
-                    <i class="bi bi-eye me-1"></i>Đọc online
-                </button>
-            }
         </div>
+    </section>
 
-        @if (!string.IsNullOrWhiteSpace(Model.MoTa))
-        {
-            <h5>Giới thiệu</h5>
-            <p style="white-space:pre-line">@Model.MoTa</p>
-        }
-    </div>
+    <!-- GIỚI THIỆU SÁCH -->
+    @if (!string.IsNullOrWhiteSpace(Model.MoTa))
+    {
+        <section class="dg-detail-description" data-aos="fade-up">
+
+            <div class="dg-detail-section-heading">
+
+                <span class="dg-detail-section-icon">
+                    <i class="bi bi-journal-text"></i>
+                </span>
+
+                <div>
+                    <h4>Giới thiệu sách</h4>
+                    <p>Khám phá nội dung và những điều thú vị trong cuốn sách</p>
+                </div>
+
+            </div>
+
+            <div class="dg-detail-description-content">
+                @Model.MoTa
+            </div>
+
+        </section>
+    }
+
 </div>
