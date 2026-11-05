@@ -1,0 +1,111 @@
+﻿
+@model QuanLyThuVien.ViewModels.Admin.SachDienTu.TepSachFormVm
+
+@{
+    ViewData["Title"] = "Thêm sách điện tử";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <h3 class="mb-4">Thêm sách điện tử</h3>
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-area="Admin"
+                  asp-controller="SachDienTu"
+                  asp-action="Create"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="All"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="SachId" class="form-label">
+                        Chọn đầu sách *
+                    </label>
+
+                    <select asp-for="SachId"
+                            asp-items="Model.DauSach"
+                            class="form-select">
+                        <option value="0">-- Chọn đầu sách --</option>
+                    </select>
+
+                    <span asp-validation-for="SachId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Tep" class="form-label">
+                        Tệp PDF *
+                    </label>
+
+                    <input asp-for="Tep"
+                           type="file"
+                           accept=".pdf,application/pdf"
+                           class="form-control" />
+
+                    <span asp-validation-for="Tep"
+                          class="text-danger"></span>
+
+                    <small class="text-muted">
+                        Chỉ hỗ trợ PDF, dung lượng tối đa 25 MB.
+                    </small>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CheDoTruyCap" class="form-label">
+                        Chế độ truy cập
+                    </label>
+
+                    <select asp-for="CheDoTruyCap"
+                            class="form-select">
+                        <option value="DocTrucTuyen">
+                            Chỉ đọc trực tuyến
+                        </option>
+
+                        <option value="ChoPhepTai">
+                            Cho phép đọc và tải
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NgayHetBanQuyen"
+                           class="form-label">
+                        Ngày hết bản quyền
+                    </label>
+
+                    <input asp-for="NgayHetBanQuyen"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="NgayHetBanQuyen"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="TrangThai" class="form-label">
+                        Trạng thái
+                    </label>
+
+                    <select asp-for="TrangThai" class="form-select">
+                        <option value="HoatDong">Hoạt động</option>
+                        <option value="TamKhoa">Tạm khóa</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Lưu sách điện tử
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Quay lại
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

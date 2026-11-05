@@ -19,17 +19,7 @@
       href="~/css/admin.css"
       asp-append-version="true" />
       
-      <link rel="stylesheet"
-      href="~/css/admin-3d-ong-anh.css"
-      asp-append-version="true" />
-
-
-  @*   <link rel="stylesheet"
-          href="~/css/playful-admin-theme.css"
-          asp-append-version="true" /> *@
-      @*     <link rel="stylesheet"
-      href="~/css/admin-modern-dark.css"
-      asp-append-version="true" /> *@
+     
 </head>
 <body>
     <div class="admin-wrapper">
@@ -89,12 +79,7 @@
                 <div class="menu-heading">QUẢN LÝ THƯ VIỆN</div>
 
                 
-                <a asp-area="Admin"
-                   asp-controller="Sach"
-                   asp-action="Index"
-                   class="nav-link">
-                    📚 Quản lý sách
-                </a>
+                
 
 
                 <a asp-area="Admin"
@@ -130,22 +115,25 @@
                 </a>
 
 
+              
                 <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="SachDienTu">
+                   asp-controller="SachDienTu"
+                   asp-action="Index"
+                   class="nav-link">
                     💻 Sách điện tử
                 </a>
+
 
                 <a asp-area="Admin"
                    asp-controller="Dashboard"
                    asp-action="Module"
                    asp-route-id="ThongKe">
                     📊 Thống kê
+
                 </a>
                 <a href="@Url.Action("Index", "SachAdmin", new { area = "Admin" })"
                    class="nav-link">
-                    📚 Sách Admin
+                    📚 Quản Lý Sách
                 </a>
             </nav>
         </aside>
@@ -155,32 +143,41 @@
 
             <header class="admin-header">
 
-                <div class="d-flex justify-content-end w-100">
+               
+               
+                <div style="display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    gap: 40px;
+                    margin-left: auto;
+                    width: 100%;">
 
+                    <!-- NÚT VỀ TRANG CHỦ -->
+                    <a asp-area=""
+                       asp-controller="Home"
+                       asp-action="Index"
+                       class="btn btn-outline-primary px-3">
+                        🏠 Về trang chủ
+                    </a>
+
+                    <!-- NÚT ĐĂNG XUẤT -->
                     <form asp-area=""
                           asp-controller="Account"
                           asp-action="Logout"
                           method="post"
-                          class="m-0">
+                          style="margin: 0;">
 
                         @Html.AntiForgeryToken()
 
                         <button type="submit"
-                                class="btn btn-outline-danger">
+                                class="btn btn-outline-danger px-3">
                             🚪 Đăng xuất
                         </button>
-
                     </form>
-                    
-                    <a asp-area=""
-                       asp-controller="Home"
-                       asp-action="Index"
-                       class="btn btn-outline-primary">
-                        🏠 Về trang chủ
-                    </a>
+
+                </div>
 
 
-                </div>  
 
             </header>
 

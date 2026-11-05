@@ -1,0 +1,134 @@
+﻿
+@model QuanLyThuVien.ViewModels.Admin.SachDienTu.TepSachFormVm
+
+@{
+    ViewData["Title"] = "Sửa sách điện tử";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <h3 class="mb-4">Sửa sách điện tử #@Model.Id</h3>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Thông tin sách điện tử
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+
+                <input asp-for="Id" type="hidden" />
+                <input asp-for="SachId" type="hidden" />
+
+                <div asp-validation-summary="All"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label class="form-label">Đầu sách</label>
+                    <input class="form-control"
+                           value="Mã đầu sách: @Model.SachId"
+                           readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CheDoTruyCap"
+                           class="form-label">
+                        Chế độ truy cập
+                    </label>
+
+                    <select asp-for="CheDoTruyCap"
+                            class="form-select">
+                        <option value="DocTrucTuyen">
+                            Chỉ đọc trực tuyến
+                        </option>
+
+                        <option value="ChoPhepTai">
+                            Cho phép đọc và tải
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NgayHetBanQuyen"
+                           class="form-label">
+                        Ngày hết bản quyền
+                    </label>
+
+                    <input asp-for="NgayHetBanQuyen"
+                           type="date"
+                           class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TrangThai" class="form-label">
+                        Trạng thái
+                    </label>
+
+                    <select asp-for="TrangThai" class="form-select">
+                        <option value="HoatDong">Hoạt động</option>
+                        <option value="TamKhoa">Tạm khóa</option>
+                        <option value="HetBanQuyen">
+                            Hết bản quyền
+                        </option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Lưu thay đổi
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Quay lại
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Thay thế tệp PDF
+        </div>
+
+        <div class="card-body">
+            <p>
+                Tệp hiện tại:
+                <strong>@Model.TenTepHienTai</strong>
+            </p>
+
+            <form asp-action="Replace"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       name="id"
+                       value="@Model.Id" />
+
+                <div class="mb-3">
+                    <input type="file"
+                           name="tep"
+                           accept=".pdf,application/pdf"
+                           class="form-control"
+                           required />
+                </div>
+
+                <button type="submit" class="btn btn-warning">
+                    Thay PDF
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

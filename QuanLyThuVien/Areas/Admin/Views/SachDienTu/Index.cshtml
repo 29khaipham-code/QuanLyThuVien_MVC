@@ -1,0 +1,199 @@
+﻿
+@model QuanLyThuVien.ViewModels.Admin.SachDienTu.SachDienTuIndexVm
+
+@{
+    ViewData["Title"] = "Quản lý sách điện tử";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <h3 class="mb-4">Quản lý sách điện tử</h3>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="d-flex gap-2 mb-4 flex-wrap">
+        <a asp-area="Admin" asp-controller="SachDienTu"
+           asp-action="Create" class="btn btn-primary">
+            + Thêm sách điện tử
+        </a>
+
+        <a asp-action="QuyenDoc"
+           class="btn btn-outline-secondary">
+            Quản lý quyền đọc
+        </a>
+
+        <a asp-action="NhatKy"
+           class="btn btn-outline-secondary">
+            Lịch sử truy cập
+        </a>
+    </div>
+
+    <form asp-action="Index" method="get"
+          class="row g-2 mb-4">
+        <div class="col-md-5">
+            <input name="tuKhoa"
+                   value="@Model.TuKhoa"
+                   class="form-control"
+                   placeholder="Tìm kiếm tên sách..." />
+        </div>
+
+        <div class="col-md-3">
+            <select name="trangThai" class="form-select">
+                <option value="">Tất cả trạng thái</option>
+
+                @foreach (var st in new[] {
+                    "HoatDong", "TamKhoa", "HetBanQuyen"
+                })
+                {
+                    <option value="@st"
+                            selected="@(Model.TrangThai == st)">
+                        @st
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">
+                Tìm kiếm
+            </button>
+        </div>
+
+        <div class="col-md-2">
+            <a asp-action="Index"
+               class="btn btn-outline-secondary w-100">
+                Làm mới
+            </a>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên sách</th>
+                    <th>Định dạng</th>
+                    <th>Dung lượng</th>
+                    <th>Chế độ</th>
+                    <th>Trạng thái</th>
+                    <th>Hạn bản quyền</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.DanhSach)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.TieuDe</td>
+                        <td>@item.DinhDang</td>
+
+                        <td>
+                            @(item.DungLuong.HasValue
+                                ? $"{item.DungLuong.Value / 1048576.0:F2} MB"
+                                : "—")
+                        </td>
+
+                        <td>
+                            @(item.CheDoTruyCap == "ChoPhepTai"
+                                ? "Đọc và tải"
+                                : "Chỉ đọc")
+                        </td>
+
+                        <td>
+                            @if (item.TrangThai == "HoatDong")
+                            {
+                                <span class="badge bg-success">
+                                    Hoạt động
+                                </span>
+                            }
+                            else if (item.TrangThai == "TamKhoa")
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    Tạm khóa
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    Hết bản quyền
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @(item.NgayHetBanQuyen?.ToString("dd/MM/yyyy")
+                                ?? "Không giới hạn")
+                        </td>
+
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Sửa
+                                </a>
+
+                                @if (item.TrangThai != "HetBanQuyen")
+                                {
+                                    <form asp-action="ChangeStatus"
+                                          method="post">
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@item.Id" />
+
+                                        <input type="hidden"
+                                               name="mo"
+                                               value="@(item.TrangThai != "HoatDong" ? "true" : "false")" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger">
+                                            @(item.TrangThai == "HoatDong"
+                                                ? "Khóa" : "Mở")
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (Model.DanhSach.Count == 0)
+    {
+        <div class="alert alert-info">
+            Không có sách điện tử phù hợp.
+        </div>
+    }
+
+    <nav aria-label="Phân trang">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= Model.SoTrang; i++)
+            {
+                <li class="page-item @(i == Model.Trang ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-trang="@i"
+                       asp-route-tuKhoa="@Model.TuKhoa"
+                       asp-route-trangThai="@Model.TrangThai">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

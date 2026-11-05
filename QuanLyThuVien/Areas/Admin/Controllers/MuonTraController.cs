@@ -8,6 +8,8 @@ using System.Security.Claims;
 using QuanLyThuVien.Models;
 using QuanLyThuVien.ViewModels.Admin.MuonTra;
 
+using PhatEntity = QuanLyThuVien.Models.Phat;
+
 namespace QuanLyThuVien.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -15,6 +17,9 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
     public class MuonTraController : Controller
     {
         private readonly QuanLyThuVienContext _db;
+
+        private const int PageSize = 10;
+        private const decimal PhiQuaHanMoiNgay = 5000m;
 
         public MuonTraController(QuanLyThuVienContext db)
         {
@@ -28,7 +33,6 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
         public async Task<IActionResult> Index(
             string? keyword, int page = 1)
         {
-            const int pageSize = 10;
             page = Math.Max(page, 1);
             keyword = keyword?.Trim();
 
@@ -63,15 +67,15 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             int total = await query.CountAsync();
 
             int totalPages = (int)Math.Ceiling(
-                total / (double)pageSize);
+                total / (double)PageSize);
 
             if (totalPages > 0)
                 page = Math.Min(page, totalPages);
 
             var data = await query
                 .OrderByDescending(x => x.Id)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
                 .ToListAsync();
 
             ViewBag.Keyword = keyword;
@@ -83,7 +87,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
         }
 
         // ============================================
-        // 2. DỮ LIỆU CHO FORM TẠO PHIẾU
+        // 2. DANH SÁCH ĐỘC GIẢ VÀ BẢN SAO
         // ============================================
         private async Task LoadOptions()
         {
@@ -98,7 +102,9 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                 .ToListAsync();
 
             ViewBag.DocGiaOptions = new SelectList(
-                docGias, "Id", "HienThi");
+                docGias,
+                "Id",
+                "HienThi");
 
             var banSaos = await (
                 from bs in _db.Set<BanSaoSach>().AsNoTracking()
@@ -121,11 +127,13 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             ).ToListAsync();
 
             ViewBag.BanSaoOptions = new SelectList(
-                banSaos, "Id", "HienThi");
+                banSaos,
+                "Id",
+                "HienThi");
         }
 
         // ============================================
-        // 3. FORM TẠO PHIẾU MƯỢN
+        // 3. FORM TẠO PHIẾU
         // ============================================
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -149,6 +157,15 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                 .Distinct()
                 .ToList();
 
+            model.BanSaoIds = ids;
+
+            if (model.DocGiaId <= 0)
+            {
+                ModelState.AddModelError(
+                    nameof(model.DocGiaId),
+                    "Vui lòng chọn độc giả.");
+            }
+
             if (ids.Count == 0)
             {
                 ModelState.AddModelError(
@@ -169,15 +186,22 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                 return View(model);
             }
 
-            var userIdText = User.FindFirstValue(
+            // Lấy tài khoản nhân viên đang đăng nhập
+            string? userIdText = User.FindFirstValue(
                 ClaimTypes.NameIdentifier);
 
-            if (!int.TryParse(userIdText, out int nhanVienId))
+            if (!int.TryParse(
+                userIdText,
+                out int nhanVienId))
+            {
                 return Forbid();
+            }
 
-            var nhanVienHopLe = await _db.Set<TaiKhoan>()
-                .AnyAsync(x => x.Id == nhanVienId
-                    && x.HoatDong);
+            bool nhanVienHopLe =
+                await _db.Set<TaiKhoan>()
+                    .AnyAsync(x =>
+                        x.Id == nhanVienId &&
+                        x.HoatDong);
 
             if (!nhanVienHopLe)
                 return Forbid();
@@ -191,9 +215,10 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                     await _db.Database.BeginTransactionAsync(
                         IsolationLevel.Serializable);
 
-                var homNay = DateOnly.FromDateTime(
-                    DateTime.Today);
+                DateOnly homNay =
+                    DateOnly.FromDateTime(DateTime.Today);
 
+                // Kiểm tra độc giả
                 var docGia = await _db.Set<DocGium>()
                     .FirstOrDefaultAsync(
                         x => x.Id == model.DocGiaId);
@@ -202,25 +227,29 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                 {
                     loi = "Độc giả không tồn tại.";
                 }
-                else if (docGia.TrangThai != "HoatDong"
-                    || docGia.NgayHetHan < homNay)
+                else if (docGia.TrangThai != "HoatDong" ||
+                         docGia.NgayHetHan < homNay)
                 {
-                    loi = "Thẻ độc giả bị khóa hoặc đã hết hạn.";
+                    loi = "Thẻ độc giả đã khóa hoặc hết hạn.";
                 }
 
-                LoaiDocGium? loai = null;
+                // Loại độc giả quyết định giới hạn mượn
+                LoaiDocGium? loaiDocGia = null;
 
-                if (docGia != null && loi == null)
+                if (loi == null && docGia != null)
                 {
-                    loai = await _db.Set<LoaiDocGium>()
-                        .FirstOrDefaultAsync(
-                            x => x.Id == docGia.LoaiDocGiaId);
+                    loaiDocGia =
+                        await _db.Set<LoaiDocGium>()
+                            .FirstOrDefaultAsync(
+                                x => x.Id ==
+                                     docGia.LoaiDocGiaId);
 
-                    if (loai == null)
+                    if (loaiDocGia == null)
                         loi = "Loại độc giả không hợp lệ.";
                 }
 
-                if (loi == null && loai != null)
+                // Kiểm tra số lượng sách đang mượn
+                if (loi == null && loaiDocGia != null)
                 {
                     int soSachDangMuon = await (
                         from ct in _db.Set<ChiTietMuon>()
@@ -232,14 +261,15 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                     ).CountAsync();
 
                     if (soSachDangMuon + ids.Count >
-                        loai.SoSachToiDa)
+                        loaiDocGia.SoSachToiDa)
                     {
-                        loi = "Vượt quá giới hạn số sách mượn. "
-                            + $"Đang mượn: {soSachDangMuon}; "
-                            + $"tối đa: {loai.SoSachToiDa}.";
+                        loi =
+                            $"Độc giả đang mượn {soSachDangMuon} cuốn. " +
+                            $"Giới hạn tối đa {loaiDocGia.SoSachToiDa} cuốn.";
                     }
                 }
 
+                // Kiểm tra bản sao sách
                 var banSaos = new List<BanSaoSach>();
 
                 if (loi == null)
@@ -252,21 +282,27 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                         banSaos.Any(x =>
                             x.TrangThai != "SanSang"))
                     {
-                        loi = "Có bản sao không sẵn sàng.";
+                        loi = "Có bản sao không sẵn sàng để mượn.";
                     }
                 }
 
+                // Chặn bản sao đang thuộc lượt mượn khác
                 if (loi == null)
                 {
-                    bool daMuon = await _db.Set<ChiTietMuon>()
-                        .AnyAsync(x =>
-                            ids.Contains(x.BanSaoId) &&
-                            x.NgayTra == null);
+                    bool coSachDangMuon =
+                        await _db.Set<ChiTietMuon>()
+                            .AnyAsync(x =>
+                                ids.Contains(x.BanSaoId) &&
+                                x.NgayTra == null);
 
-                    if (daMuon)
-                        loi = "Có sách đang được người khác mượn.";
+                    if (coSachDangMuon)
+                    {
+                        loi =
+                            "Có bản sao đang được người khác mượn.";
+                    }
                 }
 
+                // Kiểm tra đầu sách còn hoạt động
                 if (loi == null)
                 {
                     var sachIds = banSaos
@@ -274,23 +310,29 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                         .Distinct()
                         .ToList();
 
-                    int sachHoatDong = await _db.Set<Sach>()
-                        .CountAsync(x =>
-                            sachIds.Contains(x.Id) &&
-                            x.TrangThai == "HoatDong");
+                    int sachHoatDong =
+                        await _db.Set<Sach>()
+                            .CountAsync(x =>
+                                sachIds.Contains(x.Id) &&
+                                x.TrangThai == "HoatDong");
 
                     if (sachHoatDong != sachIds.Count)
-                        loi = "Có đầu sách đã ngừng phục vụ.";
+                    {
+                        loi =
+                            "Có đầu sách đã ngừng phục vụ.";
+                    }
                 }
 
-                if (loi == null && loai != null)
+                // Lưu phiếu và chi tiết mượn
+                if (loi == null && loaiDocGia != null)
                 {
                     var phieu = new PhieuMuon
                     {
-                        // PM + 18 ký tự = 20 ký tự
                         MaPhieu = "PM" +
-                            Guid.NewGuid().ToString("N")
-                                .Substring(0, 18).ToUpperInvariant(),
+                            Guid.NewGuid()
+                                .ToString("N")
+                                .Substring(0, 18)
+                                .ToUpperInvariant(),
 
                         DocGiaId = model.DocGiaId,
                         NhanVienLapId = nhanVienId,
@@ -304,7 +346,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                     await _db.SaveChangesAsync();
 
                     DateOnly hanTra = homNay.AddDays(
-                        loai.SoNgayMuonToiDa);
+                        loaiDocGia.SoNgayMuonToiDa);
 
                     foreach (var bs in banSaos)
                     {
@@ -330,9 +372,15 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             }
             catch (DbUpdateException)
             {
-                loi = "Không thể tạo phiếu. "
-                    + "Dữ liệu vừa thay đổi hoặc "
-                    + "bản sao đã được mượn.";
+                loi =
+                    "Không thể tạo phiếu mượn. " +
+                    "Dữ liệu đã thay đổi hoặc sách đã được mượn.";
+            }
+            catch (Exception)
+            {
+                loi =
+                    "Có lỗi khi tạo phiếu mượn. " +
+                    "Vui lòng kiểm tra và thử lại.";
             }
 
             if (loi != null)
@@ -351,7 +399,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
         }
 
         // ============================================
-        // 5. XEM CHI TIẾT PHIẾU
+        // 5. XEM CHI TIẾT PHIẾU MƯỢN
         // ============================================
         [HttpGet]
         public async Task<IActionResult> Details(int id)
@@ -402,7 +450,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
         }
 
         // ============================================
-        // 6. XÁC NHẬN TRẢ TỪNG CUỐN SÁCH
+        // 6. TRẢ SÁCH + TỰ ĐỘNG PHẠT QUÁ HẠN
         // ============================================
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -420,6 +468,11 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                     nameof(Details), new { id });
             }
 
+            string? loi = null;
+            int soNgayTre = 0;
+            decimal tienPhat = 0m;
+            bool phatMoi = false;
+
             try
             {
                 await using var transaction =
@@ -432,86 +485,172 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                         x.PhieuMuonId == id);
 
                 if (ct == null)
-                    return NotFound();
-
-                if (ct.NgayTra != null)
                 {
-                    TempData["Error"] =
-                        "Cuốn sách này đã được trả.";
-
-                    return RedirectToAction(
-                        nameof(Details), new { id });
+                    loi = "Không tìm thấy lượt mượn.";
+                }
+                else if (ct.NgayTra != null)
+                {
+                    loi = "Cuốn sách này đã được trả trước đó.";
                 }
 
-                var bs = await _db.Set<BanSaoSach>()
-                    .FirstOrDefaultAsync(
-                        x => x.Id == ct.BanSaoId);
+                PhieuMuon? phieu = null;
+                BanSaoSach? banSao = null;
 
-                var phieu = await _db.Set<PhieuMuon>()
-                    .FirstOrDefaultAsync(x => x.Id == id);
-
-                if (bs == null || phieu == null)
-                    return NotFound();
-
-                if (phieu.TrangThai != "DangMuon" ||
-                    bs.TrangThai != "DangMuon")
+                if (loi == null && ct != null)
                 {
-                    TempData["Error"] =
-                        "Trạng thái phiếu hoặc bản sao không hợp lệ.";
+                    phieu = await _db.Set<PhieuMuon>()
+                        .FirstOrDefaultAsync(x => x.Id == id);
 
-                    return RedirectToAction(
-                        nameof(Details), new { id });
+                    banSao = await _db.Set<BanSaoSach>()
+                        .FirstOrDefaultAsync(
+                            x => x.Id == ct.BanSaoId);
+
+                    if (phieu == null || banSao == null)
+                    {
+                        loi =
+                            "Không tìm thấy phiếu hoặc bản sao.";
+                    }
+                    else if (phieu.TrangThai != "DangMuon")
+                    {
+                        loi =
+                            "Phiếu mượn không ở trạng thái đang mượn.";
+                    }
+                    else if (banSao.TrangThai != "DangMuon")
+                    {
+                        loi =
+                            "Bản sao không ở trạng thái đang mượn.";
+                    }
                 }
 
-                // Lưu ngày trả
-                ct.NgayTra = DateTime.Now;
-
-                // Lưu tình trạng khi nhận lại
-                ct.TinhTrangSau =
-                    model.TinhTrangSau.Trim();
-
-                ct.GhiChu = model.GhiChu?.Trim();
-
-                if (model.BaoHuHong)
+                if (loi == null &&
+                    ct != null &&
+                    phieu != null &&
+                    banSao != null)
                 {
-                    bs.TinhTrang = "HuHong";
-                    bs.TrangThai = "HuHong";
-                }
-                else
-                {
-                    // Giữ tình trạng vật lý trước đó
-                    bs.TrangThai = "SanSang";
-                }
+                    DateTime ngayTraThucTe = DateTime.Now;
 
-                await _db.SaveChangesAsync();
+                    DateOnly ngayTra =
+                        DateOnly.FromDateTime(ngayTraThucTe);
 
-                // Kiểm tra còn cuốn nào chưa trả
-                bool conSachChuaTra =
-                    await _db.Set<ChiTietMuon>()
-                        .AnyAsync(x =>
-                            x.PhieuMuonId == id &&
-                            x.NgayTra == null);
+                    // Tính số ngày trả trễ
+                    soNgayTre = Math.Max(
+                        0,
+                        ngayTra.DayNumber -
+                        ct.HanTra.DayNumber);
 
-                if (!conSachChuaTra)
-                {
-                    phieu.TrangThai = "DaTraHet";
+                    tienPhat =
+                        soNgayTre * PhiQuaHanMoiNgay;
+
+                    // Cập nhật thông tin trả
+                    ct.NgayTra = ngayTraThucTe;
+                    ct.TinhTrangSau =
+                        model.TinhTrangSau.Trim();
+                    ct.GhiChu =
+                        model.GhiChu?.Trim();
+
+                    // Cập nhật tình trạng bản sao
+                    if (model.BaoHuHong)
+                    {
+                        banSao.TinhTrang = "HuHong";
+                        banSao.TrangThai = "HuHong";
+                    }
+                    else if (banSao.TinhTrang == "HuHong")
+                    {
+                        // Không tự mở phục vụ sách hỏng
+                        banSao.TrangThai = "HuHong";
+                    }
+                    else
+                    {
+                        banSao.TrangThai = "SanSang";
+                    }
+
                     await _db.SaveChangesAsync();
-                }
 
-                await transaction.CommitAsync();
+                    // Tự tạo phạt trả muộn
+                    if (soNgayTre > 0)
+                    {
+                        bool daCoPhat =
+                            await _db.Set<PhatEntity>()
+                                .AnyAsync(x =>
+                                    x.ChiTietMuonId == ct.Id &&
+                                    x.LoaiPhat == "TraMuon");
+
+                        if (!daCoPhat)
+                        {
+                            var phat = new PhatEntity
+                            {
+                                ChiTietMuonId = ct.Id,
+                                LoaiPhat = "TraMuon",
+                                LyDo =
+                                    $"Trả muộn {soNgayTre} ngày, " +
+                                    $"phí {PhiQuaHanMoiNgay:N0}đ/ngày.",
+                                SoTien = tienPhat,
+                                DaThanhToan = false,
+                                NgayThanhToan = null,
+                                NgayTao = DateTime.Now
+                            };
+
+                            _db.Set<PhatEntity>().Add(phat);
+                            phatMoi = true;
+                        }
+                    }
+
+                    // Kiểm tra toàn phiếu đã trả hết chưa
+                    bool conChuaTra =
+                        await _db.Set<ChiTietMuon>()
+                            .AnyAsync(x =>
+                                x.PhieuMuonId == id &&
+                                x.NgayTra == null);
+
+                    if (!conChuaTra)
+                    {
+                        phieu.TrangThai = "DaTraHet";
+                    }
+
+                    await _db.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
             }
             catch (DbUpdateException)
             {
-                TempData["Error"] =
-                    "Không thể cập nhật trả sách. "
-                    + "Vui lòng thử lại.";
+                loi =
+                    "Không thể xác nhận trả sách. " +
+                    "Dữ liệu đã thay đổi hoặc trùng khoản phạt.";
+            }
+            catch (Exception)
+            {
+                loi =
+                    "Có lỗi khi xử lý trả sách. " +
+                    "Vui lòng thử lại.";
+            }
+
+            if (loi != null)
+            {
+                TempData["Error"] = loi;
 
                 return RedirectToAction(
                     nameof(Details), new { id });
             }
 
-            TempData["Success"] =
-                "Xác nhận trả sách thành công!";
+            if (phatMoi)
+            {
+                TempData["Success"] =
+                    "Trả sách thành công! " +
+                    $"Quá hạn {soNgayTre} ngày, " +
+                    $"đã tạo khoản phạt {tienPhat:N0}đ " +
+                    "(chưa thanh toán).";
+            }
+            else if (soNgayTre > 0)
+            {
+                TempData["Success"] =
+                    "Trả sách thành công. " +
+                    "Khoản phạt quá hạn đã tồn tại.";
+            }
+            else
+            {
+                TempData["Success"] =
+                    "Trả sách thành công, không quá hạn.";
+            }
 
             return RedirectToAction(
                 nameof(Details), new { id });
