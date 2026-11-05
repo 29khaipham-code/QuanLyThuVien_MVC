@@ -1127,3 +1127,122 @@
     box-shadow: none;
 }
 
+/* =========================================
+   FIX FOOTER VÀ KHOẢNG TRẮNG TRANG LOGIN
+========================================= */
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+    body:has(.login-page) {
+        margin-bottom: 0 !important;
+    }
+
+        body:has(.login-page) .container-fluid {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        body:has(.login-page) main {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+.login-page {
+    margin-bottom: 0 !important;
+    padding-bottom: 35px;
+}
+
+
+
+
+
+
+
+
+
+    /* =========================================
+   FIX TOÀN BỘ FONT TRANG ĐĂNG NHẬP
+   Sử dụng duy nhất Times New Roman
+========================================= */
+
+    /* Font chữ toàn bộ trang */
+    html,
+    body,
+    .login-page,
+    .login-page * {
+        font-family: "Times New Roman", Times, serif !important;
+    }
+
+        /* Áp dụng cho cả thành phần giả */
+        .login-page *::before,
+        .login-page *::after {
+            font-family: "Times New Roman", Times, serif !important;
+        }
+
+        /* Sửa khoảng cách chữ tiếng Việt */
+        .login-page,
+        .login-page * {
+            letter-spacing: normal !important;
+            word-spacing: normal !important;
+            font-kerning: none !important;
+            font-variant-ligatures: none !important;
+            font-feature-settings: normal !important;
+        }
+
+            /* Tiêu đề */
+            .login-page h1,
+            .login-page h2,
+            .login-page h3,
+            .login-page h4,
+            .login-page h5,
+            .login-page h6 {
+                font-family: "Times New Roman", Times, serif !important;
+                letter-spacing: normal !important;
+            }
+
+            /* Nội dung */
+            .login-page p,
+            .login-page span,
+            .login-page a,
+            .login-page li,
+            .login-page label,
+            .login-page small,
+            .login-page strong,
+            .login-page em,
+            .login-page button {
+                font-family: "Times New Roman", Times, serif !important;
+            }
+
+            /* Ô nhập liệu */
+            .login-page input,
+            .login-page textarea,
+            .login-page select {
+                font-family: "Times New Roman", Times, serif !important;
+            }
+
+
+
+
+
+
+
+
+
+
+            /* FIX BOOTSTRAP ICONS - LOGIN */
+
+            .login-page i.bi::before,
+            .login-page .bi::before {
+                font-family: "bootstrap-icons" !important;
+                font-style: normal !important;
+                font-weight: normal !important;
+                display: inline-block;
+            }

@@ -1542,3 +1542,108 @@
         transition-duration: 0.01ms !important;
     }
 }
+
+
+
+/* =========================================
+   FIX TOÀN BỘ FONT TRANG CHỦ
+   Sử dụng duy nhất Times New Roman
+========================================= */
+
+html,
+body,
+.home-page,
+.home-page * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+    /* Áp dụng cả các thành phần giả */
+    .home-page *::before,
+    .home-page *::after {
+        font-family: "Times New Roman", Times, serif !important;
+    }
+
+    /* Sửa lỗi khoảng cách chữ tiếng Việt */
+    .home-page,
+    .home-page * {
+        letter-spacing: normal !important;
+        word-spacing: normal !important;
+        font-kerning: none !important;
+        font-variant-ligatures: none !important;
+        font-feature-settings: normal !important;
+    }
+
+        /* Tiêu đề */
+        .home-page h1,
+        .home-page h2,
+        .home-page h3,
+        .home-page h4,
+        .home-page h5,
+        .home-page h6 {
+            font-family: "Times New Roman", Times, serif !important;
+            letter-spacing: normal !important;
+        }
+
+        /* Nội dung */
+        .home-page p,
+        .home-page span,
+        .home-page a,
+        .home-page li,
+        .home-page label,
+        .home-page small,
+        .home-page strong,
+        .home-page em,
+        .home-page button {
+            font-family: "Times New Roman", Times, serif !important;
+        }
+
+        /* Ô nhập liệu */
+        .home-page input,
+        .home-page textarea,
+        .home-page select {
+            font-family: "Times New Roman", Times, serif !important;
+        }
+
+
+
+
+
+
+
+
+
+/* =========================================
+   FIX FOOTER VÀ KHOẢNG TRẮNG
+========================================= */
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 0;
+}
+
+.library-home {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.library-footer {
+    margin-bottom: 0;
+}
+
+
+
+/* =========================================
+   FIX BOOTSTRAP ICONS - TRANG CHỦ
+========================================= */
+
+.home-page i.bi::before,
+.home-page .bi::before {
+    font-family: "bootstrap-icons" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    display: inline-block;
+}
