@@ -27,18 +27,4 @@
 
 
 
-/* Áp dụng Times New Roman toàn bộ giao diện */
-html,
-body {
-    font-family: var(--font-main) !important;
-}
 
-    body *:not(i):not(.bi):not(.bi::before) {
-        font-family: var(--font-main) !important;
-    }
-
-/* Giữ nguyên font icon Bootstrap */
-i.bi::before,
-.bi::before {
-    font-family: "bootstrap-icons" !important;
-}
