@@ -184,6 +184,23 @@
     </main>
 </div>
 
+@* @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} *@
+
+
+
+                   
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function() {
+            const emailInput = $('input[name="Email"]');
+
+            emailInput.on('input change blur', function() {
+                $(this).valid();
+            });
+        });
+    </script>
 }
