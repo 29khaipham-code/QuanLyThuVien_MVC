@@ -10,7 +10,7 @@
 }
 
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="@(Context.Request.Cookies["site-language"] ?? "vi")">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -139,40 +139,10 @@
                         </button>
                     </form>
                     <!-- LANGUAGE SWITCHER -->
-                    <div class="dg-language dropdown">
-
-                        <button class="dg-language-toggle dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
-
-                            <i class="bi bi-globe2"></i>
-                            <span>VI</span>
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-menu-end dg-language-menu">
-
-                            <li>
-                                <button type="button"
-                                        class="dropdown-item active"
-                                        onclick="changeLanguage('vi')">
-                                    <span class="dg-language-flag">🇻🇳</span>
-                                    Tiếng Việt
-                                    <i class="bi bi-check2 ms-auto"></i>
-                                </button>
-                            </li>
-
-                            <li>
-                                <button type="button"
-                                        class="dropdown-item"
-                                        onclick="changeLanguage('en')">
-                                    <span class="dg-language-flag">🇬🇧</span>
-                                    English
-                                </button>
-                            </li>
-
-                        </ul>
+                    <div class="ms-lg-3 my-2 my-lg-0">
+                        <partial name="_LanguageSwitcher" />
                     </div>
+
 
                     <!-- ACCOUNT -->
                     <ul class="navbar-nav dg-account">
@@ -320,6 +290,9 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/language.js" asp-append-version="true"></script>
+
 
     @await RenderSectionAsync("Scripts", required: false)
     <!-- AOS Animation -->

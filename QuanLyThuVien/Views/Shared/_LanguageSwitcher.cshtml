@@ -1,0 +1,76 @@
+@{
+    var currentLanguage = Context.Request.Cookies["site-language"] ?? "vi";
+    var currentUrl = $"{Context.Request.Path}{Context.Request.QueryString}";
+}
+
+<div class="dg-language dropdown">
+
+    <button class="dg-language-toggle dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+
+        <i class="bi bi-globe2"></i>
+        <span>@(currentLanguage == "vi" ? "VI" : "EN")</span>
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end dg-language-menu">
+
+        <li>
+            <form asp-area=""
+                  asp-controller="Language"
+                  asp-action="SetLanguage"
+                  method="post">
+
+                <input type="hidden"
+                       name="culture"
+                       value="vi" />
+
+                <input type="hidden"
+                       name="returnUrl"
+                       value="@currentUrl" />
+
+                <button type="submit"
+                        class="dropdown-item @(currentLanguage == "vi" ? "active" : "")">
+
+                    <span class="dg-language-flag">🇻🇳</span>
+                    Tiếng Việt
+
+                    @if (currentLanguage == "vi")
+                    {
+                        <i class="bi bi-check2 ms-auto"></i>
+                    }
+                </button>
+            </form>
+        </li>
+
+        <li>
+            <form asp-area=""
+                  asp-controller="Language"
+                  asp-action="SetLanguage"
+                  method="post">
+
+                <input type="hidden"
+                       name="culture"
+                       value="en" />
+
+                <input type="hidden"
+                       name="returnUrl"
+                       value="@currentUrl" />
+
+                <button type="submit"
+                        class="dropdown-item @(currentLanguage == "en" ? "active" : "")">
+
+                    <span class="dg-language-flag">🇬🇧</span>
+                    English
+
+                    @if (currentLanguage == "en")
+                    {
+                        <i class="bi bi-check2 ms-auto"></i>
+                    }
+                </button>
+            </form>
+        </li>
+
+    </ul>
+</div>
