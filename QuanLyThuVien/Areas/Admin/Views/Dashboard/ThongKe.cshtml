@@ -1,0 +1,186 @@
+@model QuanLyThuVien.ViewModels.Admin.Dashboard.ThongKeViewModel
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Thống kê báo cáo";
+
+    var maxLuotMuon = Model.MuonTheoThang.Any()
+        ? Math.Max(Model.MuonTheoThang.Max(x => x.SoLuotMuon), 1)
+        : 1;
+
+    var tongSachTheoTheLoai = Model.SachTheoTheLoai.Sum(x => x.SoDauSach);
+}
+
+<div class="report-page">
+    <div class="report-heading">
+        <div>
+            <span class="report-eyebrow">TRUNG TÂM ĐIỀU HÀNH</span>
+            <h2>Thống kê &amp; báo cáo</h2>
+            <p>Theo dõi tình hình hoạt động của thư viện qua dữ liệu hệ thống.</p>
+        </div>
+        <div class="report-updated">
+            <span class="report-live-dot"></span>
+            Dữ liệu trực tiếp từ hệ thống
+        </div>
+    </div>
+
+    <div class="report-stat-grid">
+        <section class="report-stat-card stat-blue">
+            <div class="report-stat-top">
+                <span class="report-stat-icon">📚</span>
+                <span class="report-stat-label">ĐẦU SÁCH</span>
+            </div>
+            <div class="report-stat-value">@Model.TongDauSach.ToString("N0")</div>
+            <div class="report-stat-note">Tổng số đầu sách trong thư viện</div>
+        </section>
+
+        <section class="report-stat-card stat-purple">
+            <div class="report-stat-top">
+                <span class="report-stat-icon">👥</span>
+                <span class="report-stat-label">ĐỘC GIẢ</span>
+            </div>
+            <div class="report-stat-value">@Model.TongDocGia.ToString("N0")</div>
+            <div class="report-stat-note">Tổng số độc giả đã đăng ký</div>
+        </section>
+
+        <section class="report-stat-card stat-green">
+            <div class="report-stat-top">
+                <span class="report-stat-icon">🔄</span>
+                <span class="report-stat-label">ĐANG ĐƯỢC MƯỢN</span>
+            </div>
+            <div class="report-stat-value">@Model.SachDangMuon.ToString("N0")</div>
+            <div class="report-stat-note">Bản sao chưa được ghi nhận trả</div>
+        </section>
+
+        <section class="report-stat-card stat-orange">
+            <div class="report-stat-top">
+                <span class="report-stat-icon">⚠️</span>
+                <span class="report-stat-label">ĐANG QUÁ HẠN</span>
+            </div>
+            <div class="report-stat-value">@Model.SachQuaHan.ToString("N0")</div>
+            <div class="report-stat-note">Bản sao đã quá hạn trả</div>
+        </section>
+    </div>
+
+    <div class="report-main-grid">
+        <section class="report-panel report-monthly-panel">
+            <div class="report-panel-heading">
+                <div>
+                    <h3>Lượt mượn theo tháng</h3>
+                    <p>Thống kê 6 tháng gần nhất</p>
+                </div>
+                <span class="report-panel-icon">📈</span>
+            </div>
+
+            @if (Model.MuonTheoThang.Any())
+            {
+                <div class="monthly-chart" role="img" aria-label="Biểu đồ lượt mượn trong 6 tháng gần nhất">
+                    @foreach (var item in Model.MuonTheoThang)
+                    {
+                        var barHeight = item.SoLuotMuon == 0
+                            ? 3
+                            : Math.Max(8, (int)Math.Round(item.SoLuotMuon * 100.0 / maxLuotMuon));
+
+                        <div class="monthly-chart-column">
+                            <span class="monthly-chart-value">@item.SoLuotMuon</span>
+                            <div class="monthly-chart-track">
+                                <div class="monthly-chart-bar" style="height: @barHeight%"></div>
+                            </div>
+                            <span class="monthly-chart-label">@item.Thang</span>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="report-empty">Chưa có dữ liệu mượn sách trong kỳ thống kê.</div>
+            }
+        </section>
+
+        <section class="report-panel report-category-panel">
+            <div class="report-panel-heading">
+                <div>
+                    <h3>Cơ cấu đầu sách</h3>
+                    <p>Phân bố theo thể loại</p>
+                </div>
+                <span class="report-panel-icon">📊</span>
+            </div>
+
+            @if (Model.SachTheoTheLoai.Any())
+            {
+                <div class="category-chart">
+                    @foreach (var item in Model.SachTheoTheLoai)
+                    {
+                        var percent = tongSachTheoTheLoai == 0
+                            ? 0
+                            : (int)Math.Round(item.SoDauSach * 100.0 / tongSachTheoTheLoai);
+
+                        <div class="category-row">
+                            <div class="category-row-heading">
+                                <span title="@item.TenTheLoai">@item.TenTheLoai</span>
+                                <strong>@item.SoDauSach.ToString("N0")</strong>
+                            </div>
+                            <div class="category-track">
+                                <div class="category-fill" style="width: @percent%"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="report-empty">Chưa có dữ liệu thể loại sách.</div>
+            }
+        </section>
+    </div>
+
+    <section class="report-panel report-popular-panel">
+        <div class="report-panel-heading">
+            <div>
+                <h3>Những đầu sách được mượn nhiều</h3>
+                <p>Top 5 đầu sách có số lượt mượn cao nhất</p>
+            </div>
+            <span class="report-panel-icon">🏆</span>
+        </div>
+
+        @if (Model.SachMuonNhieu.Any())
+        {
+            <div class="table-responsive">
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 90px;">Xếp hạng</th>
+                            <th>Tên sách</th>
+                            <th class="text-end">Số lượt mượn</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < Model.SachMuonNhieu.Count; i++)
+                        {
+                            var item = Model.SachMuonNhieu[i];
+                            <tr>
+                                <td>
+                                    <span class="report-rank">@(i + 1)</span>
+                                </td>
+                                <td class="report-book-title">@item.TenSach</td>
+                                <td class="text-end">
+                                    <strong>@item.SoLuotMuon.ToString("N0")</strong>
+                                    <span class="report-unit">lượt</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="report-empty">Chưa có dữ liệu mượn sách để xếp hạng.</div>
+        }
+    </section>
+
+    <div class="report-footnote">
+        <span>ⓘ</span>
+        Số liệu được tổng hợp từ phiếu mượn và chi tiết mượn hiện có trong cơ sở dữ liệu.
+    </div>
+</div>

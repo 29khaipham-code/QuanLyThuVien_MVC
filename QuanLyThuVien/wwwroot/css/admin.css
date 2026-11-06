@@ -265,6 +265,415 @@ body {
     }
 }
 
+/* =========================================
+   TRANG THONG KE BAO CAO - CHI PHAN NOI DUNG
+   Khong thay doi sidebar va header hien tai.
+========================================= */
+.report-page {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    color: #243449;
+}
+
+.report-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.report-eyebrow {
+    display: inline-block;
+    margin-bottom: 7px;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.35px;
+}
+
+.report-heading h2 {
+    margin: 0;
+    color: #18324d;
+    font-size: 26px;
+    font-weight: 750;
+}
+
+.report-heading p,
+.report-panel-heading p {
+    margin: 6px 0 0;
+    color: #7b8796;
+    font-size: 13px;
+}
+
+.report-updated {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border: 1px solid #dce9e2;
+    border-radius: 9px;
+    background: #f4fbf6;
+    color: #347451;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.report-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22a06b;
+    box-shadow: 0 0 0 3px rgba(34, 160, 107, .12);
+}
+
+.report-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.report-stat-card,
+.report-panel {
+    min-width: 0;
+    border: 1px solid #e4e9f0;
+    border-radius: 13px;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(25, 45, 70, .035);
+}
+
+.report-stat-card {
+    position: relative;
+    overflow: hidden;
+    padding: 19px 20px 17px;
+}
+
+    .report-stat-card::after {
+        position: absolute;
+        right: -22px;
+        bottom: -38px;
+        width: 105px;
+        height: 105px;
+        border-radius: 50%;
+        background: currentColor;
+        content: "";
+        opacity: .045;
+    }
+
+.report-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.report-stat-icon {
+    display: inline-flex;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #f1f5f9;
+    font-size: 21px;
+}
+
+.report-stat-label {
+    color: #8390a1;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .7px;
+}
+
+.report-stat-value {
+    margin-top: 15px;
+    color: #1d3047;
+    font-size: 29px;
+    font-weight: 750;
+    line-height: 1.1;
+}
+
+.report-stat-note {
+    margin-top: 7px;
+    color: #8490a0;
+    font-size: 11px;
+}
+
+.stat-blue {
+    color: #2875d0;
+}
+
+.stat-purple {
+    color: #8064c8;
+}
+
+.stat-green {
+    color: #23966b;
+}
+
+.stat-orange {
+    color: #d88732;
+}
+
+.stat-blue .report-stat-icon {
+    background: #edf5ff;
+}
+
+.stat-purple .report-stat-icon {
+    background: #f3efff;
+}
+
+.stat-green .report-stat-icon {
+    background: #eaf8f1;
+}
+
+.stat-orange .report-stat-icon {
+    background: #fff5e9;
+}
+
+.report-main-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, .85fr);
+    gap: 18px;
+}
+
+.report-panel {
+    padding: 21px 22px;
+}
+
+.report-panel-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+    .report-panel-heading h3 {
+        margin: 0;
+        color: #23364d;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+.report-panel-icon {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #f1f6fc;
+    font-size: 17px;
+}
+
+.monthly-chart {
+    display: grid;
+    height: 220px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+    padding: 8px 4px 0;
+}
+
+.monthly-chart-column {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.monthly-chart-value {
+    color: #52647a;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.monthly-chart-track {
+    display: flex;
+    width: min(100%, 34px);
+    height: 155px;
+    align-items: flex-end;
+    overflow: hidden;
+    border-radius: 7px 7px 3px 3px;
+    background: #f0f4f8;
+}
+
+.monthly-chart-bar {
+    width: 100%;
+    min-height: 3px;
+    border-radius: 7px 7px 2px 2px;
+    background: linear-gradient(180deg, #4b9af0, #276fc4);
+    transition: height .25s ease;
+}
+
+.monthly-chart-label {
+    color: #7d8998;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.category-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    padding-top: 2px;
+}
+
+.category-row-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 7px;
+    color: #526176;
+    font-size: 12px;
+}
+
+    .category-row-heading span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .category-row-heading strong {
+        color: #263b54;
+        font-size: 12px;
+    }
+
+.category-track {
+    height: 8px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #eef2f6;
+}
+
+.category-fill {
+    height: 100%;
+    min-width: 2px;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #5b9de8, #3679c7);
+}
+
+.report-popular-panel {
+    padding-bottom: 10px;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .report-table thead th {
+        padding: 11px 12px;
+        border-bottom: 1px solid #e9edf2;
+        color: #8290a0;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .55px;
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    .report-table tbody td {
+        padding: 13px 12px;
+        border-bottom: 1px solid #f0f2f5;
+        color: #536277;
+        font-size: 13px;
+    }
+
+    .report-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+.report-rank {
+    display: inline-flex;
+    width: 27px;
+    height: 27px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #eef5fd;
+    color: #286db7;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.report-book-title {
+    color: #293d55 !important;
+    font-weight: 650;
+}
+
+.report-unit {
+    margin-left: 4px;
+    color: #8a96a5;
+    font-size: 11px;
+}
+
+.report-empty {
+    display: flex;
+    min-height: 130px;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border: 1px dashed #dce3eb;
+    border-radius: 10px;
+    color: #8995a4;
+    font-size: 13px;
+    text-align: center;
+}
+
+.report-footnote {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #8793a2;
+    font-size: 11px;
+}
+
+@media (max-width: 1200px) {
+    .report-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .report-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .report-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .report-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .report-panel {
+        padding: 17px 14px;
+    }
+
+    .monthly-chart {
+        gap: 5px;
+    }
+
+    .monthly-chart-label {
+        font-size: 9px;
+    }
+
+    .report-table thead th,
+    .report-table tbody td {
+        padding-right: 7px;
+        padding-left: 7px;
+    }
+}
+
 /* ================================
    SIDEBAR DROPDOWN
 ================================ */
