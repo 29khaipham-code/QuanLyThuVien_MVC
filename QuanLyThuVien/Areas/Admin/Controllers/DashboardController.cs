@@ -1,6 +1,10 @@
 ﻿
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using QuanLyThuVien.Services;
+using QuanLyThuVien.ViewModels.Admin.TongQuan;
 
 namespace QuanLyThuVien.Areas.Admin.Controllers
 {
@@ -8,15 +12,27 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
     [Authorize(Roles = "QuanTri")]
     public class DashboardController : Controller
     {
-        // Trang tổng quan của Admin
-        [HttpGet]
-        public IActionResult Index()
+        private readonly DashboardThongKeService _thongKeService;
+
+        public DashboardController(
+            DashboardThongKeService thongKeService)
         {
-            ViewData["Title"] = "Tổng quan";
-            return View();
+            _thongKeService = thongKeService;
         }
 
-        // Trang tạm cho chức năng chưa triển khai
+        // TRANG TONG QUAN ADMIN
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            ViewData["Title"] = "Tổng quan";
+
+            DashboardThongKeViewModel model =
+                await _thongKeService.LayThongKeAsync();
+
+            return View(model);
+        }
+
+        // TRANG TAM CHO CHUC NANG CHUA TRIEN KHAI
         [HttpGet]
         public IActionResult Module(string id)
         {
@@ -43,6 +59,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             }
 
             ViewData["Title"] = title;
+
             return View();
         }
     }
