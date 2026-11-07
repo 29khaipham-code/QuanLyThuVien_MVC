@@ -15,5 +15,7 @@ public partial class LoaiDocGium
 
     public string? MoTa { get; set; }
 
+    public int SoDatTruocToiDa { get; set; }
+
     public virtual ICollection<DocGium> DocGia { get; set; } = new List<DocGium>();
 }

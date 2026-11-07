@@ -49,6 +49,8 @@ public partial class QuanLyThuVienContext : DbContext
 
     public virtual DbSet<VaiTro> VaiTros { get; set; }
 
+    public virtual DbSet<ThongBao> ThongBaos { get; set; }
+
     public virtual DbSet<VwSoLuongSach> VwSoLuongSaches { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -185,6 +187,7 @@ public partial class QuanLyThuVienContext : DbContext
 
             entity.Property(e => e.MoTa).HasMaxLength(255);
             entity.Property(e => e.TenLoai).HasMaxLength(100);
+            entity.Property(e => e.SoDatTruocToiDa).HasDefaultValue(3, "DF_LoaiDocGia_SoDatTruoc");
         });
 
         modelBuilder.Entity<LuotDocSachDienTu>(entity =>
@@ -443,6 +446,25 @@ public partial class QuanLyThuVienContext : DbContext
 
             entity.Property(e => e.MoTa).HasMaxLength(255);
             entity.Property(e => e.TenTheLoai).HasMaxLength(100);
+        });
+        modelBuilder.Entity<ThongBao>(entity =>
+        {
+            entity.ToTable("ThongBao");
+
+            entity.HasIndex(e => new { e.DocGiaId, e.KhoaTrung }, "UQ_ThongBao_DocGia_Khoa").IsUnique();
+            entity.HasIndex(e => new { e.DocGiaId, e.DaXoa, e.DaDoc, e.NgayTao }, "IX_ThongBao_DocGia");
+
+            entity.Property(e => e.Loai).HasMaxLength(30);
+            entity.Property(e => e.TieuDe).HasMaxLength(200);
+            entity.Property(e => e.NoiDung).HasMaxLength(500);
+            entity.Property(e => e.Url).HasMaxLength(255).IsUnicode(false);
+            entity.Property(e => e.KhoaTrung).HasMaxLength(100).IsUnicode(false);
+            entity.Property(e => e.NgayTao).HasDefaultValueSql("(sysdatetime())", "DF_ThongBao_NgayTao");
+
+            entity.HasOne(d => d.DocGia).WithMany()
+                .HasForeignKey(d => d.DocGiaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ThongBao_DocGia");
         });
 
         modelBuilder.Entity<VaiTro>(entity =>

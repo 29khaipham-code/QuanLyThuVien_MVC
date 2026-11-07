@@ -7,6 +7,10 @@
     var daDangNhap = User.Identity?.IsAuthenticated == true;
 
     var returnUrl = Context.Request.Path + Context.Request.QueryString;
+
+    var anhDaiDien = User.IsInRole("DocGia")
+    ? ViewBag.AnhDaiDienUrl as string
+    : null;
 }
 
 <!DOCTYPE html>
@@ -21,7 +25,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/docgia/docgia.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/docgia/sachcard.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/DocGia/SachChiTiet.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/docgia/sachchitiet.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/docgia/chuongthongbao.css" asp-append-version="true" />
+
     <!-- AOS Animation -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
           rel="stylesheet" />
@@ -64,7 +70,7 @@
 
                     <!-- NAVIGATION -->
                     <ul class="navbar-nav dg-nav me-auto">
-
+                        @* Mục ai cũng thấy (kể cả khách) *@
                         <li class="nav-item">
                             <a class="nav-link @Active("Home")"
                                asp-area="DocGia"
@@ -86,6 +92,7 @@
                         </li>
 
                         @if (laDocGia)
+                        @* Mục chỉ dành cho độc giả đã đăng nhập *@
                         {
                             <li class="nav-item">
                                 <a class="nav-link @Active("SachDienTu")"
@@ -119,129 +126,137 @@
                         }
                     </ul>
 
-                    <!-- SEARCH -->
-                    <form class="dg-search"
-                          method="get"
-                          asp-area="DocGia"
-                          asp-controller="Sach"
-                          asp-action="Index"
-                          role="search">
+                    
+                    <!-- RIGHT NAVIGATION ACTIONS -->
+                    <div class="dg-nav-actions">
 
-                        <i class="bi bi-search dg-search-icon"></i>
+                        <!-- SEARCH -->
+                        <form class="dg-search"
+                              method="get"
+                              asp-area="DocGia"
+                              asp-controller="Sach"
+                              asp-action="Index"
+                              role="search">
 
-                        <input type="search"
-                               name="tuKhoa"
-                               placeholder="Tìm sách, tác giả..."
-                               aria-label="Tìm kiếm" />
+                            <i class="bi bi-search dg-search-icon"></i>
 
-                        <button type="submit" aria-label="Tìm">
-                            <i class="bi bi-arrow-right"></i>
-                        </button>
-                    </form>
-                    <!-- LANGUAGE SWITCHER -->
-                    <div class="ms-lg-3 my-2 my-lg-0">
-                        <partial name="_LanguageSwitcher" />
-                    </div>
+                            <input type="search"
+                                   name="tuKhoa"
+                                   placeholder="Tìm sách, tác giả..."
+                                   aria-label="Tìm kiếm" />
 
+                            <button type="submit" aria-label="Tìm">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </form>
 
-                    <!-- ACCOUNT -->
-                    <ul class="navbar-nav dg-account">
+                        <!-- LANGUAGE SWITCHER -->
+                        <div class="dg-language">
+                            <partial name="_LanguageSwitcher" />
+                        </div>
 
-                        @if (laDocGia)
-                        {
-                            <li class="nav-item dropdown">
+                        <!-- ACCOUNT -->
+                        <ul class="navbar-nav dg-account">
 
-                                <a class="nav-link dg-account-toggle dropdown-toggle"
-                                   href="#"
-                                   role="button"
-                                   data-bs-toggle="dropdown"
-                                   aria-expanded="false">
+                            @if (laDocGia)
+                            {
+                                <!-- NOTIFICATION -->
+                                @await Component.InvokeAsync("ThongBaoChuong")
 
-                                    <span class="dg-avatar">
-                                        <i class="bi bi-person"></i>
-                                    </span>
+                                <!-- READER ACCOUNT -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dg-account-toggle dropdown-toggle"
+                                       href="#"
+                                       role="button"
+                                       data-bs-toggle="dropdown"
+                                       aria-expanded="false">
 
-                                    <span class="dg-account-name">
+                                       @await Component.InvokeAsync("AvatarDocGia") 
+
+                                        <span class="dg-account-name">
+                                            @User.Identity?.Name
+                                        </span>
+                                        
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-end dg-dropdown">
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-area="DocGia"
+                                               asp-controller="HoSo"
+                                               asp-action="Index">
+                                                <i class="bi bi-person-circle"></i>
+                                                Hồ sơ cá nhân
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-area="DocGia"
+                                               asp-controller="HoSo"
+                                               asp-action="DoiMatKhau">
+                                                <i class="bi bi-key"></i>
+                                                Đổi mật khẩu
+                                            </a>
+                                        </li>
+
+                                        <li><hr class="dropdown-divider" /></li>
+
+                                        <li>
+                                            <form method="post"
+                                                  asp-area=""
+                                                  asp-controller="Account"
+                                                  asp-action="Logout">
+
+                                                <button type="submit"
+                                                        class="dropdown-item dg-logout">
+                                                    <i class="bi bi-box-arrow-right"></i>
+                                                    Đăng xuất
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                            else if (daDangNhap)
+                            {
+                                <!-- STAFF ACCOUNT -->
+                                <li class="nav-item dg-staff-account">
+                                    <span class="dg-staff-name">
+                                        <i class="bi bi-person-badge"></i>
                                         @User.Identity?.Name
                                     </span>
-                                </a>
 
-                                <ul class="dropdown-menu dropdown-menu-end dg-dropdown">
+                                    <form method="post"
+                                          asp-area=""
+                                          asp-controller="Account"
+                                          asp-action="Logout">
 
-                                    <li>
-                                        <a class="dropdown-item"
-                                           asp-area="DocGia"
-                                           asp-controller="HoSo"
-                                           asp-action="Index">
-                                            <i class="bi bi-person-circle"></i>
-                                            Hồ sơ cá nhân
-                                        </a>
-                                    </li>
+                                        <button type="submit" class="dg-login-btn dg-logout-btn">
+                                            Đăng xuất
+                                            <i class="bi bi-box-arrow-right"></i>
+                                        </button>
+                                    </form>
+                                </li>
+                            }
+                            else
+                            {
+                                <!-- GUEST ACCOUNT -->
+                                <li class="nav-item">
+                                    <a class="dg-login-btn"
+                                       asp-area=""
+                                       asp-controller="Account"
+                                       asp-action="Login"
+                                       asp-route-returnUrl="@returnUrl">
 
-                                    <li>
-                                        <a class="dropdown-item"
-                                           asp-area="DocGia"
-                                           asp-controller="HoSo"
-                                           asp-action="DoiMatKhau">
-                                            <i class="bi bi-key"></i>
-                                            Đổi mật khẩu
-                                        </a>
-                                    </li>
+                                        <i class="bi bi-person"></i>
+                                        Đăng nhập
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
 
-                                    <li><hr class="dropdown-divider" /></li>
-
-                                    <li>
-                                        <form method="post"
-                                              asp-area=""
-                                              asp-controller="Account"
-                                              asp-action="Logout">
-
-                                            <button type="submit"
-                                                    class="dropdown-item dg-logout">
-                                                <i class="bi bi-box-arrow-right"></i>
-                                                Đăng xuất
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        }
-                        else if (daDangNhap)
-                        {
-                            <li class="nav-item dg-staff-account">
-
-                                <span class="dg-staff-name">
-                                    <i class="bi bi-person-badge"></i>
-                                    @User.Identity?.Name
-                                </span>
-
-                                <form method="post"
-                                      asp-area=""
-                                      asp-controller="Account"
-                                      asp-action="Logout">
-
-                                    <button type="submit" class="dg-login-btn dg-logout-btn">
-                                        Đăng xuất
-                                        <i class="bi bi-box-arrow-right"></i>
-                                    </button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="dg-login-btn"
-                                   asp-area=""
-                                   asp-controller="Account"
-                                   asp-action="Login"
-                                   asp-route-returnUrl="@returnUrl">
-
-                                    <i class="bi bi-person"></i>
-                                    Đăng nhập
-                                </a>
-                            </li>
-                        }
-                    </ul>
 
                 </div>
             </div>
@@ -297,6 +312,7 @@
     @await RenderSectionAsync("Scripts", required: false)
     <!-- AOS Animation -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
 
     <script>
             document.addEventListener("DOMContentLoaded", function () {

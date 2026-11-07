@@ -1,0 +1,227 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.ThongBaoIndexViewModel
+
+@{
+    ViewData["Title"] = "Thông báo";
+}
+
+<div class="container dg-notification-page">
+
+    @* Tiêu đề trang *@
+    <div class="dg-notification-header">
+        <div class="dg-notification-heading">
+            <div class="dg-notification-icon">
+                <i class="bi bi-bell"></i>
+            </div>
+
+            <div>
+                <h2>Thông báo</h2>
+                <p>Theo dõi những cập nhật mới nhất từ thư viện</p>
+            </div>
+        </div>
+
+        <div class="dg-notification-actions">
+            <button type="button" id="btnDocTatCa" class="dg-btn-read-all">
+                <i class="bi bi-check2-all"></i>
+                <span>Đọc tất cả</span>
+            </button>
+
+            <button type="button" id="btnXoaDaDoc" class="dg-btn-delete">
+                <i class="bi bi-trash3"></i>
+                <span>Xóa đã đọc</span>
+            </button>
+        </div>
+    </div>
+
+    @* Bộ lọc thông báo *@
+    <div class="dg-notification-filter">
+        <div class="dg-filter-heading">
+            <i class="bi bi-funnel"></i>
+            <span>Lọc thông báo</span>
+        </div>
+
+        <form id="formLoc"
+              method="get"
+              asp-area="DocGia"
+              asp-controller="ThongBao"
+              asp-action="Index"
+              class="dg-filter-form">
+
+            <div class="dg-filter-group">
+                <label for="loai">Loại thông báo</label>
+
+                <select id="loai" name="loai" class="form-select">
+                    <option value="">Tất cả thông báo</option>
+
+                    @foreach (var item in LoaiThongBao.TatCa)
+                    {
+                        <option value="@item.Item1"
+                                selected="@(Model.Loai == item.Item1 ? "selected" : null)">
+                            @item.Item2
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="dg-filter-group">
+                <label for="trangThai">Trạng thái</label>
+
+                <select id="trangThai" name="trangThai" class="form-select">
+                    <option value="tatca"
+                            selected="@(Model.TrangThai == "tatca" ? "selected" : null)">
+                        Tất cả trạng thái
+                    </option>
+
+                    <option value="chuadoc"
+                            selected="@(Model.TrangThai == "chuadoc" ? "selected" : null)">
+                        Chưa đọc
+                    </option>
+
+                    <option value="dadoc"
+                            selected="@(Model.TrangThai == "dadoc" ? "selected" : null)">
+                        Đã đọc
+                    </option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+    @* Mã chống giả mạo cho các thao tác AJAX *@
+    @Html.AntiForgeryToken()
+
+    @* Danh sách thông báo *@
+    <div id="ketQua" class="dg-notification-results">
+        <partial name="_DanhSach" model="Model" />
+    </div>
+
+</div>
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/DocGia/ThongBao.css"
+          asp-append-version="true" />
+}
+
+@section Scripts {
+    <script>
+        (function () {
+            var $ketQua = $('#ketQua');
+            var $form = $('#formLoc');
+
+            var url = {
+                daDoc: '@Url.Action("DanhDauDaDoc", "ThongBao", new { area = "DocGia" })',
+                docTatCa: '@Url.Action("DocTatCa", "ThongBao", new { area = "DocGia" })',
+                xoa: '@Url.Action("Xoa", "ThongBao", new { area = "DocGia" })',
+                xoaDaDoc: '@Url.Action("XoaDaDoc", "ThongBao", new { area = "DocGia" })'
+            };
+
+            // Tải lại danh sách bằng AJAX.
+            function tai(diaChi, pushUrl) {
+                $ketQua.css('opacity', 0.5);
+
+                $.ajax({
+                    url: diaChi,
+                    method: 'GET',
+                    cache: false
+                })
+                    .done(function (html) {
+                        $ketQua.html(html);
+                        if (window.AOS) {
+                            AOS.refreshHard();
+                        }
+
+                        if (pushUrl) {
+                            history.pushState(null, '', diaChi);
+                        }
+                    })
+                    .fail(function () {
+                        $ketQua.html(
+                            '<div class="dg-notification-error">' +
+                            'Không tải được dữ liệu, vui lòng thử lại.' +
+                            '</div>'
+                        );
+                    })
+                    .always(function () {
+                        $ketQua.css('opacity', 1);
+                    });
+            }
+
+            // Làm mới danh sách và quả chuông trên navbar.
+            function lamMoi() {
+                tai(location.pathname + location.search, false);
+
+                if (window.capNhatChuong) {
+                    window.capNhatChuong();
+                }
+            }
+
+            // Gửi POST kèm mã chống giả mạo.
+            function guiThaoTac(diaChi, duLieu) {
+                var data = $.extend({}, duLieu, {
+                    __RequestVerificationToken:
+                        $('input[name="__RequestVerificationToken"]').first().val()
+                });
+
+                $.post(diaChi, data)
+                    .done(lamMoi)
+                    .fail(function () {
+                        alert('Không thực hiện được thao tác, vui lòng thử lại.');
+                    });
+            }
+
+            // Bộ lọc.
+            $form.on('submit', function (e) {
+                e.preventDefault();
+
+                tai(
+                    $form.attr('action') + '?' + $form.serialize(),
+                    true
+                );
+            });
+
+            $form.find('select').on('change', function () {
+                $form.trigger('submit');
+            });
+
+            // Phân trang.
+            $ketQua.on('click', '.pagination a', function (e) {
+                e.preventDefault();
+
+                tai($(this).attr('href'), true);
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Thao tác trên từng thông báo.
+            $ketQua.on('click', '.btn-da-doc', function () {
+                guiThaoTac(url.daDoc, {
+                    id: $(this).data('id')
+                });
+            });
+
+            $ketQua.on('click', '.btn-xoa', function () {
+                guiThaoTac(url.xoa, {
+                    id: $(this).data('id')
+                });
+            });
+
+            // Thao tác hàng loạt.
+            $('#btnDocTatCa').on('click', function () {
+                guiThaoTac(url.docTatCa, {});
+            });
+
+            $('#btnXoaDaDoc').on('click', function () {
+                if (confirm('Xóa tất cả thông báo đã đọc?')) {
+                    guiThaoTac(url.xoaDaDoc, {});
+                }
+            });
+
+            // Nút Back/Forward của trình duyệt.
+            window.addEventListener('popstate', function () {
+                location.reload();
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,19 @@
+﻿
+@model string?
+
+<span class="dg-avatar">
+    @if (!string.IsNullOrWhiteSpace(Model))
+    {
+        <img src="@Url.Content("~/" + Model.TrimStart('/'))"
+             alt="Ảnh đại diện"
+             class="dg-avatar-img"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" />
+
+        <i class="bi bi-person"
+           style="display:none"></i>
+    }
+    else
+    {
+        <i class="bi bi-person"></i>
+    }
+</span>

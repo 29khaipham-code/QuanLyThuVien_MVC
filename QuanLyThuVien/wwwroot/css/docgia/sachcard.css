@@ -115,3 +115,50 @@
     }
 }
 
+/* Thẻ sách */
+/*.dg-book-card {
+    background: #49443C !important;
+    border: 1px solid #62594D;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 5px 16px rgba(45, 42, 36, 0.10);
+    transition: all 0.3s ease;
+}
+
+    .dg-book-card:hover {
+        transform: translateY(-5px);
+        border-color: #C86A4A;
+        box-shadow: 0 12px 25px rgba(45, 42, 36, 0.18);
+    }*/
+
+/* Phần thông tin dưới ảnh */
+/*.dg-book-info {
+    background: #49443C !important;
+    padding: 16px;
+}*/
+
+/* Tiêu đề */
+/*.dg-book-title a {
+    color: #F5F0EB !important;
+}
+
+    .dg-book-title a:hover {
+        color: #E8C5AE !important;
+    }*/
+
+/* Tác giả */
+/*.dg-book-author {
+    color: #E0D3C2 !important;
+}*/
+
+/* Thể loại và năm xuất bản */
+/*.dg-book-meta {
+    color: #C8BBA9 !important;
+}*/
+
+/* Footer */
+/*.dg-book-footer {
+    background: #5A5247 !important;
+    border-top: 1px solid #706657;
+    padding: 12px 16px;
+}*/ 

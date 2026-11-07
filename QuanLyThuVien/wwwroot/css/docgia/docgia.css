@@ -760,3 +760,246 @@
         scroll-behavior: auto !important;
     }
 }
+
+/* =========================================
+   NAVBAR - DESKTOP LAYOUT
+========================================= */
+
+.dg-navbar > .container {
+    width: 100%;
+    max-width: 1680px;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 24px;
+}
+
+/* Logo */
+
+.dg-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    margin-right: 12px;
+}
+
+/* Menu chính */
+
+.dg-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 3px;
+    min-width: 0;
+}
+
+    .dg-nav .nav-item {
+        flex-shrink: 0;
+    }
+
+    .dg-nav .nav-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 13px;
+        white-space: nowrap;
+        line-height: 1.3;
+        border-radius: var(--radius-md);
+    }
+
+        .dg-nav .nav-link i {
+            flex-shrink: 0;
+        }
+
+/* Nhóm tiện ích bên phải */
+
+.dg-nav-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.dg-search {
+    width: clamp(190px, 17vw, 270px);
+    flex-shrink: 1;
+}
+
+.dg-language {
+    flex-shrink: 0;
+    margin: 0 !important;
+}
+
+/* Tài khoản và chuông */
+
+.dg-account {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+    .dg-account > li {
+        display: flex;
+        align-items: center;
+    }
+
+.dg-account-toggle {
+    white-space: nowrap;
+}
+
+.dg-account-name {
+    max-width: 125px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Chuông thông báo */
+
+.dg-notification-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dg-notification-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0 !important;
+    border-radius: 50%;
+}
+
+.dg-notification-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    left: auto;
+    transform: none;
+    z-index: 2;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-primary);
+    border-radius: 20px;
+    background: var(--color-terracotta);
+    color: #fff;
+    font-size: 10px;
+    line-height: 1;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1399.98px) and (min-width: 992px) {
+    .dg-navbar > .container {
+        gap: 12px;
+    }
+
+    .dg-brand {
+        margin-right: 0;
+    }
+
+    .dg-nav .nav-link {
+        gap: 5px;
+        padding: 10px 8px;
+        font-size: .9rem;
+    }
+
+    .dg-nav-actions {
+        gap: 8px;
+    }
+
+    .dg-search {
+        width: 190px;
+    }
+
+    .dg-account-name {
+        max-width: 95px;
+    }
+}
+
+/* Mobile và tablet */
+
+@media (max-width: 991.98px) {
+    .dg-navbar > .container {
+        flex-wrap: wrap;
+        gap: 0;
+    }
+
+    .dg-navbar .navbar-toggler {
+        margin-left: auto;
+    }
+
+    .dg-navbar .navbar-collapse {
+        flex-basis: 100%;
+        width: 100%;
+    }
+
+    .dg-nav {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 4px;
+        padding-top: 12px;
+    }
+
+        .dg-nav .nav-link {
+            justify-content: flex-start;
+            white-space: normal;
+        }
+
+    .dg-nav-actions {
+        width: 100%;
+        margin: 12px 0 8px;
+        padding-top: 14px;
+        border-top: 1px solid var(--border-color);
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .dg-search {
+        width: 100%;
+        flex-basis: 100%;
+    }
+
+    .dg-account {
+        margin-left: auto;
+    }
+}
+
+.dg-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: #eef2f7;
+}
+
+.dg-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}

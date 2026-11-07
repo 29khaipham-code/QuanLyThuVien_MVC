@@ -1,0 +1,131 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.ThongBaoIndexViewModel
+
+@{
+    // Link phân trang, giữ nguyên bộ lọc
+    string Link(int trang) => Url.Action("Index", "ThongBao", new
+    {
+        area = "DocGia",
+        loai = Model.Loai,
+        trangThai = Model.TrangThai,
+        trang
+    })!;
+
+    var phanTrang = new PhanTrangViewModel
+    {
+        Trang = Model.Trang,
+        TongTrang = Model.TongTrang,
+        Link = Link
+    };
+
+    var aosDelay = 0;
+}
+
+
+<div class="dg-notification-summary">
+    <div class="dg-notification-summary-icon">
+        <i class="bi bi-inbox"></i>
+    </div>
+
+    <div>
+        <strong>@Model.TongSo thông báo</strong>
+        <span>
+            Có <strong class="dg-unread-count">@Model.ChuaDoc</strong> thông báo chưa đọc
+        </span>
+    </div>
+</div>
+
+@if (!Model.Items.Any())
+{
+    <div class="dg-notification-empty">
+        <div class="dg-notification-empty-icon">
+            <i class="bi bi-bell-slash"></i>
+        </div>
+
+        <h5>Chưa có thông báo</h5>
+        <p>Hiện tại không có thông báo nào phù hợp với bộ lọc của bạn.</p>
+    </div>
+}
+else
+{
+    <div class="dg-notification-list">
+        @foreach (var t in Model.Items)
+        {
+            <div class="dg-notification-item @(t.DaDoc ? "is-read" : "is-unread")" 
+                data-aos="fade-up"
+                data-aos-delay="@aosDelay">
+
+                @* Biểu tượng *@
+                <div class="dg-notification-item-icon">
+                    <i class="bi @t.Icon @t.Mau"></i>
+                </div>
+
+                @* Nội dung *@
+                <div class="dg-notification-content">
+
+                    <div class="dg-notification-item-header">
+                        <div class="dg-notification-title-wrap">
+                            <strong class="dg-notification-title">
+                                @t.TieuDe
+                            </strong>
+
+                            @if (!t.DaDoc)
+                            {
+                                <span class="dg-notification-new">
+                                    Mới
+                                </span>
+                            }
+                        </div>
+
+                        <small class="dg-notification-time">
+                            <i class="bi bi-clock"></i>
+                            @t.ThoiGian
+                        </small>
+                    </div>
+
+                    <div class="dg-notification-message">
+                        @t.NoiDung
+                    </div>
+
+                    @* Các thao tác *@
+                    <div class="dg-notification-item-actions">
+
+                        @if (!string.IsNullOrEmpty(t.Url))
+                        {
+                            <a class="dg-notification-btn dg-btn-detail"
+                               asp-area="DocGia"
+                               asp-controller="ThongBao"
+                               asp-action="Mo"
+                               asp-route-id="@t.Id">
+                                <i class="bi bi-arrow-up-right"></i>
+                                Xem chi tiết
+                            </a>
+                        }
+
+                        @if (!t.DaDoc)
+                        {
+                            <button type="button"
+                                    class="dg-notification-btn dg-btn-mark-read btn-da-doc"
+                                    data-id="@t.Id">
+                                <i class="bi bi-check2"></i>
+                                Đánh dấu đã đọc
+                            </button>
+                        }
+
+                        <button type="button"
+                                class="dg-notification-btn dg-btn-remove btn-xoa"
+                                data-id="@t.Id">
+                            <i class="bi bi-trash3"></i>
+                            Xóa
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+            aosDelay = Math.Min(aosDelay + 60, 300);
+        }
+    </div>
+
+    <div class="dg-notification-pagination">
+        <partial name="_PhanTrang" model="phanTrang" />
+    </div>
+}

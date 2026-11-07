@@ -1,0 +1,110 @@
+﻿@model QuanLyThuVien.ViewModels.DocGia.ChuongViewModel;
+
+<li class="nav-item dropdown dg-notification-dropdown" id="chuongThongBao">
+    <a class="nav-link dg-notification-toggle position-relative"
+       href="#"
+       role="button"
+       data-bs-toggle="dropdown"
+       aria-expanded="false"
+       aria-label="Thông báo">
+
+        <i class="bi bi-bell"></i>
+
+        @if (Model.ChuaDoc > 0)
+        {
+            <span class="dg-notification-badge">
+                @(Model.ChuaDoc > 99 ? "99+" : Model.ChuaDoc.ToString())
+                <span class="visually-hidden">thông báo chưa đọc</span>
+            </span>
+        }
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-end dg-notification-menu">
+        <div class="dg-notification-menu-header">
+            <div>
+                <div class="dg-notification-menu-title">Thông báo</div>
+                <div class="dg-notification-menu-subtitle">
+                    @if (Model.ChuaDoc > 0)
+                    {
+                        <span>Bạn có @Model.ChuaDoc thông báo chưa đọc</span>
+                    }
+                    else
+                    {
+                        <span>Bạn đã cập nhật mọi thông báo</span>
+                    }
+                </div>
+            </div>
+
+            <a class="dg-notification-view-all"
+               asp-area="DocGia"
+               asp-controller="ThongBao"
+               asp-action="Index">
+                Xem tất cả
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        @if (!Model.Items.Any())
+        {
+            <div class="dg-notification-empty">
+                <div class="dg-notification-empty-icon">
+                    <i class="bi bi-bell-slash"></i>
+                </div>
+                <div class="dg-notification-empty-title">Chưa có thông báo</div>
+                <div class="dg-notification-empty-text">
+                    Khi có thông báo mới, chúng sẽ xuất hiện tại đây.
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="dg-notification-dropdown-list">
+                @foreach (var t in Model.Items)
+                {
+                    <a class="dg-notification-dropdown-item @(t.DaDoc ? "is-read" : "is-unread")"
+                       asp-area="DocGia"
+                       asp-controller="ThongBao"
+                       asp-action="Mo"
+                       asp-route-id="@t.Id">
+
+                        <div class="dg-notification-dropdown-icon">
+                            <i class="bi @t.Icon @t.Mau"></i>
+                        </div>
+
+                        <div class="dg-notification-dropdown-content">
+                            <div class="dg-notification-dropdown-heading">
+                                <span class="dg-notification-dropdown-title">
+                                    @t.TieuDe
+                                </span>
+
+                                @if (!t.DaDoc)
+                                {
+                                    <span class="dg-notification-unread-dot"
+                                          title="Chưa đọc"></span>
+                                }
+                            </div>
+
+                            <div class="dg-notification-dropdown-message">
+                                @t.NoiDung
+                            </div>
+
+                            <div class="dg-notification-dropdown-time">
+                                <i class="bi bi-clock"></i>
+                                @t.ThoiGian
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+
+        <div class="dg-notification-menu-footer">
+            <a asp-area="DocGia"
+               asp-controller="ThongBao"
+               asp-action="Index">
+                Mở trung tâm thông báo
+                <i class="bi bi-arrow-up-right"></i>
+            </a>
+        </div>
+    </div>
+</li>

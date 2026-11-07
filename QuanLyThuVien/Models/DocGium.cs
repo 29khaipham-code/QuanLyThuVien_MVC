@@ -42,4 +42,6 @@ public partial class DocGium
     public virtual ICollection<PhieuMuon> PhieuMuons { get; set; } = new List<PhieuMuon>();
 
     public virtual TaiKhoan? TaiKhoan { get; set; }
+
+    public virtual ICollection<ThongBao> ThongBaos { get; set; } = new List<ThongBao>();
 }

@@ -1,8 +1,10 @@
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using QuanLyThuVien.Models;
+using QuanLyThuVien.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,12 +54,24 @@ builder.Services.AddScoped<
     IPasswordHasher<TaiKhoan>,
     PasswordHasher<TaiKhoan>>();
 
-// 6. Tạo ứng dụng sau khi đăng ký tất cả dịch vụ
-builder.Services.AddScoped<QuanLyThuVien.Services.SachDienTuAdminService>();
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<ThongBaoService>();
+builder.Services.AddHostedService<ThongBaoBackgroundService>();
 
-builder.Services.AddScoped<QuanLyThuVien.Services.SachCoverService>();
+// 6. Tạo ứng dụng sau khi đăng ký tất cả dịch vụ
+builder.Services.AddScoped<SachDienTuAdminService>();
+
+builder.Services.AddScoped<SachCoverService>();
+// dki dich vu thong bao
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<ThongBaoService>();
+builder.Services.AddHostedService<ThongBaoBackgroundService>();
+
+
+
 var app = builder.Build();
 // KHỞI TẠO TÀI KHOẢN QUẢN TRỊ - CHỈ DÙNG KHI PHÁT TRIỂN
+// KHỞI TẠO TÀI KHOẢN ADMIN VÀ ĐỘC GIẢ TEST
 if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
@@ -68,40 +82,76 @@ if (app.Environment.IsDevelopment())
     var hasher = scope.ServiceProvider
         .GetRequiredService<IPasswordHasher<TaiKhoan>>();
 
-    var vaiTro = db.VaiTros
+    // 1. Tìm vai trò quản trị
+    var vaiTroAdmin = db.VaiTros
         .FirstOrDefault(x => x.TenVaiTro == "QuanTri");
 
-    if (vaiTro == null)
-        throw new Exception("Chưa có vai trò QuanTri");
-    var admin = db.TaiKhoans
-        .FirstOrDefault(x => x.TenDangNhap == "admin");
-    if (admin == null)
+    if (vaiTroAdmin == null)
     {
-        throw new Exception("Không tìm thấy tài khoản admin!");
+        throw new Exception(
+            "Không tìm thấy vai trò QuanTri. Hãy chạy lại file SQL tạo database."
+        );
     }
 
-    admin.MatKhauHash = hasher.HashPassword(
-        admin,
-        "Admin@123456"
-    );
+    // 2. Tìm tài khoản admin
+    var admin = db.TaiKhoans
+        .FirstOrDefault(x => x.TenDangNhap == "admin");
 
-    admin.HoatDong = true;
+    if (admin == null)
+    {
+        // Chưa có thì tạo mới
+        admin = new TaiKhoan
+        {
+            TenDangNhap = "admin",
+            HoTen = "Quản trị viên",
+            Email = "admin@thuvien.local",
+            HoatDong = true,
+            NgayTao = DateTime.Now,
+            VaiTroId = vaiTroAdmin.Id
+        };
+
+        admin.MatKhauHash = hasher.HashPassword(
+            admin,
+            "Admin@123456"
+        );
+
+        db.TaiKhoans.Add(admin);
+    }
+    else
+    {
+        // Đã có thì cập nhật mật khẩu và vai trò
+        admin.MatKhauHash = hasher.HashPassword(
+            admin,
+            "Admin@123456"
+        );
+
+        admin.HoatDong = true;
+        admin.VaiTroId = vaiTroAdmin.Id;
+    }
 
     db.SaveChanges();
 
+    // 3. Tạo tài khoản độc giả test nếu chưa có
+    var vaiTroDocGia = db.VaiTros
+        .FirstOrDefault(x => x.TenVaiTro == "DocGia");
 
-    // ===== TÀI KHOẢN ĐỘC GIẢ ĐỂ TEST (chỉ chạy khi Development) =====
-    var vaiTroDocGia = db.VaiTros.FirstOrDefault(x => x.TenVaiTro == "DocGia");
-
-    if (vaiTroDocGia != null && !db.TaiKhoans.Any(x => x.TenDangNhap == "docgia1"))
+    if (vaiTroDocGia != null &&
+        !db.TaiKhoans.Any(x => x.TenDangNhap == "docgia1"))
     {
-        var loai = db.LoaiDocGia.FirstOrDefault()
-                   ?? new LoaiDocGium
-                   {
-                       TenLoai = "Sinh viên",
-                       SoSachToiDa = 5,
-                       SoNgayMuonToiDa = 14
-                   };
+        var loai = db.LoaiDocGia.FirstOrDefault();
+
+        if (loai == null)
+        {
+            loai = new LoaiDocGium
+            {
+                TenLoai = "Sinh viên",
+                SoSachToiDa = 5,
+                SoNgayMuonToiDa = 14
+            };
+
+            db.LoaiDocGia.Add(loai);
+            db.SaveChanges();
+        }
 
         var tkDocGia = new TaiKhoan
         {
@@ -113,15 +163,20 @@ if (app.Environment.IsDevelopment())
             VaiTroId = vaiTroDocGia.Id,
             MatKhauHash = ""
         };
-        tkDocGia.MatKhauHash = hasher.HashPassword(tkDocGia, "DocGia@123");
+
+        tkDocGia.MatKhauHash = hasher.HashPassword(
+            tkDocGia,
+            "DocGia@123"
+        );
 
         tkDocGia.DocGium = new DocGium
         {
             MaDocGia = "DGTEST01",
             HoTen = "Độc giả Test",
-            Email = "docgia1@example.invalid",
             NgayDangKy = DateOnly.FromDateTime(DateTime.Today),
-            NgayHetHan = DateOnly.FromDateTime(DateTime.Today.AddYears(1)),
+            NgayHetHan = DateOnly.FromDateTime(
+                DateTime.Today.AddYears(1)
+            ),
             TrangThai = "HoatDong",
             LoaiDocGia = loai
         };

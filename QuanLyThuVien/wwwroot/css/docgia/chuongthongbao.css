@@ -1,0 +1,286 @@
+﻿
+/* =========================================
+   NOTIFICATION DROPDOWN
+========================================= */
+
+.dg-notification-dropdown {
+    position: relative;
+}
+
+.dg-notification-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0 !important;
+    color: var(--text-primary) !important;
+    border-radius: 50%;
+    transition: var(--transition-base);
+}
+
+    .dg-notification-toggle:hover,
+    .dg-notification-toggle[aria-expanded="true"] {
+        background: var(--color-sand);
+        color: var(--color-terracotta) !important;
+    }
+
+    .dg-notification-toggle > i {
+        font-size: 1.25rem;
+    }
+
+.dg-notification-badge {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-primary);
+    border-radius: 20px;
+    background: var(--color-terracotta);
+    color: #fff;
+    font-size: .62rem;
+    font-weight: 700;
+}
+
+/* Dropdown container */
+
+.dg-notification-menu {
+    width: 380px;
+    max-width: min(92vw, 380px);
+    margin-top: 12px !important;
+    padding: 0 !important;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Header */
+
+.dg-notification-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 18px 15px;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dg-notification-menu-title {
+    color: var(--text-primary);
+    font-family: var(--font-heading, "Times New Roman", Times, serif);
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.dg-notification-menu-subtitle {
+    margin-top: 3px;
+    color: var(--text-secondary);
+    font-size: .76rem;
+}
+
+.dg-notification-view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    color: var(--color-terracotta);
+    font-size: .78rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition-base);
+}
+
+    .dg-notification-view-all:hover {
+        color: var(--color-brown);
+    }
+
+/* Notification list */
+
+.dg-notification-dropdown-list {
+    max-height: 390px;
+    overflow-y: auto;
+}
+
+    .dg-notification-dropdown-list::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .dg-notification-dropdown-list::-webkit-scrollbar-thumb {
+        background: var(--color-clay);
+        border-radius: 10px;
+    }
+
+.dg-notification-dropdown-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-color);
+    transition: var(--transition-base);
+}
+
+    .dg-notification-dropdown-item:hover {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+
+    .dg-notification-dropdown-item.is-unread {
+        background: rgba(200, 106, 74, .06);
+    }
+
+        .dg-notification-dropdown-item.is-unread:hover {
+            background: rgba(200, 106, 74, .11);
+        }
+
+    .dg-notification-dropdown-item:last-child {
+        border-bottom: none;
+    }
+
+.dg-notification-dropdown-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-md);
+    background: var(--color-sand);
+    font-size: 1.1rem;
+}
+
+.dg-notification-dropdown-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.dg-notification-dropdown-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.dg-notification-dropdown-title {
+    color: var(--text-primary);
+    font-size: .88rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.is-unread .dg-notification-dropdown-title {
+    font-weight: 700;
+}
+
+.dg-notification-unread-dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background: var(--color-terracotta);
+}
+
+.dg-notification-dropdown-message {
+    display: -webkit-box;
+    margin-top: 5px;
+    overflow: hidden;
+    color: var(--text-secondary);
+    font-size: .79rem;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.dg-notification-dropdown-time {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    color: var(--text-secondary);
+    font-size: .72rem;
+}
+
+/* Empty state */
+
+.dg-notification-empty {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.dg-notification-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    color: var(--color-clay);
+    font-size: 1.6rem;
+}
+
+.dg-notification-empty-title {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.dg-notification-empty-text {
+    max-width: 240px;
+    margin: 5px auto 0;
+    color: var(--text-secondary);
+    font-size: .8rem;
+    line-height: 1.5;
+}
+
+/* Footer */
+
+.dg-notification-menu-footer {
+    padding: 12px;
+    text-align: center;
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+}
+
+    .dg-notification-menu-footer a {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--color-terracotta);
+        font-size: .8rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: var(--transition-base);
+    }
+
+        .dg-notification-menu-footer a:hover {
+            color: var(--color-brown);
+        }
+
+/* Responsive */
+
+@media (max-width: 576px) {
+    .dg-notification-menu {
+        position: fixed !important;
+        top: 65px !important;
+        right: 10px !important;
+        left: auto !important;
+        width: calc(100vw - 20px);
+        max-width: none;
+        margin-top: 0 !important;
+    }
+
+    .dg-notification-menu-header {
+        padding: 15px;
+    }
+}
