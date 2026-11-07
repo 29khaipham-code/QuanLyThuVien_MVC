@@ -655,5 +655,33 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             return RedirectToAction(
                 nameof(Details), new { id });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GoiY(string? term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Json(Array.Empty<object>());
+
+            term = term.Trim();
+
+            var data = await (
+                from pm in _db.Set<PhieuMuon>().AsNoTracking()
+                join dg in _db.Set<DocGium>().AsNoTracking()
+                    on pm.DocGiaId equals dg.Id
+                where pm.MaPhieu.Contains(term)
+                   || dg.HoTen.Contains(term)
+                orderby pm.MaPhieu.StartsWith(term) descending,
+                        pm.Id descending
+                select new
+                {
+                    value = pm.MaPhieu,
+                    label = dg.HoTen,
+                    detail = pm.MaPhieu + " | " + dg.HoTen
+                }
+            ).Take(10).ToListAsync();
+
+            return Json(data);
+        }
+
     }
 }

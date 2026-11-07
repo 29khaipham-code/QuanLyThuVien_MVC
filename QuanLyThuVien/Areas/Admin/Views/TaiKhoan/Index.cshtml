@@ -4,10 +4,69 @@
 @{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Quản lý tài khoản";
+
+    string keyword = ViewBag.Keyword as string ?? "";
 }
+
+<style>
+    .tk-search-wrap {
+        position: relative;
+        width: 100%;
+    }
+
+    .tk-suggestions {
+        display: none;
+        position: absolute;
+        top: calc(100% + 3px);
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 9999;
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 7px;
+        box-shadow: 0 6px 20px rgba(0,0,0,.15);
+        max-height: 320px;
+        overflow-y: auto;
+    }
+
+    .tk-suggestion-item {
+        width: 100%;
+        display: block;
+        padding: 12px 15px;
+        background: white;
+        border: 0;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .tk-suggestion-item:hover,
+    .tk-suggestion-item.active {
+        background: #eaf2ff;
+    }
+
+    .tk-suggestion-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #212529;
+    }
+
+    .tk-suggestion-detail {
+        margin-top: 3px;
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    .tk-suggestion-message {
+        padding: 12px 15px;
+        color: #6c757d;
+    }
+</style>
 
 <div class="content-card">
 
+    <!-- TIEU DE -->
     <div class="d-flex justify-content-between
                 align-items-center mb-4 flex-wrap gap-2">
 
@@ -17,19 +76,17 @@
                 Danh sách tài khoản trong hệ thống
             </p>
         </div>
-        
-<a asp-area="Admin"
-   asp-controller="TaiKhoan"
-   asp-action="Create"
-   class="btn btn-primary">
-    + Thêm tài khoản
-</a>
 
-       
-    
+        <a asp-area="Admin"
+           asp-controller="TaiKhoan"
+           asp-action="Create"
+           class="btn btn-primary">
+            + Thêm tài khoản
+        </a>
 
     </div>
 
+    <!-- THONG BAO -->
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success">
@@ -44,21 +101,38 @@
         </div>
     }
 
-    <form method="get"
+    <!-- TIM KIEM AJAX -->
+    <form id="tkSearchForm"
+          method="get"
           asp-area="Admin"
           asp-controller="TaiKhoan"
           asp-action="Index"
           class="row g-2 mb-4">
 
         <div class="col-md-8">
-            <input type="text"
-                   name="keyword"
-                   value="@ViewBag.Keyword"
-                   class="form-control"
-                   placeholder="Tên đăng nhập, họ tên, email..." />
+
+            <div class="tk-search-wrap" id="tkSearchWrap">
+
+                <input id="tkSearchInput"
+                       type="text"
+                       name="keyword"
+                       value="@keyword"
+                       class="form-control"
+                       placeholder="Tên đăng nhập, họ tên, email..."
+                       autocomplete="off"
+                       aria-expanded="false"
+                       aria-controls="tkSuggestions" />
+
+                <div id="tkSuggestions"
+                     class="tk-suggestions">
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 d-flex gap-2">
+
             <button type="submit"
                     class="btn btn-primary">
                 Tìm kiếm
@@ -68,12 +142,16 @@
                class="btn btn-outline-secondary">
                 Làm mới
             </a>
+
         </div>
+
     </form>
 
+    <!-- BANG TAI KHOAN -->
     <div class="table-responsive">
-        <table class="table table-bordered table-hover
-                      align-middle">
+
+        <table class="table table-bordered table-hover align-middle">
+
             <thead class="table-light">
                 <tr>
                     <th>ID</th>
@@ -87,60 +165,299 @@
             </thead>
 
             <tbody>
-                @foreach (var item in Model)
+
+                @if (Model != null)
                 {
-                    <tr>
-                        <td>@item.Id</td>
-                        <td>@item.TenDangNhap</td>
-                        <td>@item.HoTen</td>
-                        <td>@item.Email</td>
-                        <td>@item.TenVaiTro</td>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
 
-                        <td>
-                            @if (item.HoatDong)
-                            {
-                                <span class="badge bg-success">
-                                    Hoạt động
-                                </span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-danger">
-                                    Đã khóa
-                                </span>
-                            }
-                        </td>
+                            <td>@item.Id</td>
 
-                        <td>
-                            <form asp-area="Admin"
-                                  asp-controller="TaiKhoan"
-                                  asp-action="DoiTrangThai"
-                                  method="post">
+                            <td>@item.TenDangNhap</td>
 
-                                @Html.AntiForgeryToken()
+                            <td>@item.HoTen</td>
 
-                                <input type="hidden"
-                                       name="id"
-                                       value="@item.Id" />
+                            <td>@item.Email</td>
 
-                                <button type="submit"
-                                        class="btn btn-sm @(item.HoatDong ? "btn-outline-danger" : "btn-outline-success")"
-                                        onclick="return confirm('Bạn có chắc muốn thay đổi trạng thái tài khoản này?')">
+                            <td>@item.TenVaiTro</td>
 
-                                    @(item.HoatDong ? "Khóa" : "Mở khóa")
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
+                            <td>
+
+                                @if (item.HoatDong)
+                                {
+                                    <span class="badge bg-success">
+                                        Hoạt động
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">
+                                        Đã khóa
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td>
+
+                                <form asp-area="Admin"
+                                      asp-controller="TaiKhoan"
+                                      asp-action="DoiTrangThai"
+                                      method="post">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@item.Id" />
+
+                                    <button type="submit"
+                                            class="btn btn-sm @(item.HoatDong ? "btn-outline-danger" : "btn-outline-success")"
+                                            onclick="return confirm('Bạn có chắc muốn thay đổi trạng thái tài khoản này?')">
+
+                                        @(item.HoatDong ? "Khóa" : "Mở khóa")
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+                    }
                 }
+
             </tbody>
+
         </table>
+
     </div>
 
-    @if (!Model.Any())
+    @if (Model == null || !Model.Any())
     {
         <div class="alert alert-info">
             Không tìm thấy tài khoản phù hợp.
         </div>
     }
+
 </div>
+
+<script>
+(function () {
+    "use strict";
+
+    function init() {
+
+        const input = document.getElementById("tkSearchInput");
+        const box = document.getElementById("tkSuggestions");
+        const wrap = document.getElementById("tkSearchWrap");
+        const form = document.getElementById("tkSearchForm");
+
+        if (!input || !box || !wrap || !form) return;
+
+        const api = '@Url.Action("GoiY", "TaiKhoan", new { area = "Admin" })';
+
+        let timer = null;
+        let controller = null;
+        let activeIndex = -1;
+
+        function closeBox() {
+            box.style.display = "none";
+            box.replaceChildren();
+            activeIndex = -1;
+            input.setAttribute("aria-expanded", "false");
+        }
+
+        function showBox() {
+            box.style.display = "block";
+            input.setAttribute("aria-expanded", "true");
+        }
+
+        function showMessage(message) {
+
+            box.replaceChildren();
+
+            const div = document.createElement("div");
+            div.className = "tk-suggestion-message";
+            div.textContent = message;
+
+            box.appendChild(div);
+            showBox();
+        }
+
+        function choose(value) {
+            input.value = value;
+            closeBox();
+            form.requestSubmit();
+        }
+
+        async function search(term) {
+
+            if (controller) controller.abort();
+
+            const request = new AbortController();
+            controller = request;
+
+            try {
+
+                const response = await fetch(
+                    api + "?term=" + encodeURIComponent(term),
+                    {
+                        method: "GET",
+                        signal: request.signal,
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("HTTP " + response.status);
+                }
+
+                const data = await response.json();
+
+                if (request.signal.aborted ||
+                    input.value.trim() !== term) {
+                    return;
+                }
+
+                box.replaceChildren();
+                activeIndex = -1;
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    showMessage("Không tìm thấy tài khoản phù hợp");
+                    return;
+                }
+
+                data.forEach(function (item) {
+
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "tk-suggestion-item";
+
+                    const name = document.createElement("div");
+                    name.className = "tk-suggestion-name";
+                    name.textContent = item.label || item.value;
+
+                    const detail = document.createElement("div");
+                    detail.className = "tk-suggestion-detail";
+                    detail.textContent = item.detail || "";
+
+                    button.appendChild(name);
+                    button.appendChild(detail);
+
+                    button.addEventListener("click", function () {
+                        choose(item.value);
+                    });
+
+                    box.appendChild(button);
+                });
+
+                showBox();
+
+            } catch (error) {
+
+                if (error.name === "AbortError") return;
+
+                console.error("TaiKhoan AJAX:", error);
+                showMessage("Không tải được gợi ý. Kiểm tra API GoiY.");
+            }
+        }
+
+        input.addEventListener("input", function () {
+
+            clearTimeout(timer);
+
+            if (controller) controller.abort();
+
+            const term = input.value.trim();
+            closeBox();
+
+            if (!term) return;
+
+            showMessage("Đang tìm kiếm...");
+
+            timer = setTimeout(function () {
+                search(term);
+            }, 200);
+        });
+
+        input.addEventListener("focus", function () {
+
+            const term = input.value.trim();
+
+            if (!term) return;
+
+            clearTimeout(timer);
+
+            timer = setTimeout(function () {
+                search(term);
+            }, 200);
+        });
+
+        input.addEventListener("keydown", function (event) {
+
+            const items = box.querySelectorAll(".tk-suggestion-item");
+
+            if (event.key === "Escape") {
+                closeBox();
+                return;
+            }
+
+            if (box.style.display !== "block" || !items.length) {
+                return;
+            }
+
+            if (event.key === "ArrowDown") {
+                event.preventDefault();
+                activeIndex = (activeIndex + 1) % items.length;
+            }
+            else if (event.key === "ArrowUp") {
+                event.preventDefault();
+                activeIndex =
+                    (activeIndex - 1 + items.length) % items.length;
+            }
+            else if (event.key === "Enter" && activeIndex >= 0) {
+                event.preventDefault();
+                items[activeIndex].click();
+                return;
+            }
+            else {
+                return;
+            }
+
+            items.forEach(function (item, index) {
+                item.classList.toggle(
+                    "active",
+                    index === activeIndex
+                );
+            });
+
+            if (activeIndex >= 0) {
+                items[activeIndex].scrollIntoView({
+                    block: "nearest"
+                });
+            }
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!wrap.contains(event.target)) {
+                closeBox();
+            }
+        });
+
+        form.addEventListener("submit", function () {
+            clearTimeout(timer);
+            if (controller) controller.abort();
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
+})();
+</script>

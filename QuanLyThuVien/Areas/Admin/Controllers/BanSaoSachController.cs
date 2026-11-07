@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +38,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             keyword = keyword?.Trim();
 
             var query =
-                from bs in _db.Set<Models.BanSaoSach>()
+                from bs in _db.Set<QuanLyThuVien.Models.BanSaoSach>()
                     .AsNoTracking()
                 join s in _db.Set<Sach>().AsNoTracking()
                     on bs.SachId equals s.Id
@@ -84,6 +83,34 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             return View(data);
         }
 
+        // GOI Y TIM KIEM AJAX - giu nguyen cac chuc nang cu
+        [HttpGet]
+        public async Task<IActionResult> GoiY(string? term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Json(Array.Empty<object>());
+
+            term = term.Trim();
+
+            var results = await (
+                from bs in _db.Set<QuanLyThuVien.Models.BanSaoSach>().AsNoTracking()
+                join sach in _db.Set<Sach>().AsNoTracking()
+                    on bs.SachId equals sach.Id
+                where bs.MaVach.Contains(term) || sach.TieuDe.Contains(term)
+                orderby bs.MaVach.StartsWith(term) descending,
+                        sach.TieuDe.StartsWith(term) descending,
+                        sach.TieuDe, bs.MaVach
+                select new
+                {
+                    value = bs.MaVach,
+                    label = sach.TieuDe,
+                    detail = "Mã vạch: " + bs.MaVach
+                }
+            ).Take(10).ToListAsync();
+
+            return Json(results);
+        }
+
         // Danh sách sách cho ComboBox
         private async Task LoadOptions()
         {
@@ -120,7 +147,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             }
 
             bool trungMaVach =
-                await _db.Set<Models.BanSaoSach>()
+                await _db.Set<QuanLyThuVien.Models.BanSaoSach>()
                     .AnyAsync(x =>
                         x.MaVach == model.MaVach &&
                         (!excludeId.HasValue ||
@@ -175,7 +202,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                 return View(model);
             }
 
-            var banSao = new Models.BanSaoSach
+            var banSao = new QuanLyThuVien.Models.BanSaoSach
             {
                 SachId = model.SachId,
                 MaVach = model.MaVach,
@@ -186,7 +213,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                 GiaTri = model.GiaTri
             };
 
-            _db.Set<Models.BanSaoSach>().Add(banSao);
+            _db.Set<QuanLyThuVien.Models.BanSaoSach>().Add(banSao);
 
             try
             {
@@ -212,7 +239,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var bs = await _db.Set<Models.BanSaoSach>()
+            var bs = await _db.Set<QuanLyThuVien.Models.BanSaoSach>()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -244,7 +271,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             if (id != model.Id)
                 return BadRequest();
 
-            var bs = await _db.Set<Models.BanSaoSach>()
+            var bs = await _db.Set<QuanLyThuVien.Models.BanSaoSach>()
                 .FindAsync(id);
 
             if (bs == null)
@@ -305,7 +332,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var bs = await _db.Set<Models.BanSaoSach>()
+            var bs = await _db.Set<QuanLyThuVien.Models.BanSaoSach>()
                 .FindAsync(id);
 
             if (bs == null)
@@ -329,7 +356,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            _db.Set<Models.BanSaoSach>().Remove(bs);
+            _db.Set<QuanLyThuVien.Models.BanSaoSach>().Remove(bs);
 
             try
             {

@@ -120,5 +120,34 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             );
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GoiY(string? term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Json(Array.Empty<object>());
+
+            term = term.Trim();
+
+            var data = await _context.Set<QuanLyThuVien.Models.TaiKhoan>()
+                .AsNoTracking()
+                .Where(x =>
+                    x.TenDangNhap.Contains(term) ||
+                    x.HoTen.Contains(term) ||
+                    x.Email.Contains(term))
+                .OrderBy(x => x.HoTen.StartsWith(term) ? 0 : 1)
+                .ThenBy(x => x.HoTen)
+                .Select(x => new
+                {
+                    value = x.TenDangNhap,
+                    label = x.HoTen,
+                    detail = x.TenDangNhap + " | " + x.Email
+                })
+                .Take(10)
+                .ToListAsync();
+
+            return Json(data);
+        }
+
+
     }
 }

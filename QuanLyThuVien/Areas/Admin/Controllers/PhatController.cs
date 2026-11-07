@@ -454,5 +454,44 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GoiY(string? term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Json(Array.Empty<object>());
+
+            term = term.Trim();
+
+            var data = await (
+                from p in _db.Set<PhatEntity>().AsNoTracking()
+                join ct in _db.Set<ChiTietMuon>().AsNoTracking()
+                    on p.ChiTietMuonId equals ct.Id
+                join pm in _db.Set<PhieuMuon>().AsNoTracking()
+                    on ct.PhieuMuonId equals pm.Id
+                join dg in _db.Set<DocGium>().AsNoTracking()
+                    on pm.DocGiaId equals dg.Id
+                join bs in _db.Set<BanSaoSach>().AsNoTracking()
+                    on ct.BanSaoId equals bs.Id
+                join s in _db.Set<Sach>().AsNoTracking()
+                    on bs.SachId equals s.Id
+                where pm.MaPhieu.Contains(term)
+                   || dg.MaDocGia.Contains(term)
+                   || dg.HoTen.Contains(term)
+                   || s.TieuDe.Contains(term)
+                   || bs.MaVach.Contains(term)
+                orderby dg.HoTen.StartsWith(term) descending,
+                        p.Id descending
+                select new
+                {
+                    value = pm.MaPhieu,
+                    label = dg.HoTen,
+                    detail = pm.MaPhieu + " | " + s.TieuDe
+                }
+            ).Take(10).ToListAsync();
+
+            return Json(data);
+        }
+
     }
 }

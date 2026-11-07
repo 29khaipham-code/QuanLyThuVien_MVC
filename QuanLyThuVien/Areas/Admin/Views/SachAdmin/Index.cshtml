@@ -1,5 +1,4 @@
-﻿
-@model List<QuanLyThuVien.ViewModels.Admin.Sach.SachListItemViewModel>
+﻿@model List<QuanLyThuVien.ViewModels.Admin.Sach.SachListItemViewModel>
 
 @{
     ViewData["Title"] = "Quản lý sách";
@@ -12,6 +11,19 @@
     int total = ViewBag.Total == null
         ? 0 : (int)ViewBag.Total;
 }
+
+
+<style>
+    .ajax-search-wrap { position: relative; width: 100%; }
+    .ajax-search-menu { display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+        z-index: 10000; background: #fff; border: 1px solid #d4dce5; border-radius: 8px;
+        box-shadow: 0 8px 22px rgba(0,0,0,.14); max-height: 320px; overflow-y: auto; }
+    .ajax-search-choice { display: block; width: 100%; border: 0; background: #fff;
+        padding: 10px 14px; text-align: left; cursor: pointer; border-bottom: 1px solid #eee; }
+    .ajax-search-choice:hover, .ajax-search-choice:focus { background: #eaf2ff; }
+    .ajax-search-detail { display: block; font-size: 12px; color: #6c757d; margin-top: 3px; }
+    .ajax-search-status { padding: 12px 14px; color: #6c757d; }
+</style>
 
 <div class="container-fluid py-4">
 
@@ -77,11 +89,14 @@
 
                 <div class="row g-2">
                     <div class="col-md-10">
-                        <input type="text"
-                               name="keyword"
+                        <div class="ajax-search-wrap">
+                            <input type="text" id="ajaxSearchInput" name="keyword"
                                value="@keyword"
                                class="form-control"
-                               placeholder="Tìm theo tên sách hoặc ISBN..." />
+                               placeholder="Tìm theo tên sách hoặc ISBN..." autocomplete="off"
+                                   role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ajaxSearchMenu" />
+                            <div id="ajaxSearchMenu" class="ajax-search-menu" role="listbox"></div>
+                        </div>
                     </div>
 
                     <div class="col-md-2 d-flex gap-2">
@@ -275,3 +290,100 @@
     </div>
 
 </div>
+
+<script>
+(() => {
+    "use strict";
+    const input = document.getElementById("ajaxSearchInput");
+    const menu = document.getElementById("ajaxSearchMenu");
+    const form = input?.closest("form");
+    if (!input || !menu || !form) return;
+
+    const endpoint = '@Url.Action("GoiY", "SachAdmin", new { area = "Admin" })';
+    let timer = null;
+    let pending = null;
+    let seq = 0;
+
+    function hide() {
+        menu.style.display = "none";
+        menu.replaceChildren();
+        input.setAttribute("aria-expanded", "false");
+    }
+    function showStatus(message) {
+        menu.replaceChildren();
+        const el = document.createElement("div");
+        el.className = "ajax-search-status";
+        el.textContent = message;
+        menu.appendChild(el);
+        menu.style.display = "block";
+        input.setAttribute("aria-expanded", "true");
+    }
+    function showItems(items) {
+        menu.replaceChildren();
+        if (!Array.isArray(items) || items.length === 0) {
+            showStatus("Không có kết quả phù hợp");
+            return;
+        }
+        for (const row of items) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "ajax-search-choice";
+            const label = document.createElement("strong");
+            label.textContent = row.label ?? row.value ?? "";
+            const detail = document.createElement("span");
+            detail.className = "ajax-search-detail";
+            detail.textContent = row.detail ?? "";
+            btn.append(label, detail);
+            btn.addEventListener("click", () => {
+                input.value = row.value ?? "";
+                hide();
+                form.requestSubmit();
+            });
+            menu.appendChild(btn);
+        }
+        menu.style.display = "block";
+        input.setAttribute("aria-expanded", "true");
+    }
+    async function search(term, requestId) {
+        pending?.abort();
+        const abort = new AbortController();
+        pending = abort;
+        try {
+            const response = await fetch(endpoint + "?term=" + encodeURIComponent(term), {
+                signal: abort.signal, headers: { "Accept": "application/json" }
+            });
+            if (!response.ok) throw new Error("HTTP " + response.status);
+            if (!(response.headers.get("content-type") ?? "").includes("application/json"))
+                throw new Error("API không trả về JSON");
+            const data = await response.json();
+            if (!abort.signal.aborted && requestId === seq && input.value.trim() === term)
+                showItems(data);
+        } catch (err) {
+            if (err.name !== "AbortError" && requestId === seq) {
+                console.error("Lỗi API gợi ý:", err);
+                showStatus("Không tải được gợi ý (kiểm tra API GoiY)");
+            }
+        }
+    }
+    function update() {
+        clearTimeout(timer);
+        pending?.abort();
+        seq++;
+        const requestId = seq;
+        const term = input.value.trim();
+        hide();
+        if (!term) return;
+        showStatus("Đang tìm...");
+        timer = setTimeout(() => search(term, requestId), 180);
+    }
+    input.addEventListener("input", update);
+    input.addEventListener("focus", () => { if (input.value.trim()) update(); });
+    input.addEventListener("keydown", e => {
+        if (e.key === "Escape") hide();
+    });
+    document.addEventListener("click", e => {
+        if (!menu.contains(e.target) && e.target !== input) hide();
+    });
+    form.addEventListener("submit", () => { clearTimeout(timer); pending?.abort(); hide(); });
+})();
+</script>

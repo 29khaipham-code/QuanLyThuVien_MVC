@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     string pageTitle = ViewData["Title"]?.ToString()
         ?? "Quản trị thư viện";
 }
@@ -15,17 +14,18 @@
 
     <link rel="stylesheet"
           href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-     <link rel="stylesheet"
-      href="~/css/admin.css"
-      asp-append-version="true" />
-      
-     
+
+    <link rel="stylesheet"
+          href="~/css/admin.css"
+          asp-append-version="true" />
 </head>
+
 <body>
     <div class="admin-wrapper">
 
         <!-- MENU BÊN TRÁI -->
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
         <aside class="admin-sidebar">
             <div class="sidebar-brand">
                 <div class="brand-icon">📚</div>
@@ -33,7 +33,6 @@
                 <small>Hệ thống quản trị</small>
             </div>
 
-            
             <nav class="sidebar-menu">
 
                 <!-- TỔNG QUAN -->
@@ -74,13 +73,21 @@
                 </button>
 
                 <div class="submenu">
-                    <a asp-area="Admin" asp-controller="TheLoai" asp-action="Index">
+                    <a asp-area="Admin"
+                       asp-controller="TheLoai"
+                       asp-action="Index">
                         Quản lý thể loại
                     </a>
-                    <a asp-area="Admin" asp-controller="TacGia" asp-action="Index">
+
+                    <a asp-area="Admin"
+                       asp-controller="TacGia"
+                       asp-action="Index">
                         Quản lý tác giả
                     </a>
-                    <a asp-area="Admin" asp-controller="NhaXuatBan" asp-action="Index">
+
+                    <a asp-area="Admin"
+                       asp-controller="NhaXuatBan"
+                       asp-action="Index">
                         Nhà xuất bản
                     </a>
                 </div>
@@ -93,31 +100,52 @@
                 </button>
 
                 <div class="submenu">
-                    <a asp-area="Admin" asp-controller="SachAdmin" asp-action="Index">
+                    <a asp-area="Admin"
+                       asp-controller="SachAdmin"
+                       asp-action="Index">
                         Quản lý sách
                     </a>
-                    <a asp-area="Admin" asp-controller="BanSaoSach" asp-action="Index">
+
+                    <a asp-area="Admin"
+                       asp-controller="BanSaoSach"
+                       asp-action="Index">
                         Quản lý bản sao sách
                     </a>
-                    <a asp-area="Admin" asp-controller="DocGia" asp-action="Index">
+
+                    <a asp-area="Admin"
+                       asp-controller="DocGia"
+                       asp-action="Index">
                         Độc giả
                     </a>
-                    <a asp-area="Admin" asp-controller="MuonTra" asp-action="Index">
+
+                    <a asp-area="Admin"
+                       asp-controller="MuonTra"
+                       asp-action="Index">
                         Mượn / Trả sách
                     </a>
-                    <a asp-area="Admin" asp-controller="DatTruoc" asp-action="Index">
+
+                    <a asp-area="Admin"
+                       asp-controller="DatTruoc"
+                       asp-action="Index">
                         Đặt trước sách
                     </a>
-                    <a asp-area="Admin" asp-controller="Phat" asp-action="Index">
+
+                    <a asp-area="Admin"
+                       asp-controller="Phat"
+                       asp-action="Index">
                         Tiền phạt
                     </a>
-                    <a asp-area="Admin" asp-controller="SachDienTu" asp-action="Index">
+
+                    <a asp-area="Admin"
+                       asp-controller="SachDienTu"
+                       asp-action="Index">
                         Sách điện tử
                     </a>
                 </div>
 
                 <!-- BÁO CÁO -->
-                <button type="button" class="menu-toggle"
+                <button type="button"
+                        class="menu-toggle"
                         title="Báo cáo và thống kê">
                     <span class="menu-icon">📊</span>
                     <span class="menu-text">Báo cáo và thống kê</span>
@@ -134,7 +162,6 @@
                 </div>
 
             </nav>
-
         </aside>
 
         <!-- NỘI DUNG BÊN PHẢI -->
@@ -142,9 +169,16 @@
 
             <header class="admin-header">
 
-               
-               
-                <div style="display: flex;
+                <!-- NÚT MỞ / ĐÓNG SIDEBAR -->
+                <button type="button"
+                        id="toggleSidebar"
+                        class="btn btn-outline-secondary"
+                        aria-label="Mở hoặc đóng menu">
+                    ☰
+                </button>
+
+                <div style="
+                    display: flex;
                     justify-content: flex-end;
                     align-items: center;
                     gap: 40px;
@@ -175,9 +209,6 @@
                     </form>
 
                 </div>
-
-
-
             </header>
 
             <main class="admin-content">
@@ -187,23 +218,15 @@
             <footer class="admin-footer">
                 © 2026 - Hệ thống Quản lý thư viện
             </footer>
+
         </div>
     </div>
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js">
-    </script>
-
-    <script>
-        document.getElementById("toggleSidebar")
-            ?.addEventListener("click", function () {
-                document.querySelector(".admin-sidebar")
-                    ?.classList.toggle("show");
-            });
-    </script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
-    <script>
 
+    <script>
             const sidebar = document.querySelector(".admin-sidebar");
             const toggleButton = document.getElementById("toggleSidebar");
             const overlay = document.getElementById("sidebarOverlay");
@@ -213,7 +236,9 @@
                 sidebar.classList.remove("expanded");
                 overlay?.classList.remove("show");
 
-                toggleButton.textContent = "☰";
+                if (toggleButton) {
+                    toggleButton.textContent = "☰";
+                }
 
                 // Đóng tất cả nhóm menu
                 document.querySelectorAll(".menu-toggle").forEach(item => {
@@ -230,7 +255,9 @@
                 sidebar.classList.add("expanded");
                 overlay?.classList.add("show");
 
-                toggleButton.textContent = "×";
+                if (toggleButton) {
+                    toggleButton.textContent = "×";
+                }
             }
 
             // Nút mở rộng / thu nhỏ

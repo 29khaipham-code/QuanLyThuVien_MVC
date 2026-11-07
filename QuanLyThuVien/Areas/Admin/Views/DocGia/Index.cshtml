@@ -11,7 +11,68 @@
     int total = ViewBag.Total ?? 0;
 }
 
+<style>
+    /* THANH TIM KIEM AJAX */
+    .dg-search-container {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .dg-suggestions {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        max-height: 350px;
+        overflow-y: auto;
+        display: none;
+    }
+
+    .dg-suggestion-item {
+        display: block;
+        width: 100%;
+        padding: 12px 15px;
+        text-align: left;
+        background: white;
+        border: none;
+        border-bottom: 1px solid #eeeeee;
+        cursor: pointer;
+    }
+
+    .dg-suggestion-item:hover,
+    .dg-suggestion-item.active {
+        background: #eaf2ff;
+    }
+
+    .dg-suggestion-name {
+        font-weight: 600;
+        color: #212529;
+        font-size: 14px;
+    }
+
+    .dg-suggestion-info {
+        color: #6c757d;
+        font-size: 12px;
+        margin-top: 4px;
+    }
+
+    .dg-suggestion-message {
+        padding: 12px 15px;
+        color: #6c757d;
+        font-size: 14px;
+    }
+</style>
+
 <div class="container-fluid py-4">
+
+    <!-- TIEU DE -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h3 class="fw-bold">Quản lý độc giả</h3>
@@ -26,6 +87,7 @@
         </a>
     </div>
 
+    <!-- THONG BAO -->
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success">
@@ -40,18 +102,40 @@
         </div>
     }
 
+    <!-- THANH TIM KIEM AJAX -->
     <div class="card mb-4">
         <div class="card-body">
-            <form method="get"
+
+            <form id="dgSearchForm"
+                  method="get"
                   action="@Url.Action("Index", "DocGia", new { area = "Admin" })"
                   class="d-flex gap-2">
 
-                <input name="keyword"
-                       value="@keyword"
-                       class="form-control"
-                       placeholder="Mã, tên, email hoặc số điện thoại..." />
+                <div class="dg-search-container"
+                     id="dgSearchContainer">
 
-                <button type="submit" class="btn btn-primary">
+                    <input type="text"
+                           id="dgSearchInput"
+                           name="keyword"
+                           value="@keyword"
+                           class="form-control"
+                           placeholder="Tìm kiếm tên...."
+                           autocomplete="off"
+                           role="combobox"
+                           aria-autocomplete="list"
+                           aria-expanded="false"
+                           aria-controls="dgSuggestionList" />
+
+                    <!-- DANH SACH GOI Y -->
+                    <div id="dgSuggestionList"
+                         class="dg-suggestions"
+                         role="listbox">
+                    </div>
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary">
                     Tìm kiếm
                 </button>
 
@@ -59,16 +143,23 @@
                    class="btn btn-outline-secondary">
                     Đặt lại
                 </a>
+
             </form>
         </div>
     </div>
 
+    <!-- BANG DANH SACH DOC GIA -->
     <div class="card">
         <div class="card-body">
-            <p>Tổng số: <strong>@total</strong> độc giả</p>
+
+            <p>
+                Tổng số:
+                <strong>@total</strong> độc giả
+            </p>
 
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
+
                     <thead>
                         <tr>
                             <th>Mã độc giả</th>
@@ -82,91 +173,436 @@
                             <th>Thao tác</th>
                         </tr>
                     </thead>
+
                     <tbody>
-                        @foreach (var dg in Model)
+
+                        @if (Model != null)
                         {
-                            <tr>
-                                <td><strong>@dg.MaDocGia</strong></td>
-                                <td>@dg.HoTen</td>
-                                <td>@(dg.Email ?? "—")</td>
-                                <td>@(dg.SoDienThoai ?? "—")</td>
-                                <td>@dg.TenLoai</td>
-                                <td>@dg.NgayHetHan.ToString("dd/MM/yyyy")</td>
-                                <td>
-                                    @{
-                                        string statusText = dg.TrangThai switch
-                                        {
-                                            "HoatDong" => "Hoạt động",
-                                            "TamKhoa" => "Tạm khóa",
-                                            "HetHan" => "Hết hạn",
-                                            _ => dg.TrangThai
-                                        };
-                                    }
-                                    <span class="badge bg-secondary">
-                                        @statusText
-                                    </span>
-                                </td>
-                                <td>
-                                    @(dg.TaiKhoanId.HasValue ? "Đã liên kết" : "Chưa có")
-                                </td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="@Url.Action("Edit", "DocGia", new { area = "Admin", id = dg.Id })"
-                                           class="btn btn-sm btn-outline-primary">
-                                            Sửa
-                                        </a>
+                            @foreach (var dg in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@dg.MaDocGia</strong>
+                                    </td>
 
-                                        <form method="post"
-                                              action="@Url.Action("ToggleStatus", "DocGia", new { area = "Admin", id = dg.Id })">
-                                            @Html.AntiForgeryToken()
-                                            <button type="submit"
-                                                    class="btn btn-sm btn-outline-warning">
-                                                @(dg.TrangThai == "TamKhoa" ? "Mở khóa" : "Khóa")
-                                            </button>
-                                        </form>
+                                    <td>@dg.HoTen</td>
 
-                                        <form method="post"
-                                              action="@Url.Action("Delete", "DocGia", new { area = "Admin", id = dg.Id })"
-                                              onsubmit="return confirm('Bạn có chắc muốn xóa độc giả này?');">
-                                            @Html.AntiForgeryToken()
-                                            <button type="submit"
-                                                    class="btn btn-sm btn-outline-danger">
-                                                Xóa
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
+                                    <td>@(dg.Email ?? "—")</td>
+
+                                    <td>@(dg.SoDienThoai ?? "—")</td>
+
+                                    <td>@dg.TenLoai</td>
+
+                                    <td>
+                                        @dg.NgayHetHan.ToString("dd/MM/yyyy")
+                                    </td>
+
+                                    <td>
+                                        @{
+                                            string statusText = dg.TrangThai switch
+                                            {
+                                                "HoatDong" => "Hoạt động",
+                                                "TamKhoa" => "Tạm khóa",
+                                                "HetHan" => "Hết hạn",
+                                                _ => dg.TrangThai
+                                            };
+                                        }
+
+                                        <span class="badge bg-secondary">
+                                            @statusText
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        @(dg.TaiKhoanId.HasValue
+                                            ? "Đã liên kết"
+                                            : "Chưa có")
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex gap-2">
+
+                                            <!-- SUA -->
+                                            <a href="@Url.Action("Edit", "DocGia", new { area = "Admin", id = dg.Id })"
+                                               class="btn btn-sm btn-outline-primary">
+                                                Sửa
+                                            </a>
+
+                                            <!-- KHOA / MO KHOA -->
+                                            <form method="post"
+                                                  action="@Url.Action("ToggleStatus", "DocGia", new { area = "Admin", id = dg.Id })">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-warning">
+                                                    @(dg.TrangThai == "TamKhoa"
+                                                        ? "Mở khóa"
+                                                        : "Khóa")
+                                                </button>
+                                            </form>
+
+                                            <!-- XOA -->
+                                            <form method="post"
+                                                  action="@Url.Action("Delete", "DocGia", new { area = "Admin", id = dg.Id })"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa độc giả này?');">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger">
+                                                    Xóa
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                         }
 
-                        @if (!Model.Any())
+                        @if (Model == null || !Model.Any())
                         {
                             <tr>
-                                <td colspan="9" class="text-center py-4">
+                                <td colspan="9"
+                                    class="text-center py-4">
                                     Chưa có độc giả nào.
                                 </td>
                             </tr>
                         }
+
                     </tbody>
                 </table>
             </div>
 
+            <!-- PHAN TRANG -->
             @if (totalPages > 1)
             {
                 <nav>
                     <ul class="pagination justify-content-end">
+
                         @for (int i = 1; i <= totalPages; i++)
                         {
                             <li class="page-item @(i == page ? "active" : "")">
+
                                 <a class="page-link"
                                    href="@Url.Action("Index", "DocGia", new { area = "Admin", keyword, page = i })">
                                     @i
                                 </a>
+
                             </li>
                         }
+
                     </ul>
                 </nav>
             }
+
         </div>
     </div>
 </div>
+
+<!-- JAVASCRIPT TIM KIEM AJAX -->
+<script>
+(function () {
+    "use strict";
+
+    function initDocGiaSearch() {
+
+        const input = document.getElementById("dgSearchInput");
+        const list = document.getElementById("dgSuggestionList");
+        const form = document.getElementById("dgSearchForm");
+        const container = document.getElementById("dgSearchContainer");
+
+        if (!input || !list || !form || !container) {
+            console.error("AJAX DocGia: Khong tim thay HTML.");
+            return;
+        }
+
+        const apiUrl = '@Url.Action("GoiY", "DocGia", new { area = "Admin" })';
+
+        let timer = null;
+        let abortController = null;
+        let activeIndex = -1;
+
+        // DONG DANH SACH GOI Y
+        function closeSuggestions() {
+            list.style.display = "none";
+            list.replaceChildren();
+            input.setAttribute("aria-expanded", "false");
+            activeIndex = -1;
+        }
+
+        // MO DANH SACH GOI Y
+        function openSuggestions() {
+            list.style.display = "block";
+            input.setAttribute("aria-expanded", "true");
+        }
+
+        // HIEN THONG BAO
+        function showMessage(message) {
+            list.replaceChildren();
+
+            const div = document.createElement("div");
+            div.className = "dg-suggestion-message";
+            div.textContent = message;
+
+            list.appendChild(div);
+            openSuggestions();
+        }
+
+        // CHON DOC GIA
+        function selectReader(ma) {
+            input.value = ma;
+
+            closeSuggestions();
+
+            // Tu dong tim kiem theo ma doc gia
+            form.requestSubmit();
+        }
+
+        // HIEN DANH SACH KET QUA
+        function renderSuggestions(data) {
+
+            list.replaceChildren();
+            activeIndex = -1;
+
+            if (!Array.isArray(data) || data.length === 0) {
+                showMessage("Không tìm thấy độc giả phù hợp");
+                return;
+            }
+
+            data.forEach(function (dg) {
+
+                const item = document.createElement("button");
+                item.type = "button";
+                item.className = "dg-suggestion-item";
+                item.setAttribute("role", "option");
+                item.setAttribute("aria-selected", "false");
+
+                // TEN DOC GIA
+                const name = document.createElement("div");
+                name.className = "dg-suggestion-name";
+                name.textContent = "👤 " + dg.ten;
+
+                // THONG TIN DOC GIA
+                const info = document.createElement("div");
+                info.className = "dg-suggestion-info";
+
+                const details = [
+                    "Mã: " + dg.ma
+                ];
+
+                if (dg.email) {
+                    details.push("Email: " + dg.email);
+                }
+
+                if (dg.dienThoai) {
+                    details.push("SĐT: " + dg.dienThoai);
+                }
+
+                info.textContent = details.join(" | ");
+
+                item.appendChild(name);
+                item.appendChild(info);
+
+                item.addEventListener("mousedown", function (event) {
+                    event.preventDefault();
+                });
+
+                item.addEventListener("click", function () {
+                    selectReader(dg.ma);
+                });
+
+                list.appendChild(item);
+            });
+
+            openSuggestions();
+        }
+
+        // GOI API AJAX
+        async function searchReaders(keyword) {
+
+            if (abortController) {
+                abortController.abort();
+            }
+
+            const request = new AbortController();
+            abortController = request;
+
+            try {
+                const response = await fetch(
+                    apiUrl + "?term=" + encodeURIComponent(keyword),
+                    {
+                        method: "GET",
+                        signal: request.signal,
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("HTTP " + response.status);
+                }
+
+                const contentType =
+                    response.headers.get("content-type") || "";
+
+                if (!contentType.includes("application/json")) {
+                    throw new Error("API khong tra ve JSON");
+                }
+
+                const data = await response.json();
+
+                if (request.signal.aborted) {
+                    return;
+                }
+
+                if (input.value.trim() !== keyword) {
+                    return;
+                }
+
+                renderSuggestions(data);
+
+            } catch (error) {
+
+                if (error.name === "AbortError") {
+                    return;
+                }
+
+                console.error("DocGia AJAX ERROR:", error);
+
+                showMessage(
+                    "Không tải được gợi ý. Kiểm tra API GoiY."
+                );
+            }
+        }
+
+        // GO TUNG KY TU SE GOI AJAX
+        input.addEventListener("input", function () {
+
+            clearTimeout(timer);
+
+            if (abortController) {
+                abortController.abort();
+            }
+
+            const keyword = input.value.trim();
+
+            closeSuggestions();
+
+            if (keyword.length === 0) {
+                return;
+            }
+
+            showMessage("Đang tìm kiếm...");
+
+            timer = setTimeout(function () {
+                searchReaders(keyword);
+            }, 200);
+        });
+
+        // FOCUS VAO O TIM KIEM
+        input.addEventListener("focus", function () {
+
+            const keyword = input.value.trim();
+
+            if (keyword.length === 0) {
+                return;
+            }
+
+            clearTimeout(timer);
+
+            showMessage("Đang tìm kiếm...");
+
+            timer = setTimeout(function () {
+                searchReaders(keyword);
+            }, 200);
+        });
+
+        // HO TRO BAN PHIM
+        input.addEventListener("keydown", function (event) {
+
+            const items = list.querySelectorAll(
+                ".dg-suggestion-item"
+            );
+
+            if (event.key === "Escape") {
+                closeSuggestions();
+                return;
+            }
+
+            if (list.style.display !== "block") {
+                return;
+            }
+
+            if (event.key === "ArrowDown" && items.length > 0) {
+                event.preventDefault();
+                activeIndex = (activeIndex + 1) % items.length;
+            }
+            else if (event.key === "ArrowUp" && items.length > 0) {
+                event.preventDefault();
+                activeIndex =
+                    (activeIndex - 1 + items.length) % items.length;
+            }
+            else if (event.key === "Enter" && activeIndex >= 0) {
+                event.preventDefault();
+                items[activeIndex].click();
+                return;
+            }
+            else {
+                return;
+            }
+
+            items.forEach(function (item, index) {
+
+                const active = index === activeIndex;
+
+                item.classList.toggle("active", active);
+
+                item.setAttribute(
+                    "aria-selected",
+                    active ? "true" : "false"
+                );
+            });
+
+            if (activeIndex >= 0) {
+                items[activeIndex].scrollIntoView({
+                    block: "nearest"
+                });
+            }
+        });
+
+        // CLICK BEN NGOAI DE DONG
+        document.addEventListener("click", function (event) {
+            if (!container.contains(event.target)) {
+                closeSuggestions();
+            }
+        });
+
+        // KHI SUBMIT FORM
+        form.addEventListener("submit", function () {
+
+            clearTimeout(timer);
+
+            if (abortController) {
+                abortController.abort();
+            }
+
+            closeSuggestions();
+        });
+
+        console.log("DOC GIA AJAX READY:", apiUrl);
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initDocGiaSearch
+        );
+    } else {
+        initDocGiaSearch();
+    }
+
+})();
+</script>

@@ -1,7 +1,4 @@
-﻿
-@model QuanLyThuVien.ViewModels.Admin.TongQuan.DashboardThongKeViewModel
-
-@{
+﻿@{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Trang tổng quan";
 }
@@ -12,120 +9,108 @@
     Chào mừng đến với hệ thống quản lý thư viện.
 </p>
 
-<!-- THỐNG KÊ TỔNG QUAN -->
 <div class="row g-3">
 
-    <!-- TỔNG ĐẦU SÁCH -->
     <div class="col-md-6 col-xl-3">
         <div class="stat-card">
             <div class="stat-icon">📚</div>
             <h6>Tổng đầu sách</h6>
-
-            <p class="fs-3 fw-bold mb-0">
-                @Model.TongDauSach
+            <p class="text-muted small mb-0">
+                Chưa kết nối thống kê
             </p>
         </div>
     </div>
 
-    <!-- TỔNG ĐỘC GIẢ -->
     <div class="col-md-6 col-xl-3">
         <div class="stat-card">
             <div class="stat-icon">👥</div>
             <h6>Tổng độc giả</h6>
-
-            <p class="fs-3 fw-bold mb-0">
-                @Model.TongDocGia
+            <p class="text-muted small mb-0">
+                Chưa kết nối thống kê
             </p>
         </div>
     </div>
 
-    <!-- SÁCH ĐANG MƯỢN -->
     <div class="col-md-6 col-xl-3">
         <div class="stat-card">
             <div class="stat-icon">🔄</div>
             <h6>Sách đang mượn</h6>
-
-            <p class="fs-3 fw-bold mb-0">
-                @Model.SachDangMuon
+            <p class="text-muted small mb-0">
+                Chưa kết nối thống kê
             </p>
         </div>
     </div>
 
-    <!-- MƯỢN QUÁ HẠN -->
     <div class="col-md-6 col-xl-3">
         <div class="stat-card">
             <div class="stat-icon">⚠️</div>
             <h6>Mượn quá hạn</h6>
-
-            <p class="fs-3 fw-bold text-danger mb-0">
-                @Model.MuonQuaHan
+            <p class="text-muted small mb-0">
+                Chưa kết nối thống kê
             </p>
         </div>
     </div>
 
 </div>
 
-<!-- CHỨC NĂNG QUẢN TRỊ -->
 <div class="content-card mt-4">
     <h5>Chức năng quản trị</h5>
-
     <p class="text-muted">
         Chọn một chức năng để bắt đầu quản lý.
     </p>
 
     <div class="row g-3">
 
-        <!-- QUẢN LÝ TÀI KHOẢN -->
         <div class="col-md-4">
             <a class="quick-link"
                asp-area="Admin"
-               asp-controller="TaiKhoan"
-               asp-action="Index">
+               asp-controller="Dashboard"
+               asp-action="Module"
+               asp-route-id="TaiKhoan">
                 👥 Quản lý tài khoản
             </a>
         </div>
 
-        <!-- QUẢN LÝ SÁCH -->
         <div class="col-md-4">
             <a class="quick-link"
                asp-area="Admin"
-               asp-controller="SachAdmin"
-               asp-action="Index">
+               asp-controller="Dashboard"
+               asp-action="Module"
+               asp-route-id="Sach">
                 📚 Quản lý sách
             </a>
         </div>
 
-        <!-- QUẢN LÝ ĐỘC GIẢ -->
         <div class="col-md-4">
             <a class="quick-link"
                asp-area="Admin"
-               asp-controller="DocGia"
-               asp-action="Index">
+               asp-controller="Dashboard"
+               asp-action="Module"
+               asp-route-id="DocGia">
                 🪪 Quản lý độc giả
             </a>
         </div>
 
-        <!-- MƯỢN / TRẢ SÁCH -->
         <div class="col-md-4">
             <a class="quick-link"
                asp-area="Admin"
-               asp-controller="MuonTra"
-               asp-action="Index">
+               asp-controller="Dashboard"
+               asp-action="Module"
+               asp-route-id="MuonTra">
                 🔄 Mượn / Trả
             </a>
         </div>
 
-        <!-- SÁCH ĐIỆN TỬ -->
         <div class="col-md-4">
             <a class="quick-link"
                asp-area="Admin"
-               asp-controller="SachDienTu"
-               asp-action="Index">
+               asp-controller="Dashboard"
+               asp-action="Module"
+               asp-route-id="SachDienTu">
                 💻 Sách điện tử
             </a>
         </div>
 
-        <!-- THỐNG KÊ -->
         <div class="col-md-4">
             <a class="quick-link"
                asp-area="Admin"

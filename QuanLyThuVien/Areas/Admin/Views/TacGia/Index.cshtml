@@ -7,13 +7,67 @@
 
     int page = ViewBag.Page ?? 1;
     int totalPages = ViewBag.TotalPages ?? 1;
-    string keyword = ViewBag.Keyword ?? "";
+    string keyword = ViewBag.Keyword as string ?? "";
 }
+
+<style>
+    .tg-search-wrap {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .tg-suggestions {
+        display: none;
+        position: absolute;
+        top: calc(100% + 3px);
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 9999;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 7px;
+        box-shadow: 0 6px 18px rgba(0,0,0,.15);
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .tg-suggestion-item {
+        display: block;
+        width: 100%;
+        padding: 11px 14px;
+        background: white;
+        border: 0;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+        cursor: pointer;
+        color: #212529;
+    }
+
+    .tg-suggestion-item:hover,
+    .tg-suggestion-item.active {
+        background: #eaf2ff;
+    }
+
+    .tg-suggestion-detail {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 3px;
+    }
+
+    .tg-suggestion-message {
+        padding: 12px 14px;
+        color: #6c757d;
+    }
+</style>
 
 <div class="content-card">
 
+    <!-- TIEU DE -->
     <div class="d-flex justify-content-between
                 align-items-center mb-4 flex-wrap gap-2">
+
         <div>
             <h4>Quản lý tác giả</h4>
             <p>Danh sách tác giả trong thư viện</p>
@@ -25,8 +79,10 @@
            class="btn btn-primary">
             + Thêm tác giả
         </a>
+
     </div>
 
+    <!-- THONG BAO -->
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success">
@@ -41,18 +97,31 @@
         </div>
     }
 
-    <!-- TÌM KIẾM -->
-    <form asp-area="Admin"
+    <!-- TIM KIEM AJAX -->
+    <form id="tgSearchForm"
+          asp-area="Admin"
           asp-controller="TacGia"
           asp-action="Index"
           method="get"
           class="d-flex gap-2 mb-4">
 
-        <input type="text"
-               name="keyword"
-               value="@keyword"
-               class="form-control"
-               placeholder="Nhập tên tác giả..." />
+        <div class="tg-search-wrap" id="tgSearchWrap">
+
+            <input id="tgSearchInput"
+                   type="text"
+                   name="keyword"
+                   value="@keyword"
+                   class="form-control"
+                   placeholder="Nhập tên tác giả..."
+                   autocomplete="off"
+                   aria-expanded="false"
+                   aria-controls="tgSuggestions" />
+
+            <div id="tgSuggestions"
+                 class="tg-suggestions">
+            </div>
+
+        </div>
 
         <button type="submit" class="btn btn-primary">
             Tìm kiếm
@@ -62,10 +131,12 @@
            class="btn btn-outline-secondary">
             Làm mới
         </a>
+
     </form>
 
-    <!-- BẢNG TÁC GIẢ -->
+    <!-- BANG TAC GIA -->
     <div class="table-responsive">
+
         <table class="table table-bordered
                       table-hover align-middle">
 
@@ -81,77 +152,89 @@
             </thead>
 
             <tbody>
-                @foreach (var item in Model)
+
+                @if (Model != null)
                 {
-                    <tr>
-                        <td>@item.Id</td>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
 
-                        <td>@item.TenTacGia</td>
+                            <td>@item.Id</td>
 
-                        <td>
-                            @(item.NgaySinh?.ToString("dd/MM/yyyy") ?? "")
-                        </td>
+                            <td>@item.TenTacGia</td>
 
-                        <td>@item.QuocTich</td>
+                            <td>
+                                @(item.NgaySinh?.ToString("dd/MM/yyyy") ?? "")
+                            </td>
 
-                        <td>
-                            @{
-                                string tieuSu = item.TieuSu ?? "";
-                                string hienThi = tieuSu.Length > 80
-                                    ? tieuSu.Substring(0, 80) + "..."
-                                    : tieuSu;
-                            }
+                            <td>@item.QuocTich</td>
 
-                            @hienThi
-                        </td>
+                            <td>
+                                @{
+                                    string tieuSu = item.TieuSu ?? "";
+                                    string hienThi = tieuSu.Length > 80
+                                        ? tieuSu.Substring(0, 80) + "..."
+                                        : tieuSu;
+                                }
 
-                        <td>
-                            <div class="d-flex gap-2">
+                                @hienThi
+                            </td>
 
-                                <a asp-area="Admin"
-                                   asp-controller="TacGia"
-                                   asp-action="Edit"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-warning btn-sm">
-                                    Sửa
-                                </a>
+                            <td>
+                                <div class="d-flex gap-2">
 
-                                <form asp-area="Admin"
-                                      asp-controller="TacGia"
-                                      asp-action="Delete"
-                                      asp-route-id="@item.Id"
-                                      method="post"
-                                      onsubmit="return confirm('Bạn có chắc muốn xóa tác giả này?')">
+                                    <a asp-area="Admin"
+                                       asp-controller="TacGia"
+                                       asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-warning btn-sm">
+                                        Sửa
+                                    </a>
 
-                                    @Html.AntiForgeryToken()
+                                    <form asp-area="Admin"
+                                          asp-controller="TacGia"
+                                          asp-action="Delete"
+                                          asp-route-id="@item.Id"
+                                          method="post"
+                                          onsubmit="return confirm('Bạn có chắc muốn xóa tác giả này?')">
 
-                                    <button type="submit"
-                                            class="btn btn-danger btn-sm">
-                                        Xóa
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm">
+                                            Xóa
+                                        </button>
+
+                                    </form>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
                 }
+
             </tbody>
+
         </table>
+
     </div>
 
-    @if (!Model.Any())
+    @if (Model == null || !Model.Any())
     {
         <div class="alert alert-info">
             Không tìm thấy tác giả phù hợp.
         </div>
     }
 
-    <!-- PHÂN TRANG -->
+    <!-- PHAN TRANG -->
     <nav aria-label="Phân trang tác giả">
+
         <ul class="pagination">
 
             @for (int i = 1; i <= totalPages; i++)
             {
                 <li class="page-item @(i == page ? "active" : "")">
+
                     <a class="page-link"
                        asp-area="Admin"
                        asp-controller="TacGia"
@@ -160,8 +243,230 @@
                        asp-route-keyword="@keyword">
                         @i
                     </a>
+
                 </li>
             }
+
         </ul>
+
     </nav>
+
 </div>
+
+<script>
+(function () {
+    "use strict";
+
+    function init() {
+
+        const input = document.getElementById("tgSearchInput");
+        const box = document.getElementById("tgSuggestions");
+        const wrap = document.getElementById("tgSearchWrap");
+        const form = document.getElementById("tgSearchForm");
+
+        if (!input || !box || !wrap || !form) return;
+
+        const api = '@Url.Action("GoiY", "TacGia", new { area = "Admin" })';
+
+        let timer = null;
+        let controller = null;
+        let activeIndex = -1;
+
+        function closeBox() {
+            box.style.display = "none";
+            box.replaceChildren();
+            activeIndex = -1;
+            input.setAttribute("aria-expanded", "false");
+        }
+
+        function showBox() {
+            box.style.display = "block";
+            input.setAttribute("aria-expanded", "true");
+        }
+
+        function showMessage(message) {
+
+            box.replaceChildren();
+
+            const div = document.createElement("div");
+            div.className = "tg-suggestion-message";
+            div.textContent = message;
+
+            box.appendChild(div);
+            showBox();
+        }
+
+        function choose(value) {
+            input.value = value;
+            closeBox();
+            form.requestSubmit();
+        }
+
+        async function search(term) {
+
+            if (controller) controller.abort();
+
+            const request = new AbortController();
+            controller = request;
+
+            try {
+
+                const response = await fetch(
+                    api + "?term=" + encodeURIComponent(term),
+                    {
+                        method: "GET",
+                        signal: request.signal,
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("HTTP " + response.status);
+                }
+
+                const data = await response.json();
+
+                if (request.signal.aborted ||
+                    input.value.trim() !== term) {
+                    return;
+                }
+
+                box.replaceChildren();
+                activeIndex = -1;
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    showMessage("Không tìm thấy tác giả phù hợp");
+                    return;
+                }
+
+                data.forEach(function (item) {
+
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "tg-suggestion-item";
+
+                    const name = document.createElement("strong");
+                    name.textContent = item.label || item.value;
+
+                    const detail = document.createElement("div");
+                    detail.className = "tg-suggestion-detail";
+                    detail.textContent = item.detail || "";
+
+                    button.appendChild(name);
+                    button.appendChild(detail);
+
+                    button.addEventListener("click", function () {
+                        choose(item.value);
+                    });
+
+                    box.appendChild(button);
+                });
+
+                showBox();
+
+            } catch (error) {
+
+                if (error.name === "AbortError") return;
+
+                console.error("TacGia AJAX:", error);
+                showMessage("Không tải được gợi ý. Kiểm tra API GoiY.");
+            }
+        }
+
+        input.addEventListener("input", function () {
+
+            clearTimeout(timer);
+
+            if (controller) controller.abort();
+
+            const term = input.value.trim();
+            closeBox();
+
+            if (!term) return;
+
+            showMessage("Đang tìm kiếm...");
+
+            timer = setTimeout(function () {
+                search(term);
+            }, 200);
+        });
+
+        input.addEventListener("focus", function () {
+
+            const term = input.value.trim();
+
+            if (!term) return;
+
+            clearTimeout(timer);
+
+            timer = setTimeout(function () {
+                search(term);
+            }, 200);
+        });
+
+        input.addEventListener("keydown", function (event) {
+
+            const items = box.querySelectorAll(".tg-suggestion-item");
+
+            if (event.key === "Escape") {
+                closeBox();
+                return;
+            }
+
+            if (box.style.display !== "block" || !items.length) {
+                return;
+            }
+
+            if (event.key === "ArrowDown") {
+                event.preventDefault();
+                activeIndex = (activeIndex + 1) % items.length;
+            }
+            else if (event.key === "ArrowUp") {
+                event.preventDefault();
+                activeIndex =
+                    (activeIndex - 1 + items.length) % items.length;
+            }
+            else if (event.key === "Enter" && activeIndex >= 0) {
+                event.preventDefault();
+                items[activeIndex].click();
+                return;
+            }
+            else {
+                return;
+            }
+
+            items.forEach(function (item, index) {
+                item.classList.toggle(
+                    "active",
+                    index === activeIndex
+                );
+            });
+
+            if (activeIndex >= 0) {
+                items[activeIndex].scrollIntoView({
+                    block: "nearest"
+                });
+            }
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!wrap.contains(event.target)) {
+                closeBox();
+            }
+        });
+
+        form.addEventListener("submit", function () {
+            clearTimeout(timer);
+            if (controller) controller.abort();
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
+})();
+</script>

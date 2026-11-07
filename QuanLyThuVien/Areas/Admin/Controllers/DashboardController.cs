@@ -1,8 +1,9 @@
 ﻿
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using QuanLyThuVien.Models;
+using QuanLyThuVien.ViewModels.Admin.Dashboard;
 
 namespace QuanLyThuVien.Areas.Admin.Controllers
 {
@@ -10,19 +11,22 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
     [Authorize(Roles = "QuanTri")]
     public class DashboardController : Controller
     {
-        // Trang tổng quan của Admin
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        private readonly QuanLyThuVienContext _context;
+
+        public DashboardController(QuanLyThuVienContext context)
         {
-            ViewData["Title"] = "Tổng quan";
-
-            DashboardThongKeViewModel model =
-                await _thongKeService.LayThongKeAsync();
-
-            return View(model);
+            _context = context;
         }
 
-        // TRANG TAM CHO CHUC NANG CHUA TRIEN KHAI
+        // Trang tổng quan của Admin
+        [HttpGet]
+        public IActionResult Index()
+        {
+            ViewData["Title"] = "Tổng quan";
+            return View();
+        }
+
+        // Trang tạm cho chức năng chưa triển khai
         [HttpGet]
         public async Task<IActionResult> Module(string id)
         {
@@ -49,6 +53,13 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             }
 
             ViewData["Title"] = title;
+
+            if (id == "ThongKe")
+            {
+                var model = await TaoThongKeAsync();
+                return View("ThongKe", model);
+            }
+
             return View();
         }
 

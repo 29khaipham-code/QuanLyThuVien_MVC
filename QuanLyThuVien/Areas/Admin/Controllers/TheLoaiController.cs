@@ -203,5 +203,31 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GoiY(string? term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Json(Array.Empty<object>());
+
+            term = term.Trim();
+
+            var data = await _context.Set<TheLoai>()
+                .AsNoTracking()
+                .Where(x => x.TenTheLoai.Contains(term))
+                .OrderBy(x => x.TenTheLoai.StartsWith(term) ? 0 : 1)
+                .ThenBy(x => x.TenTheLoai)
+                .Select(x => new
+                {
+                    value = x.TenTheLoai,
+                    label = x.TenTheLoai,
+                    detail = x.MoTa ?? ""
+                })
+                .Take(10)
+                .ToListAsync();
+
+            return Json(data);
+        }
+
     }
 }
