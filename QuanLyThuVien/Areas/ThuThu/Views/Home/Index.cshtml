@@ -1,0 +1,94 @@
+@{
+    ViewData["Title"] = "Trang tổng quan Thủ thư";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="mb-4">
+        <h2 class="fw-bold">Xin chào, Thủ thư</h2>
+        <p class="text-muted mb-0">
+            Theo dõi hoạt động và truy cập nhanh các nghiệp vụ thư viện.
+        </p>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="text-muted">Tổng đầu sách</div>
+                    <div class="fs-2 fw-bold">@ViewBag.TongDauSach</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="text-muted">Tổng độc giả</div>
+                    <div class="fs-2 fw-bold">@ViewBag.TongDocGia</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="text-muted">Sách đang mượn</div>
+                    <div class="fs-2 fw-bold">@ViewBag.SachDangMuon</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="text-muted">Sách quá hạn</div>
+                    <div class="fs-2 fw-bold">@ViewBag.SachQuaHan</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Nghiệp vụ thư viện</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6 col-xl-4">
+                    <a class="btn btn-outline-primary w-100 py-3"
+                       asp-area="Admin" asp-controller="SachAdmin" asp-action="Index">
+                        📚 Quản lý sách
+                    </a>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <a class="btn btn-outline-primary w-100 py-3"
+                       asp-area="Admin" asp-controller="BanSaoSach" asp-action="Index">
+                        📖 Quản lý bản sao sách
+                    </a>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <a class="btn btn-outline-primary w-100 py-3"
+                       asp-area="Admin" asp-controller="DocGia" asp-action="Index">
+                        🪪 Quản lý độc giả
+                    </a>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <a class="btn btn-outline-primary w-100 py-3"
+                       asp-area="Admin" asp-controller="MuonTra" asp-action="Index">
+                        🔄 Mượn / Trả sách
+                    </a>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <a class="btn btn-outline-primary w-100 py-3"
+                       asp-area="Admin" asp-controller="DatTruoc" asp-action="Index">
+                        📌 Đặt trước sách
+                    </a>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <a class="btn btn-outline-primary w-100 py-3"
+                       asp-area="Admin" asp-controller="Phat" asp-action="Index">
+                        💰 Quản lý tiền phạt
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -35,131 +35,117 @@
 
             <nav class="sidebar-menu">
 
-                <!-- TỔNG QUAN -->
-                <button type="button" class="menu-toggle" title="Tổng quan">
-                    <span class="menu-icon">🏠</span>
-                    <span class="menu-text">Tổng quan</span>
-                    <span class="arrow">⌄</span>
-                </button>
+                @if (User.IsInRole("QuanTri"))
+                {
+                    <!-- TỔNG QUAN ADMIN -->
+                    <button type="button" class="menu-toggle" title="Tổng quan">
+                        <span class="menu-icon">🏠</span>
+                        <span class="menu-text">Tổng quan</span>
+                        <span class="arrow">⌄</span>
+                    </button>
+                    <div class="submenu">
+                        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                            Trang tổng quan
+                        </a>
+                    </div>
 
-                <div class="submenu">
-                    <a asp-area="Admin"
-                       asp-controller="Dashboard"
-                       asp-action="Index">
-                        Trang tổng quan
-                    </a>
-                </div>
+                    <!-- CHỨC NĂNG CHỈ ADMIN -->
+                    <button type="button" class="menu-toggle" title="Quản lý hệ thống">
+                        <span class="menu-icon">👥</span>
+                        <span class="menu-text">Quản lý hệ thống</span>
+                        <span class="arrow">⌄</span>
+                    </button>
+                    <div class="submenu">
+                        <a asp-area="Admin" asp-controller="TaiKhoan" asp-action="Index">
+                            Quản lý tài khoản
+                        </a>
+                    </div>
 
-                <!-- QUẢN LÝ HỆ THỐNG -->
-                <button type="button" class="menu-toggle" title="Quản lý hệ thống">
-                    <span class="menu-icon">👥</span>
-                    <span class="menu-text">Quản lý hệ thống</span>
-                    <span class="arrow">⌄</span>
-                </button>
+                    <button type="button" class="menu-toggle" title="Danh mục">
+                        <span class="menu-icon">📁</span>
+                        <span class="menu-text">Danh mục</span>
+                        <span class="arrow">⌄</span>
+                    </button>
+                    <div class="submenu">
+                        <a asp-area="Admin" asp-controller="TheLoai" asp-action="Index">
+                            Quản lý thể loại
+                        </a>
+                        <a asp-area="Admin" asp-controller="TacGia" asp-action="Index">
+                            Quản lý tác giả
+                        </a>
+                        <a asp-area="Admin" asp-controller="NhaXuatBan" asp-action="Index">
+                            Nhà xuất bản
+                        </a>
+                    </div>
+                }
+                else if (User.IsInRole("ThuThu"))
+                {
+                    <button type="button" class="menu-toggle" title="Tổng quan">
+                        <span class="menu-icon">🏠</span>
+                        <span class="menu-text">Tổng quan</span>
+                        <span class="arrow">⌄</span>
+                    </button>
+                    <div class="submenu">
+                        <a asp-area="ThuThu" asp-controller="Home" asp-action="Index">
+                            Trang tổng quan
+                        </a>
+                    </div>
+                }
 
-                <div class="submenu">
-                    <a asp-area="Admin"
-                       asp-controller="TaiKhoan"
-                       asp-action="Index">
-                        Quản lý tài khoản
-                    </a>
-                </div>
-
-                <!-- DANH MỤC -->
-                <button type="button" class="menu-toggle" title="Danh mục">
-                    <span class="menu-icon">📁</span>
-                    <span class="menu-text">Danh mục</span>
-                    <span class="arrow">⌄</span>
-                </button>
-
-                <div class="submenu">
-                    <a asp-area="Admin"
-                       asp-controller="TheLoai"
-                       asp-action="Index">
-                        Quản lý thể loại
-                    </a>
-
-                    <a asp-area="Admin"
-                       asp-controller="TacGia"
-                       asp-action="Index">
-                        Quản lý tác giả
-                    </a>
-
-                    <a asp-area="Admin"
-                       asp-controller="NhaXuatBan"
-                       asp-action="Index">
-                        Nhà xuất bản
-                    </a>
-                </div>
-
-                <!-- QUẢN LÝ THƯ VIỆN -->
+                <!-- NGHIỆP VỤ CHUNG: ADMIN VÀ THỦ THƯ -->
                 <button type="button" class="menu-toggle" title="Quản lý thư viện">
                     <span class="menu-icon">📚</span>
                     <span class="menu-text">Quản lý thư viện</span>
                     <span class="arrow">⌄</span>
                 </button>
-
                 <div class="submenu">
-                    <a asp-area="Admin"
-                       asp-controller="SachAdmin"
-                       asp-action="Index">
+                    <a asp-area="Admin" asp-controller="SachAdmin" asp-action="Index">
                         Quản lý sách
                     </a>
-
-                    <a asp-area="Admin"
-                       asp-controller="BanSaoSach"
-                       asp-action="Index">
+                    <a asp-area="Admin" asp-controller="BanSaoSach" asp-action="Index">
                         Quản lý bản sao sách
                     </a>
-
-                    <a asp-area="Admin"
-                       asp-controller="DocGia"
-                       asp-action="Index">
+                    <a asp-area="Admin" asp-controller="DocGia" asp-action="Index">
                         Độc giả
                     </a>
-
-                    <a asp-area="Admin"
-                       asp-controller="MuonTra"
-                       asp-action="Index">
+                    <a asp-area="Admin" asp-controller="MuonTra" asp-action="Index">
                         Mượn / Trả sách
                     </a>
-
-                    <a asp-area="Admin"
-                       asp-controller="DatTruoc"
-                       asp-action="Index">
+                    <a asp-area="Admin" asp-controller="DatTruoc" asp-action="Index">
                         Đặt trước sách
                     </a>
-
-                    <a asp-area="Admin"
-                       asp-controller="Phat"
-                       asp-action="Index">
+                    <a asp-area="Admin" asp-controller="Phat" asp-action="Index">
                         Tiền phạt
                     </a>
-
-                    <a asp-area="Admin"
-                       asp-controller="SachDienTu"
-                       asp-action="Index">
-                        Sách điện tử
-                    </a>
                 </div>
 
-                <!-- BÁO CÁO -->
-                <button type="button"
-                        class="menu-toggle"
-                        title="Báo cáo và thống kê">
-                    <span class="menu-icon">📊</span>
-                    <span class="menu-text">Báo cáo và thống kê</span>
-                    <span class="arrow">⌄</span>
-                </button>
+                @if (User.IsInRole("QuanTri"))
+                {
+                    <button type="button" class="menu-toggle" title="Quản lý mở rộng">
+                        <span class="menu-icon">💻</span>
+                        <span class="menu-text">Quản lý mở rộng</span>
+                        <span class="arrow">⌄</span>
+                    </button>
+                    <div class="submenu">
+                        <a asp-area="Admin" asp-controller="SachDienTu" asp-action="Index">
+                            Sách điện tử
+                        </a>
+                    </div>
 
-                <div class="submenu">
-                    <a asp-area="Admin"
-                       asp-controller="Dashboard"
-                       asp-action="Module"
-                       asp-route-id="ThongKe">
-                        Thống kê
-                    </a>
-                </div>
+                    <button type="button" class="menu-toggle" title="Báo cáo và thống kê">
+                        <span class="menu-icon">📊</span>
+                        <span class="menu-text">Báo cáo và thống kê</span>
+                        <span class="arrow">⌄</span>
+                    </button>
+                    <div class="submenu">
+                        <a asp-area="Admin"
+                           asp-controller="Dashboard"
+                           asp-action="Module"
+                           asp-route-id="ThongKe">
+                            Thống kê
+                        </a>
+                    </div>
+                }
 
             </nav>
         </aside>

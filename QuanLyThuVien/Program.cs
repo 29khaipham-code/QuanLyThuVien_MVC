@@ -165,6 +165,11 @@ app.MapAreaControllerRoute(
     pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}");
 
 app.MapAreaControllerRoute(
+    name: "thuthu",
+    areaName: "ThuThu",
+    pattern: "ThuThu/{controller=Home}/{action=Index}/{id?}");
+
+app.MapAreaControllerRoute(
     name: "docgia",
     areaName: "DocGia",
     pattern: "DocGia/{controller=Home}/{action=Index}/{id?}");

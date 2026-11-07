@@ -8,7 +8,7 @@ using QuanLyThuVien.ViewModels.Admin.BanSaoSach;
 namespace QuanLyThuVien.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "QuanTri")]
+    [Authorize(Roles = "QuanTri,ThuThu")]
     public class BanSaoSachController : Controller
     {
         private readonly QuanLyThuVienContext _db;
