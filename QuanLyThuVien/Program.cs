@@ -7,6 +7,7 @@ using QuanLyThuVien.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<QuanLyThuVien.ViewModels.SachCoverService>();
 
 // 1. Đăng ký dịch vụ MVC
 builder.Services.AddControllersWithViews();

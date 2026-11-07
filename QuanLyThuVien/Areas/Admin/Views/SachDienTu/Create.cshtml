@@ -1,17 +1,119 @@
-﻿
-@model QuanLyThuVien.ViewModels.Admin.SachDienTu.TepSachFormVm
+﻿@model QuanLyThuVien.ViewModels.Admin.SachDienTu.TepSachFormVm
 
 @{
     ViewData["Title"] = "Thêm sách điện tử";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    var sachDaChon = Model.DauSach?
+        .FirstOrDefault(x => x.Value == Model.SachId.ToString());
+
+    string tenSachDaChon = sachDaChon?.Text ?? "";
 }
 
+<style>
+    .sdt-book-search {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .sdt-search-input {
+        padding-left: 40px;
+    }
+
+    .sdt-search-icon {
+        position: absolute;
+        left: 13px;
+        top: 9px;
+        z-index: 1;
+        color: #777;
+        pointer-events: none;
+    }
+
+    .sdt-book-results {
+        display: none;
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        z-index: 1050;
+        max-height: 280px;
+        overflow-y: auto;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 5px 18px rgba(0,0,0,.15);
+    }
+
+    .sdt-book-option {
+        display: block;
+        width: 100%;
+        padding: 11px 14px;
+        border: 0;
+        border-bottom: 1px solid #eee;
+        background: white;
+        text-align: left;
+        cursor: pointer;
+    }
+
+        .sdt-book-option:hover,
+        .sdt-book-option.active {
+            background: #eaf2ff;
+        }
+
+    .sdt-book-name {
+        font-weight: 500;
+        color: #222;
+    }
+
+    .sdt-book-code {
+        font-size: 12px;
+        color: #777;
+    }
+
+    .sdt-book-message {
+        padding: 12px;
+        color: #777;
+        font-size: 14px;
+    }
+
+    .sdt-selected {
+        margin-top: 7px;
+        color: #198754;
+        font-size: 13px;
+    }
+
+    .sdt-search-error {
+        margin-top: 5px;
+        color: #dc3545;
+        font-size: 13px;
+        display: none;
+    }
+
+    @@media (max-width: 600px) {
+        .sdt-book-row {
+            flex-direction: column;
+        }
+
+            .sdt-book-row > a {
+                width: 100%;
+            }
+
+        .sdt-book-search {
+            width: 100%;
+        }
+    }
+</style>
+
 <div class="container-fluid py-4">
+
     <h3 class="mb-4">Thêm sách điện tử</h3>
 
     <div class="card">
         <div class="card-body">
-            <form asp-area="Admin"
+
+            <form id="sdtCreateForm"
+                  asp-area="Admin"
                   asp-controller="SachDienTu"
                   asp-action="Create"
                   method="post"
@@ -20,48 +122,132 @@
                 @Html.AntiForgeryToken()
 
                 <div asp-validation-summary="All"
-                     class="text-danger mb-3"></div>
+                     class="text-danger mb-3">
+                </div>
 
+                <!-- TIM KIEM DAU SACH -->
                 <div class="mb-3">
-                    <label asp-for="SachId" class="form-label">
+
+                    <label class="form-label fw-bold">
                         Chọn đầu sách *
                     </label>
 
-                    <select asp-for="SachId"
-                            asp-items="Model.DauSach"
-                            class="form-select">
-                        <option value="0">-- Chọn đầu sách --</option>
-                    </select>
+                    <input asp-for="SachId"
+                           type="hidden"
+                           id="SachId" />
+
+                    <div class="d-flex gap-2 sdt-book-row">
+
+                        <div class="sdt-book-search"
+                             id="sdtBookSearch">
+
+                            <span class="sdt-search-icon">
+                                🔍
+                            </span>
+
+                            <input type="text"
+                                   id="sdtBookInput"
+                                   class="form-control sdt-search-input"
+                                   placeholder="Nhập tên đầu sách để tìm kiếm..."
+                                   value="@tenSachDaChon"
+                                   autocomplete="off"
+                                   role="combobox"
+                                   aria-autocomplete="list"
+                                   aria-expanded="false"
+                                   aria-controls="sdtBookResults" />
+
+                            <div id="sdtBookResults"
+                                 class="sdt-book-results"
+                                 role="listbox">
+
+                                @if (Model.DauSach != null)
+                                {
+                                    @foreach (var sach in Model.DauSach)
+                                    {
+                                        <button type="button"
+                                                class="sdt-book-option"
+                                                data-id="@sach.Value"
+                                                data-name="@sach.Text"
+                                                role="option">
+
+                                            <div class="sdt-book-name">
+                                                📚 @sach.Text
+                                            </div>
+
+                                            <div class="sdt-book-code">
+                                                Mã đầu sách: @sach.Value
+                                            </div>
+
+                                        </button>
+                                    }
+                                }
+
+                            </div>
+
+                        </div>
+
+                        <a href="@Url.Action("Create", "SachAdmin", new { area = "Admin" })"
+                           class="btn btn-success text-nowrap">
+                            + Thêm đầu sách
+                        </a>
+
+                    </div>
+
+                    <div id="sdtBookSelected"
+                         class="sdt-selected">
+                    </div>
+
+                    <div id="sdtBookError"
+                         class="sdt-search-error">
+                        Vui lòng chọn một đầu sách trong danh sách gợi ý.
+                    </div>
 
                     <span asp-validation-for="SachId"
-                          class="text-danger"></span>
+                          class="text-danger">
+                    </span>
+
+                    <small class="text-muted">
+                        Nhập tên sách rồi chọn kết quả.
+                        Nếu chưa có sách, hãy thêm đầu sách mới.
+                    </small>
+
                 </div>
 
+                <!-- FILE PDF -->
                 <div class="mb-3">
-                    <label asp-for="Tep" class="form-label">
+
+                    <label asp-for="Tep"
+                           class="form-label">
                         Tệp PDF *
                     </label>
 
                     <input asp-for="Tep"
                            type="file"
                            accept=".pdf,application/pdf"
-                           class="form-control" />
+                           class="form-control"
+                           required />
 
                     <span asp-validation-for="Tep"
-                          class="text-danger"></span>
+                          class="text-danger">
+                    </span>
 
                     <small class="text-muted">
                         Chỉ hỗ trợ PDF, dung lượng tối đa 25 MB.
                     </small>
+
                 </div>
 
+                <!-- CHE DO TRUY CAP -->
                 <div class="mb-3">
-                    <label asp-for="CheDoTruyCap" class="form-label">
+
+                    <label asp-for="CheDoTruyCap"
+                           class="form-label">
                         Chế độ truy cập
                     </label>
 
                     <select asp-for="CheDoTruyCap"
                             class="form-select">
+
                         <option value="DocTrucTuyen">
                             Chỉ đọc trực tuyến
                         </option>
@@ -69,10 +255,14 @@
                         <option value="ChoPhepTai">
                             Cho phép đọc và tải
                         </option>
+
                     </select>
+
                 </div>
 
+                <!-- NGAY HET BAN QUYEN -->
                 <div class="mb-3">
+
                     <label asp-for="NgayHetBanQuyen"
                            class="form-label">
                         Ngày hết bản quyền
@@ -83,29 +273,270 @@
                            class="form-control" />
 
                     <span asp-validation-for="NgayHetBanQuyen"
-                          class="text-danger"></span>
+                          class="text-danger">
+                    </span>
+
                 </div>
 
+                <!-- TRANG THAI -->
                 <div class="mb-4">
-                    <label asp-for="TrangThai" class="form-label">
+
+                    <label asp-for="TrangThai"
+                           class="form-label">
                         Trạng thái
                     </label>
 
-                    <select asp-for="TrangThai" class="form-select">
-                        <option value="HoatDong">Hoạt động</option>
-                        <option value="TamKhoa">Tạm khóa</option>
+                    <select asp-for="TrangThai"
+                            class="form-select">
+
+                        <option value="HoatDong">
+                            Hoạt động
+                        </option>
+
+                        <option value="TamKhoa">
+                            Tạm khóa
+                        </option>
+
                     </select>
+
                 </div>
 
-                <button type="submit" class="btn btn-primary">
-                    Lưu sách điện tử
-                </button>
+                <!-- NUT -->
+                <div class="d-flex gap-2">
 
-                <a asp-action="Index"
-                   class="btn btn-outline-secondary">
-                    Quay lại
-                </a>
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Lưu sách điện tử
+                    </button>
+
+                    <a href="@Url.Action("Index", "SachDienTu", new { area = "Admin" })"
+                       class="btn btn-outline-secondary">
+                        Quay lại
+                    </a>
+
+                </div>
+
             </form>
+
         </div>
     </div>
+
 </div>
+
+<script>
+    (function () {
+        "use strict";
+
+        function initBookSearch() {
+
+            const input = document.getElementById("sdtBookInput");
+            const hidden = document.getElementById("SachId");
+            const box = document.getElementById("sdtBookResults");
+            const wrap = document.getElementById("sdtBookSearch");
+            const selected = document.getElementById("sdtBookSelected");
+            const error = document.getElementById("sdtBookError");
+            const form = document.getElementById("sdtCreateForm");
+
+            if (!input || !hidden || !box || !wrap || !form)
+                return;
+
+            const items = Array.from(
+                box.querySelectorAll(".sdt-book-option")
+            );
+
+            let visibleItems = [];
+            let activeIndex = -1;
+
+            function normalize(text) {
+                return (text || "")
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/đ/g, "d")
+                    .replace(/Đ/g, "D")
+                    .toLowerCase()
+                    .trim();
+            }
+
+            function closeBox() {
+                box.style.display = "none";
+                input.setAttribute("aria-expanded", "false");
+                activeIndex = -1;
+            }
+
+            function openBox() {
+                box.style.display = "block";
+                input.setAttribute("aria-expanded", "true");
+            }
+
+            function renderResults() {
+                const keyword = normalize(input.value);
+                let count = 0;
+
+                items.forEach(function (item) {
+                    const name = normalize(item.dataset.name);
+                    const id = item.dataset.id || "";
+
+                    const match =
+                        name.includes(keyword) ||
+                        id.includes(keyword);
+
+                    item.style.display = match ? "block" : "none";
+
+                    if (match) count++;
+                });
+
+                visibleItems = items.filter(
+                    x => x.style.display !== "none"
+                );
+
+                activeIndex = -1;
+
+                let message = box.querySelector(
+                    ".sdt-book-message"
+                );
+
+                if (message) message.remove();
+
+                if (count === 0) {
+                    message = document.createElement("div");
+                    message.className = "sdt-book-message";
+                    message.textContent =
+                        "Không tìm thấy đầu sách phù hợp.";
+
+                    box.appendChild(message);
+                }
+
+                openBox();
+            }
+
+            function chooseBook(item) {
+                const id = item.dataset.id || "";
+                const name = item.dataset.name || "";
+
+                hidden.value = id;
+                input.value = name;
+
+                selected.textContent =
+                    "✓ Đã chọn: " + name + " (ID: " + id + ")";
+
+                error.style.display = "none";
+                closeBox();
+            }
+
+            function updateActive() {
+                visibleItems.forEach(function (item, index) {
+                    const active = index === activeIndex;
+
+                    item.classList.toggle("active", active);
+                    item.setAttribute(
+                        "aria-selected",
+                        active ? "true" : "false"
+                    );
+                });
+
+                if (activeIndex >= 0) {
+                    visibleItems[activeIndex].scrollIntoView({
+                        block: "nearest"
+                    });
+                }
+            }
+
+            input.addEventListener("focus", function () {
+                renderResults();
+            });
+
+            input.addEventListener("input", function () {
+                hidden.value = "0";
+                selected.textContent = "";
+                error.style.display = "none";
+                renderResults();
+            });
+
+            items.forEach(function (item) {
+                item.addEventListener("mousedown", function (e) {
+                    e.preventDefault();
+                });
+
+                item.addEventListener("click", function () {
+                    chooseBook(item);
+                });
+            });
+
+            input.addEventListener("keydown", function (e) {
+
+                if (e.key === "Escape") {
+                    closeBox();
+                    return;
+                }
+
+                if (box.style.display !== "block")
+                    return;
+
+                if (e.key === "ArrowDown" && visibleItems.length) {
+                    e.preventDefault();
+                    activeIndex =
+                        (activeIndex + 1) % visibleItems.length;
+                    updateActive();
+                }
+                else if (e.key === "ArrowUp" && visibleItems.length) {
+                    e.preventDefault();
+                    activeIndex =
+                        (activeIndex - 1 + visibleItems.length)
+                        % visibleItems.length;
+                    updateActive();
+                }
+                else if (e.key === "Enter" && visibleItems.length) {
+                    e.preventDefault();
+
+                    const index = activeIndex >= 0
+                        ? activeIndex
+                        : 0;
+
+                    chooseBook(visibleItems[index]);
+                }
+            });
+
+            document.addEventListener("click", function (e) {
+                if (!wrap.contains(e.target))
+                    closeBox();
+            });
+
+            form.addEventListener("submit", function (e) {
+
+                const id = Number(hidden.value);
+
+                const isValid = items.some(function (item) {
+                    return Number(item.dataset.id) === id &&
+                        item.dataset.name === input.value;
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                    hidden.value = "0";
+                    error.style.display = "block";
+                    input.focus();
+                    renderResults();
+                }
+            });
+
+            if (Number(hidden.value) > 0) {
+                const existing = items.find(
+                    x => x.dataset.id === hidden.value
+                );
+
+                if (existing) {
+                    chooseBook(existing);
+                }
+            }
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener(
+                "DOMContentLoaded",
+                initBookSearch
+            );
+        } else {
+            initBookSearch();
+        }
+    })();
+</script>

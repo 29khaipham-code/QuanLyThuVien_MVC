@@ -29,7 +29,7 @@ namespace QuanLyThuVien.Services
                     "Thiếu chuỗi kết nối QuanLyThuVienConnectionString");
 
             _storagePath = Path.Combine(
-                env.ContentRootPath, "PrivateFiles", "SachDienTu");
+                env.ContentRootPath, "App_Data", "ebooks");
         }
 
         private SqlConnection OpenConnection()
@@ -625,5 +625,52 @@ namespace QuanLyThuVien.Services
 
             return result;
         }
+
+        // GOI Y TIM KIEM SACH DIEN TU (AJAX)
+        public async Task<List<object>> GoiY(string? term)
+        {
+            var result = new List<object>();
+
+            if (string.IsNullOrWhiteSpace(term))
+                return result;
+
+            term = term.Trim();
+
+            await using var conn = OpenConnection();
+            await conn.OpenAsync();
+
+            const string sql = @"
+                SELECT TOP (10) s.TieuDe, s.Isbn
+                FROM dbo.Sach s
+                WHERE EXISTS (
+                    SELECT 1 FROM dbo.TepSachDienTu t
+                    WHERE t.SachId = s.Id
+                )
+                AND (s.TieuDe LIKE N'%' + @term + N'%'
+                     OR s.Isbn LIKE N'%' + @term + N'%')
+                ORDER BY s.TieuDe";
+
+            await using var cmd = new SqlCommand(sql, conn);
+            Add(cmd, "@term", SqlDbType.NVarChar, term, 255);
+            await using var rd = await cmd.ExecuteReaderAsync();
+
+            while (await rd.ReadAsync())
+            {
+                string ten = rd.GetString(0);
+                string isbn = rd.IsDBNull(1)
+                    ? "Chưa có ISBN"
+                    : rd.GetString(1);
+
+                result.Add(new
+                {
+                    value = ten,
+                    label = ten,
+                    detail = "ISBN: " + isbn
+                });
+            }
+
+            return result;
+        }
+
     }
 }
