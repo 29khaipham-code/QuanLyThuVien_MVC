@@ -59,7 +59,9 @@ builder.Services.AddScoped<ThongBaoService>();
 builder.Services.AddHostedService<ThongBaoBackgroundService>();
 
 // 6. Tạo ứng dụng sau khi đăng ký tất cả dịch vụ
-builder.Services.AddScoped<SachDienTuAdminService>();
+builder.Services.AddScoped<
+    QuanLyThuVien.Services.DashboardThongKeService>();
+builder.Services.AddScoped<QuanLyThuVien.Services.SachDienTuAdminService>();
 
 builder.Services.AddScoped<SachCoverService>();
 // dki dich vu thong bao
@@ -216,6 +218,11 @@ app.MapAreaControllerRoute(
     name: "admin",
     areaName: "Admin",
     pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}");
+
+app.MapAreaControllerRoute(
+    name: "thuthu",
+    areaName: "ThuThu",
+    pattern: "ThuThu/{controller=Home}/{action=Index}/{id?}");
 
 app.MapAreaControllerRoute(
     name: "docgia",

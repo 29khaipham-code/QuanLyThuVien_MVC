@@ -465,5 +465,36 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GoiY(string? term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Json(Array.Empty<object>());
+
+            term = term.Trim();
+
+            var data = await (
+                from dt in _db.Set<DatTruocEntity>().AsNoTracking()
+                join dg in _db.Set<DocGium>().AsNoTracking()
+                    on dt.DocGiaId equals dg.Id
+                join s in _db.Set<Sach>().AsNoTracking()
+                    on dt.SachId equals s.Id
+                where dg.MaDocGia.Contains(term)
+                   || dg.HoTen.Contains(term)
+                   || s.TieuDe.Contains(term)
+                orderby dg.HoTen.StartsWith(term) descending,
+                        dg.HoTen
+                select new
+                {
+                    value = dg.MaDocGia,
+                    label = dg.HoTen,
+                    detail = dg.MaDocGia + " | " + s.TieuDe
+                }
+            ).Take(10).ToListAsync();
+
+            return Json(data);
+        }
+
     }
 }

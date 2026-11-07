@@ -6,22 +6,84 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+    .sdt-search-wrap {
+        position: relative;
+    }
+
+    .sdt-suggestions {
+        display: none;
+        position: absolute;
+        top: calc(100% + 3px);
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 7px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, .15);
+        max-height: 320px;
+        overflow-y: auto;
+    }
+
+    .sdt-suggestion-item {
+        display: block;
+        width: 100%;
+        padding: 11px 14px;
+        border: 0;
+        border-bottom: 1px solid #eee;
+        background: white;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .sdt-suggestion-item:hover,
+    .sdt-suggestion-item.active {
+        background: #eaf2ff;
+    }
+
+    .sdt-suggestion-title {
+        font-weight: 600;
+        color: #212529;
+    }
+
+    .sdt-suggestion-detail {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 3px;
+    }
+
+    .sdt-suggestion-message {
+        padding: 12px 14px;
+        color: #6c757d;
+    }
+</style>
+
 <div class="container-fluid py-4">
+
     <h3 class="mb-4">Quản lý sách điện tử</h3>
 
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success">@TempData["Success"]</div>
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
     }
 
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger">@TempData["Error"]</div>
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
     }
 
+    <!-- CAC CHUC NANG QUAN LY -->
     <div class="d-flex gap-2 mb-4 flex-wrap">
-        <a asp-area="Admin" asp-controller="SachDienTu"
-           asp-action="Create" class="btn btn-primary">
+
+        <a asp-area="Admin"
+           asp-controller="SachDienTu"
+           asp-action="Create"
+           class="btn btn-primary">
             + Thêm sách điện tử
         </a>
 
@@ -34,23 +96,49 @@
            class="btn btn-outline-secondary">
             Lịch sử truy cập
         </a>
+
     </div>
 
-    <form asp-action="Index" method="get"
+    <!-- TIM KIEM AJAX VA LOC TRANG THAI -->
+    <form id="sdtSearchForm"
+          asp-area="Admin"
+          asp-controller="SachDienTu"
+          asp-action="Index"
+          method="get"
           class="row g-2 mb-4">
+
         <div class="col-md-5">
-            <input name="tuKhoa"
-                   value="@Model.TuKhoa"
-                   class="form-control"
-                   placeholder="Tìm kiếm tên sách..." />
+
+            <div class="sdt-search-wrap" id="sdtSearchWrap">
+
+                <input id="sdtSearchInput"
+                       type="text"
+                       name="tuKhoa"
+                       value="@Model.TuKhoa"
+                       class="form-control"
+                       placeholder="Tìm kiếm tên sách..."
+                       autocomplete="off"
+                       aria-expanded="false"
+                       aria-controls="sdtSuggestions" />
+
+                <div id="sdtSuggestions"
+                     class="sdt-suggestions">
+                </div>
+
+            </div>
         </div>
 
         <div class="col-md-3">
+
             <select name="trangThai" class="form-select">
+
                 <option value="">Tất cả trạng thái</option>
 
-                @foreach (var st in new[] {
-                    "HoatDong", "TamKhoa", "HetBanQuyen"
+                @foreach (var st in new[]
+                {
+                    "HoatDong",
+                    "TamKhoa",
+                    "HetBanQuyen"
                 })
                 {
                     <option value="@st"
@@ -58,11 +146,14 @@
                         @st
                     </option>
                 }
+
             </select>
+
         </div>
 
         <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100">
+            <button type="submit"
+                    class="btn btn-primary w-100">
                 Tìm kiếm
             </button>
         </div>
@@ -73,10 +164,14 @@
                 Làm mới
             </a>
         </div>
+
     </form>
 
+    <!-- BANG DANH SACH -->
     <div class="table-responsive">
+
         <table class="table table-hover align-middle">
+
             <thead>
                 <tr>
                     <th>ID</th>
@@ -91,11 +186,15 @@
             </thead>
 
             <tbody>
+
                 @foreach (var item in Model.DanhSach)
                 {
                     <tr>
+
                         <td>@item.Id</td>
+
                         <td>@item.TieuDe</td>
+
                         <td>@item.DinhDang</td>
 
                         <td>
@@ -111,6 +210,7 @@
                         </td>
 
                         <td>
+
                             @if (item.TrangThai == "HoatDong")
                             {
                                 <span class="badge bg-success">
@@ -129,6 +229,7 @@
                                     Hết bản quyền
                                 </span>
                             }
+
                         </td>
 
                         <td>
@@ -137,7 +238,9 @@
                         </td>
 
                         <td>
+
                             <div class="d-flex gap-2">
+
                                 <a asp-action="Edit"
                                    asp-route-id="@item.Id"
                                    class="btn btn-sm btn-outline-primary">
@@ -148,6 +251,7 @@
                                 {
                                     <form asp-action="ChangeStatus"
                                           method="post">
+
                                         @Html.AntiForgeryToken()
 
                                         <input type="hidden"
@@ -161,16 +265,24 @@
                                         <button type="submit"
                                                 class="btn btn-sm btn-outline-danger">
                                             @(item.TrangThai == "HoatDong"
-                                                ? "Khóa" : "Mở")
+                                                ? "Khóa"
+                                                : "Mở")
                                         </button>
+
                                     </form>
                                 }
+
                             </div>
+
                         </td>
+
                     </tr>
                 }
+
             </tbody>
+
         </table>
+
     </div>
 
     @if (Model.DanhSach.Count == 0)
@@ -180,11 +292,15 @@
         </div>
     }
 
+    <!-- PHAN TRANG -->
     <nav aria-label="Phân trang">
+
         <ul class="pagination justify-content-center">
+
             @for (int i = 1; i <= Model.SoTrang; i++)
             {
                 <li class="page-item @(i == Model.Trang ? "active" : "")">
+
                     <a class="page-link"
                        asp-action="Index"
                        asp-route-trang="@i"
@@ -192,8 +308,232 @@
                        asp-route-trangThai="@Model.TrangThai">
                         @i
                     </a>
+
                 </li>
             }
+
         </ul>
+
     </nav>
+
 </div>
+
+<script>
+(function () {
+    "use strict";
+
+    function init() {
+
+        const input = document.getElementById("sdtSearchInput");
+        const box = document.getElementById("sdtSuggestions");
+        const wrap = document.getElementById("sdtSearchWrap");
+        const form = document.getElementById("sdtSearchForm");
+
+        if (!input || !box || !wrap || !form) return;
+
+        const api = '@Url.Action("GoiY", "SachDienTu", new { area = "Admin" })';
+
+        let timer = null;
+        let controller = null;
+        let currentIndex = -1;
+
+        function closeBox() {
+            box.style.display = "none";
+            box.replaceChildren();
+            input.setAttribute("aria-expanded", "false");
+            currentIndex = -1;
+        }
+
+        function showBox() {
+            box.style.display = "block";
+            input.setAttribute("aria-expanded", "true");
+        }
+
+        function showMessage(message) {
+            box.replaceChildren();
+
+            const div = document.createElement("div");
+            div.className = "sdt-suggestion-message";
+            div.textContent = message;
+
+            box.appendChild(div);
+            showBox();
+        }
+
+        function selectItem(value) {
+            input.value = value;
+            closeBox();
+            form.requestSubmit();
+        }
+
+        async function search(term) {
+
+            if (controller) controller.abort();
+
+            const request = new AbortController();
+            controller = request;
+
+            try {
+
+                const response = await fetch(
+                    api + "?term=" + encodeURIComponent(term),
+                    {
+                        method: "GET",
+                        signal: request.signal,
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("HTTP " + response.status);
+                }
+
+                const data = await response.json();
+
+                if (request.signal.aborted ||
+                    input.value.trim() !== term) {
+                    return;
+                }
+
+                box.replaceChildren();
+                currentIndex = -1;
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    showMessage("Không tìm thấy sách điện tử");
+                    return;
+                }
+
+                data.forEach(function (item) {
+
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "sdt-suggestion-item";
+
+                    const title = document.createElement("div");
+                    title.className = "sdt-suggestion-title";
+                    title.textContent = item.label || item.value;
+
+                    const detail = document.createElement("div");
+                    detail.className = "sdt-suggestion-detail";
+                    detail.textContent = item.detail || "";
+
+                    button.appendChild(title);
+                    button.appendChild(detail);
+
+                    button.addEventListener("click", function () {
+                        selectItem(item.value);
+                    });
+
+                    box.appendChild(button);
+                });
+
+                showBox();
+
+            } catch (error) {
+
+                if (error.name === "AbortError") return;
+
+                console.error("SachDienTu AJAX:", error);
+                showMessage("Không tải được gợi ý. Kiểm tra API GoiY.");
+            }
+        }
+
+        input.addEventListener("input", function () {
+
+            clearTimeout(timer);
+
+            if (controller) controller.abort();
+
+            const term = input.value.trim();
+            closeBox();
+
+            if (!term) return;
+
+            showMessage("Đang tìm kiếm...");
+
+            timer = setTimeout(function () {
+                search(term);
+            }, 250);
+        });
+
+        input.addEventListener("focus", function () {
+
+            const term = input.value.trim();
+
+            if (!term) return;
+
+            clearTimeout(timer);
+
+            timer = setTimeout(function () {
+                search(term);
+            }, 250);
+        });
+
+        input.addEventListener("keydown", function (event) {
+
+            const items = box.querySelectorAll(
+                ".sdt-suggestion-item"
+            );
+
+            if (event.key === "Escape") {
+                closeBox();
+                return;
+            }
+
+            if (box.style.display !== "block" || !items.length) {
+                return;
+            }
+
+            if (event.key === "ArrowDown") {
+                event.preventDefault();
+                currentIndex = (currentIndex + 1) % items.length;
+            }
+            else if (event.key === "ArrowUp") {
+                event.preventDefault();
+                currentIndex =
+                    (currentIndex - 1 + items.length) % items.length;
+            }
+            else if (event.key === "Enter" && currentIndex >= 0) {
+                event.preventDefault();
+                items[currentIndex].click();
+                return;
+            }
+            else {
+                return;
+            }
+
+            items.forEach(function (item, index) {
+                item.classList.toggle(
+                    "active",
+                    index === currentIndex
+                );
+            });
+
+            if (currentIndex >= 0) {
+                items[currentIndex].scrollIntoView({
+                    block: "nearest"
+                });
+            }
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!wrap.contains(event.target)) {
+                closeBox();
+            }
+        });
+
+        form.addEventListener("submit", function () {
+            clearTimeout(timer);
+            if (controller) controller.abort();
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
+})();
+</script>

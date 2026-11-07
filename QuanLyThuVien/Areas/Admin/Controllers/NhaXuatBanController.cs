@@ -70,7 +70,34 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
         }
 
         // ====================================
-        // 2. HIỂN THỊ FORM THÊM
+        // 2. GỢI Ý NHÀ XUẤT BẢN KHI GÕ
+        // ====================================
+        [HttpGet]
+        public async Task<IActionResult> GoiY(string? term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+            {
+                return Json(Array.Empty<string>());
+            }
+
+            term = term.Trim();
+
+            var danhSachGoiY = await _db.Set<NhaXuatBan>()
+                .AsNoTracking()
+                .Where(x =>
+                    x.TenNhaXuatBan.Contains(term))
+                .OrderBy(x =>
+                    x.TenNhaXuatBan.StartsWith(term) ? 0 : 1)
+                .ThenBy(x => x.TenNhaXuatBan)
+                .Select(x => x.TenNhaXuatBan)
+                .Take(10)
+                .ToListAsync();
+
+            return Json(danhSachGoiY);
+        }
+
+        // ====================================
+        // 3. HIỂN THỊ FORM THÊM
         // ====================================
         [HttpGet]
         public IActionResult Create()
@@ -79,7 +106,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
         }
 
         // ====================================
-        // 3. LƯU NHÀ XUẤT BẢN MỚI
+        // 4. LƯU NHÀ XUẤT BẢN MỚI
         // ====================================
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -122,7 +149,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
         }
 
         // ====================================
-        // 4. HIỂN THỊ FORM SỬA
+        // 5. HIỂN THỊ FORM SỬA
         // ====================================
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -147,7 +174,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
         }
 
         // ====================================
-        // 5. LƯU THÔNG TIN CHỈNH SỬA
+        // 6. LƯU THÔNG TIN CHỈNH SỬA
         // ====================================
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -198,7 +225,7 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
         }
 
         // ====================================
-        // 6. XÓA NHÀ XUẤT BẢN
+        // 7. XÓA NHÀ XUẤT BẢN
         // ====================================
         [HttpPost]
         [ValidateAntiForgeryToken]

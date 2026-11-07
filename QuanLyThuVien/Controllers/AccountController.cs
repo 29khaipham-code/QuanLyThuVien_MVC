@@ -254,7 +254,7 @@ namespace QuanLyThuVien.Controllers
             {
                 "QuanTri" => RedirectToAction("Index", "Dashboard", new { area = "Admin" }),
                 "DocGia" => RedirectToAction("Index", "Home", new { area = "DocGia" }),
-                // ThuThu: tạm về trang khách cho đến khi có Area ThuThu
+                "ThuThu" => RedirectToAction("Index", "Home", new { area = "ThuThu" }),
                 _ => RedirectToAction("Index", "Home", new { area = "" })
             };
         }

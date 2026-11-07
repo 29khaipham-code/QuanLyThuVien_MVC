@@ -234,5 +234,31 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GoiY(string? term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Json(Array.Empty<object>());
+
+            term = term.Trim();
+
+            var data = await _context.Set<TacGium>()
+                .AsNoTracking()
+                .Where(x => x.TenTacGia.Contains(term))
+                .OrderBy(x => x.TenTacGia.StartsWith(term) ? 0 : 1)
+                .ThenBy(x => x.TenTacGia)
+                .Select(x => new
+                {
+                    value = x.TenTacGia,
+                    label = x.TenTacGia,
+                    detail = x.QuocTich ?? ""
+                })
+                .Take(10)
+                .ToListAsync();
+
+            return Json(data);
+        }
+
     }
 }

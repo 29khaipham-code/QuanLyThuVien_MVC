@@ -9,7 +9,7 @@ using QuanLyThuVien.ViewModels.DocGia;
 namespace QuanLyThuVien.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "QuanTri")]
+    [Authorize(Roles = "QuanTri,ThuThu")]
     public class DocGiaController : Controller
     {
         private readonly QuanLyThuVienContext _db;
@@ -396,5 +396,45 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        // ====================================
+        // GOI Y TIM KIEM DOC GIA BANG AJAX
+        // ====================================
+        [HttpGet]
+        public async Task<IActionResult> GoiY(string? term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+            {
+                return Json(Array.Empty<object>());
+            }
+
+            term = term.Trim();
+
+            var danhSach = await _db.Set<DocGium>()
+                .AsNoTracking()
+                .Where(x =>
+                    x.MaDocGia.Contains(term) ||
+                    x.HoTen.Contains(term) ||
+                    (x.Email != null &&
+                     x.Email.Contains(term)) ||
+                    (x.SoDienThoai != null &&
+                     x.SoDienThoai.Contains(term)))
+                .OrderBy(x =>
+                    x.HoTen.StartsWith(term) ? 0 :
+                    x.MaDocGia.StartsWith(term) ? 1 : 2)
+                .ThenBy(x => x.HoTen)
+                .Select(x => new
+                {
+                    ma = x.MaDocGia,
+                    ten = x.HoTen,
+                    email = x.Email,
+                    dienThoai = x.SoDienThoai
+                })
+                .Take(10)
+                .ToListAsync();
+
+            return Json(danhSach);
+        }
+
     }
 }

@@ -4,45 +4,148 @@
 @{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Quản lý thể loại";
+
     int page = ViewBag.Page ?? 1;
     int totalPages = ViewBag.TotalPages ?? 1;
-    string keyword = ViewBag.Keyword ?? "";
+    string keyword = ViewBag.Keyword as string ?? "";
 }
 
+<style>
+    .tl-search-wrap {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .tl-suggestions {
+        display: none;
+        position: absolute;
+        top: calc(100% + 3px);
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 9999;
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 7px;
+        box-shadow: 0 6px 20px rgba(0,0,0,.15);
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .tl-suggestion-item {
+        display: block;
+        width: 100%;
+        padding: 11px 14px;
+        border: 0;
+        border-bottom: 1px solid #eee;
+        background: white;
+        text-align: left;
+        cursor: pointer;
+        color: #212529;
+    }
+
+    .tl-suggestion-item:hover,
+    .tl-suggestion-item.active {
+        background: #eaf2ff;
+    }
+
+    .tl-suggestion-name {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .tl-suggestion-detail {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 3px;
+    }
+
+    .tl-suggestion-message {
+        padding: 12px 14px;
+        color: #6c757d;
+    }
+</style>
+
 <div class="content-card">
+
+    <!-- TIEU DE -->
     <div class="d-flex justify-content-between align-items-center mb-4">
+
         <div>
             <h4>Quản lý thể loại</h4>
-            <p class="text-muted">Danh sách thể loại sách</p>
+            <p class="text-muted">
+                Danh sách thể loại sách
+            </p>
         </div>
 
-        <a asp-area="Admin" asp-controller="TheLoai"
-           asp-action="Create" class="btn btn-primary">
+        <a asp-area="Admin"
+           asp-controller="TheLoai"
+           asp-action="Create"
+           class="btn btn-primary">
             + Thêm thể loại
         </a>
+
     </div>
 
+    <!-- THONG BAO -->
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success">@TempData["Success"]</div>
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
     }
+
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger">@TempData["Error"]</div>
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
     }
 
-    <form method="get" asp-action="Index" class="d-flex gap-2 mb-3">
-        <input name="keyword" value="@keyword"
-               class="form-control"
-               placeholder="Tìm kiếm thể loại..." />
-        <button class="btn btn-primary">Tìm kiếm</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">
+    <!-- TIM KIEM AJAX -->
+    <form id="tlSearchForm"
+          method="get"
+          asp-area="Admin"
+          asp-controller="TheLoai"
+          asp-action="Index"
+          class="d-flex gap-2 mb-3">
+
+        <div class="tl-search-wrap" id="tlSearchWrap">
+
+            <input id="tlSearchInput"
+                   type="text"
+                   name="keyword"
+                   value="@keyword"
+                   class="form-control"
+                   placeholder="Tìm kiếm thể loại..."
+                   autocomplete="off"
+                   aria-expanded="false"
+                   aria-controls="tlSuggestions" />
+
+            <div id="tlSuggestions"
+                 class="tl-suggestions">
+            </div>
+
+        </div>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Tìm kiếm
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
             Làm mới
         </a>
+
     </form>
 
+    <!-- BANG THE LOAI -->
     <div class="table-responsive">
+
         <table class="table table-bordered table-hover align-middle">
+
             <thead>
                 <tr>
                     <th>ID</th>
@@ -51,56 +154,304 @@
                     <th>Thao tác</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Id</td>
-                        <td>@item.TenTheLoai</td>
-                        <td>@item.MoTa</td>
-                        <td>
-                            <div class="d-flex gap-2">
-                                <a asp-action="Edit"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-sm btn-warning">
-                                    Sửa
-                                </a>
 
-                                <form asp-action="Delete"
-                                      asp-route-id="@item.Id"
-                                      method="post"
-                                      onsubmit="return confirm('Bạn chắc chắn muốn xóa?')">
-                                    @Html.AntiForgeryToken()
-                                    <button class="btn btn-sm btn-danger">
-                                        Xóa
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+            <tbody>
+
+                @if (Model != null)
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.Id</td>
+
+                            <td>@item.TenTheLoai</td>
+
+                            <td>@item.MoTa</td>
+
+                            <td>
+
+                                <div class="d-flex gap-2">
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-warning">
+                                        Sửa
+                                    </a>
+
+                                    <form asp-action="Delete"
+                                          asp-route-id="@item.Id"
+                                          method="post"
+                                          onsubmit="return confirm('Bạn chắc chắn muốn xóa?')">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger">
+                                            Xóa
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
                 }
+
             </tbody>
+
         </table>
+
     </div>
 
-    @if (!Model.Any())
+    @if (Model == null || !Model.Any())
     {
         <p>Không có thể loại phù hợp.</p>
     }
 
-    <nav>
+    <!-- PHAN TRANG -->
+    <nav aria-label="Phân trang thể loại">
+
         <ul class="pagination">
+
             @for (int i = 1; i <= totalPages; i++)
             {
                 <li class="page-item @(i == page ? "active" : "")">
+
                     <a class="page-link"
                        asp-action="Index"
                        asp-route-page="@i"
                        asp-route-keyword="@keyword">
                         @i
                     </a>
+
                 </li>
             }
+
         </ul>
+
     </nav>
+
 </div>
+
+<script>
+(function () {
+    "use strict";
+
+    function init() {
+
+        const input = document.getElementById("tlSearchInput");
+        const box = document.getElementById("tlSuggestions");
+        const wrap = document.getElementById("tlSearchWrap");
+        const form = document.getElementById("tlSearchForm");
+
+        if (!input || !box || !wrap || !form) return;
+
+        const api = '@Url.Action("GoiY", "TheLoai", new { area = "Admin" })';
+
+        let timer = null;
+        let controller = null;
+        let activeIndex = -1;
+
+        function closeBox() {
+            box.style.display = "none";
+            box.replaceChildren();
+            activeIndex = -1;
+            input.setAttribute("aria-expanded", "false");
+        }
+
+        function showBox() {
+            box.style.display = "block";
+            input.setAttribute("aria-expanded", "true");
+        }
+
+        function showMessage(message) {
+
+            box.replaceChildren();
+
+            const div = document.createElement("div");
+            div.className = "tl-suggestion-message";
+            div.textContent = message;
+
+            box.appendChild(div);
+            showBox();
+        }
+
+        function choose(value) {
+            input.value = value;
+            closeBox();
+            form.requestSubmit();
+        }
+
+        async function search(term) {
+
+            if (controller) controller.abort();
+
+            const request = new AbortController();
+            controller = request;
+
+            try {
+
+                const response = await fetch(
+                    api + "?term=" + encodeURIComponent(term),
+                    {
+                        method: "GET",
+                        signal: request.signal,
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("HTTP " + response.status);
+                }
+
+                const data = await response.json();
+
+                if (request.signal.aborted ||
+                    input.value.trim() !== term) {
+                    return;
+                }
+
+                box.replaceChildren();
+                activeIndex = -1;
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    showMessage("Không tìm thấy thể loại phù hợp");
+                    return;
+                }
+
+                data.forEach(function (item) {
+
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "tl-suggestion-item";
+
+                    const name = document.createElement("div");
+                    name.className = "tl-suggestion-name";
+                    name.textContent = item.label || item.value;
+
+                    const detail = document.createElement("div");
+                    detail.className = "tl-suggestion-detail";
+                    detail.textContent = item.detail || "";
+
+                    button.appendChild(name);
+                    button.appendChild(detail);
+
+                    button.addEventListener("click", function () {
+                        choose(item.value);
+                    });
+
+                    box.appendChild(button);
+                });
+
+                showBox();
+
+            } catch (error) {
+
+                if (error.name === "AbortError") return;
+
+                console.error("TheLoai AJAX:", error);
+                showMessage("Không tải được gợi ý. Kiểm tra API GoiY.");
+            }
+        }
+
+        input.addEventListener("input", function () {
+
+            clearTimeout(timer);
+
+            if (controller) controller.abort();
+
+            const term = input.value.trim();
+            closeBox();
+
+            if (!term) return;
+
+            showMessage("Đang tìm kiếm...");
+
+            timer = setTimeout(function () {
+                search(term);
+            }, 200);
+        });
+
+        input.addEventListener("focus", function () {
+
+            const term = input.value.trim();
+
+            if (!term) return;
+
+            clearTimeout(timer);
+
+            timer = setTimeout(function () {
+                search(term);
+            }, 200);
+        });
+
+        input.addEventListener("keydown", function (event) {
+
+            const items = box.querySelectorAll(".tl-suggestion-item");
+
+            if (event.key === "Escape") {
+                closeBox();
+                return;
+            }
+
+            if (box.style.display !== "block" || !items.length) {
+                return;
+            }
+
+            if (event.key === "ArrowDown") {
+                event.preventDefault();
+                activeIndex = (activeIndex + 1) % items.length;
+            }
+            else if (event.key === "ArrowUp") {
+                event.preventDefault();
+                activeIndex =
+                    (activeIndex - 1 + items.length) % items.length;
+            }
+            else if (event.key === "Enter" && activeIndex >= 0) {
+                event.preventDefault();
+                items[activeIndex].click();
+                return;
+            }
+            else {
+                return;
+            }
+
+            items.forEach(function (item, index) {
+                item.classList.toggle(
+                    "active",
+                    index === activeIndex
+                );
+            });
+
+            if (activeIndex >= 0) {
+                items[activeIndex].scrollIntoView({
+                    block: "nearest"
+                });
+            }
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!wrap.contains(event.target)) {
+                closeBox();
+            }
+        });
+
+        form.addEventListener("submit", function () {
+            clearTimeout(timer);
+            if (controller) controller.abort();
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
+})();
+</script>

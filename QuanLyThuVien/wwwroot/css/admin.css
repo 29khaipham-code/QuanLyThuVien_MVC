@@ -5,9 +5,9 @@
 
 body {
     margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: #f4f6f9;
-    color: #263445;
+    font-family: Arial, sans-serif;
+    background: #F5F0EB;
+    color: #2D2A24;
 }
 
 .admin-wrapper {
@@ -18,8 +18,8 @@ body {
 /* MENU TRÁI */
 .admin-sidebar {
     width: 260px;
-    background: #17324d;
-    color: white;
+    background: #E8DED1;
+    color: #2D2A24;
     flex-shrink: 0;
     min-height: 100vh;
 }
@@ -27,7 +27,7 @@ body {
 .sidebar-brand {
     text-align: center;
     padding: 25px 12px;
-    border-bottom: 1px solid #344c62;
+    border-bottom: 1px solid #D4BFA5;
 }
 
 .brand-icon {
@@ -41,7 +41,7 @@ body {
 }
 
 .sidebar-brand small {
-    color: #b9c9d9;
+    color: #5D5447;
 }
 
 .sidebar-menu {
@@ -50,7 +50,7 @@ body {
 
 .menu-heading {
     padding: 15px 12px 7px;
-    color: #93a9bc;
+    color: #675B4E;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 1px;
@@ -58,7 +58,7 @@ body {
 
 .sidebar-menu a {
     display: block;
-    color: #e6edf5;
+    color: #2D2A24;
     text-decoration: none;
     padding: 11px 15px;
     margin-bottom: 3px;
@@ -68,8 +68,8 @@ body {
 }
 
     .sidebar-menu a:hover {
-        background: #285174;
-        color: white;
+        background: #D4BFA5;
+        color: #2D2A24;
     }
 
 /* KHU VỰC CHÍNH */
@@ -81,12 +81,12 @@ body {
 }
 
 .admin-header {
-    background: white;
+    background: #F5F0EB;
     padding: 17px 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #D4BFA5;
 }
 
 .admin-user {
@@ -102,20 +102,20 @@ body {
 
 .admin-footer {
     padding: 15px;
-    background: white;
-    border-top: 1px solid #e5e7eb;
+    background: #F5F0EB;
+    border-top: 1px solid #D4BFA5;
     text-align: center;
-    color: #7a8795;
+    color: #675B4E;
     font-size: 13px;
 }
 
 /* THẺ THỐNG KÊ */
 .stat-card {
-    background: white;
-    border-radius: 12px;
+    background: #F5F0EB;
+    border-radius: 8px;
     padding: 23px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.03);
+    border: 1px solid #D4BFA5;
+    box-shadow: 0 3px 12px rgba(45,42,36,0.12);
     height: 100%;
 }
 
@@ -131,26 +131,26 @@ body {
 
 /* NỘI DUNG */
 .content-card {
-    background: white;
+    background: #F5F0EB;
     padding: 25px;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    border: 1px solid #D4BFA5;
 }
 
 .quick-link {
     display: block;
     padding: 18px;
-    background: #f5f8fc;
-    border: 1px solid #e2e8f0;
-    border-radius: 9px;
+    background: #F5F0EB;
+    border: 1px solid #D4BFA5;
+    border-radius: 8px;
     text-decoration: none;
-    color: #17476f;
+    color: #C86A4A;
     font-weight: 600;
 }
 
     .quick-link:hover {
-        background: #e2efff;
-        color: #0d55b7;
+        background: #E8DED1;
+        color: #C86A4A;
     }
 
 /* RESPONSIVE */
@@ -204,7 +204,7 @@ body {
     gap: 9px;
     padding: 10px 20px;
     border: 1px solid transparent;
-    border-radius: 12px;
+    border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
@@ -212,35 +212,35 @@ body {
     white-space: nowrap;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 6px rgba(45,42,36,0.12);
 }
 
 /* Nút Trang chủ */
 .admin-home-btn {
-    color: #2563eb;
-    background: #eff6ff;
-    border-color: #bfdbfe;
+    color: #C86A4A;
+    background: #F5F0EB;
+    border-color: #D4BFA5;
 }
 
     .admin-home-btn:hover {
-        background: #2563eb;
+        background: #C86A4A;
         color: #ffffff;
         transform: translateY(-2px);
-        box-shadow: 0 5px 12px rgba(37, 99, 235, 0.2);
+        box-shadow: 0 5px 12px rgba(45,42,36,0.12);
     }
 
 /* Nút Đăng xuất */
 .admin-logout-btn {
-    color: #dc2626;
-    background: #fef2f2;
-    border-color: #fecaca;
+    color: #C86A4A;
+    background: #F5F0EB;
+    border-color: #D4BFA5;
 }
 
     .admin-logout-btn:hover {
-        background: #dc2626;
+        background: #C86A4A;
         color: #ffffff;
         transform: translateY(-2px);
-        box-shadow: 0 5px 12px rgba(220, 38, 38, 0.2);
+        box-shadow: 0 5px 12px rgba(45,42,36,0.12);
     }
 
 .admin-action-form {
@@ -265,3 +265,774 @@ body {
     }
 }
 
+/* =========================================
+   TRANG THONG KE BAO CAO - CHI PHAN NOI DUNG
+   Khong thay doi sidebar va header hien tai.
+========================================= */
+.report-page {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    color: #2D2A24;
+}
+
+.report-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.report-eyebrow {
+    display: inline-block;
+    margin-bottom: 7px;
+    color: #675B4E;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.35px;
+}
+
+.report-heading h2 {
+    margin: 0;
+    color: #2D2A24;
+    font-size: 26px;
+    font-weight: 750;
+}
+
+.report-heading p,
+.report-panel-heading p {
+    margin: 6px 0 0;
+    color: #675B4E;
+    font-size: 13px;
+}
+
+.report-updated {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border: 1px solid #D4BFA5;
+    border-radius: 8px;
+    background: #F5F0EB;
+    color: #7A8B5E;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.report-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #7A8B5E;
+    box-shadow: 0 0 0 3px rgba(45,42,36,0.12);
+}
+
+.report-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.report-stat-card,
+.report-panel {
+    min-width: 0;
+    border: 1px solid #D4BFA5;
+    border-radius: 8px;
+    background: #F5F0EB;
+    box-shadow: 0 3px 12px rgba(45,42,36,0.12);
+}
+
+.report-stat-card {
+    position: relative;
+    overflow: hidden;
+    padding: 19px 20px 17px;
+}
+
+    .report-stat-card::after {
+        position: absolute;
+        right: -22px;
+        bottom: -38px;
+        width: 105px;
+        height: 105px;
+        border-radius: 50%;
+        background: currentColor;
+        content: "";
+        opacity: .045;
+    }
+
+.report-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.report-stat-icon {
+    display: inline-flex;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #E8DED1;
+    font-size: 21px;
+}
+
+.report-stat-label {
+    color: #675B4E;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .7px;
+}
+
+.report-stat-value {
+    margin-top: 15px;
+    color: #2D2A24;
+    font-size: 29px;
+    font-weight: 750;
+    line-height: 1.1;
+}
+
+.report-stat-note {
+    margin-top: 7px;
+    color: #675B4E;
+    font-size: 11px;
+}
+
+.stat-blue {
+    color: #C86A4A;
+}
+
+.stat-purple {
+    color: #7A8B5E;
+}
+
+.stat-green {
+    color: #7A8B5E;
+}
+
+.stat-orange {
+    color: #C86A4A;
+}
+
+.stat-blue .report-stat-icon {
+    background: #F5F0EB;
+}
+
+.stat-purple .report-stat-icon {
+    background: #E8DED1;
+}
+
+.stat-green .report-stat-icon {
+    background: #F5F0EB;
+}
+
+.stat-orange .report-stat-icon {
+    background: #E8DED1;
+}
+
+.report-main-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, .85fr);
+    gap: 18px;
+}
+
+.report-panel {
+    padding: 21px 22px;
+}
+
+.report-panel-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+    .report-panel-heading h3 {
+        margin: 0;
+        color: #2D2A24;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+.report-panel-icon {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #E8DED1;
+    font-size: 17px;
+}
+
+.monthly-chart {
+    display: grid;
+    height: 220px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+    padding: 8px 4px 0;
+}
+
+.monthly-chart-column {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.monthly-chart-value {
+    color: #675B4E;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.monthly-chart-track {
+    display: flex;
+    width: min(100%, 34px);
+    height: 155px;
+    align-items: flex-end;
+    overflow: hidden;
+    border-radius: 7px 7px 3px 3px;
+    background: #E8DED1;
+}
+
+.monthly-chart-bar {
+    width: 100%;
+    min-height: 3px;
+    border-radius: 7px 7px 2px 2px;
+    background: #C86A4A;
+    transition: height .25s ease;
+}
+
+.monthly-chart-label {
+    color: #675B4E;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.category-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    padding-top: 2px;
+}
+
+.category-row-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 7px;
+    color: #675B4E;
+    font-size: 12px;
+}
+
+    .category-row-heading span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .category-row-heading strong {
+        color: #2D2A24;
+        font-size: 12px;
+    }
+
+.category-track {
+    height: 8px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #D4BFA5;
+}
+
+.category-fill {
+    height: 100%;
+    min-width: 2px;
+    border-radius: inherit;
+    background: #C86A4A;
+}
+
+.report-popular-panel {
+    padding-bottom: 10px;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .report-table thead th {
+        padding: 11px 12px;
+        border-bottom: 1px solid #D4BFA5;
+        color: #675B4E;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .55px;
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    .report-table tbody td {
+        padding: 13px 12px;
+        border-bottom: 1px solid #E8DED1;
+        color: #675B4E;
+        font-size: 13px;
+    }
+
+    .report-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+.report-rank {
+    display: inline-flex;
+    width: 27px;
+    height: 27px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #E8DED1;
+    color: #C86A4A;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.report-book-title {
+    color: #2D2A24 !important;
+    font-weight: 650;
+}
+
+.report-unit {
+    margin-left: 4px;
+    color: #675B4E;
+    font-size: 11px;
+}
+
+.report-empty {
+    display: flex;
+    min-height: 130px;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border: 1px dashed #D4BFA5;
+    border-radius: 8px;
+    color: #675B4E;
+    font-size: 13px;
+    text-align: center;
+}
+
+.report-footnote {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #675B4E;
+    font-size: 11px;
+}
+
+@media (max-width: 1200px) {
+    .report-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .report-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .report-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .report-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .report-panel {
+        padding: 17px 14px;
+    }
+
+    .monthly-chart {
+        gap: 5px;
+    }
+
+    .monthly-chart-label {
+        font-size: 9px;
+    }
+
+    .report-table thead th,
+    .report-table tbody td {
+        padding-right: 7px;
+        padding-left: 7px;
+    }
+}
+
+/* ================================
+   SIDEBAR DROPDOWN
+================================ */
+
+/* SIDEBAR */
+.admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80px;
+    min-width: 80px;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 2000;
+    transition: width 0.3s ease;
+}
+
+    /* SIDEBAR MỞ RỘNG */
+    .admin-sidebar.expanded {
+        width: 280px;
+        min-width: 280px;
+        box-shadow: 5px 0 20px rgba(45,42,36,0.12);
+    }
+
+/* NÚT ☰ */
+.sidebar-toggle {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(245,240,235,0.65);
+    border-radius: 7px;
+    background: transparent;
+    color: #2D2A24;
+    font-size: 21px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+    .sidebar-toggle:hover {
+        background: rgba(245,240,235,0.65);
+    }
+
+/* LOGO */
+.sidebar-brand {
+    padding-top: 21px;
+    text-align: center;
+}
+
+/* NỘI DUNG CHÍNH */
+.admin-main {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+/* NỘI DUNG MENU */
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    color: #2D2A24;
+    cursor: pointer;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.menu-icon {
+    width: 30px;
+    min-width: 30px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.menu-text {
+    flex: 1;
+}
+
+.arrow {
+    transition: transform 0.2s;
+}
+
+.menu-toggle.active .arrow {
+    transform: rotate(180deg);
+}
+
+/* MENU CON */
+.submenu {
+    display: none;
+    padding-left: 45px;
+}
+
+    .submenu.show {
+        display: block;
+    }
+
+    .submenu a {
+        display: block;
+        padding: 9px;
+        color: #2D2A24;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+        .submenu a:hover {
+            background: rgba(245,240,235,0.65);
+        }
+
+/* TRẠNG THÁI THU NHỎ */
+.admin-sidebar:not(.expanded) .menu-text,
+.admin-sidebar:not(.expanded) .arrow,
+.admin-sidebar:not(.expanded) .sidebar-brand h5,
+.admin-sidebar:not(.expanded) .sidebar-brand small {
+    display: none;
+}
+
+.admin-sidebar:not(.expanded) .menu-toggle {
+    justify-content: center;
+    padding: 14px 0;
+}
+
+/* KHÔNG XỔ MENU CON RA NGOÀI KHI THU NHỎ */
+.admin-sidebar:not(.expanded) .submenu {
+    display: none !important;
+}
+
+/* OVERLAY */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(45,42,36,0.25);
+    z-index: 1900;
+}
+
+    .sidebar-overlay.show {
+        display: block;
+    }
+
+/* =========================================================
+   WARM ORGANIC OVERRIDES - BO SUNG CHO BOOTSTRAP / ADMIN UI
+   Khong doi ten class, id, menu, dropdown hay action.
+   ========================================================= */
+:root {
+    --wo-paper: #F5F0EB;
+    --wo-sand: #E8DED1;
+    --wo-clay: #D4BFA5;
+    --wo-brown: #2D2A24;
+    --wo-terracotta: #C86A4A;
+    --wo-olive: #7A8B5E;
+}
+
+body, .admin-main, .admin-content {
+    background-color: var(--wo-paper);
+    color: var(--wo-brown);
+    line-height: 1.6;
+}
+
+.admin-sidebar,
+.admin-sidebar .sidebar-menu,
+.admin-sidebar .menu-toggle,
+.admin-sidebar .submenu {
+    color: var(--wo-brown);
+}
+
+    .admin-sidebar .sidebar-menu a,
+    .admin-sidebar .submenu a,
+    .admin-sidebar .menu-toggle,
+    .admin-sidebar .sidebar-brand h5 {
+        color: var(--wo-brown);
+    }
+
+        .admin-sidebar .sidebar-menu a:hover,
+        .admin-sidebar .sidebar-menu a:focus-visible,
+        .admin-sidebar .submenu a:hover,
+        .admin-sidebar .menu-toggle:hover {
+            background-color: var(--wo-clay);
+            color: var(--wo-brown);
+        }
+
+.admin-header, .admin-footer {
+    background-color: var(--wo-sand);
+    color: var(--wo-brown);
+    border-color: rgba(212,191,165,.6);
+}
+
+.admin-content .card,
+.admin-content .content-card,
+.admin-content .stat-card,
+.admin-content .report-panel,
+.admin-content .report-stat-card {
+    background: var(--wo-sand);
+    border: 1px solid rgba(212,191,165,.6);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px -4px rgba(45,42,36,.10);
+    color: var(--wo-brown);
+}
+
+.admin-content .table,
+.admin-content .table th,
+.admin-content .table td {
+    color: var(--wo-brown);
+    border-color: rgba(212,191,165,.6);
+}
+
+    .admin-content .table thead,
+    .admin-content .table-light {
+        --bs-table-bg: #D4BFA5;
+        --bs-table-color: #2D2A24;
+        background-color: var(--wo-clay);
+    }
+
+.admin-content .table-hover {
+    --bs-table-hover-bg: #F5F0EB;
+    --bs-table-hover-color: #2D2A24;
+}
+
+.admin-content .form-control,
+.admin-content .form-select,
+.admin-content input:not([type="hidden"]),
+.admin-content textarea,
+.admin-content select {
+    background-color: var(--wo-paper);
+    border: 1px solid var(--wo-clay);
+    border-radius: 8px;
+    color: var(--wo-brown);
+}
+
+    .admin-content .form-control:focus,
+    .admin-content .form-select:focus,
+    .admin-content input:focus-visible,
+    .admin-content select:focus-visible,
+    .admin-content textarea:focus-visible {
+        outline: none;
+        border-color: var(--wo-terracotta);
+        box-shadow: 0 0 0 3px rgba(200,106,74,.15);
+    }
+
+.admin-content .btn,
+.admin-header .admin-action-btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color .2s, border-color .2s, color .2s, box-shadow .2s;
+}
+
+.admin-content .btn-primary,
+.admin-content .btn-warning,
+.admin-content .btn-danger {
+    background-color: var(--wo-terracotta);
+    border-color: var(--wo-terracotta);
+    color: white;
+}
+
+    .admin-content .btn-primary:hover,
+    .admin-content .btn-warning:hover,
+    .admin-content .btn-danger:hover {
+        background-color: #A85538;
+        border-color: #A85538;
+        color: white;
+    }
+
+.admin-content .btn-success {
+    background-color: var(--wo-olive);
+    border-color: var(--wo-olive);
+    color: white;
+}
+
+.admin-content .btn-outline-primary,
+.admin-content .btn-outline-secondary,
+.admin-content .btn-outline-warning,
+.admin-content .btn-outline-danger,
+.admin-content .btn-outline-success {
+    background: transparent;
+    border-color: var(--wo-clay);
+    color: var(--wo-brown);
+}
+
+    .admin-content .btn-outline-primary:hover,
+    .admin-content .btn-outline-secondary:hover,
+    .admin-content .btn-outline-warning:hover,
+    .admin-content .btn-outline-danger:hover {
+        background: var(--wo-sand);
+        border-color: var(--wo-terracotta);
+        color: var(--wo-brown);
+    }
+
+    .admin-content .btn-outline-success:hover {
+        background: var(--wo-olive);
+        border-color: var(--wo-olive);
+        color: white;
+    }
+
+.admin-content .badge.bg-success,
+.admin-content .badge.bg-info {
+    background: var(--wo-olive) !important;
+    color: white !important;
+}
+
+.admin-content .badge.bg-warning,
+.admin-content .badge.bg-danger {
+    background: var(--wo-terracotta) !important;
+    color: white !important;
+}
+
+.admin-content .badge.bg-secondary {
+    background: var(--wo-clay) !important;
+    color: var(--wo-brown) !important;
+}
+
+.admin-content .text-secondary,
+.admin-content .text-muted {
+    color: #675B4E !important;
+}
+
+.admin-content .text-primary,
+.admin-content .text-danger {
+    color: var(--wo-terracotta) !important;
+}
+
+.admin-content .text-success {
+    color: var(--wo-olive) !important;
+}
+
+.admin-content .pagination .page-link {
+    color: var(--wo-brown);
+    border-color: var(--wo-clay);
+    background: var(--wo-paper);
+}
+
+.admin-content .pagination .page-item.active .page-link {
+    color: white;
+    background: var(--wo-terracotta);
+    border-color: var(--wo-terracotta);
+}
+
+.admin-content a:not(.btn):not(.page-link) {
+    color: var(--wo-terracotta);
+}
+
+    .admin-content a:not(.btn):not(.page-link):hover {
+        color: #A85538;
+    }
+
+.admin-content :is(button, a, input, select, textarea):focus-visible,
+.admin-header :is(button, a):focus-visible,
+.admin-sidebar :is(button, a):focus-visible {
+    outline: 2px solid var(--wo-terracotta);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

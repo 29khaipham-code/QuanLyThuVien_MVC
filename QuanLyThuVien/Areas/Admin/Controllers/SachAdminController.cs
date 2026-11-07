@@ -655,5 +655,33 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GoiY(string? term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Json(Array.Empty<object>());
+
+            term = term.Trim();
+
+            var data = await _db.Set<SachEntity>()
+                .AsNoTracking()
+                .Where(x =>
+                    x.TieuDe.Contains(term) ||
+                    (x.Isbn != null && x.Isbn.Contains(term)))
+                .OrderByDescending(x => x.TieuDe.StartsWith(term))
+                .ThenBy(x => x.TieuDe)
+                .Select(x => new
+                {
+                    value = x.TieuDe,
+                    label = x.TieuDe,
+                    detail = x.Isbn ?? "Chưa có ISBN"
+                })
+                .Take(10)
+                .ToListAsync();
+
+            return Json(data);
+        }
+
     }
+
 }
