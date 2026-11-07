@@ -25,6 +25,7 @@
     <div class="admin-wrapper">
 
         <!-- MENU BÊN TRÁI -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
         <aside class="admin-sidebar">
             <div class="sidebar-brand">
                 <div class="brand-icon">📚</div>
@@ -32,110 +33,108 @@
                 <small>Hệ thống quản trị</small>
             </div>
 
+            
             <nav class="sidebar-menu">
 
-                <div class="menu-heading">TỔNG QUAN</div>
+                <!-- TỔNG QUAN -->
+                <button type="button" class="menu-toggle" title="Tổng quan">
+                    <span class="menu-icon">🏠</span>
+                    <span class="menu-text">Tổng quan</span>
+                    <span class="arrow">⌄</span>
+                </button>
 
-                <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Index">
-                    🏠 Trang tổng quan
-                </a>
+                <div class="submenu">
+                    <a asp-area="Admin"
+                       asp-controller="Dashboard"
+                       asp-action="Index">
+                        Trang tổng quan
+                    </a>
+                </div>
 
-                <div class="menu-heading">QUẢN LÝ HỆ THỐNG</div>
+                <!-- QUẢN LÝ HỆ THỐNG -->
+                <button type="button" class="menu-toggle" title="Quản lý hệ thống">
+                    <span class="menu-icon">👥</span>
+                    <span class="menu-text">Quản lý hệ thống</span>
+                    <span class="arrow">⌄</span>
+                </button>
 
-                <a asp-area="Admin"
-                   asp-controller="TaiKhoan"
-                   asp-action="Index">
-                    👥 Quản lý tài khoản
-                </a>
+                <div class="submenu">
+                    <a asp-area="Admin"
+                       asp-controller="TaiKhoan"
+                       asp-action="Index">
+                        Quản lý tài khoản
+                    </a>
+                </div>
 
-                <div class="menu-heading">DANH MỤC</div>
+                <!-- DANH MỤC -->
+                <button type="button" class="menu-toggle" title="Danh mục">
+                    <span class="menu-icon">📁</span>
+                    <span class="menu-text">Danh mục</span>
+                    <span class="arrow">⌄</span>
+                </button>
 
-                
-                <a asp-area="Admin"
-                   asp-controller="TheLoai"
-                   asp-action="Index">
-                    📁 Quản lý thể loại
-                </a>
+                <div class="submenu">
+                    <a asp-area="Admin" asp-controller="TheLoai" asp-action="Index">
+                        Quản lý thể loại
+                    </a>
+                    <a asp-area="Admin" asp-controller="TacGia" asp-action="Index">
+                        Quản lý tác giả
+                    </a>
+                    <a asp-area="Admin" asp-controller="NhaXuatBan" asp-action="Index">
+                        Nhà xuất bản
+                    </a>
+                </div>
 
+                <!-- QUẢN LÝ THƯ VIỆN -->
+                <button type="button" class="menu-toggle" title="Quản lý thư viện">
+                    <span class="menu-icon">📚</span>
+                    <span class="menu-text">Quản lý thư viện</span>
+                    <span class="arrow">⌄</span>
+                </button>
 
-                
-                <a asp-area="Admin"
-                   asp-controller="TacGia"
-                   asp-action="Index">
-                    ✍️ Quản lý tác giả
-                </a>
+                <div class="submenu">
+                    <a asp-area="Admin" asp-controller="SachAdmin" asp-action="Index">
+                        Quản lý sách
+                    </a>
+                    <a asp-area="Admin" asp-controller="BanSaoSach" asp-action="Index">
+                        Quản lý bản sao sách
+                    </a>
+                    <a asp-area="Admin" asp-controller="DocGia" asp-action="Index">
+                        Độc giả
+                    </a>
+                    <a asp-area="Admin" asp-controller="MuonTra" asp-action="Index">
+                        Mượn / Trả sách
+                    </a>
+                    <a asp-area="Admin" asp-controller="DatTruoc" asp-action="Index">
+                        Đặt trước sách
+                    </a>
+                    <a asp-area="Admin" asp-controller="Phat" asp-action="Index">
+                        Tiền phạt
+                    </a>
+                    <a asp-area="Admin" asp-controller="SachDienTu" asp-action="Index">
+                        Sách điện tử
+                    </a>
+                </div>
 
+                <!-- BÁO CÁO -->
+                <button type="button" class="menu-toggle"
+                        title="Báo cáo và thống kê">
+                    <span class="menu-icon">📊</span>
+                    <span class="menu-text">Báo cáo và thống kê</span>
+                    <span class="arrow">⌄</span>
+                </button>
 
-                <a asp-area="Admin"
-                   asp-controller="NhaXuatBan"
-                   asp-action="Index"
-                   class="nav-link">
-                    <i class="bi bi-building"></i>
-                    Nhà xuất bản
-                </a>
+                <div class="submenu">
+                    <a asp-area="Admin"
+                       asp-controller="Dashboard"
+                       asp-action="Module"
+                       asp-route-id="ThongKe">
+                        Thống kê
+                    </a>
+                </div>
 
-                <div class="menu-heading">QUẢN LÝ THƯ VIỆN</div>
-
-                
-                
-
-
-                <a asp-area="Admin"
-                   asp-controller="BanSaoSach"
-                   asp-action="Index"
-                   class="nav-link">
-                    📚 Quản lý bản sao sách
-                </a>
-
-                <a asp-area="Admin"
-                   asp-controller="DocGia"
-                   asp-action="Index"
-                   class="nav-link">
-                    🪪 Độc giả
-                </a>
-
-                <a href="@Url.Action("Index", "MuonTra", new { area = "Admin" })"
-                      class="nav-link">
-                    🔄 Mượn / Trả sách
-                </a>
-
-                
-                <a href="@Url.Action("Index", "DatTruoc", new { area = "Admin" })"
-                   class="nav-link">
-                    📌 Đặt trước sách
-                </a>
-
-
-                
-                <a href="@Url.Action("Index", "Phat", new { area = "Admin" })"
-                   class="nav-link">
-                    💰 Tiền phạt
-                </a>
-
-
-              
-                <a asp-area="Admin"
-                   asp-controller="SachDienTu"
-                   asp-action="Index"
-                   class="nav-link">
-                    💻 Sách điện tử
-                </a>
-
-
-                <a asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Module"
-                   asp-route-id="ThongKe">
-                    📊 Thống kê
-
-                </a>
-                <a href="@Url.Action("Index", "SachAdmin", new { area = "Admin" })"
-                   class="nav-link">
-                    📚 Quản Lý Sách
-                </a>
             </nav>
+
         </aside>
 
         <!-- NỘI DUNG BÊN PHẢI -->
@@ -203,5 +202,106 @@
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+
+            const sidebar = document.querySelector(".admin-sidebar");
+            const toggleButton = document.getElementById("toggleSidebar");
+            const overlay = document.getElementById("sidebarOverlay");
+
+            // Mặc định thu nhỏ khi tải trang
+            function closeSidebar() {
+                sidebar.classList.remove("expanded");
+                overlay?.classList.remove("show");
+
+                toggleButton.textContent = "☰";
+
+                // Đóng tất cả nhóm menu
+                document.querySelectorAll(".menu-toggle").forEach(item => {
+                    item.classList.remove("active");
+                });
+
+                document.querySelectorAll(".submenu").forEach(item => {
+                    item.classList.remove("show");
+                });
+            }
+
+            // Mở Sidebar
+            function openSidebar() {
+                sidebar.classList.add("expanded");
+                overlay?.classList.add("show");
+
+                toggleButton.textContent = "×";
+            }
+
+            // Nút mở rộng / thu nhỏ
+            toggleButton?.addEventListener("click", function () {
+                if (sidebar.classList.contains("expanded")) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            });
+
+            // Bấm ra ngoài Sidebar
+            overlay?.addEventListener("click", closeSidebar);
+
+            // Xử lý 5 nhóm menu
+            document.querySelectorAll(".menu-toggle").forEach(button => {
+
+                button.addEventListener("click", function () {
+
+                    const submenu = this.nextElementSibling;
+
+                    // Nếu đang thu nhỏ thì mở Sidebar trước
+                    if (!sidebar.classList.contains("expanded")) {
+
+                        openSidebar();
+
+                        // Đóng các nhóm khác
+                        document.querySelectorAll(".menu-toggle").forEach(item => {
+                            item.classList.remove("active");
+                        });
+
+                        document.querySelectorAll(".submenu").forEach(item => {
+                            item.classList.remove("show");
+                        });
+
+                        // Mở nhóm vừa chọn
+                        this.classList.add("active");
+                        submenu.classList.add("show");
+
+                        return;
+                    }
+
+                    // Nếu Sidebar đang mở rộng
+                    const isOpen = submenu.classList.contains("show");
+
+                    // Đóng tất cả nhóm
+                    document.querySelectorAll(".menu-toggle").forEach(item => {
+                        item.classList.remove("active");
+                    });
+
+                    document.querySelectorAll(".submenu").forEach(item => {
+                        item.classList.remove("show");
+                    });
+
+                    // Nếu nhóm chưa mở thì mở nó
+                    if (!isOpen) {
+                        this.classList.add("active");
+                        submenu.classList.add("show");
+                    }
+                });
+            });
+
+            // Chọn chức năng con
+            document.querySelectorAll(".submenu a").forEach(link => {
+                link.addEventListener("click", function () {
+                    closeSidebar();
+                });
+            });
+
+            // Khởi tạo trạng thái
+            closeSidebar();
+    </script>
 </body>
 </html>

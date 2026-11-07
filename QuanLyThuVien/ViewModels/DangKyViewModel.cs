@@ -15,10 +15,17 @@ namespace QuanLyThuVien.ViewModels
             ErrorMessage = "Tên đăng nhập chỉ gồm chữ không dấu, số, dấu chấm và gạch dưới")]
         public string TenDangNhap { get; set; } = string.Empty;
 
+
+
         [Required(ErrorMessage = "Vui lòng nhập email")]
-        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
+        [EmailAddress(ErrorMessage = "Email không đúng định dạng")]
+        [RegularExpression(
+            @"^[a-zA-Z0-9._%+-]+@(gmail\.com|googlemail\.com|outlook\.com|hotmail\.com|live\.com|yahoo\.com|icloud\.com|me\.com|proton\.me|protonmail\.com)$",
+            ErrorMessage = "Chỉ chấp nhận Gmail, Outlook, Hotmail, Yahoo, iCloud hoặc Proton Mail")]
         [StringLength(100)]
         public string Email { get; set; } = string.Empty;
+
+
 
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
         [StringLength(20)]
