@@ -54,10 +54,6 @@ builder.Services.AddScoped<
     IPasswordHasher<TaiKhoan>,
     PasswordHasher<TaiKhoan>>();
 
-builder.Services.AddMemoryCache();
-builder.Services.AddScoped<ThongBaoService>();
-builder.Services.AddHostedService<ThongBaoBackgroundService>();
-
 // 6. Tạo ứng dụng sau khi đăng ký tất cả dịch vụ
 builder.Services.AddScoped<
     QuanLyThuVien.Services.DashboardThongKeService>();

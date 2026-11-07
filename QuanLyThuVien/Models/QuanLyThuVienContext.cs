@@ -461,7 +461,8 @@ public partial class QuanLyThuVienContext : DbContext
             entity.Property(e => e.KhoaTrung).HasMaxLength(100).IsUnicode(false);
             entity.Property(e => e.NgayTao).HasDefaultValueSql("(sysdatetime())", "DF_ThongBao_NgayTao");
 
-            entity.HasOne(d => d.DocGia).WithMany()
+            entity.HasOne(d => d.DocGia)
+                .WithMany(p => p.ThongBaos)
                 .HasForeignKey(d => d.DocGiaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ThongBao_DocGia");
