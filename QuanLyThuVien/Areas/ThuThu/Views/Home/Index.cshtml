@@ -1,57 +1,68 @@
+@model QuanLyThuVien.ViewModels.Admin.TongQuan.DashboardThongKeViewModel
+
 @{
     ViewData["Title"] = "Trang tổng quan Thủ thư";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container-fluid">
-    <div class="mb-4">
-        <h2 class="fw-bold">Xin chào, Thủ thư</h2>
-        <p class="text-muted mb-0">
-            Theo dõi hoạt động và truy cập nhanh các nghiệp vụ thư viện.
-        </p>
-    </div>
+<h3 class="mb-2">Xin chào, @User.Identity?.Name!</h3>
 
-    <div class="row g-3 mb-4">
-        <div class="col-md-6 col-xl-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <div class="text-muted">Tổng đầu sách</div>
-                    <div class="fs-2 fw-bold">@ViewBag.TongDauSach</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <div class="text-muted">Tổng độc giả</div>
-                    <div class="fs-2 fw-bold">@ViewBag.TongDocGia</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <div class="text-muted">Sách đang mượn</div>
-                    <div class="fs-2 fw-bold">@ViewBag.SachDangMuon</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <div class="text-muted">Sách quá hạn</div>
-                    <div class="fs-2 fw-bold">@ViewBag.SachQuaHan</div>
-                </div>
-            </div>
+<p class="text-muted mb-4">
+    Chào mừng đến với hệ thống quản lý thư viện.
+</p>
+
+<div class="row g-3">
+
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <h6>Tổng đầu sách</h6>
+            <p class="text-muted small mb-0">
+                @ViewBag.TongDauSach đầu sách trong thư viện
+            </p>
         </div>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-white">
-            <h5 class="mb-0">Nghiệp vụ thư viện</h5>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <h6>Tổng độc giả</h6>
+            <p class="text-muted small mb-0">
+                @ViewBag.TongDocGia độc giả đã đăng ký
+            </p>
         </div>
-        <div class="card-body">
-            <div class="row g-3">
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon">🔄</div>
+            <h6>Sách đang mượn</h6>
+            <p class="text-muted small mb-0">
+                @ViewBag.SachDangMuon cuốn chưa được trả
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon">⚠️</div>
+            <h6>Mượn quá hạn</h6>
+            <p class="text-muted small mb-0">
+                @ViewBag.SachQuaHan cuốn đã quá hạn trả
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<div class="content-card mt-4">
+    <h5>Nghiệp vụ thư viện</h5>
+    <p class="text-muted">
+        Chọn một chức năng để bắt đầu quản lý.
+    </p>
+
+    <div class="row g-3">
                 <div class="col-md-6 col-xl-4">
                     <a class="btn btn-outline-primary w-100 py-3"
                        asp-area="Admin" asp-controller="SachAdmin" asp-action="Index">
@@ -88,7 +99,6 @@
                         💰 Quản lý tiền phạt
                     </a>
                 </div>
-            </div>
         </div>
     </div>
 </div>
