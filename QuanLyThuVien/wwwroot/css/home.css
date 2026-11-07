@@ -13,7 +13,7 @@
     --home-green: var(--color-olive);
     --home-radius: var(--radius-lg);
     --home-shadow: var(--shadow-soft);
-    overflow: hidden;
+    overflow: clip;
     background: var(--home-bg);
     color: var(--home-text);
     font-family: inherit;
@@ -37,7 +37,7 @@
    HEADER
 ========================================= */
 
-.library-nav {
+/*.library-nav {
     position: relative;
     z-index: 100;
     display: flex;
@@ -49,7 +49,20 @@
     background: var(--home-bg);
     border-bottom: 1px solid var(--home-border);
 }
-
+*/
+.library-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    min-height: 84px;
+    padding: 16px 6.5%;
+    background: var(--home-bg);
+    border-bottom: 1px solid var(--home-border);
+}
 .library-brand {
     display: inline-flex;
     align-items: center;
