@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuanLyThuVien.Models;
+using QuanLyThuVien.Services;
+using QuanLyThuVien.ViewModels.Admin.TongQuan;
 using QuanLyThuVien.ViewModels.Admin.Dashboard;
 
 namespace QuanLyThuVien.Areas.Admin.Controllers
@@ -12,18 +14,26 @@ namespace QuanLyThuVien.Areas.Admin.Controllers
     public class DashboardController : Controller
     {
         private readonly QuanLyThuVienContext _context;
+        private readonly DashboardThongKeService _dashboardThongKeService;
 
-        public DashboardController(QuanLyThuVienContext context)
+        public DashboardController(
+            QuanLyThuVienContext context,
+            DashboardThongKeService dashboardThongKeService)
         {
             _context = context;
+            _dashboardThongKeService = dashboardThongKeService;
         }
 
         // Trang tổng quan của Admin
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "Tổng quan";
-            return View();
+
+            DashboardThongKeViewModel thongKe =
+                await _dashboardThongKeService.LayThongKeAsync();
+
+            return View(thongKe);
         }
 
         // Trang tạm cho chức năng chưa triển khai
