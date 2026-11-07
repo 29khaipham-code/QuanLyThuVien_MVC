@@ -309,9 +309,23 @@
     <script src="~/js/language.js" asp-append-version="true"></script>
 
 
-    @await RenderSectionAsync("Scripts", required: false)
+    
     <!-- AOS Animation -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    @if (laDocGia)
+    {
+        <script>
+                @* // Làm mới quả chuông thông báo mỗi 60 giây (bỏ qua khi người dùng đang mở danh sách) *@
+                window.capNhatChuong = function () {
+                    var $c = $('#chuongThongBao');
+                    if (!$c.length || $c.find('.dropdown-menu').hasClass('show')) return;
+
+                    $.ajax({ url: '@Url.Action("Chuong", "ThongBao", new { area = "DocGia" })', cache: false })
+                        .done(function (html) { $('#chuongThongBao').replaceWith(html); });
+                };
+                setInterval(window.capNhatChuong, 60000);
+        </script>
+    }
 
 
     <script>
@@ -325,6 +339,6 @@
                 });
             });
     </script>
-
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
