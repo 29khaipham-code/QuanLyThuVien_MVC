@@ -1,0 +1,112 @@
+﻿@model QuanLyThuVien.ViewModels.Admin.DocGia.CapTaiKhoanViewModel
+
+@{
+    ViewData["Title"] = "Cấp tài khoản độc giả";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+
+            <h3 class="fw-bold mb-4">
+                Cấp tài khoản cho độc giả
+            </h3>
+
+            <div class="alert alert-info">
+                <div>
+                    <strong>Mã độc giả:</strong>
+                    @Model.MaDocGia
+                </div>
+
+                <div>
+                    <strong>Họ tên:</strong>
+                    @Model.HoTen
+                </div>
+
+                <div>
+                    <strong>Vai trò:</strong>
+                    Độc giả
+                </div>
+            </div>
+
+            <form asp-area="Admin"
+                  asp-controller="CapTaiKhoanDocGia"
+                  asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="DocGiaId" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TenDangNhap"
+                           class="form-label">
+                        Tên đăng nhập
+                    </label>
+
+                    <input asp-for="TenDangNhap"
+                           class="form-control"
+                           autocomplete="off"
+                           placeholder="Ví dụ: docgia12" />
+
+                    <span asp-validation-for="TenDangNhap"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email"
+                           class="form-label">
+                        Email
+                    </label>
+
+                    <input asp-for="Email"
+                           class="form-control"
+                           type="email" />
+
+                    <span asp-validation-for="Email"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MatKhau"
+                           class="form-label">
+                        Mật khẩu ban đầu
+                    </label>
+
+                    <input asp-for="MatKhau"
+                           class="form-control"
+                           type="password"
+                           autocomplete="new-password"
+                           placeholder="Nhập mật khẩu mạnh" />
+
+                    <span asp-validation-for="MatKhau"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit"
+                            class="btn btn-success">
+                        + Cấp tài khoản
+                    </button>
+
+                    <a asp-area="Admin"
+                       asp-controller="DocGia"
+                       asp-action="Index"
+                       class="btn btn-secondary">
+                        Quay lại
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,5 +1,4 @@
-﻿
-@model List<QuanLyThuVien.ViewModels.DocGia.DocGiaListItemViewModel>
+﻿@model List<QuanLyThuVien.ViewModels.DocGia.DocGiaListItemViewModel>
 
 @{
     ViewData["Title"] = "Quản lý độc giả";
@@ -46,10 +45,10 @@
         cursor: pointer;
     }
 
-    .dg-suggestion-item:hover,
-    .dg-suggestion-item.active {
-        background: #eaf2ff;
-    }
+        .dg-suggestion-item:hover,
+        .dg-suggestion-item.active {
+            background: #eaf2ff;
+        }
 
     .dg-suggestion-name {
         font-weight: 600;
@@ -90,8 +89,10 @@
     <!-- THONG BAO -->
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success">
-            @TempData["Success"]
+        <div class="d-flex justify-content-end mb-3">
+            <div class="alert alert-success mb-0" role="status" style="max-width: 440px; width: fit-content;">
+                @TempData["Success"]
+            </div>
         </div>
     }
 
@@ -220,41 +221,45 @@
                                     </td>
 
                                     <td>
-                                        <div class="d-flex gap-2">
+                                        <div class="d-flex align-items-center gap-2 flex-nowrap">
 
                                             <!-- SUA -->
                                             <a href="@Url.Action("Edit", "DocGia", new { area = "Admin", id = dg.Id })"
-                                               class="btn btn-sm btn-outline-primary">
+                                               class="btn btn-sm btn-outline-primary text-nowrap">
                                                 Sửa
                                             </a>
 
                                             <!-- KHOA / MO KHOA -->
                                             <form method="post"
+                                                  class="m-0"
                                                   action="@Url.Action("ToggleStatus", "DocGia", new { area = "Admin", id = dg.Id })">
-
                                                 @Html.AntiForgeryToken()
-
                                                 <button type="submit"
-                                                        class="btn btn-sm btn-outline-warning">
-                                                    @(dg.TrangThai == "TamKhoa"
-                                                        ? "Mở khóa"
-                                                        : "Khóa")
+                                                        class="btn btn-sm btn-outline-warning text-nowrap">
+                                                    @(dg.TrangThai == "TamKhoa" ? "Mở khóa" : "Khóa")
                                                 </button>
                                             </form>
 
                                             <!-- XOA -->
                                             <form method="post"
+                                                  class="m-0"
                                                   action="@Url.Action("Delete", "DocGia", new { area = "Admin", id = dg.Id })"
                                                   onsubmit="return confirm('Bạn có chắc muốn xóa độc giả này?');">
-
                                                 @Html.AntiForgeryToken()
-
                                                 <button type="submit"
-                                                        class="btn btn-sm btn-outline-danger">
+                                                        class="btn btn-sm btn-outline-danger text-nowrap">
                                                     Xóa
                                                 </button>
                                             </form>
 
+                                            <!-- CAP TAI KHOAN SAU NUT XOA -->
+                                            @if (!dg.TaiKhoanId.HasValue)
+                                            {
+                                                <a href="@Url.Action("Create", "CapTaiKhoanDocGia", new { area = "Admin", id = dg.Id })"
+                                                   class="btn btn-sm btn-success text-nowrap">
+                                                    + Cấp tài khoản
+                                                </a>
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -303,306 +308,306 @@
 
 <!-- JAVASCRIPT TIM KIEM AJAX -->
 <script>
-(function () {
-    "use strict";
+    (function () {
+        "use strict";
 
-    function initDocGiaSearch() {
+        function initDocGiaSearch() {
 
-        const input = document.getElementById("dgSearchInput");
-        const list = document.getElementById("dgSuggestionList");
-        const form = document.getElementById("dgSearchForm");
-        const container = document.getElementById("dgSearchContainer");
+            const input = document.getElementById("dgSearchInput");
+            const list = document.getElementById("dgSuggestionList");
+            const form = document.getElementById("dgSearchForm");
+            const container = document.getElementById("dgSearchContainer");
 
-        if (!input || !list || !form || !container) {
-            console.error("AJAX DocGia: Khong tim thay HTML.");
-            return;
-        }
-
-        const apiUrl = '@Url.Action("GoiY", "DocGia", new { area = "Admin" })';
-
-        let timer = null;
-        let abortController = null;
-        let activeIndex = -1;
-
-        // DONG DANH SACH GOI Y
-        function closeSuggestions() {
-            list.style.display = "none";
-            list.replaceChildren();
-            input.setAttribute("aria-expanded", "false");
-            activeIndex = -1;
-        }
-
-        // MO DANH SACH GOI Y
-        function openSuggestions() {
-            list.style.display = "block";
-            input.setAttribute("aria-expanded", "true");
-        }
-
-        // HIEN THONG BAO
-        function showMessage(message) {
-            list.replaceChildren();
-
-            const div = document.createElement("div");
-            div.className = "dg-suggestion-message";
-            div.textContent = message;
-
-            list.appendChild(div);
-            openSuggestions();
-        }
-
-        // CHON DOC GIA
-        function selectReader(ma) {
-            input.value = ma;
-
-            closeSuggestions();
-
-            // Tu dong tim kiem theo ma doc gia
-            form.requestSubmit();
-        }
-
-        // HIEN DANH SACH KET QUA
-        function renderSuggestions(data) {
-
-            list.replaceChildren();
-            activeIndex = -1;
-
-            if (!Array.isArray(data) || data.length === 0) {
-                showMessage("Không tìm thấy độc giả phù hợp");
+            if (!input || !list || !form || !container) {
+                console.error("AJAX DocGia: Khong tim thay HTML.");
                 return;
             }
 
-            data.forEach(function (dg) {
+            const apiUrl = '@Url.Action("GoiY", "DocGia", new { area = "Admin" })';
 
-                const item = document.createElement("button");
-                item.type = "button";
-                item.className = "dg-suggestion-item";
-                item.setAttribute("role", "option");
-                item.setAttribute("aria-selected", "false");
+            let timer = null;
+            let abortController = null;
+            let activeIndex = -1;
 
-                // TEN DOC GIA
-                const name = document.createElement("div");
-                name.className = "dg-suggestion-name";
-                name.textContent = "👤 " + dg.ten;
-
-                // THONG TIN DOC GIA
-                const info = document.createElement("div");
-                info.className = "dg-suggestion-info";
-
-                const details = [
-                    "Mã: " + dg.ma
-                ];
-
-                if (dg.email) {
-                    details.push("Email: " + dg.email);
-                }
-
-                if (dg.dienThoai) {
-                    details.push("SĐT: " + dg.dienThoai);
-                }
-
-                info.textContent = details.join(" | ");
-
-                item.appendChild(name);
-                item.appendChild(info);
-
-                item.addEventListener("mousedown", function (event) {
-                    event.preventDefault();
-                });
-
-                item.addEventListener("click", function () {
-                    selectReader(dg.ma);
-                });
-
-                list.appendChild(item);
-            });
-
-            openSuggestions();
-        }
-
-        // GOI API AJAX
-        async function searchReaders(keyword) {
-
-            if (abortController) {
-                abortController.abort();
+            // DONG DANH SACH GOI Y
+            function closeSuggestions() {
+                list.style.display = "none";
+                list.replaceChildren();
+                input.setAttribute("aria-expanded", "false");
+                activeIndex = -1;
             }
 
-            const request = new AbortController();
-            abortController = request;
+            // MO DANH SACH GOI Y
+            function openSuggestions() {
+                list.style.display = "block";
+                input.setAttribute("aria-expanded", "true");
+            }
 
-            try {
-                const response = await fetch(
-                    apiUrl + "?term=" + encodeURIComponent(keyword),
-                    {
-                        method: "GET",
-                        signal: request.signal,
-                        headers: {
-                            "Accept": "application/json"
-                        }
+            // HIEN THONG BAO
+            function showMessage(message) {
+                list.replaceChildren();
+
+                const div = document.createElement("div");
+                div.className = "dg-suggestion-message";
+                div.textContent = message;
+
+                list.appendChild(div);
+                openSuggestions();
+            }
+
+            // CHON DOC GIA
+            function selectReader(ma) {
+                input.value = ma;
+
+                closeSuggestions();
+
+                // Tu dong tim kiem theo ma doc gia
+                form.requestSubmit();
+            }
+
+            // HIEN DANH SACH KET QUA
+            function renderSuggestions(data) {
+
+                list.replaceChildren();
+                activeIndex = -1;
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    showMessage("Không tìm thấy độc giả phù hợp");
+                    return;
+                }
+
+                data.forEach(function (dg) {
+
+                    const item = document.createElement("button");
+                    item.type = "button";
+                    item.className = "dg-suggestion-item";
+                    item.setAttribute("role", "option");
+                    item.setAttribute("aria-selected", "false");
+
+                    // TEN DOC GIA
+                    const name = document.createElement("div");
+                    name.className = "dg-suggestion-name";
+                    name.textContent = "👤 " + dg.ten;
+
+                    // THONG TIN DOC GIA
+                    const info = document.createElement("div");
+                    info.className = "dg-suggestion-info";
+
+                    const details = [
+                        "Mã: " + dg.ma
+                    ];
+
+                    if (dg.email) {
+                        details.push("Email: " + dg.email);
                     }
-                );
 
-                if (!response.ok) {
-                    throw new Error("HTTP " + response.status);
-                }
+                    if (dg.dienThoai) {
+                        details.push("SĐT: " + dg.dienThoai);
+                    }
 
-                const contentType =
-                    response.headers.get("content-type") || "";
+                    info.textContent = details.join(" | ");
 
-                if (!contentType.includes("application/json")) {
-                    throw new Error("API khong tra ve JSON");
-                }
+                    item.appendChild(name);
+                    item.appendChild(info);
 
-                const data = await response.json();
+                    item.addEventListener("mousedown", function (event) {
+                        event.preventDefault();
+                    });
 
-                if (request.signal.aborted) {
-                    return;
-                }
+                    item.addEventListener("click", function () {
+                        selectReader(dg.ma);
+                    });
 
-                if (input.value.trim() !== keyword) {
-                    return;
-                }
+                    list.appendChild(item);
+                });
 
-                renderSuggestions(data);
-
-            } catch (error) {
-
-                if (error.name === "AbortError") {
-                    return;
-                }
-
-                console.error("DocGia AJAX ERROR:", error);
-
-                showMessage(
-                    "Không tải được gợi ý. Kiểm tra API GoiY."
-                );
-            }
-        }
-
-        // GO TUNG KY TU SE GOI AJAX
-        input.addEventListener("input", function () {
-
-            clearTimeout(timer);
-
-            if (abortController) {
-                abortController.abort();
+                openSuggestions();
             }
 
-            const keyword = input.value.trim();
+            // GOI API AJAX
+            async function searchReaders(keyword) {
 
-            closeSuggestions();
+                if (abortController) {
+                    abortController.abort();
+                }
 
-            if (keyword.length === 0) {
-                return;
+                const request = new AbortController();
+                abortController = request;
+
+                try {
+                    const response = await fetch(
+                        apiUrl + "?term=" + encodeURIComponent(keyword),
+                        {
+                            method: "GET",
+                            signal: request.signal,
+                            headers: {
+                                "Accept": "application/json"
+                            }
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+
+                    const contentType =
+                        response.headers.get("content-type") || "";
+
+                    if (!contentType.includes("application/json")) {
+                        throw new Error("API khong tra ve JSON");
+                    }
+
+                    const data = await response.json();
+
+                    if (request.signal.aborted) {
+                        return;
+                    }
+
+                    if (input.value.trim() !== keyword) {
+                        return;
+                    }
+
+                    renderSuggestions(data);
+
+                } catch (error) {
+
+                    if (error.name === "AbortError") {
+                        return;
+                    }
+
+                    console.error("DocGia AJAX ERROR:", error);
+
+                    showMessage(
+                        "Không tải được gợi ý. Kiểm tra API GoiY."
+                    );
+                }
             }
 
-            showMessage("Đang tìm kiếm...");
+            // GO TUNG KY TU SE GOI AJAX
+            input.addEventListener("input", function () {
 
-            timer = setTimeout(function () {
-                searchReaders(keyword);
-            }, 200);
-        });
+                clearTimeout(timer);
 
-        // FOCUS VAO O TIM KIEM
-        input.addEventListener("focus", function () {
+                if (abortController) {
+                    abortController.abort();
+                }
 
-            const keyword = input.value.trim();
+                const keyword = input.value.trim();
 
-            if (keyword.length === 0) {
-                return;
-            }
-
-            clearTimeout(timer);
-
-            showMessage("Đang tìm kiếm...");
-
-            timer = setTimeout(function () {
-                searchReaders(keyword);
-            }, 200);
-        });
-
-        // HO TRO BAN PHIM
-        input.addEventListener("keydown", function (event) {
-
-            const items = list.querySelectorAll(
-                ".dg-suggestion-item"
-            );
-
-            if (event.key === "Escape") {
                 closeSuggestions();
-                return;
-            }
 
-            if (list.style.display !== "block") {
-                return;
-            }
+                if (keyword.length === 0) {
+                    return;
+                }
 
-            if (event.key === "ArrowDown" && items.length > 0) {
-                event.preventDefault();
-                activeIndex = (activeIndex + 1) % items.length;
-            }
-            else if (event.key === "ArrowUp" && items.length > 0) {
-                event.preventDefault();
-                activeIndex =
-                    (activeIndex - 1 + items.length) % items.length;
-            }
-            else if (event.key === "Enter" && activeIndex >= 0) {
-                event.preventDefault();
-                items[activeIndex].click();
-                return;
-            }
-            else {
-                return;
-            }
+                showMessage("Đang tìm kiếm...");
 
-            items.forEach(function (item, index) {
-
-                const active = index === activeIndex;
-
-                item.classList.toggle("active", active);
-
-                item.setAttribute(
-                    "aria-selected",
-                    active ? "true" : "false"
-                );
+                timer = setTimeout(function () {
+                    searchReaders(keyword);
+                }, 200);
             });
 
-            if (activeIndex >= 0) {
-                items[activeIndex].scrollIntoView({
-                    block: "nearest"
+            // FOCUS VAO O TIM KIEM
+            input.addEventListener("focus", function () {
+
+                const keyword = input.value.trim();
+
+                if (keyword.length === 0) {
+                    return;
+                }
+
+                clearTimeout(timer);
+
+                showMessage("Đang tìm kiếm...");
+
+                timer = setTimeout(function () {
+                    searchReaders(keyword);
+                }, 200);
+            });
+
+            // HO TRO BAN PHIM
+            input.addEventListener("keydown", function (event) {
+
+                const items = list.querySelectorAll(
+                    ".dg-suggestion-item"
+                );
+
+                if (event.key === "Escape") {
+                    closeSuggestions();
+                    return;
+                }
+
+                if (list.style.display !== "block") {
+                    return;
+                }
+
+                if (event.key === "ArrowDown" && items.length > 0) {
+                    event.preventDefault();
+                    activeIndex = (activeIndex + 1) % items.length;
+                }
+                else if (event.key === "ArrowUp" && items.length > 0) {
+                    event.preventDefault();
+                    activeIndex =
+                        (activeIndex - 1 + items.length) % items.length;
+                }
+                else if (event.key === "Enter" && activeIndex >= 0) {
+                    event.preventDefault();
+                    items[activeIndex].click();
+                    return;
+                }
+                else {
+                    return;
+                }
+
+                items.forEach(function (item, index) {
+
+                    const active = index === activeIndex;
+
+                    item.classList.toggle("active", active);
+
+                    item.setAttribute(
+                        "aria-selected",
+                        active ? "true" : "false"
+                    );
                 });
-            }
-        });
 
-        // CLICK BEN NGOAI DE DONG
-        document.addEventListener("click", function (event) {
-            if (!container.contains(event.target)) {
+                if (activeIndex >= 0) {
+                    items[activeIndex].scrollIntoView({
+                        block: "nearest"
+                    });
+                }
+            });
+
+            // CLICK BEN NGOAI DE DONG
+            document.addEventListener("click", function (event) {
+                if (!container.contains(event.target)) {
+                    closeSuggestions();
+                }
+            });
+
+            // KHI SUBMIT FORM
+            form.addEventListener("submit", function () {
+
+                clearTimeout(timer);
+
+                if (abortController) {
+                    abortController.abort();
+                }
+
                 closeSuggestions();
-            }
-        });
+            });
 
-        // KHI SUBMIT FORM
-        form.addEventListener("submit", function () {
+            console.log("DOC GIA AJAX READY:", apiUrl);
+        }
 
-            clearTimeout(timer);
+        if (document.readyState === "loading") {
+            document.addEventListener(
+                "DOMContentLoaded",
+                initDocGiaSearch
+            );
+        } else {
+            initDocGiaSearch();
+        }
 
-            if (abortController) {
-                abortController.abort();
-            }
-
-            closeSuggestions();
-        });
-
-        console.log("DOC GIA AJAX READY:", apiUrl);
-    }
-
-    if (document.readyState === "loading") {
-        document.addEventListener(
-            "DOMContentLoaded",
-            initDocGiaSearch
-        );
-    } else {
-        initDocGiaSearch();
-    }
-
-})();
+    })();
 </script>
