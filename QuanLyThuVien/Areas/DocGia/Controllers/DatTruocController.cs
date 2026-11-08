@@ -10,7 +10,7 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
     [Authorize(Roles = "DocGia")]
     public class DatTruocController : DocGiaControllerBase
     {
-        private const int SoDatTruocToiDa = 3;   // số yêu cầu đặt trước còn hiệu lực cùng lúc
+        
         private const int SoNgayGiuCho = 3;      // số ngày giữ chỗ khi có sách
         private const int SoDongLichSu = 10;
 
@@ -53,7 +53,7 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             {
                 DangHieuLuc = tatCa.Where(d => d.CoTheHuy).ToList(),
                 LichSu = tatCa.Where(d => !d.CoTheHuy).Take(SoDongLichSu).ToList(),
-                ToiDa = SoDatTruocToiDa,
+                ToiDa = dg.LoaiDocGia.SoDatTruocToiDa,
                 SoNgayGiuCho = SoNgayGiuCho
             });
         }
@@ -113,6 +113,8 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
 
             if (dangDat.Contains(sachId))
                 return VeChiTiet("Bạn đã đặt trước cuốn sách này rồi.");
+
+            var SoDatTruocToiDa = dg.LoaiDocGia.SoDatTruocToiDa;
 
             if (dangDat.Count >= SoDatTruocToiDa)
                 return VeChiTiet($"Bạn chỉ được đặt trước tối đa {SoDatTruocToiDa} cuốn cùng lúc.");
