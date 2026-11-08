@@ -412,29 +412,15 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             }
         }
 
-        // PDF nằm trong App_Data/ebooks, không công khai qua wwwroot.
-        // DB lưu tên file (ví dụ: 6.pdf hoặc abc123.pdf).
+        // Tệp nằm ngoài wwwroot (thư mục App_Data), không truy cập được bằng URL trực tiếp.
+        // Chặn đường dẫn thoát ra ngoài thư mục gốc.
         private string? LayDuongDanTep(string duongDanTrongDb)
         {
-            if (string.IsNullOrWhiteSpace(duongDanTrongDb))
-                return null;
 
-            // Không cho phép đường dẫn tuyệt đối hoặc truy cập thư mục cha.
-            string tenTep = duongDanTrongDb.Trim();
-            if (Path.IsPathRooted(tenTep) ||
-                tenTep.Contains('/') ||
-                tenTep.Contains('\\') ||
-                tenTep == "." || tenTep == ".." ||
-                !string.Equals(Path.GetExtension(tenTep), ".pdf",
-                    StringComparison.OrdinalIgnoreCase))
-                return null;
+            var thuMucGoc = Path.GetFullPath(Path.Combine(_env.ContentRootPath, "App_Data", "ebooks"));
+            var duongDan = Path.GetFullPath(Path.Combine(thuMucGoc, duongDanTrongDb));
 
-            var thuMucGoc = Path.GetFullPath(Path.Combine(
-                _env.ContentRootPath, "App_Data", "ebooks"));
-            var duongDan = Path.GetFullPath(Path.Combine(thuMucGoc, tenTep));
-
-            if (!duongDan.StartsWith(thuMucGoc + Path.DirectorySeparatorChar,
-                    StringComparison.OrdinalIgnoreCase))
+            if (!duongDan.StartsWith(thuMucGoc + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
                 return null;
 
             return System.IO.File.Exists(duongDan) ? duongDan : null;
@@ -453,6 +439,5 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             var ten = new string(tieuDe.Where(c => !khongHopLe.Contains(c)).ToArray()).Trim();
             return ten.Length == 0 ? "sach-dien-tu" : ten;
         }
-
     }
 }
