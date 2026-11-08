@@ -220,7 +220,22 @@
         "Sách đặt trước đã sẵn sàng": "Reserved Book Available",
         "Sắp hết hạn giữ chỗ": "Reservation Expiring Soon",
         "Thẻ sắp hết hạn": "Library Card Expiring Soon",
-        "Quyền đọc sắp hết hạn": "Reading Access Expiring Soon"
+        "Quyền đọc sắp hết hạn": "Reading Access Expiring Soon",
+        "Giới thiệu sách": "Book Description",
+        "Những nguyên tắc cơ bản trong giao tiếp và xây dựng quan hệ.": "The basic principles of communication and relationship building.",
+        "Khám phá nội dung và những điều thú vị trong cuốn sách": "Explore the contents and interesting insights of this book",
+        "Đọc online": "Read Online",
+        "Phiên bản sách điện tử": "E-book Version",
+        "Thao tác": "Actions",
+        "Sách đang có sẵn trên kệ, bạn có thể đến thư viện mượn trực tiếp.": "This book is currently available on the shelf. You can borrow it directly from the library.",
+        " Đã đặt:": " Reserved:",
+        "Thông tin sách thư viện": "Library Book Information",
+        "Cho phép tải xuống": "Download Allowed",
+        "tái bản lần": "Reprint",
+        "Sẵn sàng": "Available",
+        "Tình trạng bản giấy": "Physical Copy Status",
+        "Chưa có ảnh bìa": "No Cover Image Available",
+        "Phiên bản PDF": "PDF Version"
     };
 
     function getLanguage() {
