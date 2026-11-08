@@ -112,6 +112,7 @@
         "Quyền đọc đang dùng": "Active Reading Access",
         "Quản lý những cuốn sách bạn đã đăng ký đọc, theo dõi thời hạn và tiếp tục hành trình khám phá tri thức.": "Manage the books you have registered to read, track expiration dates, and continue your journey of knowledge discovery.",
         "TỦ SÁCH CÁ NHÂN": "PERSONAL BOOKSHELF",
+        "Tên sách hoặc tác giả...": "Book title or author...",
 
 
 
