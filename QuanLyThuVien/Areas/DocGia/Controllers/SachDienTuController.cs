@@ -14,7 +14,6 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
     public class SachDienTuController : DocGiaControllerBase
     {
         private const int KichThuocTrang = 8;
-        private const int SoQuyenDocToiDa = 5;      // số quyền đọc còn hiệu lực cùng lúc
         private const int SoPhutHieuLucToken = 10;  // thời hạn của đường dẫn mở tệp
         private const int SoDongLichSu = 20;
 
@@ -32,9 +31,9 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
                 .ToTimeLimitedDataProtector();
         }
 
-        // =====================================================
+        
         // TAB 1: THƯ VIỆN ĐIỆN TỬ (danh mục sách có tệp điện tử)
-        // =====================================================
+        
         [HttpGet]
         public async Task<IActionResult> Index(
             string? tuKhoa, int? theLoaiId, string? sapXep = "moi", int trang = 1)
@@ -96,9 +95,9 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             return View(vm);
         }
 
-        // =====================================================
+        
         // TAB 2: SÁCH CỦA TÔI (các quyền đọc)
-        // =====================================================
+        
         [HttpGet]
         public async Task<IActionResult> CuaToi()
         {
@@ -129,14 +128,14 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             {
                 DangHieuLuc = tatCa.Where(q => q.ConHieuLuc).ToList(),
                 LichSu = tatCa.Where(q => !q.ConHieuLuc).Take(SoDongLichSu).ToList(),
-                ToiDa = SoQuyenDocToiDa,
+                ToiDa = dg.LoaiDocGia.SoSachToiDa,
                 SoNgayDoc = dg.LoaiDocGia.SoNgayMuonToiDa
             });
         }
 
-        // =====================================================
+        
         // CẤP QUYỀN ĐỌC (bấm "Đọc online" ở trang chi tiết sách)
-        // =====================================================
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MuonDoc(int tepSachId)
@@ -181,6 +180,9 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
 
             var soDangCo = await Db.LuotDocSachDienTus
                 .CountAsync(l => l.DocGiaId == dg.Id && l.TrangThai == "HieuLuc");
+
+            var SoQuyenDocToiDa = dg.LoaiDocGia.SoSachToiDa;
+
             if (soDangCo >= SoQuyenDocToiDa)
                 return Loi($"Bạn chỉ có thể giữ tối đa {SoQuyenDocToiDa} quyền đọc cùng lúc. Hãy chờ một quyền hết hạn rồi thử lại.");
 
@@ -207,9 +209,9 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             return RedirectToAction(nameof(Doc), new { id = luot.Id });
         }
 
-        // =====================================================
+        
         // TRANG ĐỌC SÁCH
-        // =====================================================
+        
         [HttpGet]
         public async Task<IActionResult> Doc(int id)
         {
@@ -243,9 +245,8 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             });
         }
 
-        // =====================================================
         // PHỤC VỤ TỆP ĐỂ ĐỌC TRỰC TUYẾN (qua token ngắn hạn, không có đường dẫn công khai)
-        // =====================================================
+        
         [HttpGet]
         public async Task<IActionResult> Tep(string token)
         {
@@ -284,9 +285,9 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             return PhysicalFile(duongDan, "application/pdf", enableRangeProcessing: true);
         }
 
-        // =====================================================
+        
         // TẢI XUỐNG (chỉ khi tệp ở chế độ ChoPhepTai)
-        // =====================================================
+        
         [HttpGet]
         public async Task<IActionResult> Tai(int id)
         {
@@ -323,9 +324,9 @@ namespace QuanLyThuVien.Areas.DocGia.Controllers
             return PhysicalFile(duongDan, LayMime(tep.DinhDang), tenTep, enableRangeProcessing: true);
         }
 
-        // =====================================================
+        
         // HÀM HỖ TRỢ
-        // =====================================================
+        
 
         // Kiểm tra mọi điều kiện để được mở tệp. Trả về quyền đọc (kèm tệp, sách) hoặc thông báo lỗi.
         private async Task<(LuotDocSachDienTu? Luot, string? Loi)> KiemTraQuyenAsync(int luotDocId, DocGium dg)
