@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
 }
 
-<div class="library-home" id="trang-chu">
+<div class="library-home" >
 
     <!-- HEADER -->
     <header class="library-nav">
@@ -31,7 +31,7 @@
 
     <main>
         <!-- HERO -->
-        <section class="lib-hero" id="gioi-thieu">
+        <section class="lib-hero" id="trang-chu">
             <div class="hero-copy" data-aos="fade-up">
                 <p class="eyebrow">
                     <span class="eyebrow-dot"></span>
@@ -85,7 +85,7 @@
         </section>
 
         <!-- INTRO / BUTTON SHOWCASE -->
-        <section class="sample-section intro-section" id="trang-thu-2">
+        <section class="sample-section intro-section" id="gioi-thieu">
             <div class="section-heading" data-aos="fade-up">
                 <p class="eyebrow">MỘT KHÔNG GIAN ĐỂ KHÁM PHÁ</p>
                 <h2>Tri thức bắt đầu từ <em>một lựa chọn nhỏ.</em></h2>
@@ -637,48 +637,66 @@
 @section Scripts {
     <script>
         (() => {
-            // Cập nhật trạng thái menu theo section đang hiển thị
-            const navLinks = [...document.querySelectorAll('.library-nav-links a')];
+            const navLinks = [
+                ...document.querySelectorAll('.library-nav-links a')
+            ];
 
+            // Lấy các section tương ứng với menu
             const sections = navLinks
-                .map(link => document.querySelector(link.getAttribute('href')))
+                .map(link => {
+                    const id = link.getAttribute('href');
+                    return document.querySelector(id);
+                })
                 .filter(Boolean);
 
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver(entries => {
-                    const visible = entries
-                        .filter(entry => entry.isIntersecting)
-                        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+            function updateActiveMenu() {
+                const scrollPosition = window.scrollY + 160;
 
-                    if (!visible.length) return;
+                // Mặc định ở đầu trang là Trang chủ
+                let currentSection = 'trang-chu';
 
-                    const id = visible[0].target.id;
-
-                    navLinks.forEach(link => {
-                        const active = link.getAttribute('href') === '#' + id;
-                        link.classList.toggle('active', active);
-
-                        if (active) {
-                            link.setAttribute('aria-current', 'location');
-                        } else {
-                            link.removeAttribute('aria-current');
-                        }
-                    });
-                }, {
-                    rootMargin: '-100px 0px -55% 0px',
-                    threshold: [0, .15, .35, .6]
+                sections.forEach(section => {
+                    if (scrollPosition >= section.offsetTop) {
+                        currentSection = section.id;
+                    }
                 });
 
-                sections.forEach(section => observer.observe(section));
+                navLinks.forEach(link => {
+                    const isActive =
+                        link.getAttribute('href') === '#' + currentSection;
+
+                    link.classList.toggle('active', isActive);
+
+                    if (isActive) {
+                        link.setAttribute('aria-current', 'location');
+                    } else {
+                        link.removeAttribute('aria-current');
+                    }
+                });
             }
+
+            // Cập nhật khi cuộn chuột
+            window.addEventListener('scroll', updateActiveMenu);
+
+            // Cập nhật khi tải trang
+            window.addEventListener('load', updateActiveMenu);
+
+            // Cập nhật khi thay đổi kích thước cửa sổ
+            window.addEventListener('resize', updateActiveMenu);
+
+            updateActiveMenu();
 
             // Đổi dấu + / × trong FAQ
             document.querySelectorAll('.faq-list details').forEach(item => {
                 item.addEventListener('toggle', () => {
                     const mark = item.querySelector('summary span');
-                    if (mark) mark.textContent = item.open ? '×' : '+';
+
+                    if (mark) {
+                        mark.textContent = item.open ? '×' : '+';
+                    }
                 });
             });
         })();
+
     </script>
 }
